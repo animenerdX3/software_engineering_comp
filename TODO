@@ -25,7 +25,7 @@ ADVANCED MILESTONES (Long-term goals)
 --------------------
 1.) Scrolling Map (Map moves with main character)
 2.) NPCs (If we're having any)
-3.) Dialogue boxes for NPC text(?)(Depends on if we're going with a bigger focus on the story, but we'll probably need it in some form anyway)
+3.) Dialogue boxes for NPC text(?)*(Depends on if we're going with a bigger focus on the story, but we'll probably need it in some form anyway)
 4.) Physics for objects
 5.) Background
 6.) Parallax Mapping
@@ -33,5 +33,10 @@ ADVANCED MILESTONES (Long-term goals)
 8.) Jumping
 9.) Crouching
 
+MISCELLANEOUS
+--------------------
+1.) Base Storyline
+2.) Text for NPCs
+3.) Design Decisions/Color Pallate Choices
 
--(?) = Unsure if needed- 
+*(?) = Unsure if needed- 
