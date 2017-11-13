@@ -18,8 +18,8 @@ public class BasicGame extends BasicGameState{
 	public static int id = 1;
 	private Rectangle square;
 	private Rectangle collide;
-	private int x = 350, y = 350;
-	boolean collides = false;
+	public static int x = 350, y = 350;
+	public static boolean collides = false;
 	
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -51,21 +51,12 @@ public class BasicGame extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		
-		Input input = gc.getInput(); // Creating our input object
-		
-		if(input.isKeyDown(Input.KEY_A)){
-			x -= 200/1000.0f * delta;
-
-		}
-		else if(input.isKeyDown(Input.KEY_D)){
-			x += 200/1000.0f * delta;
-
-		}
-		else if(input.isKeyDown(Input.KEY_W)){
-			y -= 200/1000.0f * delta;
-
-		}
-		
+		//Movement
+			movePlayer(gc, delta);
+			runPlayer(gc, delta);
+			
+			collide(gc);
+			
 		if(square.intersects(collide)){
 				collides = true;
 			}
@@ -73,8 +64,75 @@ public class BasicGame extends BasicGameState{
 				collides = false;
 			}
 		
+		Physics.gravity();
+		
 	}
+	
+	public void collide(GameContainer gc){
+			
+		//Left border
+		if(x <= 0){
+			x = 0;
+		}
+		
+		//Right world border
+		if(x >= gc.getWidth() - alien.getWidth()){
+			x = gc.getWidth() - alien.getWidth();
+		}
+		
+		//Top world border
+		if(y <= 0){
+			y = 0;
+		}
+		
+		//Bottom world border
+		if(y>=gc.getHeight() - alien.getHeight()){
+			y = gc.getWidth() - alien.getHeight();
+		}
+		
+		
+	}//end of collide
+	
+	public void movePlayer(GameContainer gc, int delta){
+		Input input = gc.getInput(); // Creating our input object
+		if(input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)){
+			y += 200/1000.0f * delta;
 
+		}
+		if(input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)){
+			x -= 200/1000.0f * delta;
+
+		}
+		if(input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)){
+			x += 200/1000.0f * delta;
+
+		}
+		if(input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)){
+			y -= 200/1000.0f * delta;
+
+		}
+	}//end of movePlayer
+	
+	public void runPlayer(GameContainer gc, int delta){
+		Input input = gc.getInput(); // Creating our input object
+		if((input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN) ) && input.isKeyDown(Input.KEY_LSHIFT)){
+			y += (200/1000.0f * delta ) * 1.5;
+
+		}
+		else if((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && input.isKeyDown(Input.KEY_LSHIFT)){
+			x -= (200/1000.0f * delta) * 1.5;
+
+		}
+		else if((input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) && input.isKeyDown(Input.KEY_LSHIFT)){
+			x += (200/1000.0f * delta) * 1.5;
+
+		}
+		else if((input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) && input.isKeyDown(Input.KEY_LSHIFT)){
+			y -= (200/1000.0f * delta) * 1.5;
+
+		}
+	}//end of runPlayer
+	
 	public int getID() {
 		// TODO Auto-generated method stub
 		return BasicGame.id;
