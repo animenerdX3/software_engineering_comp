@@ -123,7 +123,7 @@ public class BasicGame extends BasicGameState{
 	public void runPlayer(GameContainer gc, int delta){
 		Input input = gc.getInput(); // Creating our input object
 
-		else if((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && input.isKeyDown(Input.KEY_LSHIFT)){
+		if((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && input.isKeyDown(Input.KEY_LSHIFT)){
 			x -= (200/1000.0f * delta) * 1.5;
 
 		}
