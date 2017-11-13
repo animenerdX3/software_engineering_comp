@@ -10,6 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import main.ExtraMouseFunctions;
 
 public class MainMenu extends BasicGameState{
 	
@@ -47,7 +48,7 @@ public class MainMenu extends BasicGameState{
 		g.drawImage(exit, (gc.getWidth()/2) - (play.getWidth()/2), 400); // Setting the x value as half of the game container and adjusting for the width of the button
 		
 		g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 30); // Draw our mouse position for debugging purposes. 
-		
+		g.drawString(""+ (300 + play.getHeight()), 10, 50);
 	}
 
 	// Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
@@ -56,20 +57,24 @@ public class MainMenu extends BasicGameState{
 		
 		// !NOTE! the mouse coordinates start from the bottom left of the screen
 		// this is different from the shapes that are drawn based on coordinates going from the top right of the screen.
+		// Because of this difference, we've created our own mouse functions that take into account the game container
+		// dimensions, to give us a proper X and Y value that line up with the coordinates of all of our other objects.
+		
 		Input input = gc.getInput(); // Create our input object
-		xpos = Mouse.getX(); // Get the x coordinate of the mouse
-		ypos = Mouse.getY(); // Get the y coordinate of the mouse
+		
+		xpos = ExtraMouseFunctions.getMouseX(gc.getWidth()); // Updates the x coordinate of the mouse
+		ypos = ExtraMouseFunctions.getMouseY(gc.getHeight()); // Updates the y coordinate of the mouse
 
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (play.getWidth()/2) , (gc.getWidth()/2) - (play.getWidth()/2) + play.getWidth() , (gc.getHeight() - 300) , (gc.getHeight() - 300) - play.getHeight()) ){
-			if(input.isMouseButtonDown(0)){
+		if(checkBounds( (gc.getWidth()/2) - (play.getWidth()/2) , (gc.getWidth()/2) - (play.getWidth()/2) + play.getWidth() , 300 , 300 + play.getHeight())) {
+			if(input.isMouseButtonDown(0)){		
 				input.clearKeyPressedRecord();
 				sbg.enterState(1);
 			}
 		}
 		
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (exit.getWidth()/2) , (gc.getWidth()/2) - (exit.getWidth()/2) + exit.getWidth() , (gc.getHeight() - 400) , (gc.getHeight() - 400) - exit.getHeight())){
+		if(checkBounds( (gc.getWidth()/2) - (exit.getWidth()/2) , (gc.getWidth()/2) - (exit.getWidth()/2) + exit.getWidth() , 400 , 400 + exit.getHeight())){
 			if(input.isMouseButtonDown(0)){
 				System.exit(0);
 			}
@@ -95,7 +100,7 @@ public class MainMenu extends BasicGameState{
 	 * 	boolean: Whether or not the mouse is in the bounds
 	 */
 	private boolean checkBounds(int x1, int x2, int y1, int y2){
-		if((xpos > x1 && xpos < x2) && (ypos > y2 && ypos < y1 )){
+		if((xpos > x1 && xpos < x2) && (ypos > y1 && ypos < y2 )){
 			return true;
 		}
 		return false;

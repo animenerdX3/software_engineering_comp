@@ -15,8 +15,23 @@ public class ExtraMouseFunctions {
 	 * @return
 	 * 	int
 	 */
-	public int getMouseY(int gameContainerHeight){
+	public static int getMouseY(int gameContainerHeight){
 		return gameContainerHeight - Mouse.getY();
+	}
+	
+	
+	/**
+	 * @method getMouseX
+	 * @description Returns the X position of the mouse starting from the top left. This is useful since that is how other objects are rendered.
+	 * 
+	 * @param
+	 * 	int: gameContainerHeight
+	 * 
+	 * @return
+	 * 	int
+	 */
+	public static int getMouseX(int gameContainerWidth){
+		return Mouse.getX();
 	}
 	
 }
