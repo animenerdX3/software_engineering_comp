@@ -1,6 +1,5 @@
 package main;
 
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -8,28 +7,43 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Main extends StateBasedGame{
 
+	// Game State Identifier
+	public static final int mainmenu = 0;
+	public static final int basicgame = 1;
+	
+	// Application Properties
+	public static final int WIDTH = 900;
+	public static final int HEIGHT = 900;
+	public static final int FPS = 60;
+	
+	
+	// Class Constructor
 	public Main(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
+		this.addState(new MainMenu());
+		this.addState(new BasicGame());
+	}
+
+	public void initStatesList(GameContainer gc) throws SlickException {
+		this.getState(mainmenu).init(gc, this);
+		this.getState(basicgame).init(gc , this);
+		this.enterState(mainmenu);
+		
 	}
 	
+	// Main Method
 	public static void main(String[] args){
 		AppGameContainer appgc;
 		try {
 			appgc = new AppGameContainer(new Main("Coolest SciFi Platformer Alien Megatastic Palooza of Escape Guy Does Escape Things 100"));
-			appgc.setDisplayMode(800, 800, false);
+			appgc.setDisplayMode(WIDTH, HEIGHT, false);
 			appgc.setAlwaysRender(true); // Constant Rendering 
-			appgc.setTargetFrameRate(59);
+			appgc.setTargetFrameRate(FPS);
 			appgc.start();
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public void initStatesList(GameContainer arg0) throws SlickException {
-		// TODO Auto-generated method stub
-		addState(new BasicGame());
 	}
 
 }
