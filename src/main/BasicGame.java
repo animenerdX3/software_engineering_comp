@@ -21,6 +21,12 @@ public class BasicGame extends BasicGameState{
 	public static int x = 350, y = 350;
 	public static boolean collides = false;
 	
+	
+	public BasicGame(){ 
+		collide = new Rectangle(350, 350, 50, 50);
+		square = new Rectangle(x,y,50,50);
+	}
+	
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
@@ -54,6 +60,7 @@ public class BasicGame extends BasicGameState{
 		//Movement
 			movePlayer(gc, delta);
 			runPlayer(gc, delta);
+			changeGrav(gc, delta);
 			
 			collide(gc);
 			
@@ -132,6 +139,13 @@ public class BasicGame extends BasicGameState{
 
 		}
 	}//end of runPlayer
+	
+	public void changeGrav(GameContainer gc, int delta){
+		Input input = gc.getInput(); // Creating our input object
+		if(input.isKeyPressed(Input.KEY_LCONTROL)){
+			Physics.fall = (-Physics.fall);
+		}
+	}
 	
 	public int getID() {
 		// TODO Auto-generated method stub
