@@ -122,22 +122,15 @@ public class BasicGame extends BasicGameState{
 	
 	public void runPlayer(GameContainer gc, int delta){
 		Input input = gc.getInput(); // Creating our input object
-		if((input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN) ) && input.isKeyDown(Input.KEY_LSHIFT)){
-			y += (200/1000.0f * delta ) * 1.5;
 
-		}
 		else if((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && input.isKeyDown(Input.KEY_LSHIFT)){
 			x -= (200/1000.0f * delta) * 1.5;
 
 		}
 		else if((input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) && input.isKeyDown(Input.KEY_LSHIFT)){
 			x += (200/1000.0f * delta) * 1.5;
-
 		}
-		else if((input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) && input.isKeyDown(Input.KEY_LSHIFT)){
-			y -= (200/1000.0f * delta) * 1.5;
-
-		}
+		
 	}//end of runPlayer
 	
 	public void changeGrav(GameContainer gc, int delta){
