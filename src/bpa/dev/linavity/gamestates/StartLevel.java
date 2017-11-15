@@ -25,6 +25,10 @@ public class StartLevel extends BasicGameState{
 	public static int x = 350, y = 350;
 	public static boolean collides = false;
 	
+	private boolean menuOpen = false;
+	
+	private int xpos; // Mouse's X position
+	private int ypos; // Mouse's Y position
 	
 	public StartLevel(){ 
 		collide = new Rectangle(350, 350, 50, 50);
@@ -34,6 +38,7 @@ public class StartLevel extends BasicGameState{
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
+		back = new Image("data/button_back.png");
 		alien = new Image("data/alien.png");
 		bg = new Image("data/bg.jpg");
 	}
@@ -55,27 +60,37 @@ public class StartLevel extends BasicGameState{
 		g.draw(collide);
 		alien.draw(x,y);
 		
+		if(menuOpen){
+			renderMenu(gc, g);
+		}
+		
 	}
 
 	// Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		
-		//Movement
+		if(!menuOpen){
+			//Movement
 			new Keyboard(gc, delta);
 			movePlayer(gc, delta);
 			runPlayer(gc, delta);
-			
+
 			collide(gc);
-			
-		if(square.intersects(collide)){
-				collides = true;
-			}
-			else {
-				collides = false;
-			}
+
+			if(square.intersects(collide)){
+					collides = true;
+				}
+				else {
+					collides = false;
+				}
+
+			Gravity.gravity();
+		}
 		
-		Gravity.gravity();
+		// Open pop-up menu
+		openMenu(gc, delta);
+		checkMenu(gc, sbg, input);
 		
 	}
 	
@@ -135,6 +150,50 @@ public class StartLevel extends BasicGameState{
 
 		}
 	}//end of runPlayer
+	
+	/**
+	 * @method renderMenu
+	 * @description draws the images needed for the popup menu
+	 * 
+	 * @param
+	 * GameContainer gc, Graphics g
+	 * 
+	 * @return
+	 * 	void:
+	 */
+	public void renderMenu(GameContainer gc, Graphics g){
+		// Back Button
+		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 400); // Setting the x value as half of the game container and adjusting for the width of the button
+	}
+	
+	/**
+	 * @method checkMenu
+	 * @description checks mouse actions for the popup menu
+	 * 
+	 * @param
+	 * GameContainer gc, StateBasedGame sbg, Input input
+	 * 
+	 * @return
+	 * 	void:
+	 * @throws SlickException 
+	 */
+	public void checkMenu(GameContainer gc, StateBasedGame sbg, Input input) 
+			throws SlickException{
+		
+		back = new Image("data/button_back.png");
+		
+		// Back Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(MainMenu.checkBounds( (gc.getWidth()/2) - (back.getWidth()/2) , (gc.getWidth()/2) - (back.getWidth()/2) + back.getWidth() , 400 , 400 + back.getHeight(), xpos, ypos)){
+			if(input.isMousePressed(0)){
+				input.clearKeyPressedRecord();
+				sbg.enterState(0);
+				menuOpen = false;
+			}
+			back = new Image("data/button_back_hover.png");
+		}
+		
+	}
 	
 	public int getID() {
 		// TODO Auto-generated method stub
