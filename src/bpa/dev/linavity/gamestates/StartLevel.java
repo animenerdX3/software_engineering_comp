@@ -18,6 +18,7 @@ public class StartLevel extends BasicGameState{
 
 	private Image alien = null;
 	private Image bg = null;
+	private Image back = null;
 	
 	public static int id = 1;
 	private Rectangle square;
@@ -69,6 +70,11 @@ public class StartLevel extends BasicGameState{
 	// Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
+		
+		Input input = gc.getInput(); // Create our input object
+		
+		xpos = ExtraMouseFunctions.getMouseX(gc.getWidth()); // Updates the x coordinate of the mouse
+		ypos = ExtraMouseFunctions.getMouseY(gc.getHeight()); // Updates the y coordinate of the mouse
 		
 		if(!menuOpen){
 			//Movement
@@ -193,6 +199,14 @@ public class StartLevel extends BasicGameState{
 			back = new Image("data/button_back_hover.png");
 		}
 		
+	}
+	
+	// Checks for the user input of the escape key to toggle the in-game menu...
+	public void openMenu(GameContainer gc, int delta){
+		Input input = gc.getInput(); // Creating our input object
+		if(input.isKeyPressed(Input.KEY_ESCAPE)){
+			menuOpen = !menuOpen; // ! Makes the escape toggle
+		}
 	}
 	
 	public int getID() {
