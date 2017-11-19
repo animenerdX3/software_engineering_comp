@@ -2,28 +2,32 @@ package bpa.dev.linavity.physics;
 
 import org.newdawn.slick.SlickException;
 
-
 public class Gravity {
+	
+	private static boolean isGravity = true;
+	public int gravity;
 
 	public Gravity() throws SlickException {
-		
-	}
-
-	private static boolean isGravity = true;
-	public static int gravity = 3;
-	
-	
-	public static void setGravity(){
-		gravity = -gravity;
+		this.gravity = 3;
 	}
 	
-/*	public int gravity(int y){
+	public int getGravity() {
+		return gravity;
+	}
+	
+	public void setGravity(){
+		this.gravity = -3;
+	}
+	
+public int gravity(int y){
 		return falling(y);
 		
 	}
 	
 	public int falling(int y){
-		return y + fall;
-	}*/
+		if(isGravity)
+			return y + this.gravity;
+		return y;
+	}
 	
 }//end of class
