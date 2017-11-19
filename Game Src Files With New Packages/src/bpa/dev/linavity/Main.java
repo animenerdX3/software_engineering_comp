@@ -8,6 +8,18 @@ import org.newdawn.slick.state.StateBasedGame;
 import bpa.dev.linavity.gamestates.StartLevel;
 import bpa.dev.linavity.gamestates.MainMenu;
 
+/**
+ *  Linavity
+ * @author Peter Gomes, Yannick Almeida, Ethan Guillotte, Chris Furtado
+ * @version 1.01
+ */
+
+/* Task List
+ //TODO Change Grav Does Not Work - FIX IT!!!
+ //TODO Work on Block Collision
+ //TODO Let's Make Maps >///3///<
+ */
+
 public class Main extends StateBasedGame{
 
 	// Game State Identifier
@@ -18,7 +30,6 @@ public class Main extends StateBasedGame{
 	public static final int WIDTH = 900;
 	public static final int HEIGHT = 900;
 	public static final int FPS = 60;
-	
 	
 	// Class Constructor
 	public Main(String name) {
@@ -37,7 +48,7 @@ public class Main extends StateBasedGame{
 	public static void main(String[] args){
 		AppGameContainer appgc;
 		try {
-			appgc = new AppGameContainer(new Main("Coolest SciFi Platformer Alien Megatastic Palooza of Escape Guy Does Escape Things 100"));
+			appgc = new AppGameContainer(new Main("Linavity - Version 1.01"));
 			appgc.setDisplayMode(WIDTH, HEIGHT, false);
 			appgc.setAlwaysRender(true); // Constant Rendering 
 			appgc.setTargetFrameRate(FPS);
