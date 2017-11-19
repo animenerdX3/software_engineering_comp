@@ -8,8 +8,8 @@ Add to lists as we figure out what we need with whole team.
 
 CYCLE GOALS (✓)
 --------------------
-BY CYCLE 09: ( ) Finish Game states and get Start button to bring us to MainGame, World Borders and Running (~ o 3 o)~
-BY CYCLE 11: ( )
+BY CYCLE 09: (✓) Finish Game states and get Start button to bring us to MainGame, World Borders and Running (~ o 3 o)~
+BY CYCLE 11: ( ) Get gravity working and start implementing some kind of level with blocks 
 BY CYCLE 13: ( )
 BY CYCLE 15: ( )
 BY CYCLE 17: ( )
@@ -17,7 +17,7 @@ BY CYCLE 19: ( )
 
 SIMPLE MILESTONES (Short-term goals)
 --------------------
-1.) Gamestates
+1.) ✓ Gamestates 
 2.) Sprites/Spritesheets
 3.) Level Designs (Need a way to actually design the level)
 4.) Super Basic Collectibles
