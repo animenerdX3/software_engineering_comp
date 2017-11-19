@@ -30,7 +30,7 @@ public class StartLevel extends BasicGameState{
 	
 	private int xpos; // Mouse's X position
 	private int ypos; // Mouse's Y position
-	Keyboard keyInput = new Keyboard(); // Create our keyboard object || Handles all keyboard input detection and function
+	Keyboard keyInput; // Create our keyboard object || Handles all keyboard input detection and function
 	
 	public static Player player; // Player Object
 	public static Gravity gravity; // Gravity Object
@@ -42,7 +42,7 @@ public class StartLevel extends BasicGameState{
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		
+		keyInput = new Keyboard();
 		gravity = new Gravity(); // Create our gravity object
 		player = new Player(); // Create our player object
 		back = new Image("data/button_back.png");
@@ -68,6 +68,8 @@ public class StartLevel extends BasicGameState{
 			renderMenu(gc, g);
 		}
 		
+		
+		
 	}
 
 	// Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
@@ -90,6 +92,7 @@ public class StartLevel extends BasicGameState{
 			
 			// Check collisions
 			collide(gc);
+			
 		}
 		
 		// Open pop-up menu
@@ -103,37 +106,33 @@ public class StartLevel extends BasicGameState{
 		
 		player.setX(keyInput.getX()); // Update the x position of our player object
 		player.setY(keyInput.getY()); // Update the y position of our player object
-
-		// keyInput.setX(player.getX()); // Keyboard is handling player movement
-		// keyInput.setY(player.getY()); // Keyboard is handling player movement
 		
-		// player.setY(player.getY() + gravity.gravity(player.getY()));
-		//ehhhhhhhhhhhhhhhhhhhhhhhh
+		//Implements gravity
+		keyInput.setY(player.getY() + gravity.getGravity() );
 		
 	}
 	
 	public void collide(GameContainer gc){
-			
+
 		//Left border
-		if(x <= 0){
-			x = 0;
+		if(keyInput.getX() <= 0){
+			keyInput.setX(0);
 		}
 		
 		//Right world border
-		if(x >= gc.getWidth() - player.getMobImage().getWidth()){
-			x = gc.getWidth() - player.getMobImage().getWidth();
+		if(keyInput.getX()  >= gc.getWidth() - player.getMobImage().getWidth()){
+			keyInput.setX(gc.getWidth() - player.getMobImage().getWidth());
 		}
 		
 		//Top world border
-		if(y <= 0){
-			y = 0;
+		if(keyInput.getY() <= 0){
+			keyInput.setY(0);
 		}
 		
 		//Bottom world border
-		if(y>=gc.getHeight() - player.getMobImage().getHeight()){
-			y = gc.getWidth() - player.getMobImage().getHeight();
+		if(keyInput.getY() >=gc.getHeight() - player.getMobImage().getHeight()){
+			keyInput.setY(gc.getWidth() - player.getMobImage().getHeight());
 		}
-		
 		
 	}//end of collide
 	
