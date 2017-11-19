@@ -2,21 +2,24 @@ package bpa.dev.linavity.assets;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.physics.Gravity;
 
 public class Keyboard {
 	
 	private int x, y;
 	
-	public Keyboard(){
+	public Keyboard (){
 		
 	}
 	
-	public  void changeGrav(GameContainer gc, int delta){
+	public  void changeGrav(GameContainer gc, int delta) throws SlickException{
+		Gravity gravity = new Gravity();
 		Input input = gc.getInput(); // Creating our input object
 		if(input.isKeyPressed(Input.KEY_LCONTROL)){
-			Gravity.setGravity();
+			gravity.setGravity();
 		}
 	}
 	
@@ -52,7 +55,7 @@ public class Keyboard {
 		}
 	}//end of runPlayer
 
-	public void getInputUpdate(GameContainer gc, int delta){
+	public void getInputUpdate(GameContainer gc, int delta) throws SlickException{
 		changeGrav(gc, delta);
 		movePlayer(gc, delta);
 		runPlayer(gc, delta);
@@ -77,8 +80,5 @@ public class Keyboard {
 	public  void setY(int y) {
 		this.y = y;
 	}
-
 	
-	
-	
-}
+}//end of class
