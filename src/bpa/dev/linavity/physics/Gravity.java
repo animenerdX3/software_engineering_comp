@@ -1,26 +1,33 @@
 package bpa.dev.linavity.physics;
 
-import bpa.dev.linavity.gamestates.StartLevel;
+import org.newdawn.slick.SlickException;
 
 public class Gravity {
+	
+	private static boolean isGravity = true;
+	public int gravity;
 
-	public static boolean falling = true;
-	public static int fall = 3;
+	public Gravity() throws SlickException {
+		this.gravity = 3;
+	}
 	
+	public int getGravity() {
+		return gravity;
+	}
 	
-	public static void gravity(){
-		if(StartLevel.collides){
-			falling = false;
-		}
-		else {
-			falling = true;
-			falling();
-		}
+	public void setGravity(){
+		this.gravity = -3;
+	}
+	
+public int gravity(int y){
+		return falling(y);
 		
 	}
 	
-	public static void falling(){
-		StartLevel.y = StartLevel.y + fall;
+	public int falling(int y){
+		if(isGravity)
+			return y + this.gravity;
+		return y;
 	}
 	
 }//end of class

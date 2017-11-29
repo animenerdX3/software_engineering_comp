@@ -10,18 +10,18 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import bpa.dev.linavity.assets.ExtraMouseFunctions;
 import bpa.dev.linavity.assets.Keyboard;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.physics.Gravity;
 
 public class StartLevel extends BasicGameState{
 
-	private Image alien = null;
 	private Image bg = null;
 	private Image back = null;
 	
 	public static int id = 1;
-	private Rectangle square;
+
 	private Rectangle collide;
 	public static int x = 350, y = 350;
 	public static boolean collides = false;
@@ -30,18 +30,24 @@ public class StartLevel extends BasicGameState{
 	
 	private int xpos; // Mouse's X position
 	private int ypos; // Mouse's Y position
+	Keyboard keyInput; // Create our keyboard object || Handles all keyboard input detection and function
+	
+	public static Player player; // Player Object
+	public static Gravity gravity; // Gravity Object
 	
 	public StartLevel(){ 
 		collide = new Rectangle(350, 350, 50, 50);
-		square = new Rectangle(x,y,50,50);
 	}
 	
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
+		keyInput = new Keyboard();
+		gravity = new Gravity(); // Create our gravity object
+		player = new Player(); // Create our player object
 		back = new Image("data/button_back.png");
-		alien = new Image("data/alien.png");
 		bg = new Image("data/bg.jpg");
+		
 	}
 
 	// Renders content to the game / screen
@@ -49,21 +55,20 @@ public class StartLevel extends BasicGameState{
 			throws SlickException {
 		
 		bg.draw(0,0);
-		g.drawString("X: " + x + " Y: " + y + " collides " + collides, 10,50);
+		g.drawString("X: " + player.getX() + " Y: " + player.getY() + " collides " + collides, 10,50);
 		g.setColor(Color.cyan);
 		
 		collide = new Rectangle(350, 350, 50, 50);
-		square = new Rectangle(x,y,50,50);
 		
-		//alien.drawWarped(x, y, 100, 100, 200, 200, x+300, y+300);
-		
-		g.draw(square);
 		g.draw(collide);
-		alien.draw(x,y);
+		
+		player.getMobImage().draw(player.getX(), player.getY());
 		
 		if(menuOpen){
 			renderMenu(gc, g);
 		}
+		
+		
 		
 	}
 
@@ -76,22 +81,18 @@ public class StartLevel extends BasicGameState{
 		xpos = ExtraMouseFunctions.getMouseX(gc.getWidth()); // Updates the x coordinate of the mouse
 		ypos = ExtraMouseFunctions.getMouseY(gc.getHeight()); // Updates the y coordinate of the mouse
 		
+		// If the game is not paused
 		if(!menuOpen){
-			//Movement
-			new Keyboard(gc, delta);
-			movePlayer(gc, delta);
-			runPlayer(gc, delta);
 
+			// Make all keyboard-based updates
+			keyInput.getInputUpdate(gc, delta);
+			
+			// Update player attributes
+			updatePlayer();
+			
+			// Check collisions
 			collide(gc);
-
-			if(square.intersects(collide)){
-					collides = true;
-				}
-				else {
-					collides = false;
-				}
-
-			Gravity.gravity();
+			
 		}
 		
 		// Open pop-up menu
@@ -100,63 +101,42 @@ public class StartLevel extends BasicGameState{
 		
 	}
 	
+	// Perform all updates to the player object
+	public void updatePlayer(){
+		
+		player.setX(keyInput.getX()); // Update the x position of our player object
+		player.setY(keyInput.getY()); // Update the y position of our player object
+		
+		//Implements gravity
+		keyInput.setY(player.getY() + gravity.getGravity() );
+		
+	}
+	
 	public void collide(GameContainer gc){
-			
+
 		//Left border
-		if(x <= 0){
-			x = 0;
+		if(keyInput.getX() <= 0){
+			keyInput.setX(0);
 		}
 		
 		//Right world border
-		if(x >= gc.getWidth() - alien.getWidth()){
-			x = gc.getWidth() - alien.getWidth();
+		if(keyInput.getX()  >= gc.getWidth() - player.getMobImage().getWidth()){
+			keyInput.setX(gc.getWidth() - player.getMobImage().getWidth());
 		}
 		
 		//Top world border
-		if(y <= 0){
-			y = 0;
+		if(keyInput.getY() <= 0){
+			keyInput.setY(0);
 		}
 		
 		//Bottom world border
-		if(y>=gc.getHeight() - alien.getHeight()){
-			y = gc.getWidth() - alien.getHeight();
+		if(keyInput.getY() >=gc.getHeight() - player.getMobImage().getHeight()){
+			keyInput.setY(gc.getWidth() - player.getMobImage().getHeight());
 		}
-		
 		
 	}//end of collide
 	
-	public void movePlayer(GameContainer gc, int delta){
-		Input input = gc.getInput(); // Creating our input object
-		if(input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)){
-			y += 200/1000.0f * delta;
 
-		}
-		if(input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)){
-			x -= 200/1000.0f * delta;
-
-		}
-		if(input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)){
-			x += 200/1000.0f * delta;
-
-		}
-		if(input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)){
-			y -= 200/1000.0f * delta;
-
-		}
-	}//end of movePlayer
-	
-	public void runPlayer(GameContainer gc, int delta){
-		Input input = gc.getInput(); // Creating our input object
-		if((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && input.isKeyDown(Input.KEY_LSHIFT)){
-			x -= (200/1000.0f * delta) * 1.5;
-
-		}
-		else if((input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) && input.isKeyDown(Input.KEY_LSHIFT)){
-			x += (200/1000.0f * delta) * 1.5;
-
-		}
-	}//end of runPlayer
-	
 	/**
 	 * @method renderMenu
 	 * @description draws the images needed for the popup menu

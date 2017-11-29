@@ -1,9 +1,15 @@
 package bpa.dev.linavity.entities;
 
-public class Player {
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
-	public Player(){
-		
+public class Player extends Mob {
+
+	public Player() 
+			throws SlickException{
+		super();
 	}
+	
+	
 	
 }//end of class
