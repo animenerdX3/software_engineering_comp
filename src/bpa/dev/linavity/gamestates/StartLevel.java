@@ -11,7 +11,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
-import bpa.dev.linavity.assets.Keyboard;
+import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.physics.Gravity;
 
@@ -30,10 +30,15 @@ public class StartLevel extends BasicGameState{
 	
 	private int xpos; // Mouse's X position
 	private int ypos; // Mouse's Y position
-	Keyboard keyInput; // Create our keyboard object || Handles all keyboard input detection and function
+
 	
 	public static Player player; // Player Object
 	public static Gravity gravity; // Gravity Object
+	
+	// List of all user inputs
+	public InputManager im = new InputManager();
+	private boolean[] keyLog = new boolean[7]; // Keyboard
+	private int[] mouseLog = new int[3]; // Mouse
 	
 	public StartLevel(){ 
 		collide = new Rectangle(350, 350, 50, 50);
@@ -42,12 +47,10 @@ public class StartLevel extends BasicGameState{
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		keyInput = new Keyboard();
-		gravity = new Gravity(); // Create our gravity object
+		gravity = new Gravity(); // Create our gravityPower object
 		player = new Player(); // Create our player object
 		back = new Image("data/button_back.png");
 		bg = new Image("data/bg.jpg");
-		
 	}
 
 	// Renders content to the game / screen
@@ -68,70 +71,83 @@ public class StartLevel extends BasicGameState{
 			renderMenu(gc, g);
 		}
 		
-		
-		
 	}
 
 	// Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		
-		Input input = gc.getInput(); // Create our input object
-		
-		xpos = ExtraMouseFunctions.getMouseX(gc.getWidth()); // Updates the x coordinate of the mouse
-		ypos = ExtraMouseFunctions.getMouseY(gc.getHeight()); // Updates the y coordinate of the mouse
-		
 		// If the game is not paused
 		if(!menuOpen){
 
 			// Make all keyboard-based updates
-			keyInput.getInputUpdate(gc, delta);
+			input(gc);
 			
-			// Update player attributes
-			updatePlayer();
-			
-			// Check collisions
-			collide(gc);
+			gameUpdates(gc, sbg, delta);
 			
 		}
 		
 		// Open pop-up menu
 		openMenu(gc, delta);
-		checkMenu(gc, sbg, input);
+		checkMenu(gc, sbg);
+		
+	}
+	
+	// Make all info game updates
+	private void gameUpdates(GameContainer gc, StateBasedGame sbg, int delta) {
+		
+		// Update Player Attributes
+		updatePlayer(delta);
+		
+		// Check Collisions
+		collide(gc);
+		
+	}
+
+	
+	// Our input method uses the input manager class to update all of out input logs
+	public void input(GameContainer gc){
+	
+		// Update our keyboard log
+		keyLog = im.getKeyLog(gc);
+		
+		// Update our mouse log
+		mouseLog = im.getMouseLog(gc);
 		
 	}
 	
 	// Perform all updates to the player object
-	public void updatePlayer(){
+	public void updatePlayer(int delta){
 		
-		player.setX(keyInput.getX()); // Update the x position of our player object
-		player.setY(keyInput.getY()); // Update the y position of our player object
+		// Update the player's position
+		player.updatePos(keyLog, delta);
 		
-		//Implements gravity
-		keyInput.setY(player.getY() + gravity.getGravity() );
+		// Update the player's attributes
+		// player.updateAttributes();
 		
 	}
 	
+
 	public void collide(GameContainer gc){
 
 		//Left border
-		if(keyInput.getX() <= 0){
-			keyInput.setX(0);
+		if(player.getX() <= 0){
+			player.setX(0);
 		}
 		
 		//Right world border
-		if(keyInput.getX()  >= gc.getWidth() - player.getMobImage().getWidth()){
-			keyInput.setX(gc.getWidth() - player.getMobImage().getWidth());
+		if(player.getX()  >= gc.getWidth() - player.getMobImage().getWidth()){
+			player.setX(gc.getWidth() - player.getMobImage().getWidth());
 		}
 		
 		//Top world border
-		if(keyInput.getY() <= 0){
-			keyInput.setY(0);
+		if(player.getY() <= 0){
+			player.setY(0);
 		}
 		
 		//Bottom world border
-		if(keyInput.getY() >=gc.getHeight() - player.getMobImage().getHeight()){
-			keyInput.setY(gc.getWidth() - player.getMobImage().getHeight());
+		if(player.getY() >=gc.getHeight() - player.getMobImage().getHeight()){
+			player.setY(gc.getWidth() - player.getMobImage().getHeight());
 		}
 		
 	}//end of collide
@@ -163,8 +179,11 @@ public class StartLevel extends BasicGameState{
 	 * 	void:
 	 * @throws SlickException 
 	 */
-	public void checkMenu(GameContainer gc, StateBasedGame sbg, Input input) 
+	public void checkMenu(GameContainer gc, StateBasedGame sbg) 
 			throws SlickException{
+		
+		// Create our input object
+		Input input = gc.getInput();
 		
 		back = new Image("data/button_back.png");
 		
