@@ -4,30 +4,20 @@ import org.newdawn.slick.SlickException;
 
 public class Gravity {
 	
-	private static boolean isGravity = true;
-	public int gravity;
+	public int gravityPower; // The factor by which objects in our world are moved by gravity/antigravity
 
 	public Gravity() throws SlickException {
-		this.gravity = 3;
+		this.gravityPower = 3; // The initial state of gravity
 	}
 	
+	// Getter method for gravityPower
 	public int getGravity() {
-		return gravity;
+		return gravityPower;
 	}
 	
-	public void setGravity(){
-		this.gravity = -3;
-	}
-	
-public int gravity(int y){
-		return falling(y);
-		
-	}
-	
-	public int falling(int y){
-		if(isGravity)
-			return y + this.gravity;
-		return y;
+	// Setter method for gravityPower
+	public void setGravity(int gravity){
+		this.gravityPower = gravity;
 	}
 	
 }//end of class
