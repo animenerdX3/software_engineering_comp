@@ -13,7 +13,7 @@ public class Mob{
 	
 	public Mob() 
 			throws SlickException{
-		setMobImage(new Image("data/alien.png"));
+		setMobImage(new Image("data/player_0.png"));
 	}
 
 	
