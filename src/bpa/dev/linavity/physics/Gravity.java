@@ -20,4 +20,9 @@ public class Gravity {
 		this.gravityPower = gravity;
 	}
 	
+	// Used to flip gravity
+	public void flipGravity(){
+		this.gravityPower = -this.gravityPower;
+	}
+	
 }//end of class
