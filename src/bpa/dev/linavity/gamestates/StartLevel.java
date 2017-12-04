@@ -88,12 +88,11 @@ public class StartLevel extends BasicGameState{
 			throws SlickException {
 		
 		bg.draw(0,0);
-		g.drawString("X: " + util.getPlayer().getX() + " Y: " + util.getPlayer().getY(), 10,50);
-		g.drawString("Cam X: " + cam.getX() + " Cam Y: " + cam.getY(), 10,70);
-		
 		
 		renderScreen(gc, sbg, g);
 		
+		g.drawString("X: " + util.getPlayer().getX() + " Y: " + util.getPlayer().getY(), 10,50);
+		g.drawString("Cam X: " + cam.getX() + " Cam Y: " + cam.getY(), 10,70);
 		
 		//Draw player
 		util.getPlayer().getMobImage().draw(423, 718); // I have a feeling this line of code is gonna get roasted on by Mr. Santiago
@@ -116,10 +115,10 @@ public class StartLevel extends BasicGameState{
 		int tileX, tileY;
 		
 		// Make the 64/128 a buffer variable
-		camX1 = cam.getX() - 128;
-		camY1 = cam.getY() - 128;
-		camX2 = cam.getX() + cam.getWidth() + 128;
-		camY2 = cam.getY() + cam.getHeight() + 128;
+		camX1 = cam.getX() - 50;
+		camY1 = cam.getY() - 50;
+		camX2 = cam.getX() + cam.getWidth() + 50;
+		camY2 = cam.getY() + cam.getHeight() + 50;
 		
 		for(int i = 0; i < levelTiles.length; i++) {
 			for(int j = 0; j < levelTiles[i].length; j++) {
@@ -195,14 +194,14 @@ public class StartLevel extends BasicGameState{
 	public void collide(GameContainer gc){
 
 		//Left border
-		if(util.getPlayer().getX() <= 0){
-			util.getPlayer().setX(0);
-		}
+		//if(util.getPlayer().getX() <= 0){
+		//	util.getPlayer().setX(0);
+		//}
 		
 		//Right world border
-		if(util.getPlayer().getX()  >= gc.getWidth() - util.getPlayer().getMobImage().getWidth()){
-			util.getPlayer().setX(gc.getWidth() - util.getPlayer().getMobImage().getWidth());
-		}
+		//if(util.getPlayer().getX()  >= gc.getWidth() - util.getPlayer().getMobImage().getWidth()){
+		//	util.getPlayer().setX(gc.getWidth() - util.getPlayer().getMobImage().getWidth());
+		//}
 		
 		//Top world border
 		if(util.getPlayer().getY() <= 0){

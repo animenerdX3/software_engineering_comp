@@ -23,15 +23,16 @@ public class Player extends Mob {
 		 */
 		
 		if(keyLog[0]) //Check For W Key
-			this.setY((int) (getY() - 200/1000.0f * delta));
+			jump();
 		
 		if(keyLog[1] && keyLog[4])  //Check For Run :  A + Left-Shift Pressed Together
 			this.setX( (int) (getX() - ((200/1000.0f * delta) * 1.7)));
 		else if(keyLog[1]) //Check For A Key
 			this.setX((int) (getX() - 200/1000.0f * delta));
 		
-		if(keyLog[2]) //Check For S Key
-			this.setY((int) (getY() + 200/1000.0f * delta));
+		//if(keyLog[2]) //Check For S Key
+			// This will eventually be crouch. There isn't a purpose to have the player "move down" in a platformer though
+			//this.setY((int) (getY() + 200/1000.0f * delta));
 		
 		if(keyLog[3] && keyLog[4])  //Check For Run :  D + Left-Shift Pressed Together
 			this.setX( (int) (getX() + ((200/1000.0f * delta) * 1.7)));
@@ -40,6 +41,11 @@ public class Player extends Mob {
 				
 		super.updatePos();
 		
+	}
+	
+	// Player jumping function
+	public void jump(){
+		this.setYmo(14);
 	}
 	
 }//end of class

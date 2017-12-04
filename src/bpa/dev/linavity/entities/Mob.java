@@ -12,18 +12,25 @@ public class Mob{
 	private int x, y;
 	private Image mobImage = null;
 	private Collision collide;
+	private float ymo; // Momentum in the y direction
 	
 	
+
+
+
 	public Mob() 
 			throws SlickException{
 		setMobImage(new Image("data/player_0.png"));
+		ymo = 0;
 		this.collide = new Collision();
 	}
 
 	
 	public void updatePos() {
 		//Gravity affecting the player
-		this.setY(this.getY() + gravity.getGravity());
+		this.setY((int) (this.getY() + gravity.getGravity() - ymo));
+		if(ymo >= 0)
+			ymo -= .7;
 	}
 	
 	/**
@@ -66,6 +73,15 @@ public class Mob{
 	 */
 	public void setMobImage(Image mobImage) {
 		this.mobImage = mobImage;
+	}
+	
+	public float getYmo() {
+		return ymo;
+	}
+
+
+	public void setYmo(float ymo) {
+		this.ymo = ymo;
 	}
 	
 }
