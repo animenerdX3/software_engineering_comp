@@ -8,5 +8,7 @@ Instructions/larger description of game will be placed here, possibly with expla
 
 Res folder holds the resources of the game
 
+Fetching / Committing is working!
+
 https://stackoverflow.com/questions/9997006/slick2d-and-jbox2d-how-to-draw?answertab=votes#tab-top
 
