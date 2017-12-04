@@ -10,4 +10,3 @@ Res folder holds the resources of the game
 
 https://stackoverflow.com/questions/9997006/slick2d-and-jbox2d-how-to-draw?answertab=votes#tab-top
 
-Ur mum gay
