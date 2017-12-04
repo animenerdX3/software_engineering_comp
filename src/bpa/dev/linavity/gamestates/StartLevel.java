@@ -10,10 +10,9 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import bpa.dev.linavity.assets.ExtraMouseFunctions;
 import bpa.dev.linavity.assets.InputManager;
-import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.physics.Gravity;
+import bpa.dev.linavity.utils.Utils;
 
 public class StartLevel extends BasicGameState{
 
@@ -31,9 +30,8 @@ public class StartLevel extends BasicGameState{
 	private int xpos; // Mouse's X position
 	private int ypos; // Mouse's Y position
 
+	Utils utilities;
 	
-	public static Player player; // Player Object
-	public static Gravity gravity; // Gravity Object
 	
 	// List of all user inputs
 	public InputManager im = new InputManager();
@@ -47,10 +45,10 @@ public class StartLevel extends BasicGameState{
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		gravity = new Gravity(); // Create our gravityPower object
-		player = new Player(); // Create our player object
+		utilities = new Utils();
 		back = new Image("data/button_back.png");
 		bg = new Image("data/bg.jpg");
+		Gravity gravity = utilities.getGravity();
 	}
 
 	// Renders content to the game / screen
@@ -58,14 +56,15 @@ public class StartLevel extends BasicGameState{
 			throws SlickException {
 		
 		bg.draw(0,0);
-		g.drawString("X: " + player.getX() + " Y: " + player.getY() + " collides " + collides, 10,50);
+		g.drawString("X: " + utilities.getPlayer().getX() + " Y: " + utilities.getPlayer().getY() + " collides " + collides, 10,50);
 		g.setColor(Color.cyan);
 		
 		collide = new Rectangle(350, 350, 50, 50);
 		
 		g.draw(collide);
 		
-		player.getMobImage().draw(player.getX(), player.getY());
+		//Draw player
+		utilities.getPlayer().getMobImage().draw(utilities.getPlayer().getX(), utilities.getPlayer().getY());
 		
 		if(menuOpen){
 			renderMenu(gc, g);
@@ -120,7 +119,7 @@ public class StartLevel extends BasicGameState{
 	public void updatePlayer(int delta){
 		
 		// Update the player's position
-		player.updatePos(keyLog, delta);
+		utilities.getPlayer().updatePos(keyLog, delta);
 		
 		// Update the player's attributes
 		// player.updateAttributes();
@@ -131,23 +130,23 @@ public class StartLevel extends BasicGameState{
 	public void collide(GameContainer gc){
 
 		//Left border
-		if(player.getX() <= 0){
-			player.setX(0);
+		if(utilities.getPlayer().getX() <= 0){
+			utilities.getPlayer().setX(0);
 		}
 		
 		//Right world border
-		if(player.getX()  >= gc.getWidth() - player.getMobImage().getWidth()){
-			player.setX(gc.getWidth() - player.getMobImage().getWidth());
+		if(utilities.getPlayer().getX()  >= gc.getWidth() - utilities.getPlayer().getMobImage().getWidth()){
+			utilities.getPlayer().setX(gc.getWidth() - utilities.getPlayer().getMobImage().getWidth());
 		}
 		
 		//Top world border
-		if(player.getY() <= 0){
-			player.setY(0);
+		if(utilities.getPlayer().getY() <= 0){
+			utilities.getPlayer().setY(0);
 		}
 		
 		//Bottom world border
-		if(player.getY() >=gc.getHeight() - player.getMobImage().getHeight()){
-			player.setY(gc.getWidth() - player.getMobImage().getHeight());
+		if(utilities.getPlayer().getY() >=gc.getHeight() - utilities.getPlayer().getMobImage().getHeight()){
+			utilities.getPlayer().setY(gc.getWidth() - utilities.getPlayer().getMobImage().getHeight());
 		}
 		
 	}//end of collide
