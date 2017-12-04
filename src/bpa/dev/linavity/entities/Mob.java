@@ -2,6 +2,8 @@ package bpa.dev.linavity.entities;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+
+import bpa.dev.linavity.assets.Collision;
 import bpa.dev.linavity.physics.Gravity;
 
 public class Mob{
@@ -9,11 +11,13 @@ public class Mob{
 	private Gravity gravity = new Gravity();
 	private int x, y;
 	private Image mobImage = null;
+	private Collision collide;
 	
 	
 	public Mob() 
 			throws SlickException{
 		setMobImage(new Image("data/player_0.png"));
+		this.collide = new Collision();
 	}
 
 	

@@ -14,8 +14,8 @@ public class Player extends Mob {
 		/*
 		 *MOVEMENT
 		 * Keys
-		 *  W - Up (0)
-		 *  A - Left (1)
+		 * 	W - Up (0)
+		 * 	A - Left (1)
 		 *  S - Down (2)
 		 *  D - Right (3)
 		 *  
@@ -37,8 +37,7 @@ public class Player extends Mob {
 			this.setX( (int) (getX() + ((200/1000.0f * delta) * 1.7)));
 		else if(keyLog[3]) //Check For D key
 			this.setX((int) (getX() + 200/1000.0f * delta));
-		
-
+				
 		super.updatePos();
 		
 	}
