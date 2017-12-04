@@ -6,49 +6,81 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.assets.InputManager;
+import bpa.dev.linavity.assets.Level;
+import bpa.dev.linavity.entities.Camera;
+import bpa.dev.linavity.entities.Tile;
 import bpa.dev.linavity.physics.Gravity;
 import bpa.dev.linavity.utils.Utils;
 
 public class StartLevel extends BasicGameState{
 
+	// Images
 	private Image bg = null;
 	private Image back = null;
 	
+	// ID of the gamestate
 	public static int id = 1;
-
-	private Rectangle collide;
-	public static int x = 350, y = 350;
-	public static boolean collides = false;
 	
+	// Whether or not the pop-up menu is open
 	private boolean menuOpen = false;
 	
 	private int xpos; // Mouse's X position
 	private int ypos; // Mouse's Y position
 
-	Utils utilities;
+	// util object to access our other objects across the project
+	Utils util;
 	
+	public Level level;
+	public Camera cam;
 	
 	// List of all user inputs
 	public InputManager im = new InputManager();
 	private boolean[] keyLog = new boolean[7]; // Keyboard
 	private int[] mouseLog = new int[3]; // Mouse
 	
+	
+	private int[][] tileIDs = {
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+			{1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1},
+			{1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1},
+			{1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1},
+			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+	};
+	
 	public StartLevel(){ 
-		collide = new Rectangle(350, 350, 50, 50);
+		
 	}
 	
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		utilities = new Utils();
+		util = new Utils();
+		cam = new Camera(util.getPlayer().getX(), util.getPlayer().getY());
 		back = new Image("data/button_back.png");
 		bg = new Image("data/bg.jpg");
-		Gravity gravity = utilities.getGravity();
+		
+		level = new Level(0, tileIDs);
+		// Tile[][] tiles = level.getTiles();
+	
+		Gravity gravity = util.getGravity();
 	}
 
 	// Renders content to the game / screen
@@ -56,18 +88,47 @@ public class StartLevel extends BasicGameState{
 			throws SlickException {
 		
 		bg.draw(0,0);
-		g.drawString("X: " + utilities.getPlayer().getX() + " Y: " + utilities.getPlayer().getY() + " collides " + collides, 10,50);
-		g.setColor(Color.cyan);
+		g.drawString("X: " + util.getPlayer().getX() + " Y: " + util.getPlayer().getY(), 10,50);
+		g.drawString("Cam X: " + cam.getX() + " Cam Y: " + cam.getY(), 10,70);
 		
-		collide = new Rectangle(350, 350, 50, 50);
 		
-		g.draw(collide);
+		renderScreen(gc, sbg, g);
+		
 		
 		//Draw player
-		utilities.getPlayer().getMobImage().draw(utilities.getPlayer().getX(), utilities.getPlayer().getY());
+		util.getPlayer().getMobImage().draw(423, 718); // I have a feeling this line of code is gonna get roasted on by Mr. Santiago
 		
 		if(menuOpen){
 			renderMenu(gc, g);
+		}
+		
+	}
+
+	private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
+		
+		Tile[][] levelTiles = level.getTiles();
+		
+		
+		// Boundaries of our camera.
+		int camX1, camX2, camY1, camY2;
+		
+		// Temp x and y of tile in relation to the camera
+		int tileX, tileY;
+		
+		// Make the 64/128 a buffer variable
+		camX1 = cam.getX() - 128;
+		camY1 = cam.getY() - 128;
+		camX2 = cam.getX() + cam.getWidth() + 128;
+		camY2 = cam.getY() + cam.getHeight() + 128;
+		
+		for(int i = 0; i < levelTiles.length; i++) {
+			for(int j = 0; j < levelTiles[i].length; j++) {
+				tileX = levelTiles[i][j].getX() - cam.getX();
+				tileY = levelTiles[i][j].getY() - cam.getY();
+				if(MainMenu.checkBounds(-128, 1024, -128, 1024, tileX, tileY)) {
+					levelTiles[i][j].getTexture().draw(tileX, tileY);
+				}
+			}
 		}
 		
 	}
@@ -78,7 +139,8 @@ public class StartLevel extends BasicGameState{
 		
 		// If the game is not paused
 		if(!menuOpen){
-
+			
+			System.out.println(level.getSingleTile(1, 1).getX());
 			// Make all keyboard-based updates
 			input(gc);
 			
@@ -97,6 +159,9 @@ public class StartLevel extends BasicGameState{
 		
 		// Update Player Attributes
 		updatePlayer(delta);
+		
+		// Update Camera Coordinates
+		cam.updateCameraPos(util.getPlayer().getX(), util.getPlayer().getY());
 		
 		// Check Collisions
 		collide(gc);
@@ -119,7 +184,7 @@ public class StartLevel extends BasicGameState{
 	public void updatePlayer(int delta){
 		
 		// Update the player's position
-		utilities.getPlayer().updatePos(keyLog, delta);
+		util.getPlayer().updatePos(keyLog, delta);
 		
 		// Update the player's attributes
 		// player.updateAttributes();
@@ -130,23 +195,23 @@ public class StartLevel extends BasicGameState{
 	public void collide(GameContainer gc){
 
 		//Left border
-		if(utilities.getPlayer().getX() <= 0){
-			utilities.getPlayer().setX(0);
+		if(util.getPlayer().getX() <= 0){
+			util.getPlayer().setX(0);
 		}
 		
 		//Right world border
-		if(utilities.getPlayer().getX()  >= gc.getWidth() - utilities.getPlayer().getMobImage().getWidth()){
-			utilities.getPlayer().setX(gc.getWidth() - utilities.getPlayer().getMobImage().getWidth());
+		if(util.getPlayer().getX()  >= gc.getWidth() - util.getPlayer().getMobImage().getWidth()){
+			util.getPlayer().setX(gc.getWidth() - util.getPlayer().getMobImage().getWidth());
 		}
 		
 		//Top world border
-		if(utilities.getPlayer().getY() <= 0){
-			utilities.getPlayer().setY(0);
+		if(util.getPlayer().getY() <= 0){
+			util.getPlayer().setY(0);
 		}
 		
 		//Bottom world border
-		if(utilities.getPlayer().getY() >=gc.getHeight() - utilities.getPlayer().getMobImage().getHeight()){
-			utilities.getPlayer().setY(gc.getWidth() - utilities.getPlayer().getMobImage().getHeight());
+		if(util.getPlayer().getY() >=gc.getHeight() - util.getPlayer().getMobImage().getHeight()){
+			util.getPlayer().setY(gc.getWidth() - util.getPlayer().getMobImage().getHeight());
 		}
 		
 	}//end of collide
