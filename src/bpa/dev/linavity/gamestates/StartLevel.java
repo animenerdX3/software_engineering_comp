@@ -151,7 +151,6 @@ public class StartLevel extends BasicGameState{
 		// If the game is not paused
 		if(!menuOpen){
 			
-			System.out.println(level.getSingleTile(1, 1).getX());
 			// Make all keyboard-based updates
 			input(gc);
 			
@@ -306,4 +305,4 @@ public class StartLevel extends BasicGameState{
 		return StartLevel.id;
 	}
 	
-}
+}//end of class
