@@ -14,10 +14,10 @@ public class Player extends Mob {
 		/*
 		 *MOVEMENT
 		 * Keys
-		 * 	W - Up (0)
-		 * 	A - Left (1)
-		 *  S - Down (2)
-		 *  D - Right (3)
+		 * W - Up (0)
+		 * A - Left (1)
+		 * S - Down (2)
+		 * D - Right (3)
 		 *  
 		 * Left-Shift (4) 
 		 */
