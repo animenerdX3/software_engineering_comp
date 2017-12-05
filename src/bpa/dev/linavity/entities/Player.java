@@ -1,51 +1,32 @@
-package bpa.dev.linavity.entities;
+package bpa.dev.linavity.physics;
 
 import org.newdawn.slick.SlickException;
 
-public class Player extends Mob {
+public class Gravity {
 	
-	public Player() 
-			throws SlickException{
-		super();
+	public int gravityPower; // The factor by which objects in our world are moved by gravity/antigravity
+
+	public Gravity() throws SlickException {
+		this.gravityPower = 4; // The initial state of gravity
 	}
 	
-	public void updatePos(boolean[] keyLog, int delta) {
-		
-		/*
-		 *MOVEMENT
-		 * Keys
-		 * 	W - Up (0)
-		 * 	A - Left (1)
-		 *  S - Down (2)
-		 *  D - Right (3)
-		 *  
-		 * Left-Shift (4) 
-		 */
-		
-		if(keyLog[0]) //Check For W Key
-			jump();
-		
-		if(keyLog[1] && keyLog[4])  //Check For Run :  A + Left-Shift Pressed Together
-			this.setX( (int) (getX() - ((200/1000.0f * delta) * 1.7)));
-		else if(keyLog[1]) //Check For A Key
-			this.setX((int) (getX() - 200/1000.0f * delta));
-		
-		//if(keyLog[2]) //Check For S Key
-			// This will eventually be crouch. There isn't a purpose to have the player "move down" in a platformer though
-			//this.setY((int) (getY() + 200/1000.0f * delta));
-		
-		if(keyLog[3] && keyLog[4])  //Check For Run :  D + Left-Shift Pressed Together
-			this.setX( (int) (getX() + ((200/1000.0f * delta) * 1.7)));
-		else if(keyLog[3]) //Check For D key
-			this.setX((int) (getX() + 200/1000.0f * delta));
-				
-		super.updatePos();
-		
+	/* GETTERS */
+	
+	public int getGravity() {
+		return gravityPower;
 	}
 	
-	// Player jumping function
-	public void jump(){
-		this.setYmo(14);
+	/* SETTERS */
+	
+	public void setGravity(int gravity){
+		this.gravityPower = gravity;
+	}
+	
+	/**
+	 *  Used to flip gravity
+	 */
+	public void flipGravity(){
+		this.gravityPower = -this.gravityPower;
 	}
 	
 }//end of class
