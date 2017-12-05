@@ -10,11 +10,11 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.assets.InputManager;
-import bpa.dev.linavity.assets.Level;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Tile;
 import bpa.dev.linavity.physics.Gravity;
 import bpa.dev.linavity.utils.Utils;
+import bpa.dev.linavity.world.Level;
 
 public class StartLevel extends BasicGameState{
 
@@ -34,6 +34,7 @@ public class StartLevel extends BasicGameState{
 	// util object to access our other objects across the project
 	Utils util;
 	
+	//Variables to set up our level
 	public Level level;
 	public Camera cam;
 	
@@ -42,7 +43,7 @@ public class StartLevel extends BasicGameState{
 	private boolean[] keyLog = new boolean[7]; // Keyboard
 	private int[] mouseLog = new int[3]; // Mouse
 	
-	
+	//The tileID to this gamestate (will be read in as a file later on)
 	private int[][] tileIDs = {
 			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -65,11 +66,14 @@ public class StartLevel extends BasicGameState{
 			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 	};
 	
+	//Default constructor
 	public StartLevel(){ 
 		
 	}
 	
-	// This runs as soon as we compile the program.
+	/**
+	 * This runs as soon as we compile the program
+	 */
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		util = new Utils();
@@ -78,12 +82,12 @@ public class StartLevel extends BasicGameState{
 		bg = new Image("data/bg.jpg");
 		
 		level = new Level(0, tileIDs);
-		// Tile[][] tiles = level.getTiles();
-	
-		Gravity gravity = util.getGravity();
+
 	}
 
-	// Renders content to the game / screen
+	/**
+	 * Renders content to the game / screen
+	 */
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		
@@ -103,6 +107,12 @@ public class StartLevel extends BasicGameState{
 		
 	}
 
+	/**
+	 * Render the screen based on where the camera is on our map
+	 * @param gc
+	 * @param sbg
+	 * @param g
+	 */
 	private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		
 		Tile[][] levelTiles = level.getTiles();
@@ -114,11 +124,11 @@ public class StartLevel extends BasicGameState{
 		// Temp x and y of tile in relation to the camera
 		int tileX, tileY;
 		
-		// Make the 64/128 a buffer variable
-		camX1 = cam.getX() - 50;
-		camY1 = cam.getY() - 50;
-		camX2 = cam.getX() + cam.getWidth() + 50;
-		camY2 = cam.getY() + cam.getHeight() + 50;
+		// Make a buffer variable
+		camX1 = cam.getX() - cam.getBuffer();
+		camY1 = cam.getY() - cam.getBuffer();
+		camX2 = cam.getX() + cam.getWidth() + cam.getBuffer();
+		camY2 = cam.getY() + cam.getHeight() + cam.getBuffer();
 		
 		for(int i = 0; i < levelTiles.length; i++) {
 			for(int j = 0; j < levelTiles[i].length; j++) {
@@ -132,7 +142,9 @@ public class StartLevel extends BasicGameState{
 		
 	}
 
-	// Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
+	/**
+	 * Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
+	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		
@@ -153,7 +165,12 @@ public class StartLevel extends BasicGameState{
 		
 	}
 	
-	// Make all info game updates
+	/**
+	 * Make all info game updates
+	 * @param gc
+	 * @param sbg
+	 * @param delta
+	 */
 	private void gameUpdates(GameContainer gc, StateBasedGame sbg, int delta) {
 		
 		// Update Player Attributes
@@ -168,7 +185,10 @@ public class StartLevel extends BasicGameState{
 	}
 
 	
-	// Our input method uses the input manager class to update all of out input logs
+	/**
+	 * Our input method uses the input manager class to update all of out input logs
+	 * @param gc
+	 */
 	public void input(GameContainer gc){
 	
 		// Update our keyboard log
@@ -179,7 +199,10 @@ public class StartLevel extends BasicGameState{
 		
 	}
 	
-	// Perform all updates to the player object
+	/**
+	 * Perform all updates to the player object
+	 * @param delta
+	 */
 	public void updatePlayer(int delta){
 		
 		// Update the player's position
@@ -190,7 +213,10 @@ public class StartLevel extends BasicGameState{
 		
 	}
 	
-
+	/**
+	 * Implements world borders
+	 * @param gc
+	 */
 	public void collide(GameContainer gc){
 
 		//Left border
@@ -263,7 +289,11 @@ public class StartLevel extends BasicGameState{
 		
 	}
 	
-	// Checks for the user input of the escape key to toggle the in-game menu...
+	/**
+	 * Checks for the user input of the escape key to toggle the in-game menu...
+	 * @param gc
+	 * @param delta
+	 */
 	public void openMenu(GameContainer gc, int delta){
 		Input input = gc.getInput(); // Creating our input object
 		if(input.isKeyPressed(Input.KEY_ESCAPE)){
