@@ -42,7 +42,7 @@ public class Player extends Mob {
 	// Player jumping function
 	public void jump(){
 		System.out.println(this.getYmo());
-		if(this.getYmo() <=0)
+		if(this.getYmo() <=0) // New Comment
 			this.setYmo(14);//Sets Y-Momentum to 14, this makes the player fight against gravity
 	}
 	
