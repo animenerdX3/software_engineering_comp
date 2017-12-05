@@ -7,8 +7,8 @@ public class Camera {
 	int buffer;
 	
 	//Size of our camera
-	int height = 896;
-	int width = 896;
+	int height = 900;
+	int width = 900;
 
 	//Creates the actual camera object
 	public Camera(int x, int y){
