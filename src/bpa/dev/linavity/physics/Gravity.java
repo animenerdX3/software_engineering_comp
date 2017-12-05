@@ -10,17 +10,21 @@ public class Gravity {
 		this.gravityPower = 4; // The initial state of gravity
 	}
 	
-	// Getter method for gravityPower
+	/* GETTERS */
+	
 	public int getGravity() {
 		return gravityPower;
 	}
 	
-	// Setter method for gravityPower
+	/* SETTERS */
+	
 	public void setGravity(int gravity){
 		this.gravityPower = gravity;
 	}
 	
-	// Used to flip gravity
+	/**
+	 *  Used to flip gravity
+	 */
 	public void flipGravity(){
 		this.gravityPower = -this.gravityPower;
 	}
