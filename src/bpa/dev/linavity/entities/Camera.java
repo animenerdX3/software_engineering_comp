@@ -12,15 +12,15 @@ public class Camera {
 
 	//Creates the actual camera object
 	public Camera(int x, int y){
-		this.x = x - 423;
-		this.y = y - 718;
+		this.x = x - 425;
+		this.y = y - 720;
 		this.buffer = 50;
 	}
 	
 	//Updates the x and y of the camera 
 	public void updateCameraPos(int x, int y){
-		this.x = x - 423;
-		this.y = y - 718;
+		this.x = x - 425;
+		this.y = y - 720;
 	}
 	
 	/* GETTERS */
