@@ -4,7 +4,9 @@ public class Camera {
 
 	//  X and Y position of the camera object in the level
 	int x, y;
+	int buffer;
 	
+	//Size of our camera
 	int height = 896;
 	int width = 896;
 
@@ -12,6 +14,7 @@ public class Camera {
 	public Camera(int x, int y){
 		this.x = x - 423;
 		this.y = y - 718;
+		this.buffer = 50;
 	}
 	
 	//Updates the x and y of the camera 
@@ -20,46 +23,49 @@ public class Camera {
 		this.y = y - 718;
 	}
 	
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
+	/* GETTERS */
 	
 	public int getX() {
 		return x;
 	}
 
+	public int getY() {
+		return y;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getBuffer() {
+		return buffer;
+	}
+	
+	/* SETTERS */
+	
 	public void setX(int x) {
 		this.x = x;
 	}
 
-	public int getY() {
-		return y;
-	}
 
 	public void setY(int y) {
 		this.y = y;
 	}
 	
+	public void setWidth(int width) {
+		this.width = width;
+	}
 	
+	public void setHeight(int height) {
+		this.height = height;
+	}
 	
+	public void setBuffer(int buffer) {
+		this.buffer = buffer;
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-}
+}//end of class
