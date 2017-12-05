@@ -37,111 +37,111 @@ public class Tile implements Shape {
 		this.texture = new Image(texturePaths[id]);
 	}
 	
+	/* GETTERS */
+	
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public int getX() {
 		return x;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
 
 	public int getY() {
 		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
 	}
 
 	public int getWidth() {
 		return width;
 	}
 
-	public void setWidth(int width) {
-		this.width = width;
+	public int getHeight() {
+		return height;
 	}
 
 	public Image getTexture() {
 		return texture;
 	}
 
+	/* SETTERS */
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
+	
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public void setTexture(Image texture) {
 		this.texture = texture;
 	}
 
+/*
+ * 	Methods Used for Implementing Shape, Some May Not Be Used
+ */
+	
 	@Override
 	public boolean contains(Point2D arg0) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean contains(Rectangle2D arg0) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean contains(double arg0, double arg1) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean contains(double arg0, double arg1, double arg2, double arg3) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public Rectangle getBounds() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Rectangle2D getBounds2D() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public PathIterator getPathIterator(AffineTransform arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public PathIterator getPathIterator(AffineTransform arg0, double arg1) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean intersects(Rectangle2D arg0) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean intersects(double arg0, double arg1, double arg2, double arg3) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
