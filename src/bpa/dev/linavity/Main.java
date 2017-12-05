@@ -58,4 +58,4 @@ public class Main extends StateBasedGame{
 		}
 	}
 
-}
+}//end of class
