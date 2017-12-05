@@ -36,7 +36,7 @@ public class Mob{
 	public void updatePos() {
 		//Gravity affecting the player
 		this.setY((int) (this.getY() + gravity.getGravity() - ymo));
-		if(ymo >= 0)
+		if(ymo > 0)
 			ymo -= .7;
 	}
 	
