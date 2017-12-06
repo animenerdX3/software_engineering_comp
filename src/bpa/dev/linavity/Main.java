@@ -15,7 +15,6 @@ import bpa.dev.linavity.gamestates.MainMenu;
  */
 
 /* Task List
- //TODO Change Grav Does Not Work - FIX IT!!!
  //TODO Work on Block Collision
  //TODO Let's Make Maps >///3///<
  */
