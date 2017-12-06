@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -37,6 +38,7 @@ public class StartLevel extends BasicGameState{
 	//Variables to set up our level
 	public Level level;
 	public Camera cam;
+	public Rectangle hitbox;
 	
 	// List of all user inputs
 	public InputManager im = new InputManager();
@@ -80,7 +82,7 @@ public class StartLevel extends BasicGameState{
 		cam = new Camera(util.getPlayer().getX(), util.getPlayer().getY());
 		back = new Image("data/button_back.png");
 		bg = new Image("data/bg.jpg");
-		
+		hitbox = new Rectangle(425, 720, 50, 50);
 		level = new Level(0, tileIDs);
 
 	}
@@ -94,6 +96,8 @@ public class StartLevel extends BasicGameState{
 		bg.draw(0,0);
 		
 		renderScreen(gc, sbg, g);
+		
+		g.draw(hitbox);
 		
 		g.drawString("X: " + util.getPlayer().getX() + " Y: " + util.getPlayer().getY(), 10,50);
 		g.drawString("Cam X: " + cam.getX() + " Cam Y: " + cam.getY(), 10,70);
@@ -147,6 +151,8 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
+		
+		hitbox = new Rectangle(util.getPlayer().getX(), util.getPlayer().getY(),50, 50);
 		
 		// If the game is not paused
 		if(!menuOpen){

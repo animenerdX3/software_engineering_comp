@@ -2,15 +2,12 @@ package bpa.dev.linavity.entities;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-
-import bpa.dev.linavity.assets.Collision;
-import bpa.dev.linavity.utils.Utils;
+import org.newdawn.slick.geom.Rectangle;
 
 public class Mob{
 
 	private int x, y;
 	private Image mobImage = null;
-	private Collision collide;
 	private float ymo; // Momentum in the y direction
 
 	//Default constructor
@@ -18,7 +15,6 @@ public class Mob{
 			throws SlickException{
 		setMobImage(new Image("data/player_0.png"));//By default, our Mob has the player skin
 		ymo = 0;
-		this.collide = new Collision();
 	}
 	
 	//Non-Default constructor
@@ -26,7 +22,6 @@ public class Mob{
 			throws SlickException{
 		setMobImage(new Image(textureDirectory));//Give our mob a skin that we pre-determined
 		ymo = 0;
-		this.collide = new Collision();
 	}
 
 	/**
@@ -67,7 +62,7 @@ public class Mob{
 	/**
 	 * @return the mobImage
 	 */
-	public  Image getMobImage() {
+	public Image getMobImage() {
 		return mobImage;
 	}
 	

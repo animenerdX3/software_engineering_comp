@@ -1,6 +1,5 @@
 package bpa.dev.linavity.entities.tiles;
 
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
@@ -9,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
 public class Tile implements Shape {
 
@@ -20,6 +20,8 @@ public class Tile implements Shape {
 
 	// Width and height of the tiles (Right now, typically 64x64)
 	int height, width;
+	
+	private Rectangle boundingBox;
 	
 	// the image of our tile
 	private Image texture = null;
@@ -35,6 +37,7 @@ public class Tile implements Shape {
 		this.y = i * 50; // We multiply by 64 since that is the height and width of the tile, to get the proper coordinate of the tile in our level
 		this.id = id;
 		this.texture = new Image(texturePaths[id]);
+		this.boundingBox = new Rectangle(this.x, this.y, 50, 50);
 	}
 	
 	/* GETTERS */
@@ -64,6 +67,10 @@ public class Tile implements Shape {
 	public Image getTexture() {
 		return texture;
 	}
+	
+	public Rectangle getBoundingBox() {
+		return boundingBox;
+	}
 
 	/* SETTERS */
 	
@@ -89,6 +96,10 @@ public class Tile implements Shape {
 
 	public void setTexture(Image texture) {
 		this.texture = texture;
+	}
+	
+	public void setBoundingBox(Rectangle boundingBox){
+		this.boundingBox = boundingBox;
 	}
 
 /*
@@ -116,7 +127,7 @@ public class Tile implements Shape {
 	}
 
 	@Override
-	public Rectangle getBounds() {
+	public java.awt.Rectangle getBounds() {
 		return null;
 	}
 
