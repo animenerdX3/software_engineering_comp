@@ -56,7 +56,7 @@ public class Player extends Mob {
 		}
 		
 				
-		if(isFlipping){
+		if(isFlipping){ //
 			if(flipDirection){
 				this.getMobImage().rotate(rotateSpeed);
 			}else{
