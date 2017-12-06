@@ -6,6 +6,8 @@ import bpa.dev.linavity.utils.Utils;
 
 public class Player extends Mob {
 	
+	//Big anime tiddies
+	
 	private final float rotateSpeed = 3; // the speed at which our player will rotate when gravity is flipped
 	private boolean isFlipping; // Is the player rotating
 	private boolean flipDirection; // True = up, false = down
