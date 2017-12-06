@@ -178,6 +178,14 @@ public class StartLevel extends BasicGameState{
 		// Update Camera Coordinates
 		cam.updateCameraPos(util.getPlayer().getX(), util.getPlayer().getY());
 		
+		// If the user presses control, reverse gravity
+		if(keyLog[5])
+			util.getGravity().flipGravity();
+			
+		// Open Pop-up menu
+		if(keyLog[6])
+			menuOpen = !menuOpen;
+
 		// Check Collisions
 		collide(gc);
 		
@@ -205,7 +213,7 @@ public class StartLevel extends BasicGameState{
 	public void updatePlayer(int delta){
 		
 		// Update the player's position
-		util.getPlayer().updatePos(keyLog, delta);
+		util.getPlayer().updatePos(keyLog, delta, util.getGravity().getGravityPower());
 		
 		// Update the player's attributes
 		// player.updateAttributes();

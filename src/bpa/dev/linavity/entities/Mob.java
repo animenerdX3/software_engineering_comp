@@ -4,11 +4,10 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.assets.Collision;
-import bpa.dev.linavity.physics.Gravity;
+import bpa.dev.linavity.utils.Utils;
 
 public class Mob{
 
-	private Gravity gravity = new Gravity();
 	private int x, y;
 	private Image mobImage = null;
 	private Collision collide;
@@ -33,9 +32,9 @@ public class Mob{
 	/**
 	 * Update our gravity based on our y momentum
 	 */
-	public void updatePos() {
+	public void updatePos(int gravPower) {
 		//Gravity affecting the player
-		this.setY((int) (this.getY() + gravity.getGravity() - ymo));
+		this.setY((int) (this.getY() + gravPower - ymo));
 		if(ymo > 0)
 			ymo -= .7;
 	}

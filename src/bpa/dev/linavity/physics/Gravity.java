@@ -12,7 +12,7 @@ public class Gravity {
 	
 	/* GETTERS */
 	
-	public int getGravity() {
+	public int getGravityPower() {
 		return gravityPower;
 	}
 	

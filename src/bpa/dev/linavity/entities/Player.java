@@ -9,7 +9,7 @@ public class Player extends Mob {
 		super();
 	}
 	
-	public void updatePos(boolean[] keyLog, int delta) {
+	public void updatePos(boolean[] keyLog, int delta, int gravPower) {
 		
 		/*
 		 *MOVEMENT
@@ -35,7 +35,7 @@ public class Player extends Mob {
 		else if(keyLog[3]) //Check For D key
 			this.setX((int) (getX() + 200/1000.0f * delta));
 				
-		super.updatePos();
+		super.updatePos(gravPower);
 		
 	}
 	
