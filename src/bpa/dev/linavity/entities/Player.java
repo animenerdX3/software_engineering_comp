@@ -46,14 +46,17 @@ public class Player extends Mob {
 			this.setX((int) (getX() + 200/1000.0f * delta));
 		
 		// If the user presses control, reverse gravity
-		if(keyLog[5]){
-			isFlipping = true; // The player is currently flipping
-			flipDirection = !flipDirection; // Switch the direction in which the player is flipping
-			flipDuration = 0;
-			util.getGravity().flipGravity();
+		if(isFlipping == false){
+			if(keyLog[5]){
+				isFlipping = true; // The player is currently flipping
+				flipDirection = !flipDirection; // Switch the direction in which the player is flipping
+				flipDuration = 0;
+				util.getGravity().flipGravity();
+			}
 		}
+		
 				
-		if(isFlipping){
+		if(isFlipping){ //
 			if(flipDirection){
 				this.getMobImage().rotate(rotateSpeed);
 			}else{
