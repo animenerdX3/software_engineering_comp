@@ -47,7 +47,7 @@ public class InputManager {
 		}
 		
 		// WASD
-		if(input.isKeyPressed(Input.KEY_W)){
+		if(input.isKeyPressed(Input.KEY_SPACE)){
 			keyLog[0] = true;
 		}
 		if(input.isKeyDown(Input.KEY_A)){

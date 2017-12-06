@@ -34,9 +34,17 @@ public class Mob{
 	 */
 	public void updatePos(int gravPower) {
 		//Gravity affecting the player
-		this.setY((int) (this.getY() + gravPower - ymo));
-		if(ymo > 0)
-			ymo -= .7;
+		
+		if((gravPower / -1) > 0){ // If the gravity is reversed, flip the decrementation to incrementation
+			this.setY((int) (this.getY() + gravPower - ymo));
+			if(ymo < 0) 
+				ymo += .7;
+		}else{ 
+			this.setY((int) (this.getY() + gravPower - ymo));
+			if(ymo > 0)
+				ymo -= .7;
+		}
+		
 	}
 	
 	/* GETTERS */

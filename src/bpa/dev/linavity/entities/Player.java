@@ -2,14 +2,24 @@ package bpa.dev.linavity.entities;
 
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.utils.Utils;
+
 public class Player extends Mob {
+	
+	private final float rotateSpeed = 3; // the speed at which our player will rotate when gravity is flipped
+	private boolean isFlipping; // Is the player rotating
+	private boolean flipDirection; // True = up, false = down
+	int flipDuration;
 	
 	public Player() 
 			throws SlickException{
 		super();
+		isFlipping = false;
+		flipDirection = false;
+		
 	}
 	
-	public void updatePos(boolean[] keyLog, int delta, int gravPower) {
+	public void updatePos(boolean[] keyLog, int delta, Utils util) {
 		
 		/*
 		 *MOVEMENT
@@ -23,7 +33,7 @@ public class Player extends Mob {
 		 */
 		
 		if(keyLog[0]) //Check For W Key
-			jump();
+			jump(util.getGravity().getGravityPower());
 		
 		if(keyLog[1] && keyLog[4])  //Check For Run :  A + Left-Shift Pressed Together
 			this.setX( (int) (getX() - ((200/1000.0f * delta) * 1.7)));
@@ -34,15 +44,39 @@ public class Player extends Mob {
 			this.setX( (int) (getX() + ((200/1000.0f * delta) * 1.7)));
 		else if(keyLog[3]) //Check For D key
 			this.setX((int) (getX() + 200/1000.0f * delta));
+		
+		// If the user presses control, reverse gravity
+		if(keyLog[5]){
+			isFlipping = true; // The player is currently flipping
+			flipDirection = !flipDirection; // Switch the direction in which the player is flipping
+			flipDuration = 0;
+			util.getGravity().flipGravity();
+		}
 				
-		super.updatePos(gravPower);
+		if(isFlipping){
+			if(flipDirection){
+				this.getMobImage().rotate(rotateSpeed);
+			}else{
+				this.getMobImage().rotate(-rotateSpeed);
+			}
+			flipDuration += rotateSpeed;
+		}
+		
+		if(flipDuration == 180){
+			isFlipping = false;
+		}
+		
+		super.updatePos(util.getGravity().getGravityPower());
 		
 	}
 	
 	// Player jumping function
-	public void jump(){
-		System.out.println(this.getYmo());
+	public void jump(int gravPower){
+		if((gravPower / -1) > 0){
+			this.setYmo(-14);
+		}else{
 			this.setYmo(14);//Sets Y-Momentum to 14, this makes the player fight against gravity
+		}
 	}
 	
 }//end of class
