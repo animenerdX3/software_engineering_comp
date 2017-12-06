@@ -1,4 +1,4 @@
-package bpa.dev.linavity.entities;
+package bpa.dev.linavity.entities.tiles;
 
 import java.awt.Rectangle;
 import java.awt.Shape;

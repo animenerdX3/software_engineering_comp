@@ -2,7 +2,7 @@ package bpa.dev.linavity.world;
 
 import org.newdawn.slick.SlickException;
 
-import bpa.dev.linavity.entities.Tile;
+import bpa.dev.linavity.entities.tiles.Tile;
 
 public class Level {
 

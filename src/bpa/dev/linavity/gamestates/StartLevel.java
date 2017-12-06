@@ -11,7 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.entities.Camera;
-import bpa.dev.linavity.entities.Tile;
+import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.physics.Gravity;
 import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.world.Level;
