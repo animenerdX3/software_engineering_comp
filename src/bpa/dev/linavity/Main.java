@@ -15,7 +15,6 @@ import bpa.dev.linavity.gamestates.MainMenu;
  */
 
 /* Task List
- //TODO Change Grav Does Not Work - FIX IT!!!
  //TODO Work on Block Collision
  //TODO Let's Make Maps >///3///<
  */
@@ -54,9 +53,8 @@ public class Main extends StateBasedGame{
 			appgc.setTargetFrameRate(FPS);
 			appgc.start();
 		} catch (SlickException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-}
+}//end of class

@@ -7,17 +7,26 @@ public class Gravity {
 	public int gravityPower; // The factor by which objects in our world are moved by gravity/antigravity
 
 	public Gravity() throws SlickException {
-		this.gravityPower = 3; // The initial state of gravity
+		this.gravityPower = 5; // The initial state of gravity
 	}
 	
-	// Getter method for gravityPower
-	public int getGravity() {
+	/* GETTERS */
+	
+	public int getGravityPower() {
 		return gravityPower;
 	}
 	
-	// Setter method for gravityPower
+	/* SETTERS */
+	
 	public void setGravity(int gravity){
 		this.gravityPower = gravity;
+	}
+	
+	/**
+	 *  Used to flip gravity
+	 */
+	public void flipGravity(){
+		this.gravityPower = -this.gravityPower;
 	}
 	
 }//end of class

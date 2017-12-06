@@ -6,4 +6,9 @@ Maybe one day, though. Like, in the future.
 
 Instructions/larger description of game will be placed here, possibly with explanations of features, story, and characters.
 
+Res folder holds the resources of the game
+
 https://stackoverflow.com/questions/9997006/slick2d-and-jbox2d-how-to-draw?answertab=votes#tab-top
+
+Updated flipping animation
+

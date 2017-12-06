@@ -16,15 +16,26 @@ public class InputManager {
 	private boolean[] keyLog = new boolean[7];
 	private int[] mouseLog = new int[3];
 	
+	//Default constructor
 	public InputManager (){
 		
 	}
 	
+	/**
+	 * 
+	 * @param gc
+	 * @return keyLog	array of booleans; tells what keys are pressed or not pressed
+	 */
 	public boolean[] getKeyLog(GameContainer gc) {
 		updateKeyLog(gc);
 		return keyLog;
 	}
 	
+	/**
+	 * Update our boolean array for the keys by checking to see if any key has been pressed
+	 * 
+	 * @param gc
+	 */
 	public void updateKeyLog(GameContainer gc) {
 		
 		// Creating our input object
@@ -36,7 +47,7 @@ public class InputManager {
 		}
 		
 		// WASD
-		if(input.isKeyDown(Input.KEY_W)){
+		if(input.isKeyPressed(Input.KEY_SPACE)){
 			keyLog[0] = true;
 		}
 		if(input.isKeyDown(Input.KEY_A)){
@@ -61,6 +72,11 @@ public class InputManager {
 		}
 	}
 	
+	/**
+	 * Update our mouse array by giving us the coordinates to our cursor on the screen
+	 * @param gc
+	 * @return
+	 */
 	public int[] getMouseLog(GameContainer gc) {
 		updateMouseLog(gc);
 		return mouseLog;
