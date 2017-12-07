@@ -34,15 +34,15 @@ public class MainMenu extends BasicGameState{
 			throws SlickException {
 		
 		// Initialize our image objects
-		bg = new Image("data/bg.jpg"); // Menu Background
+		bg = new Image("res/bg.jpg"); // Menu Background
 		
 		// Main Menu Buttons
-		play = new Image("data/button_play.png"); // Play Button
-		exit = new Image("data/button_exit.png"); // Exit Button
-		options = new Image("data/button_options.png"); // Options Button
+		play = new Image("res/gui/buttons/button_play.png"); // Play Button
+		exit = new Image("res/gui/buttons/button_exit.png"); // Exit Button
+		options = new Image("res/gui/buttons/button_options.png"); // Options Button
 
 		// Option buttons
-		back = new Image("data/button_back.png"); // Back Button		
+		back = new Image("res/gui/buttons/button_back.png"); // Back Button		
 	}
 
 	// Renders content to the game / screen
@@ -133,9 +133,9 @@ public class MainMenu extends BasicGameState{
 	public void mainButtonAction(GameContainer gc, StateBasedGame sbg, Input input) 
 			throws SlickException{
 		
-		play = new Image("data/button_play.png");
-		options = new Image("data/button_options.png");
-		exit = new Image("data/button_exit.png");
+		play = new Image("res/gui/buttons/button_play.png");
+		options = new Image("res/gui/buttons/button_options.png");
+		exit = new Image("res/gui/buttons/button_exit.png");
 
 		// Play Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
@@ -144,7 +144,7 @@ public class MainMenu extends BasicGameState{
 				input.clearKeyPressedRecord();
 				sbg.enterState(1);
 			}
-			play = new Image("data/button_play_hover.png");
+			play = new Image("res/gui/buttons/button_play_hover.png");
 		}
 		
 		// Options Button
@@ -153,7 +153,7 @@ public class MainMenu extends BasicGameState{
 			if(input.isMousePressed(0)){
 				isOption = true;
 			}
-			options = new Image("data/button_options_hover.png");
+			options = new Image("res/gui/buttons/button_options_hover.png");
 		}
 		
 		// Exit Button
@@ -162,7 +162,7 @@ public class MainMenu extends BasicGameState{
 			if(input.isMousePressed(0)){
 				System.exit(0);
 			}
-			exit = new Image("data/button_exit_hover.png");
+			exit = new Image("res/gui/buttons/button_exit_hover.png");
 		}
 	}
 	
@@ -195,7 +195,7 @@ public class MainMenu extends BasicGameState{
 	public void optionButtonAction(GameContainer gc, StateBasedGame sbg, Input input) 
 			throws SlickException{
 		
-		back = new Image("data/button_back.png");
+		back = new Image("res/gui/buttons/button_back.png");
 		
 		// Back Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
@@ -203,7 +203,7 @@ public class MainMenu extends BasicGameState{
 			if(input.isMousePressed(0)){
 				isOption = false;
 			}
-			back = new Image("data/button_back_hover.png");
+			back = new Image("res/gui/buttons/button_back_hover.png");
 		}
 		
 	}

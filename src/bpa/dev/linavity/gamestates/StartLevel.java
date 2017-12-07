@@ -80,8 +80,8 @@ public class StartLevel extends BasicGameState{
 			throws SlickException {
 		util = new Utils();
 		cam = new Camera(util.getPlayer().getX(), util.getPlayer().getY());
-		back = new Image("data/button_back.png");
-		bg = new Image("data/bg.jpg");
+		back = new Image("res/gui/buttons/button_back.png");
+		bg = new Image("res/bg.jpg");
 		hitbox = new Rectangle(425, 720, 50, 50);
 		level = new Level(0, tileIDs);
 
@@ -283,7 +283,7 @@ public class StartLevel extends BasicGameState{
 		// Create our input object
 		Input input = gc.getInput();
 		
-		back = new Image("data/button_back.png");
+		back = new Image("res/gui/buttons/button_back.png");
 		
 		// Back Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
@@ -293,7 +293,7 @@ public class StartLevel extends BasicGameState{
 				sbg.enterState(0);
 				menuOpen = false;
 			}
-			back = new Image("data/button_back_hover.png");
+			back = new Image("res/gui/buttons/button_back_hover.png");
 		}
 		
 	}

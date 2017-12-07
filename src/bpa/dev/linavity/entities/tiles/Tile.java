@@ -27,7 +27,7 @@ public class Tile implements Shape {
 	private Image texture = null;
 	
 	// Possible paths for our image files
-	String[] texturePaths = {"res/floor.png", "res/floor_rust1.png", "res/floor_rust2.png"};
+	String[] texturePaths = {"res/tiles/static/floor.png", "res/tiles/static/floor_rust1.png", "res/tiles/static/floor_rust2.png"};
 	
 	public Tile(int i, int j, int id) 
 			throws SlickException{

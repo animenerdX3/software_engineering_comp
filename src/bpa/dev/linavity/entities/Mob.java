@@ -13,7 +13,7 @@ public class Mob{
 	//Default constructor
 	public Mob() 
 			throws SlickException{
-		setMobImage(new Image("data/player_0.png"));//By default, our Mob has the player skin
+		setMobImage(new Image("res/sprites/player/player_0.png"));//By default, our Mob has the player skin
 		ymo = 0;
 	}
 	
