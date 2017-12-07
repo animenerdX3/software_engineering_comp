@@ -19,3 +19,8 @@ Important Information:
 - Tutorial text should start at 30px x 25px
 
 Hey its yannick
+
+Hey it's chris :^ )
+
+Please pass the egg salad
+
