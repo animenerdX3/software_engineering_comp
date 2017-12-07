@@ -12,3 +12,8 @@ https://stackoverflow.com/questions/9997006/slick2d-and-jbox2d-how-to-draw?answe
 
 Updated flipping animation
 
+Important Information:
+- Antigravity pad is 10px tall
+- Dialog text should start at 52px x 720px
+- Name for dialog box should start at 52 x 659px
+- Tutorial text should start at 30px x 25px
