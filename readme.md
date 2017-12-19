@@ -19,3 +19,4 @@ Important Information:
 - Tutorial text should start at 30px x 25px
 
 Hey its yannick
+for animation, one idea is to maske the mob and animation instead of an image
