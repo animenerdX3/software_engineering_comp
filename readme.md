@@ -19,4 +19,7 @@ Important Information:
 - Tutorial text should start at 30px x 25px
 
 Hey its yannick
-for animation, one idea is to maske the mob and animation instead of an image
+for animation, one idea is to make the mob and animation instead of an image
+
+Hey, it's ya boi, Peter
+So finna see if I can work on the collision and prolly working on the camera. I'll also look at how we can either create projectiles or create enemies. One or the other. I prolly wont but this is a goal for me k thanks >///3///<
