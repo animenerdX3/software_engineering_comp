@@ -13,21 +13,22 @@ import org.newdawn.slick.geom.Rectangle;
 public class Tile implements Shape {
 
 	// Tile ID
-	int id;
+	private int id;
 	
 	// X and Y position of the tile in the level (not relative position)
-	int x, y;
+	private int x, y;
 
 	// Width and height of the tiles (Right now, typically 64x64)
-	int height, width;
+	private int height, width;
 	
-	private Rectangle boundingBox;
-	
+	// Tells the game whether or not the tile lets other objects pass through it.
+	private boolean passable = true;
+
 	// the image of our tile
 	private Image texture = null;
 	
 	// Possible paths for our image files
-	String[] texturePaths = {"res/tiles/static/floor.png", "res/tiles/static/floor_rust1.png", "res/tiles/static/floor_rust2.png"};
+	String[] texturePaths = {"res/tiles/static/sky.png", "res/tiles/static/floor_rust1.png", "res/tiles/static/floor_rust2.png", "res/tiles/static/floor.png"};
 	
 	public Tile(int i, int j, int id) 
 			throws SlickException{
@@ -36,11 +37,26 @@ public class Tile implements Shape {
 		this.x = j * 50; // I & J are the positions of the tile in the 2d array of tiles that make up our level
 		this.y = i * 50; // We multiply by 64 since that is the height and width of the tile, to get the proper coordinate of the tile in our level
 		this.id = id;
+
+		// Temporary to make some blocks to interact with
+		if(id > 2){
+			passable = false;
+		}
+		
+			
 		this.texture = new Image(texturePaths[id]);
-		this.boundingBox = new Rectangle(this.x, this.y, 50, 50);
+		//this.setCollide(false);
+		//this.setPassable(true);
 	}
 	
-	/* GETTERS */
+
+
+	/**
+	 * @return the passable
+	 */
+	public boolean isPassable() {
+		return passable;
+	}
 	
 	public int getId() {
 		return id;
@@ -68,11 +84,15 @@ public class Tile implements Shape {
 		return texture;
 	}
 	
-	public Rectangle getBoundingBox() {
-		return boundingBox;
-	}
-
 	/* SETTERS */
+	
+
+	/**
+	 * @param passable the passable to set
+	 */
+	public void setPassable(boolean passable) {
+		this.passable = passable;
+	}
 	
 	public void setX(int x) {
 		this.x = x;
@@ -98,9 +118,6 @@ public class Tile implements Shape {
 		this.texture = texture;
 	}
 	
-	public void setBoundingBox(Rectangle boundingBox){
-		this.boundingBox = boundingBox;
-	}
 
 /*
  * 	Methods Used for Implementing Shape, Some May Not Be Used

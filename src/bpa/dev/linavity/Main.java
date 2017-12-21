@@ -16,7 +16,7 @@ import bpa.dev.linavity.gamestates.MainMenu;
 
 /* Task List
  //TODO Work on Block Collision
- //TODO Let's Design a Level
+ //TODO Let's Make Maps >///3///<
  */
 
 public class Main extends StateBasedGame{

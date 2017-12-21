@@ -2,7 +2,9 @@ package bpa.dev.linavity.world;
 
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.tiles.Tile;
+import bpa.dev.linavity.gamestates.MainMenu;
 
 public class Level {
 
@@ -45,6 +47,43 @@ public class Level {
 		}
 	
 		return tiles;//Return 2D array of tiles
+	}
+	
+	// Returns a 2d array of tiles that are within the boundaries of our camera object
+	public Tile[][] getScreenTiles(Camera cam) {
+		
+		// Get a 2d array of tile objects that are contained within our camera's view
+		Tile[][] screenTiles = new Tile[19][19];
+		
+		// Temp x and y of tile in relation to the camera
+		int tileX, tileY;
+		
+		//Counters for where the tile should be placed in the smaller 2d array that we return
+		int screenI = 0;
+		int screenJ = 0;
+		
+		boolean isALine = false;
+		
+		for(int i = 0; i < tiles.length; i++) {
+			for(int j = 0; j < tiles[i].length; j++) {
+				tileX = tiles[i][j].getX() - cam.getX();
+				tileY = tiles[i][j].getY() - cam.getY();
+				if(MainMenu.checkBounds(-cam.getBuffer(), 900, -cam.getBuffer(), 900, tileX, tileY)) {
+					screenTiles[screenI][screenJ] = tiles[i][j];
+					if(screenJ < 18)
+						screenJ++;
+					isALine = true;
+				}
+				
+			}
+			screenJ = 0;
+			if(isALine) {
+				screenI++;
+				isALine = false;
+			}
+		}
+		
+		return screenTiles;
 	}
 	
 	/* GETTERS */

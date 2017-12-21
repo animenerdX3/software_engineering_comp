@@ -46,7 +46,7 @@ public class InputManager {
 			keyLog[i] = false;
 		}
 		
-		// WASD
+		// ASD and space
 		if(input.isKeyPressed(Input.KEY_SPACE)){
 			keyLog[0] = true;
 		}

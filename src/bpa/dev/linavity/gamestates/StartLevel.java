@@ -17,6 +17,12 @@ import bpa.dev.linavity.physics.Gravity;
 import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.world.Level;
 
+/* Task List
+//TODO Have the level class return 2d array of tiles on screen
+//TODO Use that method to render screen tiles
+//TODO Also, use that method to have mobs check for collision
+*/
+
 public class StartLevel extends BasicGameState{
 
 	// Images
@@ -38,7 +44,6 @@ public class StartLevel extends BasicGameState{
 	//Variables to set up our level
 	public Level level;
 	public Camera cam;
-	public Rectangle hitbox;
 	
 	// List of all user inputs
 	public InputManager im = new InputManager();
@@ -47,25 +52,25 @@ public class StartLevel extends BasicGameState{
 	
 	//The tileID to this gamestate (will be read in as a file later on)
 	private int[][] tileIDs = {
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1},
-			{1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1},
-			{1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+			{3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,3,3,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
+			{3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3}
 	};
 	
 	//Default constructor
@@ -82,7 +87,6 @@ public class StartLevel extends BasicGameState{
 		cam = new Camera(util.getPlayer().getX(), util.getPlayer().getY());
 		back = new Image("res/gui/buttons/button_back.png");
 		bg = new Image("res/bg.jpg");
-		hitbox = new Rectangle(425, 720, 50, 50);
 		level = new Level(0, tileIDs);
 
 	}
@@ -97,10 +101,13 @@ public class StartLevel extends BasicGameState{
 		
 		renderScreen(gc, sbg, g);
 		
-		g.draw(hitbox);
-		
 		g.drawString("X: " + util.getPlayer().getX() + " Y: " + util.getPlayer().getY(), 10,50);
 		g.drawString("Cam X: " + cam.getX() + " Cam Y: " + cam.getY(), 10,70);
+		g.drawString("Collide: " + util.getPlayer().isCollide(), 10,90);
+		g.drawString("Collide up: " + util.getPlayer().isCu(), 10,110);
+		g.drawString("Collide down: " + util.getPlayer().isCd(), 10,130);
+		g.drawString("Collide left: " + util.getPlayer().isCl(), 10,150);
+		g.drawString("Collide right: " + util.getPlayer().isCr(), 10,170);
 		
 		//Draw player
 		util.getPlayer().getMobImage().draw(423, 718); // I have a feeling this line of code is gonna get roasted on by Mr. Santiago
@@ -119,30 +126,24 @@ public class StartLevel extends BasicGameState{
 	 */
 	private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		
-		Tile[][] levelTiles = level.getTiles();
 		
-		
-		// Boundaries of our camera.
-		int camX1, camX2, camY1, camY2;
+		// Get a 2d array of tile objects that are contained within our camera's view
+		Tile[][] screenTiles = level.getScreenTiles(cam);
 		
 		// Temp x and y of tile in relation to the camera
 		int tileX, tileY;
 		
-		// Make a buffer variable
-		camX1 = cam.getX() - cam.getBuffer();
-		camY1 = cam.getY() - cam.getBuffer();
-		camX2 = cam.getX() + cam.getWidth() + cam.getBuffer();
-		camY2 = cam.getY() + cam.getHeight() + cam.getBuffer();
-		
-		for(int i = 0; i < levelTiles.length; i++) {
-			for(int j = 0; j < levelTiles[i].length; j++) {
-				tileX = levelTiles[i][j].getX() - cam.getX();
-				tileY = levelTiles[i][j].getY() - cam.getY();
-				if(MainMenu.checkBounds(-128, 1024, -128, 1024, tileX, tileY)) {
-					levelTiles[i][j].getTexture().draw(tileX, tileY);
+		// Draw the tiles that belong on the screen.
+		for(int i = 0; i < screenTiles.length; i++) {
+			for(int j = 0; j < screenTiles[i].length; j++) {
+				if(screenTiles[i][j] != null) {
+					tileX = screenTiles[i][j].getX() - cam.getX(); // Get the tile's temp x location for the screen rendering
+					tileY = screenTiles[i][j].getY() - cam.getY(); // Get the tile's temp y location for the screen rendering
+					screenTiles[i][j].getTexture().draw(tileX, tileY); // Draw the tile
 				}
 			}
 		}
+		// End of drawing screen tiles
 		
 	}
 
@@ -152,14 +153,13 @@ public class StartLevel extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		
-		hitbox = new Rectangle(util.getPlayer().getX(), util.getPlayer().getY(),50, 50);
-		
 		// If the game is not paused
 		if(!menuOpen){
 			
 			// Make all keyboard-based updates
 			input(gc);
 			
+			// Make all game information updates
 			gameUpdates(gc, sbg, delta);
 			
 		}
@@ -177,6 +177,9 @@ public class StartLevel extends BasicGameState{
 	 * @param delta
 	 */
 	private void gameUpdates(GameContainer gc, StateBasedGame sbg, int delta) {
+
+		// Check Collisions
+		collide(gc);
 		
 		// Update Player Attributes
 		updatePlayer(delta);
@@ -188,8 +191,7 @@ public class StartLevel extends BasicGameState{
 		if(keyLog[6])
 			menuOpen = !menuOpen;
 
-		// Check Collisions
-		collide(gc);
+
 		
 	}
 
@@ -213,6 +215,10 @@ public class StartLevel extends BasicGameState{
 	 * @param delta
 	 */
 	public void updatePlayer(int delta){
+		
+		//Saving our previous X and Y values so we can use them for future reference
+		util.getPlayer().setPrevX(util.getPlayer().getX());
+		util.getPlayer().setPrevY(util.getPlayer().getY());
 		
 		// Update the player's position
 		util.getPlayer().updatePos(keyLog, delta, util);
@@ -239,14 +245,17 @@ public class StartLevel extends BasicGameState{
 		//}
 		
 		//Top world border
-		if(util.getPlayer().getY() <= 0){
-			util.getPlayer().setY(0);
-		}
+//		if(util.getPlayer().getY() <= 0){
+//			util.getPlayer().setY(0);
+//		}
+//		
+//		//Bottom world border
+//		if(util.getPlayer().getY() >=gc.getHeight() - util.getPlayer().getMobImage().getHeight()){
+//			util.getPlayer().setY(gc.getHeight() - util.getPlayer().getMobImage().getHeight());
+//			util.getPlayer().setIsFalling(false);
+//		}
 		
-		//Bottom world border
-		if(util.getPlayer().getY() >=gc.getHeight() - util.getPlayer().getMobImage().getHeight()){
-			util.getPlayer().setY(gc.getWidth() - util.getPlayer().getMobImage().getHeight());
-		}
+		util.getPlayer().checkCollisions(level, cam);
 		
 	}//end of collide
 	

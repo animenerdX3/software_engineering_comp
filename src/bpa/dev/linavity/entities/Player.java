@@ -6,16 +6,18 @@ import bpa.dev.linavity.utils.Utils;
 
 public class Player extends Mob {
 	
-	private final float rotateSpeed = 3; // the speed at which our player will rotate when gravity is flipped
+	private final float rotateSpeed = 9; // the speed at which our player will rotate when gravity is flipped
 	private boolean isFlipping; // Is the player rotating
 	private boolean flipDirection; // True = up, false = down
 	int flipDuration;
+	int jumps;
 	
 	public Player() 
 			throws SlickException{
 		super();
-		isFlipping = false;
-		flipDirection = false;
+		this.jumps = 0;
+		this.isFlipping = false;
+		this.flipDirection = false;
 		
 	}
 	
@@ -24,7 +26,7 @@ public class Player extends Mob {
 		/*
 		 *MOVEMENT
 		 * Keys
-		 * W - Up (0)
+		 * Space - Jump (0)
 		 * A - Left (1)
 		 * S - Down (2)
 		 * D - Right (3)
@@ -32,18 +34,57 @@ public class Player extends Mob {
 		 * Left-Shift (4) 
 		 */
 		
-		if(keyLog[0]) //Check For W Key
-			jump(util.getGravity().getGravityPower());
 		
-		if(keyLog[1] && keyLog[4])  //Check For Run :  A + Left-Shift Pressed Together
-			this.setX( (int) (getX() - ((200/1000.0f * delta) * 1.7)));
-		else if(keyLog[1]) //Check For A Key
-			this.setX((int) (getX() - 200/1000.0f * delta));
+		if(flipDirection){ // Reverse Gravity
+			if(this.isCu())
+				this.isFalling = false;
+		}else{ // Regular Gravity
+			if(this.isCd())
+				this.isFalling = false;
+		}
 		
-		if(keyLog[3] && keyLog[4])  //Check For Run :  D + Left-Shift Pressed Together
-			this.setX( (int) (getX() + ((200/1000.0f * delta) * 1.7)));
-		else if(keyLog[3]) //Check For D key
-			this.setX((int) (getX() + 200/1000.0f * delta));
+		
+		
+		if(keyLog[0]) { //Check For Jump Key
+			
+			//By default, the player can only jump once
+			//If the current jump is less or equal to the number of allowed jumps, jump
+			if(jumps <= jumpNum){
+				jump(util.getGravity().getGravityPower());
+				jumps++;
+			}
+			//If not falling, the player can jump
+			else if(!isFalling){
+				jump(util.getGravity().getGravityPower());
+				jumps = 1;
+			}
+		}
+		
+		// if there isn't a collision in the x direction
+//		if(!this.isCl() || !this.isCr()){
+			
+			if(keyLog[1] && keyLog[4]) {  //Check For Run Left:  A + Left-Shift Pressed Together
+				this.setX( (int) (getX() - ((200/1000.0f * delta) * 1.7)));
+			}
+			else if(keyLog[1]) { //Check For A Key
+				this.setX((int) (getX() - 200/1000.0f * delta));
+			}
+			
+			if(keyLog[3] && keyLog[4])  //Check For Run Right:  D + Left-Shift Pressed Together
+				this.setX( (int) (getX() + ((200/1000.0f * delta) * 1.7)));
+			
+			else if(keyLog[3]) //Check For D key
+				this.setX((int) (getX() + 200/1000.0f * delta));
+//			
+//		}else{
+//			this.setCl(false);
+//			this.setCr(false);
+//		}
+			
+		
+			
+		
+		
 		
 		// If the user presses control, reverse gravity
 		if(isFlipping == false){
@@ -65,21 +106,47 @@ public class Player extends Mob {
 			flipDuration += rotateSpeed;
 		}
 		
-		if(flipDuration == 180){
+		if(flipDuration >= 180){
 			isFlipping = false;
 		}
 		
-		super.updatePos(util.getGravity().getGravityPower());
+		if(flipDirection){ // Reverse Gravity
+				super.updatePos(util.getGravity().getGravityPower());
+		}else{ // Regular Gravity
+				super.updatePos(util.getGravity().getGravityPower());
+		}
 		
 	}
 	
 	// Player jumping function
 	public void jump(int gravPower){
-		if((gravPower / -1) > 0){
-			this.setYmo(-14);
-		}else{
-			this.setYmo(14);//Sets Y-Momentum to 14, this makes the player fight against gravity
-		}
+		
+		//If the player is not falling, then you can jump
+		
+				int power = 16;
+		
+				if(flipDirection){ // Reverse Gravity
+						if((gravPower / -1) > 0){
+							this.setYmo(-power);
+							isFalling = true;
+						}else{
+							this.setYmo(power);//Sets Y-Momentum to 14, this makes the player fight against gravity
+							isFalling = true;
+						}
+					
+				}else{ // Regular Gravity
+						if((gravPower / -1) > 0){
+							this.setYmo(-power);
+							isFalling = true;
+						}else{
+							this.setYmo(power);//Sets Y-Momentum to 14, this makes the player fight against gravity'
+							isFalling = true;
+						}
+					
+				}
+		
+
+		
 	}
 	
 }//end of class
