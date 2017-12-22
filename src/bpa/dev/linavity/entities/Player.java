@@ -12,6 +12,8 @@ public class Player extends Mob {
 	int flipDuration;
 	int jumps;
 	
+	private int gravityPack;
+	
 	public Player() 
 			throws SlickException{
 		super();

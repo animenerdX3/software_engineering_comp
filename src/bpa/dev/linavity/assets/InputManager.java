@@ -100,12 +100,5 @@ public class InputManager {
 		}
 
 	}
-		
-//	public  void changeGrav(GameContainer gc, int delta) throws SlickException{
-//		
-//		if(input.isKeyPressed(Input.KEY_LCONTROL)){
-//			StartLevel.gravity.setGravity(-StartLevel.gravity.getGravity());
-//		}
-//	}
 
 }//end of class

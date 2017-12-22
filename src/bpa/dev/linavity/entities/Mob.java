@@ -3,6 +3,7 @@ package bpa.dev.linavity.entities;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.world.Level;
 
@@ -34,6 +35,11 @@ public class Mob{
 		
 	//Number of Possible Jumps: jumpNum + 1
 		protected int jumpNum;
+		
+	//Mob Game Stats
+		private int health;
+		private int damage;
+		private boolean isAlive;
 		
 	//Default constructor
 	public Mob() 
@@ -116,6 +122,23 @@ public class Mob{
 					if(!screenTiles[i][j].isPassable()){ // Can be collided with
 						if(checkBothSides(screenTiles[i][j])){ // And is colliding then...
 							
+							// Check Right
+							if(this.x <= screenTiles[i][j].getX()){
+								
+								if(this.y >= screenTiles[i][j].getY() && (prevX > x - 0.01)) {
+									System.err.println("Up Collision");
+									setCu = true;
+									this.y = screenTiles[i][j].getY() + mobImage.getHeight() + 1;
+									break;
+								}
+								else {
+									System.err.println("Right Collision");
+									setCr = true;
+									this.x = screenTiles[i][j].getX() - mobImage.getWidth() - 1;
+									break;
+								}
+							}
+							
 							// Check Down
 							if(this.y <= screenTiles[i][j].getY()){
 								setCd = true;
@@ -124,30 +147,35 @@ public class Mob{
 								break;
 							}
 							
+							// Check Left
+							if(this.x>= screenTiles[i][j].getX()){
+								
+								if(this.y >= screenTiles[i][j].getY() && (prevX < x + 0.01)) {
+									System.err.println("Up Collision");
+									setCu = true;
+									this.y = screenTiles[i][j].getY() + mobImage.getHeight() + 1;
+									break;
+								}
+								
+								else {
+									setCl = true;
+									System.err.println("Left Collision");
+									this.x = screenTiles[i][j].getX() + mobImage.getWidth() + 1;
+									break;
+								}
+							}
+/*							
 							// Check Up
 							if(this.y >= screenTiles[i][j].getY()){
 								System.err.println("Up Collision");
 								setCu = true;
 								this.y = screenTiles[i][j].getY() + mobImage.getHeight() + 1;
 								break;
-							}
+							}*/
 							
 							
-						// Check Right
-							if(this.x <= screenTiles[i][j].getX()){
-								System.err.println("Right Collision");
-								setCr = true;
-								this.x = screenTiles[i][j].getX() - mobImage.getWidth() - 1;
-								break;
-							}
 							
-							// Check Left
-							if(this.x>= screenTiles[i][j].getX()){
-								setCl = true;
-								System.err.println("Left Collision");
-								this.x = screenTiles[i][j].getX() + mobImage.getWidth() + 1;
-								break;
-							}
+							
 							
 							
 							// Object is colliding

@@ -88,7 +88,6 @@ public class StartLevel extends BasicGameState{
 		back = new Image("res/gui/buttons/button_back.png");
 		bg = new Image("res/bg.jpg");
 		level = new Level(0, tileIDs);
-
 	}
 
 	/**
