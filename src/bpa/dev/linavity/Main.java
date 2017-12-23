@@ -6,16 +6,19 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.gamestates.StartLevel;
+import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.gamestates.MainMenu;
 
 /**
  *  Linavity
  * @author Peter Gomes, Yannick Almeida, Ethan Guillotte, Chris Furtado
- * @version 1.01
+ * @version 1.02
  */
 
 /* Task List
- //TODO Work on Block Collision
+ //TODO Fix Block Collision
+  * 	- Goes Through Map If Walking Left (Reverse Grav)
+  * 	- Kicks Player Off the Edge of Platforms
  //TODO Let's Make Maps >///3///<
  */
 
@@ -30,6 +33,8 @@ public class Main extends StateBasedGame{
 	public static final int HEIGHT = 900;
 	public static final int FPS = 60;
 	
+	Utils util;
+	
 	// Class Constructor
 	public Main(String name) {
 		super(name);
@@ -38,16 +43,17 @@ public class Main extends StateBasedGame{
 	}
 
 	public void initStatesList(GameContainer gc) throws SlickException {
+		util = new Utils();
 		this.getState(mainmenu).init(gc, this);
 		this.getState(basicgame).init(gc , this);
-		this.enterState(mainmenu);
+			this.enterState(mainmenu);
 	}
 	
 	// Main Method
 	public static void main(String[] args){
 		AppGameContainer appgc;
 		try {
-			appgc = new AppGameContainer(new Main("Linavity - Version 1.01"));
+			appgc = new AppGameContainer(new Main("Linavity - Version 1.02"));
 			appgc.setDisplayMode(WIDTH, HEIGHT, false);
 			appgc.setAlwaysRender(true); // Constant Rendering 
 			appgc.setTargetFrameRate(FPS);

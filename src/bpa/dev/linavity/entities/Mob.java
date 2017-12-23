@@ -163,21 +163,7 @@ public class Mob{
 									this.x = screenTiles[i][j].getX() + mobImage.getWidth() + 1;
 									break;
 								}
-							}
-/*							
-							// Check Up
-							if(this.y >= screenTiles[i][j].getY()){
-								System.err.println("Up Collision");
-								setCu = true;
-								this.y = screenTiles[i][j].getY() + mobImage.getHeight() + 1;
-								break;
-							}*/
-							
-							
-							
-							
-							
-							
+							}							
 							// Object is colliding
 							setCollideTo = true;
 						}

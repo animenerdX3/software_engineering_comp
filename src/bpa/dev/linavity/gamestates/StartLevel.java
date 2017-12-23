@@ -100,13 +100,16 @@ public class StartLevel extends BasicGameState{
 		
 		renderScreen(gc, sbg, g);
 		
-		g.drawString("X: " + util.getPlayer().getX() + " Y: " + util.getPlayer().getY(), 10,50);
-		g.drawString("Cam X: " + cam.getX() + " Cam Y: " + cam.getY(), 10,70);
-		g.drawString("Collide: " + util.getPlayer().isCollide(), 10,90);
-		g.drawString("Collide up: " + util.getPlayer().isCu(), 10,110);
-		g.drawString("Collide down: " + util.getPlayer().isCd(), 10,130);
-		g.drawString("Collide left: " + util.getPlayer().isCl(), 10,150);
-		g.drawString("Collide right: " + util.getPlayer().isCr(), 10,170);
+		if(util.debugMode) {
+			g.drawString("X: " + util.getPlayer().getX() + " Y: " + util.getPlayer().getY(), 10,50);
+			g.drawString("Cam X: " + cam.getX() + " Cam Y: " + cam.getY(), 10,70);
+			g.drawString("Collide: " + util.getPlayer().isCollide(), 10,90);
+			g.drawString("Collide up: " + util.getPlayer().isCu(), 10,110);
+			g.drawString("Collide down: " + util.getPlayer().isCd(), 10,130);
+			g.drawString("Collide left: " + util.getPlayer().isCl(), 10,150);
+			g.drawString("Collide right: " + util.getPlayer().isCr(), 10,170);
+			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes. 
+		}
 		
 		//Draw player
 		util.getPlayer().getMobImage().draw(423, 718); // I have a feeling this line of code is gonna get roasted on by Mr. Santiago
@@ -232,27 +235,6 @@ public class StartLevel extends BasicGameState{
 	 * @param gc
 	 */
 	public void collide(GameContainer gc){
-
-		//Left border
-		//if(util.getPlayer().getX() <= 0){
-		//	util.getPlayer().setX(0);
-		//}
-		
-		//Right world border
-		//if(util.getPlayer().getX()  >= gc.getWidth() - util.getPlayer().getMobImage().getWidth()){
-		//	util.getPlayer().setX(gc.getWidth() - util.getPlayer().getMobImage().getWidth());
-		//}
-		
-		//Top world border
-//		if(util.getPlayer().getY() <= 0){
-//			util.getPlayer().setY(0);
-//		}
-//		
-//		//Bottom world border
-//		if(util.getPlayer().getY() >=gc.getHeight() - util.getPlayer().getMobImage().getHeight()){
-//			util.getPlayer().setY(gc.getHeight() - util.getPlayer().getMobImage().getHeight());
-//			util.getPlayer().setIsFalling(false);
-//		}
 		
 		util.getPlayer().checkCollisions(level, cam);
 		
