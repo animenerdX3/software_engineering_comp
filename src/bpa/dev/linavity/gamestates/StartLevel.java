@@ -12,6 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.entities.Camera;
+import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.physics.Gravity;
 import bpa.dev.linavity.utils.Utils;
@@ -49,6 +50,9 @@ public class StartLevel extends BasicGameState{
 	public InputManager im = new InputManager();
 	private boolean[] keyLog = new boolean[7]; // Keyboard
 	private int[] mouseLog = new int[3]; // Mouse
+	
+	//List of all possible enemies
+	Starter [] enemies = new Starter[1];
 	
 	//The tileID to this gamestate (will be read in as a file later on)
 	private int[][] tileIDs = {
@@ -88,6 +92,9 @@ public class StartLevel extends BasicGameState{
 		back = new Image("res/gui/buttons/button_back.png");
 		bg = new Image("res/bg.jpg");
 		level = new Level(0, tileIDs);
+		
+		//Create enemies
+		enemies[0] = new Starter();
 	}
 
 	/**
@@ -112,7 +119,10 @@ public class StartLevel extends BasicGameState{
 		}
 		
 		//Draw player
-		util.getPlayer().getMobImage().draw(423, 718); // I have a feeling this line of code is gonna get roasted on by Mr. Santiago
+		util.getPlayer().getMobImage().draw(423, 718);
+		
+		//Draw enemies
+		enemies[0].getMobImage().draw(100, 100);
 		
 		if(menuOpen){
 			renderMenu(gc, g);
@@ -186,6 +196,8 @@ public class StartLevel extends BasicGameState{
 		// Update Player Attributes
 		updatePlayer(delta);
 		
+		updateEnemies(delta);
+		
 		// Update Camera Coordinates
 		cam.updateCameraPos(util.getPlayer().getX(), util.getPlayer().getY());
 		
@@ -227,6 +239,17 @@ public class StartLevel extends BasicGameState{
 		
 		// Update the player's attributes
 		// player.updateAttributes();
+		
+	}
+	
+	/**
+	 * Perform all updates to the enemy objects
+	 * @param delta
+	 */
+	public void updateEnemies(int delta){
+		
+		// Update the player's position
+		enemies[0].moveEnemy(delta);
 		
 	}
 	

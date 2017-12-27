@@ -141,4 +141,9 @@ public class Player extends Mob {
 		
 	}
 	
+	//This may have important information in regards to the hitbox of the player
+	public String toString() {
+		return "Image: "+getMobImage();
+	}
+	
 }//end of class
