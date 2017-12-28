@@ -73,11 +73,14 @@ public class Mob{
 	}
 	
 	//Non-Default constructor
-	public Mob(String textureDirectory) 
+	public Mob(String textureDirectory, int x, int y) 
 			throws SlickException{
 		// Character Variables
 				this.setMobImage(new Image(textureDirectory)); //By default, our Mob has the player skin
 		
+		this.x = x;
+		this.y = y;
+				
 		// Dimension Variables
 		this.width = this.getMobImage().getWidth();
 		this.height = this.getMobImage().getHeight();

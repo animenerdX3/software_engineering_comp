@@ -3,6 +3,7 @@ package bpa.dev.linavity.entities;
 import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.utils.Utils;
+import bpa.dev.linavity.weapons.Projectile;
 
 public class Player extends Mob {
 	
@@ -11,6 +12,8 @@ public class Player extends Mob {
 	private boolean flipDirection; // True = up, false = down
 	int flipDuration;
 	int jumps;
+	private boolean projectileExists = false;
+	private Projectile currentProjectile;
 	
 	private int gravityPack;
 	
@@ -108,7 +111,26 @@ public class Player extends Mob {
 				super.updatePos(util.getGravity().getGravityPower());
 		}
 		
-	}
+		//Projectile Functions
+		if(keyLog[7]) {
+			if(!projectileExists) {
+				projectileExists = true;
+				try {
+					currentProjectile = new Projectile(util);
+				} catch (SlickException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		if(projectileExists) {
+			currentProjectile.updatePos();
+			if(currentProjectile.getX() > util.getPlayer().getX() + 500) {
+				currentProjectile = null;
+				projectileExists = false;
+			}
+		}
+		
+	}//end of updatePos
 	
 	// Player jumping function
 	public void jump(int gravPower){
@@ -141,6 +163,22 @@ public class Player extends Mob {
 		
 	}
 	
+	public boolean isProjectileExists() {
+		return projectileExists;
+	}
+
+	public Projectile getCurrentProjectile() {
+		return currentProjectile;
+	}
+
+	public void setProjectileExists(boolean projectileExists) {
+		this.projectileExists = projectileExists;
+	}
+
+	public void setCurrentProjectile(Projectile currentProjectile) {
+		this.currentProjectile = currentProjectile;
+	}
+
 	//This may have important information in regards to the hitbox of the player
 	public String toString() {
 		return "Image: "+getMobImage();

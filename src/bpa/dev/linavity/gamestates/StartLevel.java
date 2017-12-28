@@ -59,8 +59,6 @@ public class StartLevel extends BasicGameState{
 			{3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
 			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
 			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
 			{3,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
 			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
 			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
@@ -94,11 +92,12 @@ public class StartLevel extends BasicGameState{
 		level = new Level(0, tileIDs);
 		
 		//Create enemies
-		enemies[0] = new Starter();
+		enemies[0] = new Starter(util, 300, 300);
 	}
 
 	/**
 	 * Renders content to the game / screen
+	 * Note: Positioning of objects matter: Draw backgrounds first, foregrounds last
 	 */
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
@@ -118,11 +117,17 @@ public class StartLevel extends BasicGameState{
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes. 
 		}
 		
-		//Draw player
-		util.getPlayer().getMobImage().draw(423, 718);
-		
 		//Draw enemies
-		enemies[0].getMobImage().draw(100, 100);
+		enemies[0].getMobImage().draw(enemies[0].getX() - cam.getX(), enemies[0].getY() - cam.getY());
+		
+		
+		//If a projectile exists, then draw it on the screen
+		if(util.getPlayer().isProjectileExists()) {
+			util.getPlayer().getCurrentProjectile().getProjectileImage().draw(util.getPlayer().getCurrentProjectile().getX() - cam.getX() + 100, util.getPlayer().getCurrentProjectile().getY() - cam.getY() + 15);
+		}
+		
+		//Draw player
+		util.getPlayer().getMobImage().draw(523, 718);
 		
 		if(menuOpen){
 			renderMenu(gc, g);

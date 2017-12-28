@@ -13,7 +13,7 @@ public class InputManager {
 	// Possible keyboard inputs by user
 	// Keyboard -> [W, A, S, D, LShift, LControl, ESC] 
 	// Mouse -> [Mouse X Pos, Mouse Y Pos, left click]
-	private boolean[] keyLog = new boolean[7];
+	private boolean[] keyLog = new boolean[8];
 	private int[] mouseLog = new int[3];
 	
 	//Default constructor
@@ -69,6 +69,10 @@ public class InputManager {
 		}
 		if(input.isKeyPressed(Input.KEY_ESCAPE)){
 			keyLog[6] = true;
+		}
+		//For projectiles
+		if(input.isKeyPressed(Input.KEY_Z)){
+			keyLog[7] = true;
 		}
 	}
 	
