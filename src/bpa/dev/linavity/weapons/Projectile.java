@@ -30,6 +30,7 @@ public class Projectile {
 		this.y = util.getPlayer().getY();
 	}
 	
+	//Non-Default Projectile
 	public Projectile(Utils util, String imageDirectory, int damage, int speed) throws SlickException {
 		this.util = util;
 		this.projectileImage = new Image(imageDirectory);
@@ -38,10 +39,13 @@ public class Projectile {
 		this.x = util.getPlayer().getX();
 		this.y = util.getPlayer().getY();
 	}
-
+	
+	//Move Projectile Across the Screen
 	public void updatePos() {
 		this.x = this.x + this.speed;
 	}
+	
+	/* GETTERS */
 	
 	public Image getProjectileImage() {
 		return projectileImage;
@@ -55,6 +59,16 @@ public class Projectile {
 		return damage;
 	}
 
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+	
+	/* SETTERS */
+	
 	public void setProjectileImage(Image projectileImage) {
 		this.projectileImage = projectileImage;
 	}
@@ -67,14 +81,6 @@ public class Projectile {
 		this.speed = speed;
 	}
 
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -82,7 +88,5 @@ public class Projectile {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
-	
 	
 }//end of class

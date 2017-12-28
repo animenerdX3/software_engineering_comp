@@ -37,6 +37,8 @@ public class Player extends Mob {
 		 * D - Right (3)
 		 *  
 		 * Left-Shift (4) 
+		 * 
+		 * Z - Shoot (7) 
 		 */
 		
 		
@@ -113,20 +115,21 @@ public class Player extends Mob {
 		
 		//Projectile Functions
 		if(keyLog[7]) {
-			if(!projectileExists) {
+			if(!projectileExists) {//If projectile does not exist
 				projectileExists = true;
 				try {
-					currentProjectile = new Projectile(util);
+					currentProjectile = new Projectile(util);//Draw default projectile
 				} catch (SlickException e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		if(projectileExists) {
+		if(projectileExists) {//If projectile exists, update the position
 			currentProjectile.updatePos();
-			if(currentProjectile.getX() > util.getPlayer().getX() + 500) {
-				currentProjectile = null;
-				projectileExists = false;
+			//TODO Make if-statement more practical
+			if(currentProjectile.getX() > util.getPlayer().getX() + 500) {//If projectile is 500 pixels away from player
+				currentProjectile = null;//Destroy object
+				projectileExists = false;//Projectile does not exist
 			}
 		}
 		
@@ -163,6 +166,8 @@ public class Player extends Mob {
 		
 	}
 	
+	/* GETTERS */
+	
 	public boolean isProjectileExists() {
 		return projectileExists;
 	}
@@ -171,6 +176,8 @@ public class Player extends Mob {
 		return currentProjectile;
 	}
 
+	/* SETTERS */
+	
 	public void setProjectileExists(boolean projectileExists) {
 		this.projectileExists = projectileExists;
 	}

@@ -129,6 +129,7 @@ public class StartLevel extends BasicGameState{
 		//Draw player
 		util.getPlayer().getMobImage().draw(523, 718);
 		
+		//Draw menu, if open
 		if(menuOpen){
 			renderMenu(gc, g);
 		}

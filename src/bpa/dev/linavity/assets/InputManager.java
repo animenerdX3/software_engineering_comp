@@ -11,7 +11,7 @@ import bpa.dev.linavity.physics.Gravity;
 public class InputManager {
 	
 	// Possible keyboard inputs by user
-	// Keyboard -> [W, A, S, D, LShift, LControl, ESC] 
+	// Keyboard -> [W, A, S, D, LShift, LControl, ESC, Z] 
 	// Mouse -> [Mouse X Pos, Mouse Y Pos, left click]
 	private boolean[] keyLog = new boolean[8];
 	private int[] mouseLog = new int[3];
@@ -70,7 +70,8 @@ public class InputManager {
 		if(input.isKeyPressed(Input.KEY_ESCAPE)){
 			keyLog[6] = true;
 		}
-		//For projectiles
+		
+		//Z
 		if(input.isKeyPressed(Input.KEY_Z)){
 			keyLog[7] = true;
 		}
