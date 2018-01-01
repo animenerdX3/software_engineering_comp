@@ -14,11 +14,9 @@ public class Utils {
 	public final boolean debugMode = true;
 	
 	private Player player; // Player Object
-	private Gravity gravity; // Gravity Object
 	
 	public Utils() throws SlickException{
 		this.player = new Player();
-		this.gravity = new Gravity();
 	}
 
 	public Player getPlayer() {
@@ -26,7 +24,7 @@ public class Utils {
 	}
 
 	public Gravity getGravity() {
-		return gravity;
+		return player.getGravity();
 	}
 	
 	

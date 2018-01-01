@@ -5,9 +5,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import bpa.dev.linavity.gamestates.StartLevel;
 import bpa.dev.linavity.utils.Utils;
-import bpa.dev.linavity.gamestates.MainMenu;
+import bpa.dev.linavity.gamestates.*;
 
 /**
  *  Linavity

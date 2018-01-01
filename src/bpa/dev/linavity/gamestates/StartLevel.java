@@ -10,6 +10,7 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import bpa.dev.linavity.assets.ExtraMouseFunctions;
 import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.enemies.Starter;
@@ -28,6 +29,10 @@ public class StartLevel extends BasicGameState{
 
 	// Images
 	private Image bg = null;
+	private Image health_gui = null;
+	private Image health_bar = null;
+	private Image grav_gui = null;
+	private Image grav_bar = null;
 	private Image back = null;
 	
 	// ID of the gamestate
@@ -52,6 +57,7 @@ public class StartLevel extends BasicGameState{
 	private int[] mouseLog = new int[3]; // Mouse
 	
 	private Rectangle bounds;
+	private Rectangle enemybounds;
 	
 	//List of all possible enemies
 	Starter [] enemies = new Starter[1];
@@ -70,11 +76,17 @@ public class StartLevel extends BasicGameState{
 		cam = new Camera(util.getPlayer().getX(), util.getPlayer().getY());
 		back = new Image("res/gui/buttons/button_back.png");
 		bg = new Image("res/bg.jpg");
+		health_gui = new Image("res/gui/stats/health_bar.png");
+		health_bar = new Image("res/gui/stats/health_bar_full.png");
+		grav_gui = new Image("res/gui/stats/grav_pack.png");
+		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
 		level = new Level(0, "startlevel");
 		bounds = new Rectangle(util.getPlayer().getX() - cam.getX(), util.getPlayer().getY() - cam.getY(), 50, 50);
 		
 		//Create enemies
-		enemies[0] = new Starter(util, 300, 300);
+		enemies[0] = new Starter(util, 300, 750);
+		enemybounds = new Rectangle(enemies[0].getX() - cam.getX(), enemies[0].getY() - cam.getY(), 50, 50);
+
 	}
 
 	/**
@@ -85,7 +97,6 @@ public class StartLevel extends BasicGameState{
 			throws SlickException {
 		
 		bg.draw(0,0);
-		
 		
 		renderScreen(gc, sbg, g);
 		
@@ -98,6 +109,7 @@ public class StartLevel extends BasicGameState{
 			g.drawString("Collide left: " + util.getPlayer().isCl(), 10,150);
 			g.drawString("Collide right: " + util.getPlayer().isCr(), 10,170);
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes.
+			System.out.println("Player Y: "+util.getPlayer().getY());
 		}
 		
 		//Draw enemies
@@ -113,8 +125,19 @@ public class StartLevel extends BasicGameState{
 		util.getPlayer().getMobImage().draw(util.getPlayer().getX() - cam.getX(), util.getPlayer().getY() - cam.getY());
 		if(util.debugMode) {
 		bounds = new Rectangle(util.getPlayer().getX() - cam.getX(), util.getPlayer().getY() - cam.getY(), 50, 50);
+		g.setColor(Color.blue);
 		g.draw(bounds);
+		
+		enemybounds = new Rectangle(enemies[0].getX() - cam.getX(), enemies[0].getY() - cam.getY(), 50, 50);
+		g.setColor(Color.orange);
+		g.draw(enemybounds);
 		}
+		
+		health_gui.draw(0,0);
+		health_bar.draw(0,0);
+		
+		grav_gui.draw(0,0);
+		grav_bar.draw(0,0);
 		
 		//Draw menu, if open
 		if(menuOpen){
@@ -147,6 +170,7 @@ public class StartLevel extends BasicGameState{
 					screenTiles[i][j].getTexture().draw(tileX, tileY); // Draw the tile
 					if(util.debugMode) {
 					Rectangle tileBounds = new Rectangle(tileX, tileY, screenTiles[i][j].getWidth(), screenTiles[i][j].getHeight());
+					g.setColor(Color.white);
 					g.draw(tileBounds);
 					}
 				}
@@ -176,6 +200,10 @@ public class StartLevel extends BasicGameState{
 		// Open pop-up menu
 		openMenu(gc, delta);
 		checkMenu(gc, sbg);
+		
+		//Mouse Functions
+		xpos = ExtraMouseFunctions.getMouseX(gc.getWidth()); // Updates the x coordinate of the mouse
+		ypos = ExtraMouseFunctions.getMouseY(gc.getHeight()); // Updates the y coordinate of the mouse
 		
 	}
 	
