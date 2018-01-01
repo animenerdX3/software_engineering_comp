@@ -227,8 +227,8 @@ public class MainMenu extends BasicGameState{
 	}
 	
 	// For other classes to use the checkBounds method
-	public static boolean checkBounds(int x1, int x2, int y1, int y2, int xPosition, int yPosition){
-		if((xPosition > x1 && xPosition < x2) && (yPosition > y1 && yPosition < y2 )){
+	public static boolean checkBounds(int x1, int x2, int y1, int y2, float tileX, float tileY){
+		if((tileX > x1 && tileX < x2) && (tileY > y1 && tileY < y2 )){
 			return true;
 		}
 		return false;

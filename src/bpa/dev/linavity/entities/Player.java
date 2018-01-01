@@ -66,9 +66,6 @@ public class Player extends Mob {
 				jumps = 1;
 			}
 		}
-		
-		// if there isn't a collision in the x direction
-//		if(!this.isCl() || !this.isCr()){
 			
 			if(keyLog[1] && keyLog[4]) {  //Check For Run Left:  A + Left-Shift Pressed Together
 				this.setX( (int) (getX() - ((200/1000.0f * delta) * 1.7)));

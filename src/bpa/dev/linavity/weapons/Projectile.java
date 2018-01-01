@@ -17,8 +17,7 @@ public class Projectile {
 	//How fast the projectile can be thrown
 	private int speed;
 	
-	private int x;
-	private int y;
+	private float x, y;
 	
 	//Starting projectile
 	public Projectile(Utils util) throws SlickException {
@@ -59,11 +58,11 @@ public class Projectile {
 		return damage;
 	}
 
-	public int getX() {
+	public float getX() {
 		return x;
 	}
 
-	public int getY() {
+	public float getY() {
 		return y;
 	}
 	
@@ -81,11 +80,11 @@ public class Projectile {
 		this.speed = speed;
 	}
 
-	public void setX(int x) {
+	public void setX(float x) {
 		this.x = x;
 	}
 
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 	

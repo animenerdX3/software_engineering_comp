@@ -25,7 +25,14 @@ public class Starter extends Mob{
 	 * @param delta
 	 */
 	public void moveEnemy(int delta) {
-		collidePlayer();//Collide with the player
+		
+		if(util.getPlayer().getX() > getX()) {
+			setX(getX() + 2);
+		}
+		else if(util.getPlayer().getX() < getX()) {
+			setX(getX() - 2);
+		}
+		
 	}//end of moveEnemy
 	
 	public void collidePlayer() {

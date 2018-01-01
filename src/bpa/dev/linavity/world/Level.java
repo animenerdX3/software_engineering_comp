@@ -22,8 +22,10 @@ public class Level {
 	 * 
 	 * 
 	 */
-	public Level(int id, int[][] tileIDs) 
+	public Level(int id, String directory) 
 			throws SlickException{
+		LevelManager level = new LevelManager(directory);
+		int [][] tileIDs = level.getWorld();
 		tiles = new Tile[tileIDs.length][tileIDs[0].length];//Create a 2D array with the same size as the tileIDs array
 		tiles = createLevel(tileIDs);//Populate the array with tiles based on the tilesID array
 	}
@@ -56,7 +58,7 @@ public class Level {
 		Tile[][] screenTiles = new Tile[19][19];
 		
 		// Temp x and y of tile in relation to the camera
-		int tileX, tileY;
+		float tileX, tileY;
 		
 		//Counters for where the tile should be placed in the smaller 2d array that we return
 		int screenI = 0;

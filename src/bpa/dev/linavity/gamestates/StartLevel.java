@@ -51,29 +51,10 @@ public class StartLevel extends BasicGameState{
 	private boolean[] keyLog = new boolean[7]; // Keyboard
 	private int[] mouseLog = new int[3]; // Mouse
 	
+	private Rectangle bounds;
+	
 	//List of all possible enemies
 	Starter [] enemies = new Starter[1];
-	
-	//The tileID to this gamestate (will be read in as a file later on)
-	private int[][] tileIDs = {
-			{3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,3,3,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3},
-			{3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3}
-	};
 	
 	//Default constructor
 	public StartLevel(){ 
@@ -89,7 +70,8 @@ public class StartLevel extends BasicGameState{
 		cam = new Camera(util.getPlayer().getX(), util.getPlayer().getY());
 		back = new Image("res/gui/buttons/button_back.png");
 		bg = new Image("res/bg.jpg");
-		level = new Level(0, tileIDs);
+		level = new Level(0, "startlevel");
+		bounds = new Rectangle(util.getPlayer().getX() - cam.getX(), util.getPlayer().getY() - cam.getY(), 50, 50);
 		
 		//Create enemies
 		enemies[0] = new Starter(util, 300, 300);
@@ -104,6 +86,7 @@ public class StartLevel extends BasicGameState{
 		
 		bg.draw(0,0);
 		
+		
 		renderScreen(gc, sbg, g);
 		
 		if(util.debugMode) {
@@ -114,7 +97,7 @@ public class StartLevel extends BasicGameState{
 			g.drawString("Collide down: " + util.getPlayer().isCd(), 10,130);
 			g.drawString("Collide left: " + util.getPlayer().isCl(), 10,150);
 			g.drawString("Collide right: " + util.getPlayer().isCr(), 10,170);
-			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes. 
+			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes.
 		}
 		
 		//Draw enemies
@@ -127,7 +110,11 @@ public class StartLevel extends BasicGameState{
 		}
 		
 		//Draw player
-		util.getPlayer().getMobImage().draw(523, 718);
+		util.getPlayer().getMobImage().draw(util.getPlayer().getX() - cam.getX(), util.getPlayer().getY() - cam.getY());
+		if(util.debugMode) {
+		bounds = new Rectangle(util.getPlayer().getX() - cam.getX(), util.getPlayer().getY() - cam.getY(), 50, 50);
+		g.draw(bounds);
+		}
 		
 		//Draw menu, if open
 		if(menuOpen){
@@ -149,7 +136,7 @@ public class StartLevel extends BasicGameState{
 		Tile[][] screenTiles = level.getScreenTiles(cam);
 		
 		// Temp x and y of tile in relation to the camera
-		int tileX, tileY;
+		float tileX, tileY;
 		
 		// Draw the tiles that belong on the screen.
 		for(int i = 0; i < screenTiles.length; i++) {
@@ -158,6 +145,10 @@ public class StartLevel extends BasicGameState{
 					tileX = screenTiles[i][j].getX() - cam.getX(); // Get the tile's temp x location for the screen rendering
 					tileY = screenTiles[i][j].getY() - cam.getY(); // Get the tile's temp y location for the screen rendering
 					screenTiles[i][j].getTexture().draw(tileX, tileY); // Draw the tile
+					if(util.debugMode) {
+					Rectangle tileBounds = new Rectangle(tileX, tileY, screenTiles[i][j].getWidth(), screenTiles[i][j].getHeight());
+					g.draw(tileBounds);
+					}
 				}
 			}
 		}

@@ -3,7 +3,7 @@ package bpa.dev.linavity.entities;
 public class Camera {
 
 	//  X and Y position of the camera object in the level
-	int x, y;
+	float x, y;
 	int buffer;
 	
 	//Size of our camera
@@ -11,25 +11,25 @@ public class Camera {
 	int width = 900;
 
 	//Creates the actual camera object
-	public Camera(int x, int y){
+	public Camera(float x, float y){
 		this.x = x - 425;
 		this.y = y - 720;
 		this.buffer = 50;
 	}
 	
 	//Updates the x and y of the camera 
-	public void updateCameraPos(int x, int y){
+	public void updateCameraPos(float x, float y){
 		this.x = x - 425;
 		this.y = y - 720;
 	}
 	
 	/* GETTERS */
 	
-	public int getX() {
+	public float getX() {
 		return x;
 	}
 
-	public int getY() {
+	public float getY() {
 		return y;
 	}
 	
@@ -47,12 +47,12 @@ public class Camera {
 	
 	/* SETTERS */
 	
-	public void setX(int x) {
+	public void setX(float x) {
 		this.x = x;
 	}
 
 
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 	

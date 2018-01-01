@@ -11,10 +11,10 @@ public class Mob{
 
 	// Dimension Variables
 		//Yeh we usin this
-		private int prevX, prevY;
+		private float prevX, prevY;
 		
 		// The x and y coordinates of the mob in the world
-		private int x, y;
+		private float x, y;
 		// The width and height of the mob
 		private int width, height;
 	
@@ -128,7 +128,9 @@ public class Mob{
 					if(!screenTiles[i][j].isPassable()){ // Can be collided with
 						if(checkBothSides(screenTiles[i][j])){ // And is colliding then...
 							
-							// Check Right
+							
+							
+/*							// Check Right
 							if(this.x <= screenTiles[i][j].getX()){
 								
 								if(this.y >= screenTiles[i][j].getY() && (prevX > x - 0.01)) {
@@ -143,33 +145,41 @@ public class Mob{
 									this.x = screenTiles[i][j].getX() - mobImage.getWidth() - 1;
 									break;
 								}
-							}
+							}*/
+							
 							
 							// Check Down
-							if(this.y <= screenTiles[i][j].getY()){
+							if(this.y <= screenTiles[i][j].getY() && getPrevY() <= y){
 								setCd = true;
-								System.err.println("Down Collision");
-								this.y = screenTiles[i][j].getY() - mobImage.getHeight() - 1;
+								System.err.println("Down Collision"); 
+								this.y = (float) (screenTiles[i][j].getY() - mobImage.getHeight() - 4);
+								break;
+							}
+							
+							// Check Up
+							if(this.y >= screenTiles[i][j].getY()  && getPrevY() >= y){
+								setCu = true;
+								System.err.println("Up Collision");
+								this.y = (float) (screenTiles[i][j].getY() + mobImage.getHeight() + 4);
+								break;
+							}
+							
+							// Check Right
+							if(this.x >= screenTiles[i][j].getX() &&  getPrevX() >= x){
+								setCr = true;
+								System.err.println("Right Collision");
+								this.x = (float) (screenTiles[i][j].getX() + mobImage.getWidth() + 4);
 								break;
 							}
 							
 							// Check Left
-							if(this.x>= screenTiles[i][j].getX()){
-								
-								if(this.y >= screenTiles[i][j].getY() && (prevX < x + 0.01)) {
-									System.err.println("Up Collision");
-									setCu = true;
-									this.y = screenTiles[i][j].getY() + mobImage.getHeight() + 1;
-									break;
-								}
-								
-								else {
-									setCl = true;
-									System.err.println("Left Collision");
-									this.x = screenTiles[i][j].getX() + mobImage.getWidth() + 1;
-									break;
-								}
-							}							
+							if(this.x <= screenTiles[i][j].getX()  && getPrevX() <= x){
+								setCl = true;
+								System.err.println("Left Collision");
+								this.x = (float) (screenTiles[i][j].getX() - mobImage.getWidth() - 4);
+								break;
+							}
+													
 							// Object is colliding
 							setCollideTo = true;
 						}
@@ -193,14 +203,14 @@ public class Mob{
 				checkSide(this.y, this.y + this.height, tile.getY(), tile.getY() + tile.getHeight());
 	}
 	
-	private boolean checkSide(int objNum1, int objNum2, int tileNum1, int tileNum2){
+	private boolean checkSide(float objNum1, float objNum2, float f, float g){
 		// Want to make sure that the min and the max of the two coordinates are oriented properly.
-		int objMin = Math.min(objNum1, objNum2);
-		int objMax = Math.max(objNum1, objNum2);
+		float objMin = Math.min(objNum1, objNum2);
+		float objMax = Math.max(objNum1, objNum2);
 		
 		// Want to make sure that the min and the max of the two coordinates are oriented properly.
-		int tileMin = Math.min(tileNum1, tileNum2);
-		int tileMax = Math.max(tileNum1, tileNum2);
+		float tileMin = Math.min(f, g);
+		float tileMax = Math.max(f, g);
 		
 		if(objMax >= tileMin && objMin <= tileMax) // If the two sides overlap
 			return true; 
@@ -256,18 +266,18 @@ public class Mob{
 		return height;
 	}
 
-	public int getPrevX(){
+	public float getPrevX(){
 		return prevX;
 	}
 	
-	public int getPrevY(){
+	public float getPrevY(){
 		return prevY;
 	}
 	
 	/**
 	 * @return the x
 	 */
-	public  int getX() {
+	public float getX() {
 		return x;
 	}
 
@@ -275,7 +285,7 @@ public class Mob{
 	/**
 	 * @return the y
 	 */
-	public  int getY() {
+	public float getY() {
 		return y;
 	}
 
@@ -346,25 +356,25 @@ public class Mob{
 		this.height = height;
 	}
 	
-	public void setPrevX(int prevX){
+	public void setPrevX(float prevX){
 		this.prevX = prevX;
 	}
 	
-	public void setPrevY(int prevY){
+	public void setPrevY(float prevY){
 		this.prevY = prevY;
 	}
 	
 	/**
 	 * @param x the x to set
 	 */
-	public  void setX(int x) {
+	public  void setX(float x) {
 		this.x = x;
 	}
 
 	/**
 	 * @param y the y to set
 	 */
-	public  void setY(int y) {
+	public  void setY(float y) {
 		this.y = y;
 	}
 	

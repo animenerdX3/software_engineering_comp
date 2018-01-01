@@ -16,7 +16,7 @@ public class Tile implements Shape {
 	private int id;
 	
 	// X and Y position of the tile in the level (not relative position)
-	private int x, y;
+	private float x, y;
 
 	// Width and height of the tiles (Right now, typically 64x64)
 	private int height, width;
@@ -63,12 +63,12 @@ public class Tile implements Shape {
 	}
 
 
-	public int getX() {
+	public float getX() {
 		return x;
 	}
 
 
-	public int getY() {
+	public float getY() {
 		return y;
 	}
 
@@ -94,11 +94,11 @@ public class Tile implements Shape {
 		this.passable = passable;
 	}
 	
-	public void setX(int x) {
+	public void setX(float x) {
 		this.x = x;
 	}
 	
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 	
