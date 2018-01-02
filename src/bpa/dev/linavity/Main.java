@@ -47,6 +47,7 @@ public class Main extends StateBasedGame{
 		util = new Utils();
 		this.getState(mainmenu).init(gc, this);
 		this.getState(basicgame).init(gc , this);
+		this.getState(gameover).init(gc , this);
 			this.enterState(mainmenu);
 	}
 	
