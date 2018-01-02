@@ -132,19 +132,27 @@ public class Mob{
 				if(screenTiles[i][j] != null) { // If the tile exists
 					if(!screenTiles[i][j].isPassable()){ // Can be collided with
 						if(checkBothSides(screenTiles[i][j])){ // And is colliding then...
-							
-							// Check Down
-							if(checkDownCollision(screenTiles[i][j])){
-								setCd = true;
-								setCollideTo = true; //Object is colliding
-								break;
-							}
-	
-							if(!gravity.getFlipDirection()) {
+
+							//Check For Reverse Gravity
+							if(gravity.getFlipDirection()) {
 								// Check Up
 								if(checkUpCollision(screenTiles[i][j])){
 									setCu = true;
 									setCollideTo = true;
+									break;
+								}
+								
+								// Check Left
+								if(checkLeftCollision(screenTiles[i][j])){
+									setCl = true;
+									setCollideTo = true; //Object is colliding
+									break;
+								}	
+								
+								// Check Down
+								if(checkDownCollision(screenTiles[i][j])){
+									setCd = true;
+									setCollideTo = true; //Object is colliding
 									break;
 								}
 								
@@ -154,15 +162,26 @@ public class Mob{
 									setCollideTo = true; //Object is colliding
 									break;
 								}
+									
+								
+
 							}
+							//Check For Regular Gravity
 							else {
+								// Check Down
+								if(checkDownCollision(screenTiles[i][j])){
+									setCd = true;
+									setCollideTo = true; //Object is colliding
+									break;
+								}
+								
 								// Check Right
 								if(checkRightCollision(screenTiles[i][j])){
 									setCr = true;
 									setCollideTo = true; //Object is colliding
 									break;
 								}
-								
+									
 								// Check Up
 								if(checkUpCollision(screenTiles[i][j])){
 									setCu = true;
@@ -170,14 +189,14 @@ public class Mob{
 									break;
 								}
 								
-							}
+								// Check Left
+								if(checkLeftCollision(screenTiles[i][j])){
+									setCl = true;
+									setCollideTo = true; //Object is colliding
+									break;
+								}
 							
-							// Check Left
-							if(checkLeftCollision(screenTiles[i][j])){
-								setCl = true;
-								setCollideTo = true; //Object is colliding
-								break;
-							}	
+							}
 
 						}
 					}

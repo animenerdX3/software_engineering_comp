@@ -205,6 +205,13 @@ public class StartLevel extends BasicGameState{
 		xpos = ExtraMouseFunctions.getMouseX(gc.getWidth()); // Updates the x coordinate of the mouse
 		ypos = ExtraMouseFunctions.getMouseY(gc.getHeight()); // Updates the y coordinate of the mouse
 		
+		if(util.getPlayer().getHealth() <= 0) {
+			util.getPlayer().setHealth(100);
+			util.getPlayer().setX(100);
+			util.getPlayer().setY(100);
+			sbg.enterState(2);
+		}
+		
 	}
 	
 	/**

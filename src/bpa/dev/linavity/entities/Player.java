@@ -73,7 +73,7 @@ public class Player extends Mob {
 						this.getMobImage().rotate(flipDuration);
 					}
 					else {
-						this.setMobImage(new Image("res/sprites/player/player_0.png"));
+						this.setMobImage(new Image("res/sprites/player/player_1.png"));
 					}
 				} catch (SlickException e) {
 					e.printStackTrace();
@@ -87,7 +87,7 @@ public class Player extends Mob {
 						this.getMobImage().rotate(flipDuration);
 					}
 					else {
-						this.setMobImage(new Image("res/sprites/player/player_0.png"));
+						this.setMobImage(new Image("res/sprites/player/player_1.png"));
 					}
 				} catch (SlickException e) {
 					e.printStackTrace();
@@ -102,7 +102,7 @@ public class Player extends Mob {
 						this.getMobImage().rotate(flipDuration);
 					}
 					else {
-						this.setMobImage(new Image("res/sprites/player/player_1.png"));
+						this.setMobImage(new Image("res/sprites/player/player_0.png"));
 					}
 				} catch (SlickException e) {
 					e.printStackTrace();
@@ -116,7 +116,7 @@ public class Player extends Mob {
 						this.getMobImage().rotate(flipDuration);
 					}
 					else {
-						this.setMobImage(new Image("res/sprites/player/player_1.png"));
+						this.setMobImage(new Image("res/sprites/player/player_0.png"));
 					}
 				} catch (SlickException e) {
 					e.printStackTrace();

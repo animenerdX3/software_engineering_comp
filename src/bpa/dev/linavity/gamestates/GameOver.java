@@ -1,6 +1,7 @@
 package bpa.dev.linavity.gamestates;
 
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -14,7 +15,7 @@ import bpa.dev.linavity.assets.ExtraMouseFunctions;
 
 public class GameOver extends BasicGameState{
 	
-	// Gamestate ID (0) <-- Main Menu
+	// Gamestate ID (2) <-- Game Over Screen
 	public static int id = 2;
 	
 	// The X & Y positions of the mouse
@@ -22,9 +23,6 @@ public class GameOver extends BasicGameState{
 	
 	// Our images
 	private Image bg = null;
-	private Image play = null;
-	private Image exit = null;
-	private Image options = null;
 	private Image back = null;
 	
 	private boolean isOption = false;
@@ -35,7 +33,6 @@ public class GameOver extends BasicGameState{
 		
 		// Initialize our image objects
 		bg = new Image("res/bg.jpg"); // Menu Background
-		
 
 	}
 
@@ -43,10 +40,17 @@ public class GameOver extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		
+		g.drawImage(bg, 0, 0);
+		
 		// DRAW OUR MENU UI //
 
+		g.setColor(Color.white);
+		
 		g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 30); // Draw our mouse position for debugging purposes. 
 
+		g.drawString("GAME OVER", 425, 450); // Draw GAME OVER for debugging purposes
+		
+		renderGameOverScreen(gc, g);
 		
 		// END OUR MENU UI //
 
@@ -71,13 +75,9 @@ public class GameOver extends BasicGameState{
 
 		
 		// CHECK OUR MOUSE INPUT //
-		
-		if(!isOption){
-			mainButtonAction(gc, sbg, input); // If the option menu has not been selected, check for the main section's buttons
-		}else{
-			optionButtonAction(gc, sbg, input); // If the option menu is selected, check for the option section's buttons
-		}
-		
+
+		backButtonAction(gc, sbg, input); // If the option menu has not been selected, check for the main section's buttons
+
 		// END OUR MOUSE INPUT
 
 	}
@@ -93,71 +93,11 @@ public class GameOver extends BasicGameState{
 	 * @return
 	 * 	void:
 	 */
-	public void renderGameOverScreenMain(GameContainer gc, Graphics g){
+	public void renderGameOverScreen(GameContainer gc, Graphics g){
 		
-	}
-	
-
-	/**
-	 * @method mainButtonAction
-	 * @description checks the button detection and handles the according events in the main section of our main menu
-	 * 
-	 * @param
-	 * GameContainer gc
-	 * 
-	 * @return
-	 * 	void:
-	 * @throws SlickException 
-	 */
-	public void mainButtonAction(GameContainer gc, StateBasedGame sbg, Input input) 
-			throws SlickException{
-		
-		play = new Image("res/gui/buttons/button_play.png");
-		options = new Image("res/gui/buttons/button_options.png");
-		exit = new Image("res/gui/buttons/button_exit.png");
-
-		// Play Button
-		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (play.getWidth()/2) , (gc.getWidth()/2) - (play.getWidth()/2) + play.getWidth() , 300 , 300 + play.getHeight())) {
-			if(input.isMousePressed(0)){		
-				input.clearKeyPressedRecord();
-				sbg.enterState(1);
-			}
-			play = new Image("res/gui/buttons/button_play_hover.png");
-		}
-		
-		// Options Button
-		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (options.getWidth()/2) , (gc.getWidth()/2) - (options.getWidth()/2) + options.getWidth() , 400 , 400 + options.getHeight())){
-			if(input.isMousePressed(0)){
-				isOption = true;
-			}
-			options = new Image("res/gui/buttons/button_options_hover.png");
-		}
-		
-		// Exit Button
-		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (exit.getWidth()/2) , (gc.getWidth()/2) - (exit.getWidth()/2) + exit.getWidth() , 500 , 500 + exit.getHeight())){
-			if(input.isMousePressed(0)){
-				System.exit(0);
-			}
-			exit = new Image("res/gui/buttons/button_exit_hover.png");
-		}
-	}
-	
-	/**
-	 * @method renderMainMenuScreenOptions
-	 * @description draws the images needed for the main screen of the main menu
-	 * 
-	 * @param
-	 * GameContainer gc, Graphics g
-	 * 
-	 * @return
-	 * 	void:
-	 */
-	public void renderMainMenuScreenOptions(GameContainer gc, Graphics g){
 		// Back Button
-		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 400); // Setting the x value as half of the game container and adjusting for the width of the button
+		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 500); // Setting the x value as half of the game container and adjusting for the width of the button
+		
 	}
 
 	/**
@@ -171,16 +111,16 @@ public class GameOver extends BasicGameState{
 	 * 	void:
 	 * @throws SlickException 
 	 */
-	public void optionButtonAction(GameContainer gc, StateBasedGame sbg, Input input) 
+	public void backButtonAction(GameContainer gc, StateBasedGame sbg, Input input) 
 			throws SlickException{
 		
 		back = new Image("res/gui/buttons/button_back.png");
 		
 		// Back Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (back.getWidth()/2) , (gc.getWidth()/2) - (back.getWidth()/2) + back.getWidth() , 400 , 400 + back.getHeight())){
+		if(checkBounds( (gc.getWidth()/2) - (back.getWidth()/2) , (gc.getWidth()/2) - (back.getWidth()/2) + back.getWidth() , 500 , 500 + back.getHeight())){
 			if(input.isMousePressed(0)){
-				isOption = false;
+				sbg.enterState(1);
 			}
 			back = new Image("res/gui/buttons/button_back_hover.png");
 		}
@@ -215,7 +155,7 @@ public class GameOver extends BasicGameState{
 	
 	// Return the gamestate ID
 	public int getID() {
-		return MainMenu.id;
+		return GameOver.id;
 	}
 	
 }
