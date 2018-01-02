@@ -113,8 +113,10 @@ public class StartLevel extends BasicGameState{
 		}
 		
 		//Draw enemies
-		enemies[0].getMobImage().draw(enemies[0].getX() - cam.getX(), enemies[0].getY() - cam.getY());
-		
+		for(int i = 0; i < enemies.length; i++){
+			if(enemies[i].isAlive())
+				enemies[i].getMobImage().draw(enemies[i].getX() - cam.getX(), enemies[0].getY() - cam.getY());
+		}
 		
 		//If a projectile exists, then draw it on the screen
 		if(util.getPlayer().isProjectileExists()) {
@@ -230,15 +232,14 @@ public class StartLevel extends BasicGameState{
 		
 		updateEnemies(delta);
 		
+		checkEnemyStatus();
+		
 		// Update Camera Coordinates
 		cam.updateCameraPos(util.getPlayer().getX(), util.getPlayer().getY());
 		
 		// Open Pop-up menu
 		if(keyLog[6])
 			menuOpen = !menuOpen;
-
-
-		
 	}
 
 	
@@ -280,9 +281,17 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void updateEnemies(int delta){
 		
-		// Update the player's position
-		enemies[0].moveEnemy(delta);
+		// Update the enemy's position
+		enemies[0].enemyUpdates(delta);
 		
+	}
+	
+	public void checkEnemyStatus(){
+		for(int i = 0; i < enemies.length; i++){
+			if(enemies[i].getHealth() <= 0){
+				enemies[i].setIsAlive(false);
+			}
+		}
 	}
 	
 	/**

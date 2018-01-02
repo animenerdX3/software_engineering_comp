@@ -74,7 +74,7 @@ public class Mob{
 		this.isFalling = true;
 		
 		this.jumpNum = 1;
-		
+		this.isAlive = true;
 	}
 	
 	//Non-Default constructor
@@ -91,6 +91,7 @@ public class Mob{
 		this.height = this.getMobImage().getHeight();
 		this.isFalling = true;
 		this.jumpNum = 1;
+		this.isAlive = true;
 	}
 
 	/**
@@ -377,6 +378,10 @@ public class Mob{
 		return gravity;
 	}
 	
+	public boolean isAlive() {
+		return isAlive;
+	}
+	
 	/* SETTERS */
 	
 	public void setCollide(boolean collide) {
@@ -475,4 +480,8 @@ public class Mob{
 		this.damage = damage;
 	}
 	
-}
+	public void setIsAlive(boolean isAlive){
+		this.isAlive = isAlive;
+	}
+	
+}//end of class

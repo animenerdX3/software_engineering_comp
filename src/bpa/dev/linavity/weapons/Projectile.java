@@ -23,7 +23,7 @@ public class Projectile {
 	public Projectile(Utils util) throws SlickException {
 		this.util = util;
 		this.projectileImage = new Image("res/projectile.png");
-		this.damage = 1;
+		this.damage = 10;
 		this.speed = 10;
 		this.x = util.getPlayer().getX();
 		this.y = util.getPlayer().getY();

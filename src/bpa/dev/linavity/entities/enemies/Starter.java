@@ -20,15 +20,19 @@ public class Starter extends Mob{
 		this.jumps = 0;
 		this.util = util;
 		super.setDamage(0.25);
+		super.setHealth(100);
 	}
 	
 	/**
 	 * Enemy movement AI
 	 * @param delta
 	 */
-	public void moveEnemy(int delta) {
+	public void enemyUpdates(int delta) {
 		
 		collidePlayer();
+
+		if(util.getPlayer().getCurrentProjectile() != null)
+			collideProjectile();
 		
 		if(util.getPlayer().getX() > getX()) {
 			setX(getX() + 1);
@@ -60,5 +64,15 @@ public class Starter extends Mob{
 		}
 		
 	}//end of collidePlayer
+	
+	public void collideProjectile(){
+		if(util.getPlayer().getCurrentProjectile().getX() >= getX() && util.getPlayer().getCurrentProjectile().getX() <= getX() + getMobImage().getWidth()){
+			if(util.getPlayer().getCurrentProjectile().getY() >= getY() - (getMobImage().getHeight() / 2)){
+				System.out.println("ENEMY HIT");
+				setHealth(getHealth() - util.getPlayer().getCurrentProjectile().getDamage());
+				System.out.println("ENEMY HEALTH: "+getHealth());
+			}
+		}
+	}//end of collideProjectile
 	
 }//end of class
