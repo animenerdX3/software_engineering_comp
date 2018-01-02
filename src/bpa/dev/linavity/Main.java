@@ -26,6 +26,7 @@ public class Main extends StateBasedGame{
 	// Game State Identifier
 	public static final int mainmenu = 0;
 	public static final int basicgame = 1;
+	public static final int gameover = 2;
 	
 	// Application Properties
 	public static final int WIDTH = 900;
