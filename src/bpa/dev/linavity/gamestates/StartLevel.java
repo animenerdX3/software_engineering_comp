@@ -136,10 +136,10 @@ public class StartLevel extends BasicGameState{
 		}
 		
 		health_gui.draw(0,0);
-		health_bar.draw(0,0);
+		health_bar.draw(25,850,(float) (25+(util.getPlayer().getHealth() * 2.7)),850+27,0,0,(float) (util.getPlayer().getHealth() * 2.7),27);
 		
 		grav_gui.draw(0,0);
-		grav_bar.draw(0,0);
+		grav_bar.draw(318,850,270,27);
 		
 		//Draw menu, if open
 		if(menuOpen){
