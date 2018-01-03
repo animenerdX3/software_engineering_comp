@@ -10,7 +10,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
-public class Tile implements Shape {
+public class Tile extends GameObject implements Shape {
 
 	// Tile ID
 	private int id;
