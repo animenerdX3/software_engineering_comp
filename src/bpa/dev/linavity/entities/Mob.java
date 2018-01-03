@@ -7,7 +7,7 @@ import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.physics.Gravity;
 import bpa.dev.linavity.world.Level;
 
-public class Mob{
+public class Mob extends GameObject{
 
 	// Dimension Variables
 		//Yeh we usin this
