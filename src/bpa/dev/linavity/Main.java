@@ -33,7 +33,7 @@ public class Main extends StateBasedGame{
 	public static final int HEIGHT = 900;
 	public static final int FPS = 60;
 	
-	Utils util;
+	public static Utils util;
 	
 	// Class Constructor
 	public Main(String name) {

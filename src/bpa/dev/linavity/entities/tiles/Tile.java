@@ -8,7 +8,8 @@ import java.awt.geom.Rectangle2D;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
+
+import bpa.dev.linavity.GameObject;
 
 public class Tile extends GameObject implements Shape {
 

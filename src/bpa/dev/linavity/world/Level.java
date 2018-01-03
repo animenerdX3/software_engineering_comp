@@ -4,6 +4,7 @@ import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.tiles.Tile;
+import bpa.dev.linavity.entities.tiles.foreground.dynamicTiles.Dynamic;
 import bpa.dev.linavity.gamestates.MainMenu;
 
 public class Level {
@@ -43,7 +44,16 @@ public class Level {
 		for(int i = 0; i < tileIDs.length; i++) {//Parse through tile ID 2D array
 			
 			for(int j = 0; j < tileIDs[i].length; j++) {//Parse through a single row
-				tiles[i][j] = new Tile(i, j, tileIDs[i][j]);//Create a tile based on the id
+				
+				// Depending on the tile ID's determine the type of tile that is being generated
+				if(tileIDs[i][j] > 4){
+					tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0);
+				}else{
+					tiles[i][j] = new Tile(i, j, tileIDs[i][j]);//Create a tile based on the id
+				}
+				
+				
+				
 			}
 			
 		}

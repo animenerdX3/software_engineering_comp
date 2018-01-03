@@ -3,12 +3,17 @@ package bpa.dev.linavity.entities;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.GameObject;
+import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.tiles.Tile;
+import bpa.dev.linavity.entities.tiles.foreground.dynamicTiles.Dynamic;
+import bpa.dev.linavity.events.Message;
 import bpa.dev.linavity.physics.Gravity;
+import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.world.Level;
 
 public class Mob extends GameObject{
-
+	
 	// Dimension Variables
 		//Yeh we usin this
 		private float prevX, prevY;
@@ -44,7 +49,7 @@ public class Mob extends GameObject{
 	private Gravity gravity;
 		
 	//Default constructor
-	public Mob() 
+	public Mob(Utils util) 
 			throws SlickException{
 		
 		// Character Variables
@@ -134,6 +139,13 @@ public class Mob extends GameObject{
 					if(!screenTiles[i][j].isPassable()){ // Can be collided with
 						if(checkBothSides(screenTiles[i][j])){ // And is colliding then...
 
+							// Check for dynamic tiles
+							if(screenTiles[i][j] instanceof Dynamic){
+								Main.util.getMessageHandler().addMessage(new Message(Main.util.getPlayer(), screenTiles[i][j], ((Dynamic) screenTiles[i][j]).getMessageSendType(), 1));
+							}
+							
+							
+							
 							//Check For Reverse Gravity
 							if(gravity.getFlipDirection()) {
 								// Check Up

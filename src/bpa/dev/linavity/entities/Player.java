@@ -3,6 +3,10 @@ package bpa.dev.linavity.entities;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.GameObject;
+import bpa.dev.linavity.Main;
+import bpa.dev.linavity.entities.tiles.Tile;
+import bpa.dev.linavity.events.Message;
 import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.weapons.Projectile;
 
@@ -15,17 +19,39 @@ public class Player extends Mob {
 	private boolean projectileExists = false;
 	private Projectile currentProjectile;
 	
-	private float gravityPack;
+//	private float gravityPack;
 	
 	private GravityPack gravPack;
 	
-	public Player() 
-			throws SlickException{
-		super();
+	public Player(Utils util) throws SlickException{
+		super(util);
 		this.jumps = 0;
 		this.isFlipping = false;
-		this.gravityPack = 100;
-		this.gravPack = new GravityPack();
+		//this.gravityPack = 100;
+		this.gravPack = new GravityPack(100);
+	}
+	
+	@Override
+	public void onMessage(Message message){
+		
+		// All Messages / Events for the player are handled here
+		
+		// ID 0: Recharge Gravity Pack
+		if(message.getType() == Message.thing){
+/*			this.gravityPack += (int) message.getData();
+			if(this.gravityPack >= 100){
+				this.gravityPack = 100;
+			}
+*/			
+		
+			gravPack.setGravpower(gravPack.getGravpower() + (int) message.getData());
+
+
+			Main.util.getMessageHandler().addMessage(new Message( (Tile)message.getFrom(), this, 1, 1 )  ) ;
+		}
+		
+		
+		
 	}
 	
 	public void updatePos(boolean[] keyLog, int delta, Utils util) {
@@ -69,6 +95,15 @@ public class Player extends Mob {
 			}
 		}
 			
+		/**
+		 * if left or right
+		 * 		if run
+		 * 			move (5 or -5) ... I am running
+		 * 		else 
+		 * 			move (2 or -2) ... I am walking 
+		 */
+
+		
 			if(keyLog[1] && keyLog[4]) {  //Check For Run Left:  A + Left-Shift Pressed Together
 				this.setX( (int) (getX() - ((200/1000.0f * delta) * 1.7)));
 				try {
@@ -128,8 +163,8 @@ public class Player extends Mob {
 			}	
 			
 		// If the user presses control, reverse gravity
-		if(isFlipping == false){
-			if(keyLog[5] && this.gravityPack > 0){
+		if(! isFlipping ){
+			if(keyLog[5] && this.gravPack.getGravpower() > 0){
 				isFlipping = true; // The player is currently flipping
 				getGravity().setFlipDirection(!getGravity().getFlipDirection()); // Switch the direction in which the player is flipping
 				flipDuration = 0;
@@ -139,12 +174,12 @@ public class Player extends Mob {
 		
 		flipAnimation();
 		
-		if(this.gravityPack < 0){
+		if(this.gravPack.getGravpower() < 0){
 			getGravity().setFlipDirection(false); // Switch the direction in which the player is flipping
 			isFlipping = true;
 			flipDuration = 0;
 			getGravity().flipGravity();
-			this.gravityPack = 0;
+			this.gravPack.setGravpower(0);
 		}
 		
 		if(getGravity().getFlipDirection()){ // Reverse Gravity
@@ -172,6 +207,8 @@ public class Player extends Mob {
 				projectileExists = false;//Projectile does not exist
 			}
 		}
+		
+		gravPack.gravPowerCheck();
 		
 	}//end of updatePos
 	
@@ -233,8 +270,8 @@ public class Player extends Mob {
 		return isFlipping;
 	}
 	
-	public float getGravityPack(){
-		return gravityPack;
+	public GravityPack getGravPack(){
+		return gravPack;
 	}
 	
 	/* SETTERS */
@@ -251,9 +288,8 @@ public class Player extends Mob {
 		this.isFlipping = isFlipping;
 	}
 	
-	public void setGravityPack(float gravityPack){
-		this.gravityPack = gravityPack;
+	public void setGravPack(GravityPack gravPack){
+		this.gravPack = gravPack;
 	}
-	
 	
 }//end of class

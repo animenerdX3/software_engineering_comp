@@ -1,5 +1,7 @@
 package bpa.dev.linavity;
 
+import bpa.dev.linavity.events.Message;
+
 public class GameObject {
 
 	// Default Constructor
@@ -7,7 +9,7 @@ public class GameObject {
 		
 	}
 	
-	public void onMessage(){
+	public void onMessage(Message message){
 		
 	}
 	

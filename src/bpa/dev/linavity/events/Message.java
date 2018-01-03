@@ -4,6 +4,7 @@ import bpa.dev.linavity.GameObject;
 
 public class Message {
 
+	public final static int thing = 0;
 	// The contents of our event messages
 	private GameObject to;
 	private GameObject from;
@@ -11,8 +12,11 @@ public class Message {
 	private Object data;
 	
 	// Default Constructor
-	public Message(){
-		
+	public Message(GameObject to, GameObject from, int type, Object data){
+		this.to = to;
+		this.from = from;
+		this.type = type;
+		this.data = data;
 	}
 	
 	

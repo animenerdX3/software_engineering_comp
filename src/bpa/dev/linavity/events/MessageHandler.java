@@ -13,17 +13,18 @@ public class MessageHandler {
 	}
 	
 	// Method that allows other objects to add a message to the message queue
-	public void addEvent(Message message){
+	public void addMessage(Message message){
 		messageQueue.add(message);
 	}
 	
 	// Runs through the array list of events and dispatches them to the proper recipients
-	public void dispatchEvents(){
+	public void dispatchMessages(){
 		
 		for(int i = 0; i < messageQueue.size(); i++){
 			
 			if(!messageQueue.get(i).equals(null)){
-				messageQueue.get(i).getTo().onMessage();
+				messageQueue.get(i).getTo().onMessage(messageQueue.get(i));
+				messageQueue.remove(i);
 			}
 			
 			

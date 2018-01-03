@@ -10,18 +10,15 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
 import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.tiles.Tile;
-import bpa.dev.linavity.physics.Gravity;
-import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.world.Level;
 
 /* Task List
-//TODO Have the level class return 2d array of tiles on screen
-//TODO Use that method to render screen tiles
 //TODO Also, use that method to have mobs check for collision
 */
 
@@ -43,12 +40,9 @@ public class StartLevel extends BasicGameState{
 	
 	private int xpos; // Mouse's X position
 	private int ypos; // Mouse's Y position
-
-	// util object to access our other objects across the project
-	Utils util;
 	
 	//Variables to set up our level
-	public Level level;
+	
 	public Camera cam;
 	
 	// List of all user inputs
@@ -72,19 +66,18 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		util = new Utils();
-		cam = new Camera(util.getPlayer().getX(), util.getPlayer().getY());
+		cam = new Camera(Main.util.getPlayer().getX(), Main.util.getPlayer().getY());
 		back = new Image("res/gui/buttons/button_back.png");
 		bg = new Image("res/bg.jpg");
 		health_gui = new Image("res/gui/stats/health_bar.png");
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
-		level = new Level(0, "startlevel");
-		bounds = new Rectangle(util.getPlayer().getX() - cam.getX(), util.getPlayer().getY() - cam.getY(), 50, 50);
+		Main.util.setLevel(new Level(0, "startlevel"));
+		bounds = new Rectangle(Main.util.getPlayer().getX() - cam.getX(), Main.util.getPlayer().getY() - cam.getY(), 50, 50);
 		
 		//Create enemies
-		enemies[0] = new Starter(util, 300, 450);
+		enemies[0] = new Starter(300, 350);
 		enemybounds = new Rectangle(enemies[0].getX() - cam.getX(), enemies[0].getY() - cam.getY(), 50, 50);
 
 	}
@@ -100,16 +93,15 @@ public class StartLevel extends BasicGameState{
 		
 		renderScreen(gc, sbg, g);
 		
-		if(util.debugMode) {
-			g.drawString("X: " + util.getPlayer().getX() + " Y: " + util.getPlayer().getY(), 10,50);
+		if(Main.util.debugMode) {
+			g.drawString("X: " + Main.util.getPlayer().getX() + " Y: " + Main.util.getPlayer().getY(), 10,50);
 			g.drawString("Cam X: " + cam.getX() + " Cam Y: " + cam.getY(), 10,70);
-			g.drawString("Collide: " + util.getPlayer().isCollide(), 10,90);
-			g.drawString("Collide up: " + util.getPlayer().isCu(), 10,110);
-			g.drawString("Collide down: " + util.getPlayer().isCd(), 10,130);
-			g.drawString("Collide left: " + util.getPlayer().isCl(), 10,150);
-			g.drawString("Collide right: " + util.getPlayer().isCr(), 10,170);
+			g.drawString("Collide: " + Main.util.getPlayer().isCollide(), 10,90);
+			g.drawString("Collide up: " + Main.util.getPlayer().isCu(), 10,110);
+			g.drawString("Collide down: " + Main.util.getPlayer().isCd(), 10,130);
+			g.drawString("Collide left: " + Main.util.getPlayer().isCl(), 10,150);
+			g.drawString("Collide right: " + Main.util.getPlayer().isCr(), 10,170);
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes.
-			System.out.println("Player Y: "+util.getPlayer().getY());
 		}
 		
 		//Draw enemies
@@ -119,14 +111,14 @@ public class StartLevel extends BasicGameState{
 		}
 		
 		//If a projectile exists, then draw it on the screen
-		if(util.getPlayer().isProjectileExists()) {
-			util.getPlayer().getCurrentProjectile().getProjectileImage().draw(util.getPlayer().getCurrentProjectile().getX() - cam.getX() + 100, util.getPlayer().getCurrentProjectile().getY() - cam.getY() + 15);
+		if(Main.util.getPlayer().isProjectileExists()) {
+			Main.util.getPlayer().getCurrentProjectile().getProjectileImage().draw(Main.util.getPlayer().getCurrentProjectile().getX() - cam.getX() + 100, Main.util.getPlayer().getCurrentProjectile().getY() - cam.getY() + 15);
 		}
 		
 		//Draw player
-		util.getPlayer().getMobImage().draw(util.getPlayer().getX() - cam.getX(), util.getPlayer().getY() - cam.getY());
-		if(util.debugMode) {
-		bounds = new Rectangle(util.getPlayer().getX() - cam.getX(), util.getPlayer().getY() - cam.getY(), 50, 50);
+		Main.util.getPlayer().getMobImage().draw(Main.util.getPlayer().getX() - cam.getX(), Main.util.getPlayer().getY() - cam.getY());
+		if(Main.util.debugMode) {
+		bounds = new Rectangle(Main.util.getPlayer().getX() - cam.getX(), Main.util.getPlayer().getY() - cam.getY(), 50, 50);
 		g.setColor(Color.blue);
 		g.draw(bounds);
 		
@@ -136,10 +128,10 @@ public class StartLevel extends BasicGameState{
 		}
 		
 		health_gui.draw(0,0);
-		health_bar.draw(25,850,(float) (25+(util.getPlayer().getHealth() * 2.7)),850+27,0,0,(float) (util.getPlayer().getHealth() * 2.7),27);
+		health_bar.draw(25,850,(float) (25+(Main.util.getPlayer().getHealth() * 2.7)),850+27,0,0,(float) (Main.util.getPlayer().getHealth() * 2.7),27);
 		
 		grav_gui.draw(0,0);
-		grav_bar.draw(318,850,(float) (318+(util.getPlayer().getGravityPack() * 2.7)),850+27,0,0,(float) (util.getPlayer().getGravityPack() * 2.7),27);
+		grav_bar.draw(318,850,(float) (318+(Main.util.getPlayer().getGravPack().getGravpower() * 2.7)),850+27,0,0,(float) (Main.util.getPlayer().getGravPack().getGravpower() * 2.7),27);
 		
 		//Draw menu, if open
 		if(menuOpen){
@@ -158,7 +150,7 @@ public class StartLevel extends BasicGameState{
 		
 		
 		// Get a 2d array of tile objects that are contained within our camera's view
-		Tile[][] screenTiles = level.getScreenTiles(cam);
+		Tile[][] screenTiles = Main.util.getLevel().getScreenTiles(cam);
 		
 		// Temp x and y of tile in relation to the camera
 		float tileX, tileY;
@@ -170,7 +162,7 @@ public class StartLevel extends BasicGameState{
 					tileX = screenTiles[i][j].getX() - cam.getX(); // Get the tile's temp x location for the screen rendering
 					tileY = screenTiles[i][j].getY() - cam.getY(); // Get the tile's temp y location for the screen rendering
 					screenTiles[i][j].getTexture().draw(tileX, tileY); // Draw the tile
-					if(util.debugMode) {
+					if(Main.util.debugMode) {
 					Rectangle tileBounds = new Rectangle(tileX, tileY, screenTiles[i][j].getWidth(), screenTiles[i][j].getHeight());
 					g.setColor(Color.white);
 					g.draw(tileBounds);
@@ -197,6 +189,9 @@ public class StartLevel extends BasicGameState{
 			// Make all game information updates
 			gameUpdates(gc, sbg, delta);
 			
+			// Message Handler
+			Main.util.getMessageHandler().dispatchMessages();
+			
 		}
 		
 		// Open pop-up menu
@@ -207,10 +202,11 @@ public class StartLevel extends BasicGameState{
 		xpos = ExtraMouseFunctions.getMouseX(gc.getWidth()); // Updates the x coordinate of the mouse
 		ypos = ExtraMouseFunctions.getMouseY(gc.getHeight()); // Updates the y coordinate of the mouse
 		
-		if(util.getPlayer().getHealth() <= 0) {
-			util.getPlayer().setHealth(100);
-			util.getPlayer().setX(100);
-			util.getPlayer().setY(100);
+		if(Main.util.getPlayer().getHealth() <= 0) {
+			Main.util.getPlayer().setHealth(100);
+			Main.util.getPlayer().getGravPack().setGravpower(100);
+			Main.util.getPlayer().setX(100);
+			Main.util.getPlayer().setY(100);
 			sbg.enterState(2);
 		}
 		
@@ -235,7 +231,7 @@ public class StartLevel extends BasicGameState{
 		checkEnemyStatus();
 		
 		// Update Camera Coordinates
-		cam.updateCameraPos(util.getPlayer().getX(), util.getPlayer().getY());
+		cam.updateCameraPos(Main.util.getPlayer().getX(), Main.util.getPlayer().getY());
 		
 		// Open Pop-up menu
 		if(keyLog[6])
@@ -264,11 +260,11 @@ public class StartLevel extends BasicGameState{
 	public void updatePlayer(int delta){
 		
 		//Saving our previous X and Y values so we can use them for future reference
-		util.getPlayer().setPrevX(util.getPlayer().getX());
-		util.getPlayer().setPrevY(util.getPlayer().getY());
+		Main.util.getPlayer().setPrevX(Main.util.getPlayer().getX());
+		Main.util.getPlayer().setPrevY(Main.util.getPlayer().getY());
 		
 		// Update the player's position
-		util.getPlayer().updatePos(keyLog, delta, util);
+		Main.util.getPlayer().updatePos(keyLog, delta, Main.util);
 		
 		// Update the player's attributes
 		// player.updateAttributes();
@@ -300,7 +296,7 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void collide(GameContainer gc){
 		
-		util.getPlayer().checkCollisions(level, cam);
+		Main.util.getPlayer().checkCollisions(Main.util.getLevel(), cam);
 		
 	}//end of collide
 	
