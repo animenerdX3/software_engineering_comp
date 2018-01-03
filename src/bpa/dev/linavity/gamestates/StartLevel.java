@@ -84,7 +84,7 @@ public class StartLevel extends BasicGameState{
 		bounds = new Rectangle(util.getPlayer().getX() - cam.getX(), util.getPlayer().getY() - cam.getY(), 50, 50);
 		
 		//Create enemies
-		enemies[0] = new Starter(util, 300, 750);
+		enemies[0] = new Starter(util, 300, 450);
 		enemybounds = new Rectangle(enemies[0].getX() - cam.getX(), enemies[0].getY() - cam.getY(), 50, 50);
 
 	}
@@ -139,7 +139,7 @@ public class StartLevel extends BasicGameState{
 		health_bar.draw(25,850,(float) (25+(util.getPlayer().getHealth() * 2.7)),850+27,0,0,(float) (util.getPlayer().getHealth() * 2.7),27);
 		
 		grav_gui.draw(0,0);
-		grav_bar.draw(318,850,270,27);
+		grav_bar.draw(318,850,(float) (318+(util.getPlayer().getGravityPack() * 2.7)),850+27,0,0,(float) (util.getPlayer().getGravityPack() * 2.7),27);
 		
 		//Draw menu, if open
 		if(menuOpen){

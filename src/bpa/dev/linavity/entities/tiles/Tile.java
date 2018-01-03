@@ -22,13 +22,15 @@ public class Tile implements Shape {
 	private int height, width;
 	
 	// Tells the game whether or not the tile lets other objects pass through it.
-	private boolean passable = true;
+	private boolean passable;
 
 	// the image of our tile
 	private Image texture = null;
 	
 	// Possible paths for our image files
-	String[] texturePaths = {"res/tiles/static/sky.png", "res/tiles/static/floor_rust1.png", "res/tiles/static/floor_rust2.png", "res/tiles/static/floor.png"};
+	TileManager all_tiles = new TileManager("texture_paths");
+	String[] texturePaths = all_tiles.getTextures();
+	boolean[] isPassable = all_tiles.getPassable();
 	
 	public Tile(int i, int j, int id) 
 			throws SlickException{
@@ -38,15 +40,13 @@ public class Tile implements Shape {
 		this.y = i * 50; // We multiply by 64 since that is the height and width of the tile, to get the proper coordinate of the tile in our level
 		this.id = id;
 
-		// Temporary to make some blocks to interact with
-		if(id > 2){
-			passable = false;
-		}
 		
+			if(isPassable[id])
+				passable = true;
+			else
+				passable = false;
 			
 		this.texture = new Image(texturePaths[id]);
-		//this.setCollide(false);
-		//this.setPassable(true);
 	}
 	
 

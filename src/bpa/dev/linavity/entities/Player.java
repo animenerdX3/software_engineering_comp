@@ -15,13 +15,17 @@ public class Player extends Mob {
 	private boolean projectileExists = false;
 	private Projectile currentProjectile;
 	
-	private int gravityPack;
+	private float gravityPack;
+	
+	private GravityPack gravPack;
 	
 	public Player() 
 			throws SlickException{
 		super();
 		this.jumps = 0;
 		this.isFlipping = false;
+		this.gravityPack = 100;
+		this.gravPack = new GravityPack();
 	}
 	
 	public void updatePos(boolean[] keyLog, int delta, Utils util) {
@@ -39,8 +43,8 @@ public class Player extends Mob {
 		 * Z - Shoot (7) 
 		 */
 		
-		
 		if(getGravity().getFlipDirection()){ // Reverse Gravity
+			gravPack.depletingGravPack(util);
 			if(this.isCu())
 				this.isFalling = false;
 		}else{ // Regular Gravity
@@ -121,11 +125,11 @@ public class Player extends Mob {
 				} catch (SlickException e) {
 					e.printStackTrace();
 				}
-			}
-				
+			}	
+			
 		// If the user presses control, reverse gravity
 		if(isFlipping == false){
-			if(keyLog[5]){
+			if(keyLog[5] && this.gravityPack > 0){
 				isFlipping = true; // The player is currently flipping
 				getGravity().setFlipDirection(!getGravity().getFlipDirection()); // Switch the direction in which the player is flipping
 				flipDuration = 0;
@@ -133,25 +137,20 @@ public class Player extends Mob {
 			}
 		}
 		
-				
-		if(isFlipping){ //
-			if(getGravity().getFlipDirection()){
-				this.getMobImage().rotate(rotateSpeed);
-			}else{
-				this.getMobImage().rotate(-rotateSpeed);
-			}
-			flipDuration += rotateSpeed;
-		}
+		flipAnimation();
 		
-		if(flipDuration >= 180){
-			isFlipping = false;
+		if(this.gravityPack < 0){
+			getGravity().setFlipDirection(false); // Switch the direction in which the player is flipping
+			isFlipping = true;
+			flipDuration = 0;
+			getGravity().flipGravity();
+			this.gravityPack = 0;
 		}
 		
 		if(getGravity().getFlipDirection()){ // Reverse Gravity
 				super.updatePos(util.getGravity().getGravityPower());
 		}else{ // Regular Gravity
 				super.updatePos(util.getGravity().getGravityPower());
-				
 		}
 		
 		//Projectile Functions
@@ -175,6 +174,20 @@ public class Player extends Mob {
 		}
 		
 	}//end of updatePos
+	
+	public void flipAnimation(){
+		if(isFlipping){
+			if(getGravity().getFlipDirection()){
+				this.getMobImage().rotate(rotateSpeed);
+			}else{
+				this.getMobImage().rotate(-rotateSpeed);
+			}
+			flipDuration += rotateSpeed;
+		}
+		if(flipDuration >= 180){
+			isFlipping = false;
+		}
+	}
 	
 	// Player jumping function
 	public void jump(int gravPower){
@@ -216,6 +229,14 @@ public class Player extends Mob {
 		return currentProjectile;
 	}
 
+	public boolean isFlipping(){
+		return isFlipping;
+	}
+	
+	public float getGravityPack(){
+		return gravityPack;
+	}
+	
 	/* SETTERS */
 	
 	public void setProjectileExists(boolean projectileExists) {
@@ -226,9 +247,13 @@ public class Player extends Mob {
 		this.currentProjectile = currentProjectile;
 	}
 
-	//This may have important information in regards to the hitbox of the player
-	public String toString() {
-		return "Image: "+getMobImage();
+	public void setIsFlipping(boolean isFlipping){
+		this.isFlipping = isFlipping;
 	}
+	
+	public void setGravityPack(float gravityPack){
+		this.gravityPack = gravityPack;
+	}
+	
 	
 }//end of class

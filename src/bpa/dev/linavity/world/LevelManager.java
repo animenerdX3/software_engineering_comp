@@ -27,7 +27,7 @@ public class LevelManager {
 	 * @return level as a file
 	 */
 	public File getFile(String directory) {
-		return new File("levels/"+directory+".txt");
+		return new File("data/rooms/"+directory+".txt");
 	}//end of getFile
 	
 	/**
@@ -45,6 +45,7 @@ public class LevelManager {
 			arraysize++;
 		}
 		
+		scan.close();
 		return arraysize;
 	}//end of checkSize
 	
