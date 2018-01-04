@@ -8,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
 import bpa.dev.linavity.GameObject;
 
@@ -33,6 +34,8 @@ public class Tile extends GameObject implements Shape {
 	String[] texturePaths = all_tiles.getTextures();
 	boolean[] isPassable = all_tiles.getPassable();
 	
+	private Rectangle collisionBox;
+	
 	public Tile(int i, int j, int id) 
 			throws SlickException{
 		this.height = 50; // Current height of our tiles
@@ -48,6 +51,7 @@ public class Tile extends GameObject implements Shape {
 				passable = false;
 			
 		this.texture = new Image(texturePaths[id]);
+		this.collisionBox = new Rectangle(this.x, this.y, this.width, this.height);
 	}
 	
 
@@ -85,6 +89,10 @@ public class Tile extends GameObject implements Shape {
 		return texture;
 	}
 	
+	public Rectangle getCollisionBox() {
+		return collisionBox;
+	}
+	
 	/* SETTERS */
 	
 
@@ -117,6 +125,10 @@ public class Tile extends GameObject implements Shape {
 
 	public void setTexture(Image texture) {
 		this.texture = texture;
+	}
+	
+	public void setCollisionBox(Rectangle collisionBox) {
+		this.collisionBox = collisionBox;
 	}
 	
 

@@ -2,6 +2,7 @@ package bpa.dev.linavity.entities;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
 import bpa.dev.linavity.GameObject;
 import bpa.dev.linavity.Main;
@@ -47,7 +48,9 @@ public class Mob extends GameObject{
 	
 	//Gravity object
 	private Gravity gravity;
-		
+	
+	private Rectangle boundingBox;
+	
 	//Default constructor
 	public Mob(Utils util) 
 			throws SlickException{
@@ -57,8 +60,8 @@ public class Mob extends GameObject{
 		this.health = 100;
 		
 		// Dimension Variables
-		this.width = this.getMobImage().getWidth() - 2;
-		this.height = this.getMobImage().getHeight() - 2;
+		this.width = this.getMobImage().getWidth();
+		this.height = this.getMobImage().getHeight();
 		
 		this.gravity = new Gravity();
 		
@@ -80,6 +83,8 @@ public class Mob extends GameObject{
 		
 		this.jumpNum = 1;
 		this.isAlive = true;
+		
+		this.boundingBox = new Rectangle(this.x, this.y, this.width, this.height);
 	}
 	
 	//Non-Default constructor
@@ -97,6 +102,8 @@ public class Mob extends GameObject{
 		this.isFalling = true;
 		this.jumpNum = 1;
 		this.isAlive = true;
+		
+		this.boundingBox = new Rectangle(this.x, this.y, this.width, this.height);
 	}
 
 	/**
@@ -394,8 +401,12 @@ public class Mob extends GameObject{
 		return isAlive;
 	}
 	
-	/* SETTERS */
+	public Rectangle getBoundingBox() {
+		return boundingBox;
+	}
 	
+	/* SETTERS */
+
 	public void setCollide(boolean collide) {
 		this.collide = collide;
 	}
@@ -494,6 +505,10 @@ public class Mob extends GameObject{
 	
 	public void setIsAlive(boolean isAlive){
 		this.isAlive = isAlive;
+	}
+
+	public void setBoundingBox(Rectangle boundingBox) {
+		this.boundingBox = boundingBox;
 	}
 	
 }//end of class

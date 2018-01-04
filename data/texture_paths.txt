@@ -1,4 +1,4 @@
-res/tiles/black.png,true
+res/tiles/blank.png,true
 res/tiles/static/floor_rust1.png,false
 res/tiles/static/floor_rust2.png,false
 res/tiles/static/floor.png,false

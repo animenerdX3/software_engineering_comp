@@ -102,6 +102,7 @@ public class StartLevel extends BasicGameState{
 			g.drawString("Collide left: " + Main.util.getPlayer().isCl(), 10,150);
 			g.drawString("Collide right: " + Main.util.getPlayer().isCr(), 10,170);
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes.
+			g.drawString("Player Box X: "+Main.util.getPlayer().getX() + " Player Box Y: "+Main.util.getPlayer().getY(), 10, 210); // Draw our mouse position for debugging purposes.
 		}
 		
 		//Draw enemies
@@ -117,14 +118,12 @@ public class StartLevel extends BasicGameState{
 		
 		//Draw player
 		Main.util.getPlayer().getMobImage().draw(Main.util.getPlayer().getX() - cam.getX(), Main.util.getPlayer().getY() - cam.getY());
+		Main.util.getPlayer().setBoundingBox(new Rectangle(Main.util.getPlayer().getBoundingBox().getX()- cam.getX(), Main.util.getPlayer().getBoundingBox().getY() - cam.getY(), Main.util.getPlayer().getBoundingBox().getWidth(), Main.util.getPlayer().getBoundingBox().getHeight()));
 		if(Main.util.debugMode) {
-		bounds = new Rectangle(Main.util.getPlayer().getX() - cam.getX(), Main.util.getPlayer().getY() - cam.getY(), 50, 50);
-		g.setColor(Color.blue);
-		g.draw(bounds);
 		
-		enemybounds = new Rectangle(enemies[0].getX() - cam.getX(), enemies[0].getY() - cam.getY(), 50, 50);
+		enemies[0].setBoundingBox(new Rectangle(enemies[0].getX() - cam.getX(), enemies[0].getY() - cam.getY(), enemies[0].getWidth(), enemies[0].getHeight()));
 		g.setColor(Color.orange);
-		g.draw(enemybounds);
+		g.draw(enemies[0].getBoundingBox());
 		}
 		
 		health_gui.draw(0,0);
@@ -163,9 +162,11 @@ public class StartLevel extends BasicGameState{
 					tileY = screenTiles[i][j].getY() - cam.getY(); // Get the tile's temp y location for the screen rendering
 					screenTiles[i][j].getTexture().draw(tileX, tileY); // Draw the tile
 					if(Main.util.debugMode) {
-					Rectangle tileBounds = new Rectangle(tileX, tileY, screenTiles[i][j].getWidth(), screenTiles[i][j].getHeight());
-					g.setColor(Color.white);
-					g.draw(tileBounds);
+						screenTiles[i][j].setCollisionBox(new Rectangle(tileX, tileY, screenTiles[i][j].getWidth(), screenTiles[i][j].getHeight()));
+						if(!screenTiles[i][j].isPassable()) {
+							g.setColor(Color.white);
+							g.draw(screenTiles[i][j].getCollisionBox());
+						}
 					}
 				}
 			}
