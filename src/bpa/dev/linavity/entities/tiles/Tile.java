@@ -1,5 +1,6 @@
 package bpa.dev.linavity.entities.tiles;
 
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
@@ -8,7 +9,6 @@ import java.awt.geom.Rectangle2D;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 
 import bpa.dev.linavity.GameObject;
 
@@ -51,7 +51,7 @@ public class Tile extends GameObject implements Shape {
 				passable = false;
 			
 		this.texture = new Image(texturePaths[id]);
-		this.collisionBox = new Rectangle(this.x, this.y, this.width, this.height);
+		this.collisionBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
 	}
 	
 

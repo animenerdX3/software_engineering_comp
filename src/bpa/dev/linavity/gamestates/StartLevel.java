@@ -1,12 +1,13 @@
 package bpa.dev.linavity.gamestates;
 
+import java.awt.Rectangle;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -56,6 +57,8 @@ public class StartLevel extends BasicGameState{
 	//List of all possible enemies
 	Starter [] enemies = new Starter[1];
 	
+	Tile[][] screenTiles;
+	
 	//Default constructor
 	public StartLevel(){ 
 		
@@ -74,11 +77,11 @@ public class StartLevel extends BasicGameState{
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
 		Main.util.setLevel(new Level(0, "startlevel"));
-		bounds = new Rectangle(Main.util.getPlayer().getX() - cam.getX(), Main.util.getPlayer().getY() - cam.getY(), 50, 50);
+		bounds = new Rectangle((int) (Main.util.getPlayer().getX() - cam.getX()), (int) (Main.util.getPlayer().getY() - cam.getY()), 50, 50);
 		
 		//Create enemies
 		enemies[0] = new Starter(300, 350);
-		enemybounds = new Rectangle(enemies[0].getX() - cam.getX(), enemies[0].getY() - cam.getY(), 50, 50);
+		enemybounds = new Rectangle((int) (enemies[0].getX() - cam.getX()), (int) (enemies[0].getY() - cam.getY()), 50, 50);
 
 	}
 
@@ -102,7 +105,7 @@ public class StartLevel extends BasicGameState{
 			g.drawString("Collide left: " + Main.util.getPlayer().isCl(), 10,150);
 			g.drawString("Collide right: " + Main.util.getPlayer().isCr(), 10,170);
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes.
-			g.drawString("Player Box X: "+Main.util.getPlayer().getX() + " Player Box Y: "+Main.util.getPlayer().getY(), 10, 210); // Draw our mouse position for debugging purposes.
+			g.drawString("Player Box X: "+Main.util.getPlayer().getBoundingBox().getX() + " Player Box Y: "+Main.util.getPlayer().getBoundingBox().getY(), 10, 210); // Draw our mouse position for debugging purposes.
 		}
 		
 		//Draw enemies
@@ -118,12 +121,14 @@ public class StartLevel extends BasicGameState{
 		
 		//Draw player
 		Main.util.getPlayer().getMobImage().draw(Main.util.getPlayer().getX() - cam.getX(), Main.util.getPlayer().getY() - cam.getY());
-		Main.util.getPlayer().setBoundingBox(new Rectangle(Main.util.getPlayer().getBoundingBox().getX()- cam.getX(), Main.util.getPlayer().getBoundingBox().getY() - cam.getY(), Main.util.getPlayer().getBoundingBox().getWidth(), Main.util.getPlayer().getBoundingBox().getHeight()));
 		if(Main.util.debugMode) {
 		
-		enemies[0].setBoundingBox(new Rectangle(enemies[0].getX() - cam.getX(), enemies[0].getY() - cam.getY(), enemies[0].getWidth(), enemies[0].getHeight()));
+		Main.util.getPlayer().setBoundingBox(new Rectangle((int) (Main.util.getPlayer().getX()- cam.getX()), (int) (Main.util.getPlayer().getY() - cam.getY()), (int) Main.util.getPlayer().getBoundingBox().getWidth(), (int) Main.util.getPlayer().getBoundingBox().getHeight()));
+		enemies[0].setBoundingBox(new Rectangle((int) (enemies[0].getX() - cam.getX()), (int) (enemies[0].getY() - cam.getY()), enemies[0].getWidth(), enemies[0].getHeight()));
 		g.setColor(Color.orange);
-		g.draw(enemies[0].getBoundingBox());
+		g.drawRect((int) Main.util.getPlayer().getBoundingBox().getX(), (int) Main.util.getPlayer().getBoundingBox().getY(), (int) Main.util.getPlayer().getBoundingBox().getWidth(), (int) Main.util.getPlayer().getBoundingBox().getHeight());
+
+		g.drawRect((int) enemies[0].getBoundingBox().getX(), (int) enemies[0].getBoundingBox().getY(), (int) enemies[0].getBoundingBox().getWidth(), (int) enemies[0].getBoundingBox().getHeight());
 		}
 		
 		health_gui.draw(0,0);
@@ -149,7 +154,7 @@ public class StartLevel extends BasicGameState{
 		
 		
 		// Get a 2d array of tile objects that are contained within our camera's view
-		Tile[][] screenTiles = Main.util.getLevel().getScreenTiles(cam);
+		screenTiles = Main.util.getLevel().getScreenTiles(cam);
 		
 		// Temp x and y of tile in relation to the camera
 		float tileX, tileY;
@@ -162,10 +167,10 @@ public class StartLevel extends BasicGameState{
 					tileY = screenTiles[i][j].getY() - cam.getY(); // Get the tile's temp y location for the screen rendering
 					screenTiles[i][j].getTexture().draw(tileX, tileY); // Draw the tile
 					if(Main.util.debugMode) {
-						screenTiles[i][j].setCollisionBox(new Rectangle(tileX, tileY, screenTiles[i][j].getWidth(), screenTiles[i][j].getHeight()));
+						screenTiles[i][j].setCollisionBox(new Rectangle((int) tileX, (int) tileY, (int) screenTiles[i][j].getWidth(), (int) screenTiles[i][j].getHeight()));
 						if(!screenTiles[i][j].isPassable()) {
 							g.setColor(Color.white);
-							g.draw(screenTiles[i][j].getCollisionBox());
+							g.drawRect((int)screenTiles[i][j].getCollisionBox().getX(), (int) screenTiles[i][j].getCollisionBox().getY(), (int) screenTiles[i][j].getCollisionBox().getWidth(), (int)screenTiles[i][j].getCollisionBox().getHeight());
 						}
 					}
 				}
@@ -267,9 +272,6 @@ public class StartLevel extends BasicGameState{
 		// Update the player's position
 		Main.util.getPlayer().updatePos(keyLog, delta, Main.util);
 		
-		// Update the player's attributes
-		// player.updateAttributes();
-		
 	}
 	
 	/**
@@ -292,12 +294,13 @@ public class StartLevel extends BasicGameState{
 	}
 	
 	/**
-	 * Implements world borders
+	 * Implements collision to mobs
 	 * @param gc
 	 */
 	public void collide(GameContainer gc){
-		
-		Main.util.getPlayer().checkCollisions(Main.util.getLevel(), cam);
+
+
+		Main.util.getPlayer().collidedWithTile(Main.util.getLevel(), cam);
 		
 	}//end of collide
 	

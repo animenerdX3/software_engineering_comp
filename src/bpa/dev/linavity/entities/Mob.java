@@ -1,19 +1,17 @@
 package bpa.dev.linavity.entities;
 
+import java.awt.Rectangle;
+
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 
 import bpa.dev.linavity.GameObject;
-import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.tiles.Tile;
-import bpa.dev.linavity.entities.tiles.foreground.dynamicTiles.Dynamic;
-import bpa.dev.linavity.events.Message;
 import bpa.dev.linavity.physics.Gravity;
 import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.world.Level;
 
-public class Mob extends GameObject{
+public abstract class Mob extends GameObject{
 	
 	// Dimension Variables
 		//Yeh we usin this
@@ -49,7 +47,8 @@ public class Mob extends GameObject{
 	//Gravity object
 	private Gravity gravity;
 	
-	private Rectangle boundingBox;
+	private Rectangle boundingBox = new Rectangle();
+	private Rectangle collisionCheck = new Rectangle();
 	
 	//Default constructor
 	public Mob(Utils util) 
@@ -84,7 +83,7 @@ public class Mob extends GameObject{
 		this.jumpNum = 1;
 		this.isAlive = true;
 		
-		this.boundingBox = new Rectangle(this.x, this.y, this.width, this.height);
+		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
 	}
 	
 	//Non-Default constructor
@@ -103,7 +102,7 @@ public class Mob extends GameObject{
 		this.jumpNum = 1;
 		this.isAlive = true;
 		
-		this.boundingBox = new Rectangle(this.x, this.y, this.width, this.height);
+		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
 	}
 
 	/**
@@ -124,175 +123,96 @@ public class Mob extends GameObject{
 		
 	}
 	
+	public boolean collidesWithTile(Tile tile, Camera cam) {
+		
+		collisionCheck.setBounds((int) (tile.getX() - cam.getX()), (int) (tile.getY() - cam.getY()), (int) tile.getWidth(), (int) tile.getHeight());
+		return boundingBox.intersects(collisionCheck);
+		
+	}
 	
-	// Check to see if the player is colliding, and on which sides
-	public void checkCollisions(Level level, Camera cam) {
+	public void collidedWithTile(Level level, Camera cam) {
 		
-		// Get a 2d array of tile objects that are contained within our camera's view
 		Tile[][] screenTiles = level.getScreenTiles(cam);
-		
-		boolean setCollideTo = false;
-		boolean setCu = false;
-		boolean setCd = false;
-		boolean setCl = false;
-		boolean setCr = false;
-		
-		
-		// Run through collision detection for the tiles that belong on the screen.
-		for(int i = 0; i < screenTiles.length; i++) {
-			for(int j = 0; j < screenTiles[i].length; j++) {
-				
-				if(screenTiles[i][j] != null) { // If the tile exists
-					if(!screenTiles[i][j].isPassable()){ // Can be collided with
-						if(checkBothSides(screenTiles[i][j])){ // And is colliding then...
-
-							// Check for dynamic tiles
-							if(screenTiles[i][j] instanceof Dynamic){
-								Main.util.getMessageHandler().addMessage(new Message(Main.util.getPlayer(), screenTiles[i][j], ((Dynamic) screenTiles[i][j]).getMessageSendType(), 1));
-							}
-							
-							
-							
-							//Check For Reverse Gravity
-							if(gravity.getFlipDirection()) {
-								// Check Up
-								if(checkUpCollision(screenTiles[i][j])){
-									setCu = true;
-									setCollideTo = true;
-									break;
-								}
-								
-								// Check Left
-								if(checkLeftCollision(screenTiles[i][j])){
-									setCl = true;
-									setCollideTo = true; //Object is colliding
-									break;
-								}	
-								
-								// Check Down
-								if(checkDownCollision(screenTiles[i][j])){
-									setCd = true;
-									setCollideTo = true; //Object is colliding
-									break;
-								}
-								
-								// Check Right
-								if(checkRightCollision(screenTiles[i][j])){
-									setCr = true;
-									setCollideTo = true; //Object is colliding
-									break;
-								}
-									
-								
-
-							}
-							//Check For Regular Gravity
-							else {
-								// Check Down
-								if(checkDownCollision(screenTiles[i][j])){
-									setCd = true;
-									setCollideTo = true; //Object is colliding
-									break;
-								}
-								
-								// Check Right
-								if(checkRightCollision(screenTiles[i][j])){
-									setCr = true;
-									setCollideTo = true; //Object is colliding
-									break;
-								}
-									
-								// Check Up
-								if(checkUpCollision(screenTiles[i][j])){
-									setCu = true;
-									setCollideTo = true;
-									break;
-								}
-								
-								// Check Left
-								if(checkLeftCollision(screenTiles[i][j])){
-									setCl = true;
-									setCollideTo = true; //Object is colliding
-									break;
-								}
-							
-							}
-
+		for(int r = 0; r < screenTiles.length; r++) {
+			for(int c = 0; c < screenTiles[0].length; c++) {
+				if(screenTiles[r][c] != null) {
+					if(!screenTiles[r][c].isPassable()) {
+						
+						//Up Collision
+						
+						//NOTE: Collision when both up and down / left and right does not wrk
+						
+						float checkUpY =  screenTiles[r][c].getY() + screenTiles[r][c].getHeight();
+						float checkUpX_Left = screenTiles[r][c].getX() - screenTiles[r][c].getWidth();
+						float checkUpX_Right = screenTiles[r][c].getX() + screenTiles[r][c].getWidth();
+						
+						if(y == checkUpY  && (x > checkUpX_Left && x < checkUpX_Right)) {
+							System.err.println("UP COLLISION");
+							this.cu = true;
+							this.y = y + 1;
+							break;
+						}
+						
+						//Down Collision
+						
+						float checkDownY =  (screenTiles[r][c].getY()) - screenTiles[r][c].getHeight();
+						float checkDownX_Left = (screenTiles[r][c].getX()) - screenTiles[r][c].getWidth();
+						float checkDownX_Right = (screenTiles[r][c].getX()) + screenTiles[r][c].getWidth();
+						
+						
+						if(y == checkDownY  && (x > checkDownX_Left && x < checkDownX_Right)) {
+							System.err.println("DOWN COLLISION");
+							this.cd = true;
+							this.y = y - 1;
+							this.isFalling = false;
+							break;
+						}
+						
+						
+						//Left Collision
+						
+						float checkLeftX =  screenTiles[r][c].getX() + screenTiles[r][c].getWidth();
+						float checkLeftY_Up = screenTiles[r][c].getY() - screenTiles[r][c].getHeight();
+						float checkLeftY_Down = screenTiles[r][c].getY() + screenTiles[r][c].getHeight();
+						
+						if(x == checkLeftX && (y > checkLeftY_Up && y < checkLeftY_Down)) {
+							System.err.println("LEFT COLLISION");
+							this.cl = true;
+							if(cr)
+								this.x = x + 0;
+							else	
+								this.x = x + 1;
+							break;
+						}
+						
+						
+						//Right Collision
+						
+						float checkRightX =  screenTiles[r][c].getX() + screenTiles[r][c].getWidth();
+						float checkRightY_Up = screenTiles[r][c].getY() - screenTiles[r][c].getHeight();
+						float checkRightY_Down = screenTiles[r][c].getY() + screenTiles[r][c].getHeight();
+						
+						if(x == checkRightX && (y > checkRightY_Up && y < checkRightY_Down)) {
+							this.cr = true;
+							System.err.println("RIGHT COLLISION");
+							if(cl)
+								this.x = x - 0;
+							else	
+								this.x = x - 1;
+							break;
+						}
+						
+						else {
+							this.cu = false;
+							this.cd = false;
+							this.cl = false;
+							this.cr = false;
+							this.collide = false;
 						}
 					}
 				}
-				
 			}
 		}
-		// End of tile collision detection	
-		this.setCollide(setCollideTo);
-		this.setCu(setCu);
-		this.setCd(setCd);
-		this.setCl(setCl);
-		this.setCr(setCr);
-				
-		
-	}
-	
-	public boolean checkLeftCollision(Tile tile) {
-		if(this.x <= tile.getX()  && getPrevX() <= x){
-			System.err.println("Left Collision");
-			this.x = (float) (tile.getX() - mobImage.getWidth() - 4);
-			return true;
-		}	
-		return false;
-	
-	}//end of checkLeftCollision
-	
-	public boolean checkRightCollision(Tile tile) {
-		if(this.x >= tile.getX() &&  getPrevX() >= x){
-			System.err.println("Right Collision");
-			this.x = (float) (tile.getX() + mobImage.getWidth() + 4);
-			return true;
-		}
-		return false;
-		
-	}//end of checkRightCollision
-	
-	public boolean checkUpCollision(Tile tile) {
-		if(this.y >= tile.getY()  && getPrevY() >= y){
-			System.err.println("Up Collision");
-			this.y = (float) (tile.getY() + mobImage.getHeight());
-			return true;
-		}
-		return false;
-	
-	}//end of checkUpCollision
-	
-	public boolean checkDownCollision(Tile tile) {
-		if(this.y <= tile.getY() && getPrevY() <= y){
-			System.err.println("Down Collision"); 
-			this.y = (float) (tile.getY() - mobImage.getHeight());
-			return true;
-		}
-		return false;
-		
-	}//end of checkDownCollision
-	
-	// We need to make mob and tile extend a common game object so that we can perform collision detection with anything
-	private boolean checkBothSides(Tile tile){
-		return checkSide(this.x, this.x + this.width, tile.getX(), tile.getX() + tile.getWidth()) && 
-				checkSide(this.y, this.y + this.height, tile.getY(), tile.getY() + tile.getHeight());
-	}
-	
-	private boolean checkSide(float objNum1, float objNum2, float f, float g){
-		// Want to make sure that the min and the max of the two coordinates are oriented properly.
-		float objMin = Math.min(objNum1, objNum2);
-		float objMax = Math.max(objNum1, objNum2);
-		
-		// Want to make sure that the min and the max of the two coordinates are oriented properly.
-		float tileMin = Math.min(f, g);
-		float tileMax = Math.max(f, g);
-		
-		if(objMax >= tileMin && objMin <= tileMax) // If the two sides overlap
-			return true; 
-		else
-			return false;
 	}
 	
 	/* GETTERS */

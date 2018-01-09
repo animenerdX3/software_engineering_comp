@@ -119,7 +119,8 @@ public class Player extends Mob {
 				}
 			}
 			else if(keyLog[1]) { //Check For A Key
-				this.setX((int) (getX() - 200/1000.0f * delta));
+				//this.setX((int) (getX() - 200/1000.0f * delta));
+				this.setX((int) (getX() - 1));
 				try {
 					if(getGravity().getFlipDirection()) {
 						this.setMobImage(new Image("res/sprites/player/player_0.png"));
@@ -148,7 +149,8 @@ public class Player extends Mob {
 				}
 			}
 			else if(keyLog[3]) { //Check For D key
-				this.setX((int) (getX() + 200/1000.0f * delta));
+				//this.setX((int) (getX() + 200/1000.0f * delta));
+				this.setX((int) (getX() + 1));
 				try {
 					if(getGravity().getFlipDirection()) {
 						this.setMobImage(new Image("res/sprites/player/player_1.png"));
