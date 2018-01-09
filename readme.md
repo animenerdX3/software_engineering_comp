@@ -31,5 +31,10 @@ TODO:
 - Implement collision to projectile
 - Clean up projectiles, camera, and physics
 - FIX COLLISION
-- Fix Pause Menu
+
+HOW GRAVITY SHOULD WORK:
+- Small constant variable that is divisible by 50.
+- When jumping, the gravity should be made negative.
+- When in the air, there should be a force constantly adding to it.
+- When the player reaches a value divisible by 1 near the ground, set the gravity to 1.
 
