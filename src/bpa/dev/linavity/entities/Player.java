@@ -19,15 +19,12 @@ public class Player extends Mob {
 	private boolean projectileExists = false;
 	private Projectile currentProjectile;
 	
-//	private float gravityPack;
-	
 	private GravityPack gravPack;
 	
 	public Player(Utils util) throws SlickException{
 		super(util);
 		this.jumps = 0;
 		this.isFlipping = false;
-		//this.gravityPack = 100;
 		this.gravPack = new GravityPack(100);
 	}
 	
@@ -37,12 +34,7 @@ public class Player extends Mob {
 		// All Messages / Events for the player are handled here
 		
 		// ID 0: Recharge Gravity Pack
-		if(message.getType() == Message.thing){
-/*			this.gravityPack += (int) message.getData();
-			if(this.gravityPack >= 100){
-				this.gravityPack = 100;
-			}
-*/			
+		if(message.getType() == Message.thing){		
 		
 			gravPack.setGravpower(gravPack.getGravpower() + (int) message.getData());
 

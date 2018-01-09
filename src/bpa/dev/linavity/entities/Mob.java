@@ -123,96 +123,109 @@ public abstract class Mob extends GameObject{
 		
 	}
 	
-	public boolean collidesWithTile(Tile tile, Camera cam) {
-		
-		collisionCheck.setBounds((int) (tile.getX() - cam.getX()), (int) (tile.getY() - cam.getY()), (int) tile.getWidth(), (int) tile.getHeight());
-		return boundingBox.intersects(collisionCheck);
-		
-	}
-	
 	public void collidedWithTile(Level level, Camera cam) {
 		
 		Tile[][] screenTiles = level.getScreenTiles(cam);
 		for(int r = 0; r < screenTiles.length; r++) {
+
 			for(int c = 0; c < screenTiles[0].length; c++) {
 				if(screenTiles[r][c] != null) {
 					if(!screenTiles[r][c].isPassable()) {
 						
-						//Up Collision
 						
 						//NOTE: Collision when both up and down / left and right does not wrk
 						
-						float checkUpY =  screenTiles[r][c].getY() + screenTiles[r][c].getHeight();
-						float checkUpX_Left = screenTiles[r][c].getX() - screenTiles[r][c].getWidth();
-						float checkUpX_Right = screenTiles[r][c].getX() + screenTiles[r][c].getWidth();
+						if(leftCollision(screenTiles[r][c])) {
+							this.cl = true;
+							System.err.println("LEFT COLLISION");
+							this.x = x + 1;
+						}
+						else
+							this.cl = false;
 						
-						if(y == checkUpY  && (x > checkUpX_Left && x < checkUpX_Right)) {
+						if(rightCollision(screenTiles[r][c])) {
+							System.err.println("RIGHT COLLISION");
+							this.cr = true;
+							this.x = x - 1;
+						}
+						else
+							this.cr = false;
+						
+						if(upCollision(screenTiles[r][c])) {
 							System.err.println("UP COLLISION");
 							this.cu = true;
 							this.y = y + 1;
-							break;
 						}
+						else
+							this.cu = false;
 						
-						//Down Collision
-						
-						float checkDownY =  (screenTiles[r][c].getY()) - screenTiles[r][c].getHeight();
-						float checkDownX_Left = (screenTiles[r][c].getX()) - screenTiles[r][c].getWidth();
-						float checkDownX_Right = (screenTiles[r][c].getX()) + screenTiles[r][c].getWidth();
-						
-						
-						if(y == checkDownY  && (x > checkDownX_Left && x < checkDownX_Right)) {
+						if(downCollision(screenTiles[r][c])) {
 							System.err.println("DOWN COLLISION");
 							this.cd = true;
 							this.y = y - 1;
 							this.isFalling = false;
-							break;
 						}
-						
-						
-						//Left Collision
-						
-						float checkLeftX =  screenTiles[r][c].getX() + screenTiles[r][c].getWidth();
-						float checkLeftY_Up = screenTiles[r][c].getY() - screenTiles[r][c].getHeight();
-						float checkLeftY_Down = screenTiles[r][c].getY() + screenTiles[r][c].getHeight();
-						
-						if(x == checkLeftX && (y > checkLeftY_Up && y < checkLeftY_Down)) {
-							System.err.println("LEFT COLLISION");
-							this.cl = true;
-							if(cr)
-								this.x = x + 0;
-							else	
-								this.x = x + 1;
-							break;
-						}
-						
-						
-						//Right Collision
-						
-						float checkRightX =  screenTiles[r][c].getX() + screenTiles[r][c].getWidth();
-						float checkRightY_Up = screenTiles[r][c].getY() - screenTiles[r][c].getHeight();
-						float checkRightY_Down = screenTiles[r][c].getY() + screenTiles[r][c].getHeight();
-						
-						if(x == checkRightX && (y > checkRightY_Up && y < checkRightY_Down)) {
-							this.cr = true;
-							System.err.println("RIGHT COLLISION");
-							if(cl)
-								this.x = x - 0;
-							else	
-								this.x = x - 1;
-							break;
-						}
-						
-						else {
-							this.cu = false;
+						else
 							this.cd = false;
-							this.cl = false;
-							this.cr = false;
-							this.collide = false;
-						}
+						
+						
 					}
 				}
 			}
 		}
+	}
+	
+	public boolean leftCollision(Tile tile) {
+		//Left Collision
+		
+		float checkRightX =  tile.getX() + tile.getWidth();
+		float checkRightY_Up = tile.getY() - tile.getHeight();
+		float checkRightY_Down = tile.getY() + tile.getHeight();
+		
+		if(x == checkRightX && (y > checkRightY_Up && y < checkRightY_Down))
+			return true;
+		
+		return false;
+	}
+	
+	public boolean rightCollision(Tile tile) {
+		//Right Collision
+		
+		float checkLeftX =  tile.getX() - tile.getWidth();
+		float checkLeftY_Up = tile.getY() - tile.getHeight();
+		float checkLeftY_Down = tile.getY() + tile.getHeight();
+		
+		if(x == checkLeftX && (y > checkLeftY_Up && y < checkLeftY_Down))
+			return true;
+		
+		return false;
+	}
+	
+	public boolean downCollision(Tile tile) {
+		//Down Collision
+		
+		float checkDownY =  (tile.getY()) - tile.getHeight();
+		float checkDownX_Left = (tile.getX()) - tile.getWidth();
+		float checkDownX_Right = (tile.getX()) + tile.getWidth();
+		
+		
+		if(y == checkDownY  && (x > checkDownX_Left && x < checkDownX_Right))
+			return true;
+		
+		return false;
+	}
+	
+	public boolean upCollision(Tile tile) {
+		//Up Collision
+		
+		float checkUpY =  tile.getY() + tile.getHeight();
+		float checkUpX_Left = tile.getX() - tile.getWidth();
+		float checkUpX_Right = tile.getX() + tile.getWidth();
+		
+		if(y == checkUpY  && (x > checkUpX_Left && x < checkUpX_Right)) 
+			return true;
+		
+		return false;
 	}
 	
 	/* GETTERS */
