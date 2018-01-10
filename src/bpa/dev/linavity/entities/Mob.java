@@ -33,9 +33,7 @@ public abstract class Mob extends GameObject{
 		
 	// Physics Variables
 		// Momentum in the y direction
-		private float ymo; 
-
-		protected boolean isFalling;
+		private float ymo;
 		
 	//Number of Possible Jumps: jumpNum + 1
 		protected int jumpNum;
@@ -43,12 +41,13 @@ public abstract class Mob extends GameObject{
 	//Mob Game Stats
 		private double health, damage;
 		private boolean isAlive;
+		
+		private boolean canJump;
 	
 	//Gravity object
 	private Gravity gravity;
 	
 	private Rectangle boundingBox = new Rectangle();
-	private Rectangle collisionCheck = new Rectangle();
 	
 	//Default constructor
 	public Mob(Utils util) 
@@ -78,10 +77,9 @@ public abstract class Mob extends GameObject{
 		// Physic's Variables
 		this.ymo = 0;
 		
-		this.isFalling = true;
-		
 		this.jumpNum = 1;
 		this.isAlive = true;
+		this.canJump = true;
 		
 		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
 	}
@@ -98,9 +96,9 @@ public abstract class Mob extends GameObject{
 		// Dimension Variables
 		this.width = this.getMobImage().getWidth();
 		this.height = this.getMobImage().getHeight();
-		this.isFalling = true;
 		this.jumpNum = 1;
 		this.isAlive = true;
+		this.canJump = true;  
 		
 		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
 	}
@@ -132,38 +130,48 @@ public abstract class Mob extends GameObject{
 				if(screenTiles[r][c] != null) {
 					if(!screenTiles[r][c].isPassable()) {
 						
-						
-						//NOTE: Collision when both up and down / left and right does not wrk
-						
+						//Left Collision
 						if(leftCollision(screenTiles[r][c])) {
 							this.cl = true;
 							System.err.println("LEFT COLLISION");
-							this.x = x + 1;
+							this.x = x + 2;
 						}
 						else
 							this.cl = false;
 						
+						//Right Collision
 						if(rightCollision(screenTiles[r][c])) {
-							System.err.println("RIGHT COLLISION");
-							this.cr = true;
-							this.x = x - 1;
+								System.err.println("RIGHT COLLISION");
+								this.cr = true;
+								this.x = x - 2;
 						}
 						else
 							this.cr = false;
 						
+						//Up Collision
 						if(upCollision(screenTiles[r][c])) {
-							System.err.println("UP COLLISION");
-							this.cu = true;
-							this.y = y + 1;
+							if(screenTiles[r+2][c].isPassable()) {//No blocks on top of the player
+								System.err.println("UP COLLISION");
+								this.cu = true;
+								this.y = y + 1;
+							}
+							else {
+								this.canJump = false;
+							}
 						}
 						else
 							this.cu = false;
 						
+						//Down Collision
 						if(downCollision(screenTiles[r][c])) {
+							
 							System.err.println("DOWN COLLISION");
 							this.cd = true;
 							this.y = y - 1;
-							this.isFalling = false;
+							
+							if(screenTiles[r-2][c].isPassable()) {//No blocks on top of the player
+								this.canJump = true;
+							}
 						}
 						else
 							this.cd = false;
@@ -318,10 +326,6 @@ public abstract class Mob extends GameObject{
 		return ymo;
 	}
 	
-	public boolean isFalling(){
-		return isFalling;
-	}
-	
 	public int getJumpNum(){
 		return jumpNum;
 	}
@@ -336,6 +340,10 @@ public abstract class Mob extends GameObject{
 	
 	public Rectangle getBoundingBox() {
 		return boundingBox;
+	}
+	
+	public boolean canJump() {
+		return canJump;
 	}
 	
 	/* SETTERS */
@@ -420,10 +428,6 @@ public abstract class Mob extends GameObject{
 		this.ymo = ymo;
 	}
 	
-	public void setIsFalling(boolean falling){
-		this.isFalling = falling;
-	}
-	
 	public void setJumpNum(int jumpNum){
 		this.jumpNum = jumpNum;
 	}
@@ -442,6 +446,10 @@ public abstract class Mob extends GameObject{
 
 	public void setBoundingBox(Rectangle boundingBox) {
 		this.boundingBox = boundingBox;
+	}
+	
+	public void setCanJump(boolean canJump) {
+		this.canJump = canJump;
 	}
 	
 }//end of class

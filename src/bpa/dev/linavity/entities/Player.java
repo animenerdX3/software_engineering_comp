@@ -64,10 +64,10 @@ public class Player extends Mob {
 		if(getGravity().getFlipDirection()){ // Reverse Gravity
 			gravPack.depletingGravPack(util);
 			if(this.isCu())
-				this.isFalling = false;
+				setCanJump(true);
 		}else{ // Regular Gravity
 			if(this.isCd())
-				this.isFalling = false;
+				setCanJump(true);
 		}
 		
 		
@@ -76,12 +76,14 @@ public class Player extends Mob {
 			
 			//By default, the player can only jump once
 			//If the current jump is less or equal to the number of allowed jumps, jump
-			if(jumps <= jumpNum){
+			if(jumps <= jumpNum && canJump()){
+				System.out.println("DOUBLE JUMPING");
 				jump(getGravity().getGravityPower());
 				jumps++;
 			}
 			//If not falling, the player can jump
-			else if(!isFalling){
+			else if(canJump()){
+				System.out.println("NOT FALL JUMPING");
 				jump(getGravity().getGravityPower());
 				jumps = 1;
 			}
@@ -97,7 +99,7 @@ public class Player extends Mob {
 
 		
 			if(keyLog[1] && keyLog[4]) {  //Check For Run Left:  A + Left-Shift Pressed Together
-				this.setX( (int) (getX() - ((200/1000.0f * delta) * 1.7)));
+				this.setX( (int) getX() - 5);
 				try {
 					if(getGravity().getFlipDirection()) {
 						this.setMobImage(new Image("res/sprites/player/player_0.png"));
@@ -111,8 +113,7 @@ public class Player extends Mob {
 				}
 			}
 			else if(keyLog[1]) { //Check For A Key
-				//this.setX((int) (getX() - 200/1000.0f * delta));
-				this.setX((int) (getX() - 1));
+				this.setX((int) getX() - 2);
 				try {
 					if(getGravity().getFlipDirection()) {
 						this.setMobImage(new Image("res/sprites/player/player_0.png"));
@@ -127,7 +128,7 @@ public class Player extends Mob {
 			}
 			
 			if(keyLog[3] && keyLog[4]) {  //Check For Run Right:  D + Left-Shift Pressed Together
-				this.setX( (int) (getX() + ((200/1000.0f * delta) * 1.7)));
+				this.setX( (int) getX() + 5);
 				try {
 					if(getGravity().getFlipDirection()) {
 						this.setMobImage(new Image("res/sprites/player/player_1.png"));
@@ -141,8 +142,7 @@ public class Player extends Mob {
 				}
 			}
 			else if(keyLog[3]) { //Check For D key
-				//this.setX((int) (getX() + 200/1000.0f * delta));
-				this.setX((int) (getX() + 1));
+				this.setX((int) getX() + 2);
 				try {
 					if(getGravity().getFlipDirection()) {
 						this.setMobImage(new Image("res/sprites/player/player_1.png"));
@@ -229,19 +229,19 @@ public class Player extends Mob {
 				if(getGravity().getFlipDirection()){ // Reverse Gravity
 						if((gravPower / -1) > 0){
 							this.setYmo(-power);
-							isFalling = true;
+							setCanJump(false);
 						}else{
 							this.setYmo(power);//Sets Y-Momentum to 14, this makes the player fight against gravity
-							isFalling = true;
+							setCanJump(false);
 						}
 					
 				}else{ // Regular Gravity
 						if((gravPower / -1) > 0){
 							this.setYmo(-power);
-							isFalling = true;
+							setCanJump(false);
 						}else{
 							this.setYmo(power);//Sets Y-Momentum to 14, this makes the player fight against gravity'
-							isFalling = true;
+							setCanJump(false);
 						}
 					
 				}

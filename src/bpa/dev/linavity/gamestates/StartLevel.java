@@ -105,7 +105,8 @@ public class StartLevel extends BasicGameState{
 			g.drawString("Collide left: " + Main.util.getPlayer().isCl(), 10,150);
 			g.drawString("Collide right: " + Main.util.getPlayer().isCr(), 10,170);
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes.
-			g.drawString("Player Box X: "+Main.util.getPlayer().getBoundingBox().getX() + " Player Box Y: "+Main.util.getPlayer().getBoundingBox().getY(), 10, 210); // Draw our mouse position for debugging purposes.
+			g.drawString("Player Box X: "+Main.util.getPlayer().getBoundingBox().getX() + " Player Box Y: "+Main.util.getPlayer().getBoundingBox().getY(), 10, 210);
+			g.drawString("Can Jump: "+Main.util.getPlayer().canJump(), 10, 230); 
 		}
 		
 		//Draw enemies
