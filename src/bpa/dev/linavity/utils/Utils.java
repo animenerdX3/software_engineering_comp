@@ -1,6 +1,8 @@
 package bpa.dev.linavity.utils;
 
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.events.MessageHandler;
@@ -19,6 +21,9 @@ public class Utils {
 	private MessageHandler messageHandler; // Message Handler Object
 	private Level level; // Level Object
 	
+	private Music music;
+	private Sound sfx;
+	
 	// Default Constructor
 	public Utils() throws SlickException{
 		this.player = new Player(this);
@@ -34,6 +39,14 @@ public class Utils {
 
 	public Gravity getGravity() {
 		return player.getGravity();
+	}
+	
+	public Music getMusic() {
+		return music;
+	}
+	
+	public Sound getSFX() {
+		return sfx;
 	}
 	
 	/**
@@ -65,10 +78,21 @@ public class Utils {
 	public void setLevel(Level level) {
 		this.level = level;
 	}
-
 	
-
+	public void setMusic(String musicDirectory) {
+		try {
+			music = new Music(musicDirectory);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+	}
 	
-	
+	public void setSFX(String sfxDirectory) {
+		try {
+			sfx = new Sound(sfxDirectory);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }//end of class

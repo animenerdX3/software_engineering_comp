@@ -5,10 +5,12 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
 
 
@@ -42,7 +44,10 @@ public class MainMenu extends BasicGameState{
 		options = new Image("res/gui/buttons/button_options.png"); // Options Button
 
 		// Option buttons
-		back = new Image("res/gui/buttons/button_back.png"); // Back Button		
+		back = new Image("res/gui/buttons/button_back.png"); // Back Button	
+		Main.util.setMusic("music/main_menu.ogg");
+		Main.util.getMusic().setVolume(0.5f);
+		Main.util.getMusic().loop();
 	}
 
 	// Renders content to the game / screen
@@ -143,6 +148,9 @@ public class MainMenu extends BasicGameState{
 			if(input.isMousePressed(0)){		
 				input.clearKeyPressedRecord();
 				sbg.enterState(1);
+				Main.util.getMusic().stop();
+				Main.util.setMusic("music/level_1.ogg");
+				Main.util.getMusic().loop();
 			}
 			play = new Image("res/gui/buttons/button_play_hover.png");
 		}

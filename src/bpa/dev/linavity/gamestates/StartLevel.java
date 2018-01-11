@@ -7,7 +7,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -82,7 +84,9 @@ public class StartLevel extends BasicGameState{
 		//Create enemies
 		enemies[0] = new Starter(300, 350);
 		enemybounds = new Rectangle((int) (enemies[0].getX() - cam.getX()), (int) (enemies[0].getY() - cam.getY()), 50, 50);
-
+		
+		Main.util.setSFX("sfx/menu_select.wav");
+		
 	}
 
 	/**
@@ -200,6 +204,9 @@ public class StartLevel extends BasicGameState{
 			Main.util.getMessageHandler().dispatchMessages();
 			
 		}
+		else {
+			Main.util.getMusic().pause();
+		}
 		
 		// Open pop-up menu
 		openMenu(gc, delta);
@@ -241,8 +248,10 @@ public class StartLevel extends BasicGameState{
 		cam.updateCameraPos(Main.util.getPlayer().getX(), Main.util.getPlayer().getY());
 		
 		// Open Pop-up menu
-		if(keyLog[6])
+		if(keyLog[6]) {
+			Main.util.getSFX().play();
 			menuOpen = !menuOpen;
+		}
 	}
 
 	
@@ -299,7 +308,6 @@ public class StartLevel extends BasicGameState{
 	 * @param gc
 	 */
 	public void collide(GameContainer gc){
-
 
 		Main.util.getPlayer().collidedWithTile(Main.util.getLevel(), cam);
 		
@@ -361,6 +369,7 @@ public class StartLevel extends BasicGameState{
 	public void openMenu(GameContainer gc, int delta){
 		Input input = gc.getInput(); // Creating our input object
 		if(input.isKeyPressed(Input.KEY_ESCAPE)){
+			Main.util.getMusic().resume();
 			menuOpen = !menuOpen; // ! Makes the escape toggle
 		}
 	}
