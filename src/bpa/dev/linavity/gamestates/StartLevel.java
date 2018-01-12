@@ -2,6 +2,7 @@ package bpa.dev.linavity.gamestates;
 
 import java.awt.Rectangle;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -25,7 +26,7 @@ import bpa.dev.linavity.world.ParallaxMap;
 */
 
 public class StartLevel extends BasicGameState{
-
+	
 	// Images
 	private Image health_gui = null;
 	private Image health_bar = null;
@@ -114,7 +115,7 @@ public class StartLevel extends BasicGameState{
 		//Draw enemies
 		for(int i = 0; i < enemies.length; i++){
 			if(enemies[i].isAlive())
-				enemies[i].getMobImage().draw(enemies[i].getX() - cam.getX(), enemies[0].getY() - cam.getY());
+				enemies[i].getMovement().draw(enemies[i].getX() - cam.getX(), enemies[0].getY() - cam.getY());
 		}
 		
 		//If a projectile exists, then draw it on the screen
@@ -122,8 +123,9 @@ public class StartLevel extends BasicGameState{
 			Main.util.getPlayer().getCurrentProjectile().getProjectileImage().draw(Main.util.getPlayer().getCurrentProjectile().getX() - cam.getX() + 100, Main.util.getPlayer().getCurrentProjectile().getY() - cam.getY() + 15);
 		}
 		
-		//Draw player
-		Main.util.getPlayer().getMobImage().draw(Main.util.getPlayer().getX() - cam.getX(), Main.util.getPlayer().getY() - cam.getY());
+		//Run Animation
+		Main.util.getPlayer().getMovement().draw(Main.util.getPlayer().getX() - cam.getX(), Main.util.getPlayer().getY() - cam.getY());
+		
 		if(Main.util.debugMode) {
 		
 		Main.util.getPlayer().setBoundingBox(new Rectangle((int) (Main.util.getPlayer().getX()- cam.getX()), (int) (Main.util.getPlayer().getY() - cam.getY()), (int) Main.util.getPlayer().getBoundingBox().getWidth(), (int) Main.util.getPlayer().getBoundingBox().getHeight()));
@@ -207,6 +209,10 @@ public class StartLevel extends BasicGameState{
 		else {
 			Main.util.getMusic().pause();
 		}
+		
+		//Animation
+		Main.util.getPlayer().getMovement().update(delta);
+		enemies[0].getMovement().update(delta);
 		
 		// Open pop-up menu
 		openMenu(gc, delta);

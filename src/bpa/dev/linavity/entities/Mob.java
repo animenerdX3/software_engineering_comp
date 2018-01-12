@@ -2,6 +2,7 @@ package bpa.dev.linavity.entities;
 
 import java.awt.Rectangle;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -30,6 +31,7 @@ public abstract class Mob extends GameObject{
 	
 	// Character Variables
 		private Image mobImage = null;
+		private Animation movement;
 		
 	// Physics Variables
 		// Momentum in the y direction
@@ -45,7 +47,7 @@ public abstract class Mob extends GameObject{
 		private boolean canJump;
 		protected boolean isMovingLeft;
 		protected boolean isMovingRight;
-	
+		
 	//Gravity object
 	private Gravity gravity;
 	
@@ -56,7 +58,7 @@ public abstract class Mob extends GameObject{
 			throws SlickException{
 		
 		// Character Variables
-		this.setMobImage(new Image("res/sprites/player/player_0.png")); //By default, our Mob has the player skin
+		this.setMobImage(new Image("res/sprites/player/player_sheet.png")); //By default, our Mob has the player skin
 		this.health = 100;
 		
 		// Dimension Variables
@@ -84,6 +86,7 @@ public abstract class Mob extends GameObject{
 		this.canJump = true;
 		
 		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
+		this.movement = getAnimation(this.mobImage, 3, 2, 50, 50, 6, 500);
 	}
 	
 	//Non-Default constructor
@@ -103,8 +106,28 @@ public abstract class Mob extends GameObject{
 		this.canJump = true;  
 		
 		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
+		this.movement = getAnimation(this.mobImage, 3, 2, 50, 50, 6, 500);	
 	}
 
+	public Animation getAnimation (Image player, int spritesX, int spritesY, int spritesWidth, int spritesHeight, int frames, int duration) {
+		Animation run = new Animation(false);
+		
+		int c = 0;
+		
+			//If A is pressed
+				for(int y = 0; y < spritesY; y++){
+					
+					for(int x = 0; x < spritesX; x++){
+						if(c < frames){	
+							run.addFrame(player.getSubImage(x*spritesWidth, y*spritesHeight, spritesWidth, spritesHeight), duration);
+							c++;
+						}
+					}
+				}	
+		
+		return run;
+	}
+	
 	/**
 	 * Update our mob's position
 	 */
@@ -360,6 +383,10 @@ public abstract class Mob extends GameObject{
 		return isMovingRight;
 	}
 	
+	public Animation getMovement() {
+		return movement;
+	}
+	
 	/* SETTERS */
 
 	public void setCollide(boolean collide) {
@@ -472,6 +499,10 @@ public abstract class Mob extends GameObject{
 	
 	public void setIsMovingRight(boolean isMovingRight) {
 		this.isMovingRight = isMovingRight;
+	}
+	
+	public void setMovement(Animation movement) {
+		this.movement = movement;
 	}
 	
 }//end of class

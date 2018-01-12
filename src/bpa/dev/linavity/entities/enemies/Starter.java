@@ -13,7 +13,7 @@ public class Starter extends Mob{
 	
 	//Create enemy with constructor, sets the x and y of the enemy
 	public Starter(int x, int y) throws SlickException{
-		super("res/sprites/starter/starter_0.png", x, y);
+		super("res/sprites/starter/starter_sheet.png", x, y);
 		this.jumps = 0;
 		super.setDamage(0.25);
 		super.setHealth(100);
