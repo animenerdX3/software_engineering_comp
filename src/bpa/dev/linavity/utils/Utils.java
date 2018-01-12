@@ -4,6 +4,8 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
+import bpa.dev.linavity.assets.MusicManager;
+import bpa.dev.linavity.assets.SoundManager;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.events.MessageHandler;
 import bpa.dev.linavity.physics.Gravity;
@@ -15,18 +17,27 @@ public class Utils {
 	 * This class is used to store objects that will be used throughout all of the gamestates
 	 */
 	
-	public final boolean debugMode = true;
+	public final boolean debugMode = false;
 	
 	private Player player; // Player Object
 	private MessageHandler messageHandler; // Message Handler Object
 	private Level level; // Level Object
 	
+	private MusicManager musicManager = new MusicManager("data/music_paths.txt");
+	
 	private Music music;
-	private Sound sfx;
+	
+	SoundManager sfxFiles = new SoundManager("data/sound_paths.txt");
+	
+	private String [] musicQueue;
+	
+	private Sound [] sfx;
 	
 	// Default Constructor
 	public Utils() throws SlickException{
 		this.player = new Player(this);
+		this.musicQueue = musicManager.getMusicQueue();
+		this.sfx = sfxFiles.getSfx();
 		this.setMessageHandler(new MessageHandler());
 	}
 	
@@ -45,8 +56,20 @@ public class Utils {
 		return music;
 	}
 	
-	public Sound getSFX() {
-		return sfx;
+	public MusicManager getMusicManager() {
+		return musicManager;
+	}
+	
+	public SoundManager getSoundManager() {
+		return sfxFiles;
+	}
+	
+	public String getMusicQueue(int i) {
+		return musicQueue[i];
+	}
+	
+	public Sound getSFX(int i) {
+		return sfx[i];
 	}
 	
 	/**
@@ -87,12 +110,8 @@ public class Utils {
 		}
 	}
 	
-	public void setSFX(String sfxDirectory) {
-		try {
-			sfx = new Sound(sfxDirectory);
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+	public void setSFX(Sound [] sfx) {
+		this.sfx = sfx;
 	}
 	
 }//end of class

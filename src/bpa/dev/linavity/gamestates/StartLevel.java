@@ -7,9 +7,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -20,6 +18,7 @@ import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.world.Level;
+import bpa.dev.linavity.world.ParallaxMap;
 
 /* Task List
 //TODO Also, use that method to have mobs check for collision
@@ -28,12 +27,13 @@ import bpa.dev.linavity.world.Level;
 public class StartLevel extends BasicGameState{
 
 	// Images
-	private Image bg = null;
 	private Image health_gui = null;
 	private Image health_bar = null;
 	private Image grav_gui = null;
 	private Image grav_bar = null;
 	private Image back = null;
+	
+	private ParallaxMap bg;
 	
 	// ID of the gamestate
 	public static int id = 1;
@@ -73,7 +73,7 @@ public class StartLevel extends BasicGameState{
 			throws SlickException {
 		cam = new Camera(Main.util.getPlayer().getX(), Main.util.getPlayer().getY());
 		back = new Image("res/gui/buttons/button_back.png");
-		bg = new Image("res/bg.jpg");
+		bg = new ParallaxMap("res/bg.jpg", -450, 0.5f);
 		health_gui = new Image("res/gui/stats/health_bar.png");
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
@@ -85,8 +85,6 @@ public class StartLevel extends BasicGameState{
 		enemies[0] = new Starter(300, 350);
 		enemybounds = new Rectangle((int) (enemies[0].getX() - cam.getX()), (int) (enemies[0].getY() - cam.getY()), 50, 50);
 		
-		Main.util.setSFX("sfx/menu_select.wav");
-		
 	}
 
 	/**
@@ -96,7 +94,7 @@ public class StartLevel extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		
-		bg.draw(0,0);
+		bg.getBackgroundLayer().draw(bg.getX(),0);
 		
 		renderScreen(gc, sbg, g);
 		
@@ -203,6 +201,8 @@ public class StartLevel extends BasicGameState{
 			// Message Handler
 			Main.util.getMessageHandler().dispatchMessages();
 			
+			bg.moveBackground();
+			
 		}
 		else {
 			Main.util.getMusic().pause();
@@ -249,7 +249,7 @@ public class StartLevel extends BasicGameState{
 		
 		// Open Pop-up menu
 		if(keyLog[6]) {
-			Main.util.getSFX().play();
+			Main.util.getSFX(0).play();
 			menuOpen = !menuOpen;
 		}
 	}
@@ -353,6 +353,9 @@ public class StartLevel extends BasicGameState{
 		if(MainMenu.checkBounds( (gc.getWidth()/2) - (back.getWidth()/2) , (gc.getWidth()/2) - (back.getWidth()/2) + back.getWidth() , 400 , 400 + back.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				input.clearKeyPressedRecord();
+				Main.util.getMusic().stop();
+				Main.util.setMusic(Main.util.getMusicQueue(0));
+				Main.util.getMusic().loop();
 				sbg.enterState(0);
 				menuOpen = false;
 			}

@@ -42,8 +42,6 @@ public class Player extends Mob {
 			Main.util.getMessageHandler().addMessage(new Message( (Tile)message.getFrom(), this, 1, 1 )  ) ;
 		}
 		
-		
-		
 	}
 	
 	public void updatePos(boolean[] keyLog, int delta, Utils util) {
@@ -77,12 +75,16 @@ public class Player extends Mob {
 			//By default, the player can only jump once
 			//If the current jump is less or equal to the number of allowed jumps, jump
 			if(jumps <= jumpNum && canJump()){
+				this.isMovingLeft = false;
+				this.isMovingRight = false;
 				System.out.println("DOUBLE JUMPING");
 				jump(getGravity().getGravityPower());
 				jumps++;
 			}
 			//If not falling, the player can jump
 			else if(canJump()){
+				this.isMovingLeft = false;
+				this.isMovingRight = false;
 				System.out.println("NOT FALL JUMPING");
 				jump(getGravity().getGravityPower());
 				jumps = 1;
@@ -100,6 +102,8 @@ public class Player extends Mob {
 		
 			if(keyLog[1] && keyLog[4]) {  //Check For Run Left:  A + Left-Shift Pressed Together
 				this.setX( (int) getX() - 5);
+				this.isMovingLeft = true;
+				this.isMovingRight = false;
 				try {
 					if(getGravity().getFlipDirection()) {
 						this.setMobImage(new Image("res/sprites/player/player_0.png"));
@@ -114,6 +118,8 @@ public class Player extends Mob {
 			}
 			else if(keyLog[1]) { //Check For A Key
 				this.setX((int) getX() - 2);
+				this.isMovingLeft = true;
+				this.isMovingRight = false;
 				try {
 					if(getGravity().getFlipDirection()) {
 						this.setMobImage(new Image("res/sprites/player/player_0.png"));
@@ -129,6 +135,8 @@ public class Player extends Mob {
 			
 			if(keyLog[3] && keyLog[4]) {  //Check For Run Right:  D + Left-Shift Pressed Together
 				this.setX( (int) getX() + 5);
+				this.isMovingRight = true;
+				this.isMovingLeft = false;
 				try {
 					if(getGravity().getFlipDirection()) {
 						this.setMobImage(new Image("res/sprites/player/player_1.png"));
@@ -143,6 +151,8 @@ public class Player extends Mob {
 			}
 			else if(keyLog[3]) { //Check For D key
 				this.setX((int) getX() + 2);
+				this.isMovingRight = true;
+				this.isMovingLeft = false;
 				try {
 					if(getGravity().getFlipDirection()) {
 						this.setMobImage(new Image("res/sprites/player/player_1.png"));
@@ -154,7 +164,7 @@ public class Player extends Mob {
 				} catch (SlickException e) {
 					e.printStackTrace();
 				}
-			}	
+			}
 			
 		// If the user presses control, reverse gravity
 		if(! isFlipping ){

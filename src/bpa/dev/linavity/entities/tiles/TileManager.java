@@ -29,7 +29,7 @@ public class TileManager {
 	/**
 	 * Converts the String into a file type
 	 * @param directory
-	 * @return level as a file
+	 * @return textures as a file
 	 */
 	public File getFile(String directory) {
 		return new File("data/"+directory+".txt");
@@ -37,7 +37,7 @@ public class TileManager {
 	
 	/**
 	 * 
-	 * @param textureFile
+	 * @param checkSize
 	 * @return row size of the array
 	 * 
 	 */
@@ -55,9 +55,9 @@ public class TileManager {
 	}//end of checkSize
 	
 	/**
-	 * Gets the world map from the file specified
+	 * Gets the texture paths from the file specified
 	 * @param textureFile
-	 * @return a 2D array with the information of our world
+	 * @return a 2D array with the information of our textures
 	 * @throws FileNotFoundException
 	 */
 	public String[] getTextureMap(File textureFile) throws FileNotFoundException{

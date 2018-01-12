@@ -11,13 +11,10 @@ import bpa.dev.linavity.gamestates.*;
 /**
  *  Linavity
  * @author Peter Gomes, Yannick Almeida, Ethan Guillotte, Chris Furtado
- * @version 1.02
+ * @version 1.03
  */
 
 /* Task List
- //TODO Fix Block Collision
-  * 	- Goes Through Map If Walking Left (Reverse Grav)
-  * 	- Kicks Player Off the Edge of Platforms
  //TODO Let's Make Maps >///3///<
  */
 
@@ -55,7 +52,7 @@ public class Main extends StateBasedGame{
 	public static void main(String[] args){
 		AppGameContainer appgc;
 		try {
-			appgc = new AppGameContainer(new Main("Linavity - Version 1.02"));
+			appgc = new AppGameContainer(new Main("Linavity - Version 1.03"));
 			appgc.setDisplayMode(WIDTH, HEIGHT, false);
 			appgc.setAlwaysRender(true); // Constant Rendering 
 			appgc.setTargetFrameRate(FPS);

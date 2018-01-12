@@ -43,6 +43,8 @@ public abstract class Mob extends GameObject{
 		private boolean isAlive;
 		
 		private boolean canJump;
+		protected boolean isMovingLeft;
+		protected boolean isMovingRight;
 	
 	//Gravity object
 	private Gravity gravity;
@@ -132,8 +134,10 @@ public abstract class Mob extends GameObject{
 						
 						//Left Collision
 						if(leftCollision(screenTiles[r][c])) {
-							this.cl = true;
 							System.err.println("LEFT COLLISION");
+							this.cl = true;
+							this.isMovingLeft = false;
+							this.isMovingRight = false;
 							this.x = x + 2;
 						}
 						else
@@ -142,6 +146,8 @@ public abstract class Mob extends GameObject{
 						//Right Collision
 						if(rightCollision(screenTiles[r][c])) {
 								System.err.println("RIGHT COLLISION");
+								this.isMovingLeft = false;
+								this.isMovingRight = false;
 								this.cr = true;
 								this.x = x - 2;
 						}
@@ -345,6 +351,14 @@ public abstract class Mob extends GameObject{
 	public boolean canJump() {
 		return canJump;
 	}
+
+	public boolean isMovingLeft() {
+		return isMovingLeft;
+	}
+	
+	public boolean isMovingRight() {
+		return isMovingRight;
+	}
 	
 	/* SETTERS */
 
@@ -450,6 +464,14 @@ public abstract class Mob extends GameObject{
 	
 	public void setCanJump(boolean canJump) {
 		this.canJump = canJump;
+	}
+	
+	public void setIsMovingLeft(boolean isMovingLeft) {
+		this.isMovingLeft = isMovingLeft;
+	}
+	
+	public void setIsMovingRight(boolean isMovingRight) {
+		this.isMovingRight = isMovingRight;
 	}
 	
 }//end of class
