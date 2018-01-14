@@ -255,7 +255,7 @@ public class StartLevel extends BasicGameState{
 		
 		// Open Pop-up menu
 		if(keyLog[6]) {
-			Main.util.getSFX(0).play();
+			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
 			menuOpen = !menuOpen;
 		}
 	}
@@ -361,7 +361,7 @@ public class StartLevel extends BasicGameState{
 				input.clearKeyPressedRecord();
 				Main.util.getMusic().stop();
 				Main.util.setMusic(Main.util.getMusicQueue(0));
-				Main.util.getMusic().loop();
+				Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
 				sbg.enterState(0);
 				menuOpen = false;
 			}

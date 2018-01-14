@@ -34,7 +34,7 @@ public class Player extends Mob {
 		// All Messages / Events for the player are handled here
 		
 		// ID 0: Recharge Gravity Pack
-		if(message.getType() == Message.thing){		
+		if(message.getType() == Message.id){		
 		
 			gravPack.setGravpower(gravPack.getGravpower() + (int) message.getData());
 
@@ -104,66 +104,22 @@ public class Player extends Mob {
 				this.setX( (int) getX() - 5);
 				this.isMovingLeft = true;
 				this.isMovingRight = false;
-				try {
-					if(getGravity().getFlipDirection()) {
-						this.setMobImage(new Image("res/sprites/player/player_0.png"));
-						this.getMobImage().rotate(flipDuration);
-					}
-					else {
-						this.setMobImage(new Image("res/sprites/player/player_1.png"));
-					}
-				} catch (SlickException e) {
-					e.printStackTrace();
-				}
 			}
 			else if(keyLog[1]) { //Check For A Key
 				this.setX((int) getX() - 2);
 				this.isMovingLeft = true;
 				this.isMovingRight = false;
-				try {
-					if(getGravity().getFlipDirection()) {
-						this.setMobImage(new Image("res/sprites/player/player_0.png"));
-						this.getMobImage().rotate(flipDuration);
-					}
-					else {
-						this.setMobImage(new Image("res/sprites/player/player_1.png"));
-					}
-				} catch (SlickException e) {
-					e.printStackTrace();
-				}
 			}
 			
 			if(keyLog[3] && keyLog[4]) {  //Check For Run Right:  D + Left-Shift Pressed Together
 				this.setX( (int) getX() + 5);
 				this.isMovingRight = true;
 				this.isMovingLeft = false;
-				try {
-					if(getGravity().getFlipDirection()) {
-						this.setMobImage(new Image("res/sprites/player/player_1.png"));
-						this.getMobImage().rotate(flipDuration);
-					}
-					else {
-						this.setMobImage(new Image("res/sprites/player/player_0.png"));
-					}
-				} catch (SlickException e) {
-					e.printStackTrace();
-				}
 			}
 			else if(keyLog[3]) { //Check For D key
 				this.setX((int) getX() + 2);
 				this.isMovingRight = true;
 				this.isMovingLeft = false;
-				try {
-					if(getGravity().getFlipDirection()) {
-						this.setMobImage(new Image("res/sprites/player/player_1.png"));
-						this.getMobImage().rotate(flipDuration);
-					}
-					else {
-						this.setMobImage(new Image("res/sprites/player/player_0.png"));
-					}
-				} catch (SlickException e) {
-					e.printStackTrace();
-				}
 			}
 			
 		// If the user presses control, reverse gravity
