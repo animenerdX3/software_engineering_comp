@@ -46,8 +46,7 @@ public class MainMenu extends BasicGameState{
 		// Option buttons
 		back = new Image("res/gui/buttons/button_back.png"); // Back Button	
 		Main.util.setMusic(Main.util.getMusicQueue(0));
-		Main.util.getMusic().setVolume(Main.util.getMusicManager().getVolume());
-		Main.util.getMusic().loop();
+		Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
 	}
 
 	// Renders content to the game / screen
@@ -150,7 +149,7 @@ public class MainMenu extends BasicGameState{
 				sbg.enterState(1);
 				Main.util.getMusic().stop();
 				Main.util.setMusic(Main.util.getMusicQueue(1));
-				Main.util.getMusic().loop();
+				Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
 			}
 			play = new Image("res/gui/buttons/button_play_hover.png");
 		}

@@ -10,11 +10,11 @@ public class MusicManager {
 	private float volume;
 	
 	public MusicManager() {
-		this.volume = 0.1f;
+		this.volume = 0.25f;
 	}
 	
 	public MusicManager(String directory) {
-		this.volume = 0.1f;
+		this.volume = 0.25f;
 		readMusicFiles(directory);
 	}
 	
