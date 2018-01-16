@@ -38,3 +38,58 @@ HOW GRAVITY SHOULD WORK:
 - When in the air, there should be a force constantly adding to it.
 - When the player reaches a value divisible by 1 near the ground, set the gravity to 1.
 
+
+
+
+
+Yannicks a goof:
+// Javascript Document
+var index = 0;
+
+var images = ['media/aChristmasStory.jpg','media/elf.jpg','media/grinch.jpg','media/polarSpressSpress.jpg', 'media/frosty.jpg'];
+var captions = ['A Christmas Story', 'Elf', 'How the Grinch Stole Christmas', 'The Polar Express', 'Frosty the Snowman'];
+
+var the_image = document.getElementById("main-image");
+the_image.src = images[0];
+
+var the_indexNum = document.getElementById("currentIndex");
+the_indexNum.innerHTML = index + 1;
+
+var description = document.getElementById("description");
+description.innerHTML = captions[0];
+
+function show_image(direction)
+{
+
+  if (direction == "left")
+  {
+    index--;
+  }
+  else
+  {
+    index++;
+    index %= images.length;
+  }
+  
+  if (index < 0)
+  {
+    index = images.length - 1;
+  }
+  
+	currentSlide(index);
+
+}
+
+function currentSlide(dotNum){
+	index = dotNum;
+	the_image.src = images[index];
+    the_indexNum.innerHTML = index + 1;
+    description.innerHTML = captions[index];
+	document.getElementById(index).className += "active";
+}
+
+
+
+HTML:
+
+
