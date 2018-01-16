@@ -91,5 +91,69 @@ function currentSlide(dotNum){
 
 
 HTML:
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    
+    <head>
+	
+		<!-------------------------------------->
+		<!-- Author: Ethan Guillotte          -->
+		<!-- Filename: christmas.html 		  -->
+		<!-- Date Created: 12/18/17 		  -->
+		<!-- Last Updated: 12/18/17           -->
+		<!-------------------------------------->
+		
+        <title>Christmas Movies</title>
+        <link rel="stylesheet" href="css/christmasCSS.css">
+        
+    </head>
+    
+   
+    <body>
+	
+    	<canvas id="canvas">
+		</canvas>
+        
+        <header>
+        	<p id="header_img"><img src = "media/ChristmasMovieHeader.png"></p>
+        </header>
+        
+        <!-- Slideshow container -->
+        <div class="slideshow-container">
+        
+          <!-- Full-width images with number and caption text -->
+          <div class="mySlides fade">
+			  <div class="numbertext"> <div id = "currentIndex"></div> / 5s</div>
+            <img id="main-image" src="media/aChristmasStory.jpg" style="width:100%">
+			  <div class="text"><div id = ""></div></div>
+          </div>
+        
+          <!-- Next and previous buttons -->
+          <a class="prev" onclick="show_image('left')">&#10094;</a>
+          <a class="next" onclick="show_image('right')">&#10095;</a>
+        </div>
+        
+        <br>
+        
+        <!-- The dots/circles -->
+        <div style="text-align:center">
+          <span id = "0" class="dot" onclick="currentSlide(0)"></span> 
+          <span id = "1" class="dot" onclick="currentSlide(1)"></span> 
+          <span id = "2" class="dot" onclick="currentSlide(2)"></span> 
+          <span id = "3" class="dot" onclick="currentSlide(3)"></span> 
+          <span id = "4" class="dot" onclick="currentSlide(4)"></span> 
+        </div>
+           
+        <script src="javascript/christmasScript.js"></script> 
+        <script src="javascript/imageArray.js"></script> 
+        
+        
+            
+	</body>
+    
+ 
+    
+</html>
 
 
