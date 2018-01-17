@@ -18,3 +18,9 @@ res/tiles/static/grass_base.png,false
 res/tiles/static/grass_top.png,false
 res/tiles/static/sky.png,true
 res/tiles/static/steel_bricks.png,true
+res/tiles/static/Lever_Off.png,true
+res/tiles/static/Lever_On.png,true
+res/tiles/static/Ladder_Top.png,true
+res/tiles/static/Ladder_Through.png,true
+res/tiles/static/Ladder_Bottom.png,true
+res/tiles/static/Doorway.png,true
