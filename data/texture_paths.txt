@@ -6,3 +6,15 @@ res/tiles/static/glass.png,true
 res/tiles/dynamic/antigravity/antigravity_off.png,false
 res/tiles/dynamic/antigravity/antigravity_on.png,false
 res/tiles/dynamic/antigravity/antigravity_on_light.png,true
+res/tiles/dynamic/Lights/Circle_Light_Off.png,true
+res/tiles/dynamic/Lights/Circle_Light_On.png,true
+res/tiles/dynamic/Lights/Light_Off.png,true
+res/tiles/dynamic/Lights/Light_On.png,true
+res/tiles/dynamic/warphole/warphole.png,true
+res/tiles/static/Metal_Plate.png,false
+res/tiles/static/Platform_Tile.png,false
+res/tiles/static/Vent.png,true
+res/tiles/static/grass_base.png,false
+res/tiles/static/grass_top.png,false
+res/tiles/static/sky.png,true
+res/tiles/static/steel_bricks.png,true
