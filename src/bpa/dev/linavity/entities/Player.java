@@ -1,13 +1,9 @@
 package bpa.dev.linavity.entities;
 
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import bpa.dev.linavity.GameObject;
 import bpa.dev.linavity.Main;
-import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.events.Message;
-import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.weapons.Projectile;
 
 public class Player extends Mob {
@@ -339,7 +335,6 @@ public class Player extends Mob {
 //		}
 //		if(projectileExists) {//If projectile exists, update the position
 //			currentProjectile.updatePos();
-//			//TODO Make if-statement more practical
 //			if(currentProjectile.getX() > Main.util.getPlayer().getX() + 500) {//If projectile is 500 pixels away from player
 //				currentProjectile = null;//Destroy object
 //				projectileExists = false;//Projectile does not exist

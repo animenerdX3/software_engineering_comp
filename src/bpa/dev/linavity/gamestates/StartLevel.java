@@ -372,7 +372,7 @@ public class StartLevel extends BasicGameState{
 		// Create our input object
 		Input input = gc.getInput();
 		
-		pause_menu_ui = new Image("res/pausemenu.png");//Pause menu user interface
+		pause_menu_ui = new Image("res/gui/pausemenu.png");//Pause menu user interface
 		back = new Image("res/gui/buttons/button_back.png");
 		
 		// Back Button
