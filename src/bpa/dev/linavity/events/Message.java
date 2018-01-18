@@ -4,7 +4,7 @@ import bpa.dev.linavity.GameObject;
 
 public class Message {
 
-	public final static int id = 0;
+	public final static int thing = 0;
 	// The contents of our event messages
 	private GameObject to;
 	private GameObject from;

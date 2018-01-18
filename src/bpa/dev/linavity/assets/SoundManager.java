@@ -13,11 +13,11 @@ public class SoundManager {
 	private float volume;
 	
 	public SoundManager() {
-		this.volume = 1f;
+		this.volume = 0.5f;
 	}
 	
 	public SoundManager(String directory) {
-		this.volume = 1f;
+		this.volume = 0.5f;
 		readSoundFiles(directory);
 	}
 

@@ -9,14 +9,13 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
-import bpa.dev.linavity.assets.InputManager;
-import bpa.dev.linavity.entities.Camera;
-import bpa.dev.linavity.entities.enemies.Starter;
+import bpa.dev.linavity.entities.enemies.*;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.world.Level;
 import bpa.dev.linavity.world.ParallaxMap;
@@ -26,12 +25,25 @@ import bpa.dev.linavity.world.ParallaxMap;
 */
 
 public class StartLevel extends BasicGameState{
+
+	//Animation
+    private SpriteSheet moveRight; // initate a SpriteSheet
+    private Animation moveRightAni; // initate a Animation
+	
+    private SpriteSheet moveLeft; // initate a SpriteSheet
+    private Animation moveLeftAni; // initate a Animation
+	
+    private SpriteSheet standStill; //initiate a SpriteSheet
+    private Animation standStillAni;
+    
+    private Animation currentImage;
 	
 	// Images
 	private Image health_gui = null;
 	private Image health_bar = null;
 	private Image grav_gui = null;
 	private Image grav_bar = null;
+	private Image pause_menu_ui = null;
 	private Image back = null;
 	
 	private ParallaxMap bg;
@@ -42,17 +54,11 @@ public class StartLevel extends BasicGameState{
 	// Whether or not the pop-up menu is open
 	private boolean menuOpen = false;
 	
-	private int xpos; // Mouse's X position
-	private int ypos; // Mouse's Y position
 	
 	//Variables to set up our level
 	
-	public Camera cam;
-	
-	// List of all user inputs
-	public InputManager im = new InputManager();
-	private boolean[] keyLog = new boolean[7]; // Keyboard
-	private int[] mouseLog = new int[3]; // Mouse
+	private int xpos; // Mouse's X position
+	private int ypos; // Mouse's Y position
 	
 	private Rectangle bounds;
 	private Rectangle enemybounds;
@@ -72,7 +78,6 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		cam = new Camera(Main.util.getPlayer().getX(), Main.util.getPlayer().getY());
 		back = new Image("res/gui/buttons/button_back.png");
 		bg = new ParallaxMap("res/bg.jpg", -450, 0.5f);
 		health_gui = new Image("res/gui/stats/health_bar.png");
@@ -80,12 +85,19 @@ public class StartLevel extends BasicGameState{
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
 		Main.util.setLevel(new Level(0, "startlevel"));
-		bounds = new Rectangle((int) (Main.util.getPlayer().getX() - cam.getX()), (int) (Main.util.getPlayer().getY() - cam.getY()), 50, 50);
+		bounds = new Rectangle((int) (Main.util.getPlayer().getX() - Main.util.getCam().getX()), (int) (Main.util.getPlayer().getY() - Main.util.getCam().getY()), 50, 50);
 		
 		//Create enemies
-		enemies[0] = new Starter(300, 350);
-		enemybounds = new Rectangle((int) (enemies[0].getX() - cam.getX()), (int) (enemies[0].getY() - cam.getY()), 50, 50);
+		enemies[0] = new Starter(300, 200);
+		enemybounds = new Rectangle((int) (enemies[0].getX() - Main.util.getCam().getX()), (int) (enemies[0].getY() - Main.util.getCam().getY()), 50, 50);
 		
+	    moveLeft = new SpriteSheet("res/sprites/player/player_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+	    moveLeftAni = new Animation(moveLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    moveRight = new SpriteSheet("res/sprites/player/player_right_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+	    moveRightAni = new Animation(moveRight, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    standStill = new SpriteSheet("res/sprites/player/player_0.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+	    standStillAni = new Animation(standStill, 450); // declare a SpriteSheet and load it into java with its dimentions
+	    currentImage = standStillAni;
 	}
 
 	/**
@@ -101,35 +113,34 @@ public class StartLevel extends BasicGameState{
 		
 		if(Main.util.debugMode) {
 			g.drawString("X: " + Main.util.getPlayer().getX() + " Y: " + Main.util.getPlayer().getY(), 10,50);
-			g.drawString("Cam X: " + cam.getX() + " Cam Y: " + cam.getY(), 10,70);
+			g.drawString("Cam X: " + Main.util.getCam().getX() + " Cam Y: " + Main.util.getCam().getY(), 10,70);
 			g.drawString("Collide: " + Main.util.getPlayer().isCollide(), 10,90);
 			g.drawString("Collide up: " + Main.util.getPlayer().isCu(), 10,110);
 			g.drawString("Collide down: " + Main.util.getPlayer().isCd(), 10,130);
 			g.drawString("Collide left: " + Main.util.getPlayer().isCl(), 10,150);
 			g.drawString("Collide right: " + Main.util.getPlayer().isCr(), 10,170);
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes.
-			g.drawString("Player Box X: "+Main.util.getPlayer().getBoundingBox().getX() + " Player Box Y: "+Main.util.getPlayer().getBoundingBox().getY(), 10, 210);
 			g.drawString("Can Jump: "+Main.util.getPlayer().canJump(), 10, 230); 
 		}
 		
 		//Draw enemies
 		for(int i = 0; i < enemies.length; i++){
 			if(enemies[i].isAlive())
-				enemies[i].getMovement().draw(enemies[i].getX() - cam.getX(), enemies[0].getY() - cam.getY());
+				enemies[i].getMobImage().draw(enemies[i].getX() - Main.util.getCam().getX(), enemies[0].getY() - Main.util.getCam().getY());
 		}
 		
 		//If a projectile exists, then draw it on the screen
 		if(Main.util.getPlayer().isProjectileExists()) {
-			Main.util.getPlayer().getCurrentProjectile().getProjectileImage().draw(Main.util.getPlayer().getCurrentProjectile().getX() - cam.getX() + 100, Main.util.getPlayer().getCurrentProjectile().getY() - cam.getY() + 15);
+			Main.util.getPlayer().getCurrentProjectile().getProjectileImage().draw(Main.util.getPlayer().getCurrentProjectile().getX() - Main.util.getCam().getX() + 100, Main.util.getPlayer().getCurrentProjectile().getY() - Main.util.getCam().getY() + 15);
 		}
 		
-		//Run Animation
-		Main.util.getPlayer().getMovement().draw(Main.util.getPlayer().getX() - cam.getX(), Main.util.getPlayer().getY() - cam.getY());
+		//Draw player
+		currentImage.draw(Main.util.getPlayer().getX() - Main.util.cam.getX(), Main.util.getPlayer().getY() - Main.util.cam.getY());
 		
 		if(Main.util.debugMode) {
 		
-		Main.util.getPlayer().setBoundingBox(new Rectangle((int) (Main.util.getPlayer().getX()- cam.getX()), (int) (Main.util.getPlayer().getY() - cam.getY()), (int) Main.util.getPlayer().getBoundingBox().getWidth(), (int) Main.util.getPlayer().getBoundingBox().getHeight()));
-		enemies[0].setBoundingBox(new Rectangle((int) (enemies[0].getX() - cam.getX()), (int) (enemies[0].getY() - cam.getY()), enemies[0].getWidth(), enemies[0].getHeight()));
+		Main.util.getPlayer().setBoundingBox(new Rectangle((int) (Main.util.getPlayer().getX()- Main.util.getCam().getX()), (int) (Main.util.getPlayer().getY() - Main.util.getCam().getY()), (int) Main.util.getPlayer().getBoundingBox().getWidth(), (int) Main.util.getPlayer().getBoundingBox().getHeight()));
+		enemies[0].setBoundingBox(new Rectangle((int) (enemies[0].getX() - Main.util.getCam().getX()), (int) (enemies[0].getY() - Main.util.getCam().getY()), enemies[0].getWidth(), enemies[0].getHeight()));
 		g.setColor(Color.orange);
 		g.drawRect((int) Main.util.getPlayer().getBoundingBox().getX(), (int) Main.util.getPlayer().getBoundingBox().getY(), (int) Main.util.getPlayer().getBoundingBox().getWidth(), (int) Main.util.getPlayer().getBoundingBox().getHeight());
 
@@ -159,7 +170,7 @@ public class StartLevel extends BasicGameState{
 		
 		
 		// Get a 2d array of tile objects that are contained within our camera's view
-		screenTiles = Main.util.getLevel().getScreenTiles(cam);
+		screenTiles = Main.util.getLevel().getScreenTiles(Main.util.getCam());
 		
 		// Temp x and y of tile in relation to the camera
 		float tileX, tileY;
@@ -168,8 +179,8 @@ public class StartLevel extends BasicGameState{
 		for(int i = 0; i < screenTiles.length; i++) {
 			for(int j = 0; j < screenTiles[i].length; j++) {
 				if(screenTiles[i][j] != null) {
-					tileX = screenTiles[i][j].getX() - cam.getX(); // Get the tile's temp x location for the screen rendering
-					tileY = screenTiles[i][j].getY() - cam.getY(); // Get the tile's temp y location for the screen rendering
+					tileX = screenTiles[i][j].getX() - Main.util.getCam().getX(); // Get the tile's temp x location for the screen rendering
+					tileY = screenTiles[i][j].getY() - Main.util.getCam().getY(); // Get the tile's temp y location for the screen rendering
 					screenTiles[i][j].getTexture().draw(tileX, tileY); // Draw the tile
 					if(Main.util.debugMode) {
 						screenTiles[i][j].setCollisionBox(new Rectangle((int) tileX, (int) tileY, (int) screenTiles[i][j].getWidth(), (int) screenTiles[i][j].getHeight()));
@@ -211,8 +222,22 @@ public class StartLevel extends BasicGameState{
 		}
 		
 		//Animation
-		Main.util.getPlayer().getMovement().update(delta);
-		enemies[0].getMovement().update(delta);
+		 moveLeftAni.update(delta); // this line makes sure the speed of the Animation is true
+		 moveRightAni.update(delta); // this line makes sure the speed of the Animation is true
+		 standStillAni.update(delta); // this line makes sure the speed of the Animation is true
+		
+		//dont mind this
+			
+		      if (Main.util.getKeyLogSpecificKey(1))
+		        {
+		            currentImage = moveLeftAni;
+		        }
+		      else if (Main.util.getKeyLogSpecificKey(3))
+		        {
+		            currentImage = moveRightAni;
+		        } else{
+		        	currentImage = standStillAni;
+		        }
 		
 		// Open pop-up menu
 		openMenu(gc, delta);
@@ -251,10 +276,10 @@ public class StartLevel extends BasicGameState{
 		checkEnemyStatus();
 		
 		// Update Camera Coordinates
-		cam.updateCameraPos(Main.util.getPlayer().getX(), Main.util.getPlayer().getY());
+		Main.util.getCam().updateCameraPos(Main.util.getPlayer().getX(), Main.util.getPlayer().getY());
 		
 		// Open Pop-up menu
-		if(keyLog[6]) {
+		if(Main.util.getKeyLogSpecificKey(6)) {
 			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
 			menuOpen = !menuOpen;
 		}
@@ -268,10 +293,10 @@ public class StartLevel extends BasicGameState{
 	public void input(GameContainer gc){
 	
 		// Update our keyboard log
-		keyLog = im.getKeyLog(gc);
+		Main.util.setKeyLog(Main.util.getIm().getKeyLog(gc));
 		
 		// Update our mouse log
-		mouseLog = im.getMouseLog(gc);
+		Main.util.setMouseLog(Main.util.getIm().getMouseLog(gc));
 		
 	}
 	
@@ -280,14 +305,8 @@ public class StartLevel extends BasicGameState{
 	 * @param delta
 	 */
 	public void updatePlayer(int delta){
-		
-		//Saving our previous X and Y values so we can use them for future reference
-		Main.util.getPlayer().setPrevX(Main.util.getPlayer().getX());
-		Main.util.getPlayer().setPrevY(Main.util.getPlayer().getY());
-		
 		// Update the player's position
-		Main.util.getPlayer().updatePos(keyLog, delta, Main.util);
-		
+		Main.util.getPlayer().update(delta);
 	}
 	
 	/**
@@ -315,7 +334,7 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void collide(GameContainer gc){
 
-		Main.util.getPlayer().collidedWithTile(Main.util.getLevel(), cam);
+		//enemies[0].updateMob();
 		
 	}//end of collide
 	
@@ -332,6 +351,7 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void renderMenu(GameContainer gc, Graphics g){
 		// Back Button
+		g.drawImage(pause_menu_ui, 0,0); // Setting the pause menu ui
 		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 400); // Setting the x value as half of the game container and adjusting for the width of the button
 	}
 	
@@ -352,6 +372,7 @@ public class StartLevel extends BasicGameState{
 		// Create our input object
 		Input input = gc.getInput();
 		
+		pause_menu_ui = new Image("res/pausemenu.png");//Pause menu user interface
 		back = new Image("res/gui/buttons/button_back.png");
 		
 		// Back Button

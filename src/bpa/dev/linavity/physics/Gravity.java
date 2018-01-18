@@ -8,7 +8,7 @@ public class Gravity {
 	private int gravityPower; // The factor by which objects in our world are moved by gravity/antigravity
 	
 	public Gravity() throws SlickException {
-		this.gravityPower = 1; // The initial state of gravity
+		this.gravityPower = 4; // The initial state of gravity
 		this.flipDirection = false;
 	}
 	
@@ -19,7 +19,7 @@ public class Gravity {
 	}
 	
 	public boolean getFlipDirection() {
-		return flipDirection;
+		 return flipDirection;
 	}
 	
 	/* SETTERS */
@@ -29,7 +29,7 @@ public class Gravity {
 	}
 	
 	public void setFlipDirection(boolean flipGravity){
-		this.flipDirection = flipGravity;
+			this.flipDirection = flipGravity;
 	}
 	
 	/**

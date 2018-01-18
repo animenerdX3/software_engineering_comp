@@ -10,6 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
 
 
@@ -32,7 +33,7 @@ public class GameOver extends BasicGameState{
 			throws SlickException {
 		
 		// Initialize our image objects
-		bg = new Image("res/bg.jpg"); // Menu Background
+		bg = new Image("res/gui/gameover.png"); // Menu Background
 
 	}
 
@@ -43,18 +44,15 @@ public class GameOver extends BasicGameState{
 		g.drawImage(bg, 0, 0);
 		
 		// DRAW OUR MENU UI //
-
-		g.setColor(Color.white);
 		
-		g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 30); // Draw our mouse position for debugging purposes. 
-
-		g.drawString("GAME OVER", 425, 450); // Draw GAME OVER for debugging purposes
+		if(Main.util.debugMode){
+			g.setColor(Color.white);
+			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 30); // Draw our mouse position for debugging purposes. 
+		}
 		
 		renderGameOverScreen(gc, g);
 		
 		// END OUR MENU UI //
-
-		
 		
 
 	}

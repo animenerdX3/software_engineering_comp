@@ -25,11 +25,11 @@ public class GravityPack{
 	}
 	
 
-	public void depletingGravPack(Utils util){
+	public void depletingGravPack(){
 			System.out.println("Depleting Gravity");
 			System.out.println("Depletion Rate: "+this.depletionRate);
-			System.out.println("Power: "+util.getPlayer().getGravPack().getGravpower());
-			util.getPlayer().getGravPack().setGravpower(util.getPlayer().getGravPack().getGravpower() - depletionRate);
+			System.out.println("Power: "+ Main.util.getPlayer().getGravPack().getGravpower());
+			Main.util.getPlayer().getGravPack().setGravpower(Main.util.getPlayer().getGravPack().getGravpower() - depletionRate);
 	}
 
 	public float getDepletionRate() {

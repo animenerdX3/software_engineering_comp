@@ -30,6 +30,7 @@ public class Main extends StateBasedGame{
 	public static final int HEIGHT = 900;
 	public static final int FPS = 60;
 	
+	// Utility Object - Gives access to other objects that are needed throughout the entire program.
 	public static Utils util;
 	
 	// Class Constructor
@@ -40,6 +41,7 @@ public class Main extends StateBasedGame{
 		this.addState(new GameOver());
 	}
 
+	// Initiate our game states
 	public void initStatesList(GameContainer gc) throws SlickException {
 		util = new Utils();
 		this.getState(mainmenu).init(gc, this);
@@ -55,6 +57,7 @@ public class Main extends StateBasedGame{
 			appgc = new AppGameContainer(new Main("Linavity - Version 1.03"));
 			appgc.setDisplayMode(WIDTH, HEIGHT, false);
 			appgc.setAlwaysRender(true); // Constant Rendering 
+			appgc.setShowFPS(true);//Show FPS Counter
 			appgc.setTargetFrameRate(FPS);
 			appgc.start();
 		} catch (SlickException e) {

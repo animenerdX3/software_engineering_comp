@@ -3,13 +3,10 @@ package bpa.dev.linavity.weapons;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import bpa.dev.linavity.utils.Utils;
+import bpa.dev.linavity.Main;
 
 public class Projectile {
 
-	//Player object needed
-	Utils util;
-	
 	//Picture for projectile
 	private Image projectileImage;
 	//Amount of damage dealt by the projectile
@@ -20,23 +17,21 @@ public class Projectile {
 	private float x, y;
 	
 	//Starting projectile
-	public Projectile(Utils util) throws SlickException {
-		this.util = util;
+	public Projectile() throws SlickException {
 		this.projectileImage = new Image("res/projectile.png");
 		this.damage = 10;
 		this.speed = 10;
-		this.x = util.getPlayer().getX();
-		this.y = util.getPlayer().getY();
+		this.x = Main.util.getPlayer().getX();
+		this.y = Main.util.getPlayer().getY();
 	}
 	
 	//Non-Default Projectile
-	public Projectile(Utils util, String imageDirectory, int damage, int speed) throws SlickException {
-		this.util = util;
+	public Projectile(String imageDirectory, int damage, int speed) throws SlickException {
 		this.projectileImage = new Image(imageDirectory);
 		this.damage = damage;
 		this.speed = speed;
-		this.x = util.getPlayer().getX();
-		this.y = util.getPlayer().getY();
+		this.x = Main.util.getPlayer().getX();
+		this.y = Main.util.getPlayer().getY();
 	}
 	
 	//Move Projectile Across the Screen

@@ -57,7 +57,8 @@ public class MainMenu extends BasicGameState{
 		
 		// Background Image
 		g.drawImage(bg, 0, 0);
-		g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 30); // Draw our mouse position for debugging purposes. 
+		if(Main.util.debugMode)
+			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 30); // Draw our mouse position for debugging purposes. 
 		
 		// Button Rendering
 		if(!isOption){ 
