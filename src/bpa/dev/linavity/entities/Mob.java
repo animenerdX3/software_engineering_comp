@@ -8,7 +8,9 @@ import org.newdawn.slick.SlickException;
 import bpa.dev.linavity.GameObject;
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.tiles.Tile;
+import bpa.dev.linavity.events.Message;
 import bpa.dev.linavity.physics.Gravity;
+import bpa.dev.linavity.utils.ErrorLog;
 import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.world.Level;
 
@@ -224,6 +226,7 @@ public abstract class Mob extends GameObject{
 					this.xMomentum = 0;
 					updateFuturePosition();
 					checkTileCollision(tile);
+					checkDynamicTiles(tile);
 				} 
 			}
 			
@@ -236,6 +239,7 @@ public abstract class Mob extends GameObject{
 					this.xMomentum = 0;
 					updateFuturePosition();
 					checkTileCollision(tile);
+					checkDynamicTiles(tile);
 				}
 			}
 
@@ -247,6 +251,7 @@ public abstract class Mob extends GameObject{
 					this.yMomentum = 0;
 					updateFuturePosition();
 					checkTileCollision(tile);
+					checkDynamicTiles(tile);
 				}
 			}
 
@@ -258,8 +263,20 @@ public abstract class Mob extends GameObject{
 					this.yMomentum = 0;
 					updateFuturePosition();
 					checkTileCollision(tile);
+					checkDynamicTiles(tile);
 				}
 			}
+	}
+	
+	private void checkDynamicTiles(Tile tile) {
+		if(tile.getId() == 5) {
+			Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.gravPadRecharge, 0.5f));
+			try {
+				tile.setTexture(new Image("res/tiles/dynamic/antigravity/antigravity_on.png"));
+			} catch (SlickException e) {
+				ErrorLog.logError(e);
+			}
+		}
 	}
 	
 	// Check to see if the mob is on the right side of a tile

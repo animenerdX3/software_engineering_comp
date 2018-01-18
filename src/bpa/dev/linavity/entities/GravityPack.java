@@ -19,7 +19,7 @@ public class GravityPack{
 	}
 	
 	public GravityPack(float gravpower) throws SlickException {
-		this.depletionRate = 0.1f;
+		this.depletionRate = 0.3f;
 		this.setGravpower(gravpower);
 		this.canFlip = true;
 	}

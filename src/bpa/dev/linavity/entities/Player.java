@@ -50,8 +50,9 @@ public class Player extends Mob {
 		// All Messages / Events for the player are handled here
 		
 		// ID 0: Recharge Gravity Pack
-		if(message.getType() == Message.thing){				
-			gravPack.setGravpower(gravPack.getGravpower() + (int) message.getData());
+		if(message.getType() == Message.gravPadRecharge){				
+			gravPack.setGravpower(gravPack.getGravpower() + (float) message.getData());
+			
 		}
 		
 	}
