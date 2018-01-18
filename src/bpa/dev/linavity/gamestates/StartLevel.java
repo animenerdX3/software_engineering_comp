@@ -306,7 +306,7 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void updatePlayer(int delta){
 		// Update the player's position
-		Main.util.getPlayer().update(delta);
+		Main.util.getPlayer().update();
 	}
 	
 	/**

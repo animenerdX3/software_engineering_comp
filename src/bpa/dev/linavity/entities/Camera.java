@@ -1,5 +1,7 @@
 package bpa.dev.linavity.entities;
 
+import bpa.dev.linavity.Main;
+
 public class Camera {
 
 	//  X and Y position of the camera object in the level
@@ -7,14 +9,24 @@ public class Camera {
 	int buffer;
 	
 	//Size of our camera
-	int height = 900;
-	int width = 900;
-
-	//Creates the actual camera object
-	public Camera(float x, float y){
-		this.x = x - 425;
-		this.y = y - 720;
+	int height;
+	int width;
+	
+	// Default Constructor
+	public Camera(float playerX, float playerY){
+		this.x = playerX - 425;
+		this.y = playerY - 720;
+		this.height = Main.HEIGHT;
+		this.width = Main.WIDTH;
 		this.buffer = 50;
+	}
+	
+	// Non-Default Constructor
+	public Camera(float mobX, float mobY, int collisionRadius) {
+		this.x = mobX - collisionRadius;
+		this.y = mobY- collisionRadius;
+		this.width = collisionRadius * 2;
+		this.height = collisionRadius * 2;
 	}
 	
 	//Updates the x and y of the camera 

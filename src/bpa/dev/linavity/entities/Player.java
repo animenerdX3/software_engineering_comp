@@ -168,7 +168,7 @@ public class Player extends Mob {
 				this.jumpMomentum = 0;
 		}
 		
-		if(this.cd)
+		if(this.collideDown)
 			this.jumps = 0;
 		
 		return jumpMomentum;
@@ -191,7 +191,7 @@ public class Player extends Mob {
 	
 	
 	// Using keyLog from Utils now, movement may break for a bit
-	public void update(int delta) {
+	public void update() {
 		
 		/*
 		 *MOVEMENT
@@ -377,33 +377,34 @@ public class Player extends Mob {
 		if(flipDuration >= 180){
 			isFlipping = false;
 		}
+		
 	}
 	
 	// Player jumping function
 	public void jump(int gravPower){
 		
 		//If the player is not falling, then you can jump		
-				int power = 16;
-		
-				if(Main.util.getGravity().getFlipDirection()){ // Reverse Gravity
-						if((gravPower / -1) > 0){
-							this.setYmo(-power);
-							setCanJump(false);
-						}else{
-							this.setYmo(power);//Sets Y-Momentum to 14, this makes the player fight against gravity
-							setCanJump(false);
-						}
-					
-				}else{ // Regular Gravity
-						if((gravPower / -1) > 0){
-							this.setYmo(-power);
-							setCanJump(false);
-						}else{
-							this.setYmo(power);//Sets Y-Momentum to 14, this makes the player fight against gravity'
-							setCanJump(false);
-						}
-					
+		int power = 16;
+
+		if(Main.util.getGravity().getFlipDirection()){ // Reverse Gravity
+				if((gravPower / -1) > 0){
+					this.setYmo(-power);
+					setCanJump(false);
+				}else{
+					this.setYmo(power);//Sets Y-Momentum to 14, this makes the player fight against gravity
+					setCanJump(false);
 				}
+			
+		}else{ // Regular Gravity
+				if((gravPower / -1) > 0){
+					this.setYmo(-power);
+					setCanJump(false);
+				}else{
+					this.setYmo(power);//Sets Y-Momentum to 14, this makes the player fight against gravity'
+					setCanJump(false);
+				}
+			
+		}
 		
 
 		

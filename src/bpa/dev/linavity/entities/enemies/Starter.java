@@ -136,7 +136,7 @@ public class Starter extends Mob{
 				jumpMomentum = 0;
 		}
 		
-		if(this.cd)
+		if(this.collideDown)
 			this.jumps = 0;
 		
 		return jumpMomentum;
@@ -163,20 +163,13 @@ public class Starter extends Mob{
 	 * @param delta
 	 */
 	public void enemyUpdates(int delta) {
-		//System.out.println(this.x + " | " + this.y);
-		//System.out.println("YMO: " + this.yMomentum);
-		
-		if(this.yMomentum > 0)
-			System.out.println(this.toString());
-		
-		
-		//collidePlayer();
-		
 
-//		if(Main.util.getPlayer().getCurrentProjectile() != null)
-//			collideProjectile();
+		collidePlayer();
 		
-		updateMomentums();
+		if(Main.util.getPlayer().getCurrentProjectile() != null)
+			collideProjectile();
+		
+		updateMomentums(); 
 		
 		super.updateMob();
 		
