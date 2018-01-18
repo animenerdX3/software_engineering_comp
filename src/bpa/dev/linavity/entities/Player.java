@@ -1,5 +1,8 @@
 package bpa.dev.linavity.entities;
 
+import java.awt.Rectangle;
+
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.Main;
@@ -17,12 +20,28 @@ public class Player extends Mob {
 	
 	private GravityPack gravPack;
 	
-	public Player() throws SlickException{
+	public Player(float x, float y) throws SlickException{
+		
+		// Call Mob Constructor
 		super();
-		this.jumps = 0;
-		this.maxJumps = 1;
-		this.isFlipping = false;
+		
+		// Player Signature
+		this.x = x;
+		this.y = y;
+		this.mobImage = new Image("res/sprites/player/player_0.png");
+		this.width = this.mobImage.getWidth() - 2;
+		this.height = this.mobImage.getHeight() - 2;
 		this.gravPack = new GravityPack(100);
+		this.maxJumps = 1;
+		this.walkSpeed = 0.125f;
+		this.runSpeed = 0.25f;
+		this.health = 100;
+		this.damage = 0;
+		this.jumpPower = -14;
+		this.canJump = true;
+		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
+
+		this.isFlipping = false;
 	}
 	
 	@Override
@@ -112,10 +131,10 @@ public class Player extends Mob {
 		
 		if(Main.util.getKeyLogSpecificKey(1)){ // Moving left
 			this.setIsMovingLeft(true);
-			return -this.runSpeed;
+			return -this.runSpeed * this.accessDelta;
 		}else if(Main.util.getKeyLogSpecificKey(3)) { // Moving right
 			this.setIsMovingRight(true);
-			return this.runSpeed;
+			return this.runSpeed * this.accessDelta;
 		}
 		
 		return 0;
@@ -129,7 +148,7 @@ public class Player extends Mob {
 		if(Main.util.getKeyLogSpecificKey(1)){ // Moving left
 			if(!(Main.util.getKeyLogSpecificKey(1) && Main.util.getKeyLogSpecificKey(3))) {
 				this.setIsMovingLeft(true);
-				return -this.walkSpeed;
+				return -this.walkSpeed * this.accessDelta;
 			}
 			else {
 				this.setIsMovingLeft(false);
@@ -138,7 +157,7 @@ public class Player extends Mob {
 		}else if(Main.util.getKeyLogSpecificKey(3)) { // Moving right
 			if(!(Main.util.getKeyLogSpecificKey(1) && Main.util.getKeyLogSpecificKey(3))) {
 			this.setIsMovingRight(true);
-			return this.walkSpeed;
+			return this.walkSpeed * this.accessDelta;
 			}
 			else {
 				this.setIsMovingLeft(false);
@@ -191,7 +210,7 @@ public class Player extends Mob {
 	
 	
 	// Using keyLog from Utils now, movement may break for a bit
-	public void update() {
+	public void update(int delta) {
 		
 		/*
 		 *MOVEMENT
@@ -207,7 +226,7 @@ public class Player extends Mob {
 		 */
 		
 		updateMomentums();
-		super.updateMob();
+		super.updateMob(delta);
 		
 //		if(Main.util.getGravity().getFlipDirection()){ // Reverse Gravity
 //			gravPack.depletingGravPack();

@@ -4,7 +4,6 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
-import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.assets.MusicManager;
 import bpa.dev.linavity.assets.SoundManager;
@@ -43,7 +42,7 @@ public class Utils {
 	
 	// Default Constructor
 	public Utils() throws SlickException{
-		this.player = new Player();
+		this.player = new Player(100, 100);
 	    this.cam = new Camera(this.getPlayer().getX(), this.getPlayer().getY());
 		this.musicQueue = musicManager.getMusicQueue();
 		this.sfx = sfxFiles.getSfx();

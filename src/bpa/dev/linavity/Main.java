@@ -26,6 +26,7 @@ public class Main extends StateBasedGame{
 	public static final int gameover = 2;
 	
 	// Application Properties
+	public static AppGameContainer appgc;
 	public static final int WIDTH = 900;
 	public static final int HEIGHT = 900;
 	public static final int FPS = 60;
@@ -52,7 +53,6 @@ public class Main extends StateBasedGame{
 	
 	// Main Method
 	public static void main(String[] args){
-		AppGameContainer appgc;
 		try {
 			appgc = new AppGameContainer(new Main("Linavity - Version 1.03"));
 			appgc.setDisplayMode(WIDTH, HEIGHT, false);

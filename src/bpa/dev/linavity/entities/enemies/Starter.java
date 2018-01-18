@@ -1,17 +1,35 @@
 package bpa.dev.linavity.entities.enemies;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import bpa.dev.linavity.Main;
+import bpa.dev.linavity.entities.GravityPack;
 import bpa.dev.linavity.entities.Mob;
 
 public class Starter extends Mob{
 
-	//Create enemy with constructor, sets the x and y of the enemy
-	public Starter(int x, int y) throws SlickException{
-		super("res/sprites/starter/starter_0.png", x, y);
-		this.jumps = 0;
-		super.setDamage(0.25);
-		super.setHealth(100);
+	//Create enemy with constructor
+	public Starter(float x, float y) throws SlickException{
+		
+		// Call Mob Constructor
+		super();
+		
+		// Enemy Signature (Eventually Read in from file)
+		this.x = x;
+		this.y = y;
+		this.mobImage = new Image("res/sprites/starter/starter_0.png");
+		this.width = this.mobImage.getWidth() - 2;
+		this.height = this.mobImage.getHeight() - 2;
+		this.gravPack = new GravityPack(0);
+		this.maxJumps = 0;
+		this.walkSpeed = 0.0625f;
+		this.runSpeed = 0.125f;
+		this.health = 100;
+		this.damage = 0.25;
+		this.canJump = false;
+		
+		
+		
 	}
 	
 	
@@ -95,9 +113,9 @@ public class Starter extends Mob{
 	private float runningX() {
 		
 		if(movingLeft()){ // Moving left
-			return -this.runSpeed;
+			return -this.runSpeed * this.accessDelta;
 		}else if(movingRight()) { // Moving right
-			return this.runSpeed;
+			return this.runSpeed * this.accessDelta;
 		}
 		
 		return 0;
@@ -109,9 +127,9 @@ public class Starter extends Mob{
 	private float walkingX() {
 		
 		if(movingLeft()){ // Moving left
-			return -this.walkSpeed;
+			return -this.walkSpeed * this.accessDelta;
 		}else if(movingRight()) { // Moving right
-			return this.walkSpeed;
+			return this.walkSpeed * this.accessDelta;
 		}
 		
 		return 0;
@@ -171,7 +189,7 @@ public class Starter extends Mob{
 		
 		updateMomentums(); 
 		
-		super.updateMob();
+		super.updateMob(delta);
 		
 	}//end of moveEnemy
 	

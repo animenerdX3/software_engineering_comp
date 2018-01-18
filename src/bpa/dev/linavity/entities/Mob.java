@@ -19,7 +19,7 @@ public abstract class Mob extends GameObject{
 		protected float x, y;
 		private float futureX1, futureX2, futureY1, futureY2;
 		// The width and height of the mob
-		private int width, height;
+		protected int width, height;
 	
 	// Collision Variables
 		// The radius around the mob that we check for collisions
@@ -31,8 +31,8 @@ public abstract class Mob extends GameObject{
 		private boolean collideRight;
 	
 	// Character Variables
-		private Image mobImage = null;
-		private GravityPack gravPack;
+		protected Image mobImage = null;
+		protected GravityPack gravPack;
 		
 	// Physics Variables
 		// Momentum in the y direction
@@ -50,29 +50,21 @@ public abstract class Mob extends GameObject{
 		// The speed at which the mob runs
 		protected float runSpeed;
 		protected float walkSpeed;
+		protected int accessDelta;
 		
 	//Mob Game Stats
-		private double health, damage;
-		private boolean isAlive;
+		protected double health, damage;
+		protected boolean isAlive;
 		
-		private boolean canJump;
+		protected boolean canJump;
 		protected boolean isMovingLeft;
 		protected boolean isMovingRight;
 		
-		private Rectangle boundingBox = new Rectangle();
+		protected Rectangle boundingBox = new Rectangle();
 	
 	//Default constructor
 	public Mob() 
 			throws SlickException{
-		
-		// Character Variables
-		this.setMobImage(new Image("res/sprites/player/player_0.png")); //By default, our Mob has the player skin
-		this.health = 100;
-		this.gravPack = new GravityPack();
-		
-		// Dimension Variables
-		this.width = this.getMobImage().getWidth() - 2;
-		this.height = this.getMobImage().getHeight() - 2;
 		
 		// Collision variables
 		this.collisionRadius = 100;
@@ -81,52 +73,68 @@ public abstract class Mob extends GameObject{
 		this.collideLeft = false;
 		this.collideRight = false;
 		
-		// Position
-		this.x = 100;
-		this.y = 100;
-		
-		// Physic's Variables
-		this.yMomentum = 0;
-		this.xMomentum = 0;
-		this.jumpMomentum = 0;
-		this.jumpPower = -14;
-		
-		this.walkSpeed = 2;
-		this.runSpeed = 4;
-		
+		// Character Variables
+		this.jumps = 0;
 		this.isAlive = true;
-		this.canJump = true;
+		//this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
 		
-		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
+//		// Character Variables
+//		this.setMobImage(new Image("res/sprites/player/player_0.png")); //By default, our Mob has the player skin
+//		this.health = 100;
+//		this.gravPack = new GravityPack();
+//		
+//		// Dimension Variables
+//		this.width = this.getMobImage().getWidth() - 2;
+//		this.height = this.getMobImage().getHeight() - 2;
+//		
+//		
+//		
+//		// Position
+//		this.x = 100;
+//		this.y = 100;
+//		
+//		// Physic's Variables
+//		this.yMomentum = 0;
+//		this.xMomentum = 0;
+//		this.jumpMomentum = 0;
+//		this.jumpPower = -14;
+//		
+//		this.walkSpeed = 2;
+//		this.runSpeed = 4;
+//		
+//		this.isAlive = true;
+//		this.canJump = true;
+		
+		
 	}
 	
 	//Non-Default constructor
-	public Mob(String textureDirectory, int x, int y) 
-			throws SlickException{
-		// Character Variables
-		this.setMobImage(new Image(textureDirectory)); //By default, our Mob has the player skin
-		
-		this.x = x;
-		this.y = y;
-		
-		// Enemy Stats
-		this.walkSpeed = 1;
-		this.runSpeed = 2;
-				
-		// Dimension Variables
-		this.width = this.getMobImage().getWidth();
-		this.height = this.getMobImage().getHeight();
-		this.maxJumps = 1;
-		this.isAlive = true;
-		this.canJump = true;  
-		
-		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
-	}
+//	public Mob(String textureDirectory, int x, int y) 
+//			throws SlickException{
+//		// Character Variables
+//		this.setMobImage(new Image(textureDirectory)); //By default, our Mob has the player skin
+//		
+//		this.x = x;
+//		this.y = y;
+//		
+//		// Enemy Stats
+//		this.walkSpeed = 1;
+//		this.runSpeed = 2;
+//				
+//		// Dimension Variables
+//		this.width = this.getMobImage().getWidth();
+//		this.height = this.getMobImage().getHeight();
+//		this.maxJumps = 1;
+//		this.isAlive = true;
+//		this.canJump = true;  
+//		
+//		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
+//	}
 	
 	/*
 	 * Make updates to the mob's stats, position, and collision detection
 	 */
-	public void updateMob() {
+	public void updateMob(int delta) {
 		
 		// Update the future position of the mob, to help with collision detection
 		updateFuturePosition();
@@ -138,7 +146,7 @@ public abstract class Mob extends GameObject{
 		updateMobPos();
 		
 		// Update all mob stats
-		updateMobStats();
+		updateMobStats(delta);
 	}
 	
 	/*
@@ -179,8 +187,8 @@ public abstract class Mob extends GameObject{
 	 *  Might not need this depending on how we handle messages
 	 * 
 	 */
-	private void updateMobStats() {
-		
+	private void updateMobStats(int delta) {
+		this.accessDelta = delta;
 	}
 	
 	public void checkMobCollisions(Level level, Camera cam) {

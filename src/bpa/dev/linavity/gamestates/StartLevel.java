@@ -201,6 +201,8 @@ public class StartLevel extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		
+		System.err.println("DELTA: "+delta+" | FPS: "+Main.appgc.getFPS());
+		
 		// If the game is not paused
 		if(!menuOpen){
 			
@@ -305,7 +307,7 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void updatePlayer(int delta){
 		// Update the player's position
-		Main.util.getPlayer().update();
+		Main.util.getPlayer().update(delta);
 	}
 	
 	/**
