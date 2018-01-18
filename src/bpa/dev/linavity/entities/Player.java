@@ -32,7 +32,7 @@ public class Player extends Mob {
 		this.width = this.mobImage.getWidth() - 2;
 		this.height = this.mobImage.getHeight() - 2;
 		this.gravPack = new GravityPack(100);
-		this.maxJumps = 1;
+		this.maxJumps = 2;
 		this.walkSpeed = 0.125f;
 		this.runSpeed = 0.25f;
 		this.health = 100;
@@ -174,6 +174,32 @@ public class Player extends Mob {
 	 */
 	private float yMovement() {
 		
+		// Gravity Pack Control
+		if(this.gravPack.isCanFlip()) { // If the player's gravity pack is currently able to fight gravity
+			if(isUsingGravPack()) // And the player is trying to use their gravity pack
+				this.isFlipping = !this.isFlipping;
+		}else{
+			this.isFlipping = false;
+		}
+		
+		if(isFlipping){
+			this.gravPackMomentum = Main.util.getGravity().getGravityPower() * -2;
+			this.gravPack.depletingGravPack();
+		}else{
+			this.gravPackMomentum = 0;
+		}
+			
+		// End of Gravity Pack Control
+		
+		// Jumping
+		
+		int jumpMod = 1;
+		if(this.isFlipping) {
+			jumpMod = -1;
+			if(this.collideUp)
+				this.jumps = 0;
+		}
+
 		if(!maxJumps()) {
 			if(jumping()) {
 				this.jumps++;
@@ -188,9 +214,15 @@ public class Player extends Mob {
 		}
 		
 		if(this.collideDown)
-			this.jumps = 0;
+			this.jumps = -1;
+		// End of Jumping
 		
-		return jumpMomentum;
+		return (jumpMod * this.jumpMomentum) + this.gravPackMomentum;
+	}
+	
+	// Determine whether the player is trying to use their gravity pack
+	private boolean isUsingGravPack(){
+		return Main.util.getKeyLogSpecificKey(5);
 	}
 	
 	// Determine whether the player has jumped more than it's max
@@ -225,7 +257,10 @@ public class Player extends Mob {
 		 * Z - Shoot (7) 
 		 */
 		
+		this.gravPack.gravPowerCheck();
+		
 		updateMomentums();
+		
 		super.updateMob(delta);
 		
 //		if(Main.util.getGravity().getFlipDirection()){ // Reverse Gravity

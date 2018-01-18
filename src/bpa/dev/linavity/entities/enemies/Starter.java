@@ -20,7 +20,7 @@ public class Starter extends Mob{
 		this.mobImage = new Image("res/sprites/starter/starter_0.png");
 		this.width = this.mobImage.getWidth() - 2;
 		this.height = this.mobImage.getHeight() - 2;
-		this.gravPack = new GravityPack(0);
+		this.gravPack = new GravityPack();
 		this.maxJumps = 0;
 		this.walkSpeed = 0.0625f;
 		this.runSpeed = 0.125f;

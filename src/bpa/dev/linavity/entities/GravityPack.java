@@ -19,7 +19,7 @@ public class GravityPack{
 	}
 	
 	public GravityPack(float gravpower) throws SlickException {
-		this.depletionRate = 0.5f;
+		this.depletionRate = 0.1f;
 		this.setGravpower(gravpower);
 		this.canFlip = true;
 	}
@@ -56,13 +56,13 @@ public class GravityPack{
 	 */
 	public void gravPowerCheck(){
 		this.setCanFlip(true);
-		
 		if( this.gravpower > 100)
 			this.setGravpower(100);
-		else if (gravpower  < 1){ //when i set gravpower to 0 or anything less set flip to false
+		else if (gravpower < 1){ //when i set gravpower to 0 or anything less set flip to false
 			this.setGravpower(0);
 			this.setCanFlip(false);
 		}
+		System.out.println("CAN FLIP: "+this.canFlip);
 	}
 
 	public boolean isCanFlip() {

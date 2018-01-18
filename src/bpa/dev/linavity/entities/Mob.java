@@ -25,14 +25,14 @@ public abstract class Mob extends GameObject{
 		// The radius around the mob that we check for collisions
 		private int collisionRadius;
 		// On which side(s) is the mob colliding
-		private boolean collideUp;
+		protected boolean collideUp;
 		protected boolean collideDown;
 		private boolean collideLeft;
 		private boolean collideRight;
 	
 	// Character Variables
 		protected Image mobImage = null;
-		protected GravityPack gravPack;
+		protected GravityPack gravPack = new GravityPack(0);
 		
 	// Physics Variables
 		// Momentum in the y direction
@@ -41,6 +41,8 @@ public abstract class Mob extends GameObject{
 		protected float xMomentum;
 		// Momentum added by jumping
 		protected float jumpMomentum;
+		// Momentum added by gravity pack
+		protected float gravPackMomentum;
 		// Maximum Number of Possible Jumps:
 		protected int maxJumps;
 		// Current number of jumps
@@ -202,11 +204,9 @@ public abstract class Mob extends GameObject{
 		
 		for(int r = 0; r < screenTiles.length; r++) { // Run through each row
 			for(int c = 0; c < screenTiles[0].length; c++) { // Run through each column
-				if(screenTiles[r][c] != null) { // If the tile exists
-					if(!screenTiles[r][c].isPassable()) { // And the tile is not passable, check to see if it collides with the player
+				if(screenTiles[r][c] != null)  // If the tile exists
+					if(!screenTiles[r][c].isPassable()) // And the tile is not passable, check to see if it collides with the player
 						checkTileCollision(screenTiles[r][c]); // Is the mob colliding with this tile?
-					}
-				}
 			}
 		}
 		
@@ -307,6 +307,7 @@ public abstract class Mob extends GameObject{
 	private boolean inRangeY(float objY1, float objY2) {
 		return ((this.y + this.height) >= objY1) && (this.y <= objY2);
 	}
+
 	
 	/* GETTERS */
 	
