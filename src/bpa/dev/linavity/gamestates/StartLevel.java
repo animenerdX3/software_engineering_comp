@@ -114,7 +114,6 @@ public class StartLevel extends BasicGameState{
 		if(Main.util.debugMode) {
 			g.drawString("X: " + Main.util.getPlayer().getX() + " Y: " + Main.util.getPlayer().getY(), 10,50);
 			g.drawString("Cam X: " + Main.util.getCam().getX() + " Cam Y: " + Main.util.getCam().getY(), 10,70);
-			g.drawString("Collide: " + Main.util.getPlayer().isCollide(), 10,90);
 			g.drawString("Collide up: " + Main.util.getPlayer().isCu(), 10,110);
 			g.drawString("Collide down: " + Main.util.getPlayer().isCd(), 10,130);
 			g.drawString("Collide left: " + Main.util.getPlayer().isCl(), 10,150);

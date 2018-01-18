@@ -22,8 +22,6 @@ public abstract class Mob extends GameObject{
 		private int width, height;
 	
 	// Collision Variables
-		// Is the mob colliding with something
-		private boolean collide;
 		// The radius around the mob that we check for collisions
 		private int collisionRadius;
 		// On which side(s) is the mob colliding
@@ -77,7 +75,6 @@ public abstract class Mob extends GameObject{
 		this.height = this.getMobImage().getHeight() - 2;
 		
 		// Collision variables
-		this.setCollide(false);
 		this.collisionRadius = 100;
 		this.collideUp = false;
 		this.collideDown = false;
@@ -210,8 +207,8 @@ public abstract class Mob extends GameObject{
 	private void checkTileCollision(Tile tile) {
 			
 		
-			//moving left - collision check
-			if(this.x > (tile.getX() + tile.getWidth())) { //seeing if i am directly to the right of the tile we collided into
+			//Moving Left - Check Collision
+			if(onRight(tile)) { //seeing if i am directly to the right of the tile we collided into
 				if(leftCollide(tile.getX(), tile.getX() + tile.getWidth(), tile.getY(), tile.getY() + tile.getHeight())) {
 					this.x = (tile.getX() + tile.getWidth()) + 1;
 					this.collideLeft = true;
@@ -222,8 +219,8 @@ public abstract class Mob extends GameObject{
 				} 
 			}
 			
-			//moving right
-			else if((this.x + this.width) < tile.getX()){
+			//Moving Right - Check Collision
+			else if(onLeft(tile)){
 				if(rightCollide(tile.getX(), tile.getX() + tile.getWidth(), tile.getY(), tile.getY() + tile.getHeight())) {
 					this.x = tile.getX() - ((this.width) + 1);
 					this.collideRight = true;
@@ -234,7 +231,8 @@ public abstract class Mob extends GameObject{
 				}
 			}
 
-			else if((this.y + this.height) < tile.getY()){
+			//Moving Down - Check Collision
+			else if(onTop(tile)){
 				if(downCollide(tile.getX(), tile.getX() + tile.getWidth(), tile.getY(), tile.getY() + tile.getHeight())){
 					this.y = tile.getY() - (this.getHeight() + 1);
 					this.collideDown = true;
@@ -244,7 +242,8 @@ public abstract class Mob extends GameObject{
 				}
 			}
 
-			else if(this.y > (tile.getY() + tile.getHeight())){
+			//Moving Up - Check Collision
+			else if(onBottom(tile)){
 				if(upCollide(tile.getX(), tile.getX() + tile.getWidth(), tile.getY(), tile.getY() + tile.getHeight())) {
 					this.y = (tile.getY() + tile.getHeight()) + 1;
 					this.collideUp = true;
@@ -253,6 +252,26 @@ public abstract class Mob extends GameObject{
 					checkTileCollision(tile);
 				}
 			}
+	}
+	
+	// Check to see if the mob is on the right side of a tile
+	private boolean onRight(Tile tile) {
+		return this.x > (tile.getX() + tile.getWidth());
+	}
+	
+	// Check to see if the mob is on the right side of a tile
+	private boolean onLeft(Tile tile) {
+		return (this.x + this.width) < tile.getX();
+	}
+	
+	// Check to see if the mob is on the right side of a tile
+	private boolean onBottom(Tile tile) {
+		return this.y > (tile.getY() + tile.getHeight());
+	}
+	
+	// Check to see if the mob is on the right side of a tile
+	private boolean onTop(Tile tile) {
+		return (this.y + this.height) < tile.getY();
 	}
 	
 	// Check to see whether or not the mob is colliding with an object (up)
@@ -309,10 +328,6 @@ public abstract class Mob extends GameObject{
 	 */
 	public boolean isCr() {
 		return collideRight;
-	}
-
-	public boolean isCollide() {
-		return collide;
 	}
 
 	/**
@@ -389,13 +404,6 @@ public abstract class Mob extends GameObject{
 	
 	/* SETTERS */
 
-	public void setCollide(boolean collide) {
-		this.collide = collide;
-	}
-	
-	/**
-	 * @param cu the cu to set
-	 */
 	public void setCu(boolean cu) {
 		this.collideUp = cu;
 	}
