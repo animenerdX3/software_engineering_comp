@@ -3,8 +3,8 @@ package bpa.dev.linavity.entities;
 import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.Main;
-import bpa.dev.linavity.events.Message;
-import bpa.dev.linavity.weapons.Projectile;
+import bpa.dev.linavity.events.*;
+import bpa.dev.linavity.weapons.*;
 
 public class Player extends Mob {
 	
@@ -87,6 +87,10 @@ public class Player extends Mob {
 				return walkingX();
 			}
 		}
+		else {
+			this.setIsMovingLeft(false);
+			this.setIsMovingRight(false);
+		}
 		
 		return 0;
 	}
@@ -107,8 +111,10 @@ public class Player extends Mob {
 	private float runningX() {
 		
 		if(Main.util.getKeyLogSpecificKey(1)){ // Moving left
+			this.setIsMovingLeft(true);
 			return -this.runSpeed;
 		}else if(Main.util.getKeyLogSpecificKey(3)) { // Moving right
+			this.setIsMovingRight(true);
 			return this.runSpeed;
 		}
 		
@@ -121,9 +127,23 @@ public class Player extends Mob {
 	private float walkingX() {
 		
 		if(Main.util.getKeyLogSpecificKey(1)){ // Moving left
-			return -this.walkSpeed;
+			if(!(Main.util.getKeyLogSpecificKey(1) && Main.util.getKeyLogSpecificKey(3))) {
+				this.setIsMovingLeft(true);
+				return -this.walkSpeed;
+			}
+			else {
+				this.setIsMovingLeft(false);
+				this.setIsMovingRight(false);
+			}
 		}else if(Main.util.getKeyLogSpecificKey(3)) { // Moving right
+			if(!(Main.util.getKeyLogSpecificKey(1) && Main.util.getKeyLogSpecificKey(3))) {
+			this.setIsMovingRight(true);
 			return this.walkSpeed;
+			}
+			else {
+				this.setIsMovingLeft(false);
+				this.setIsMovingRight(false);
+			}
 		}
 		
 		return 0;

@@ -315,6 +315,7 @@ public abstract class Mob extends GameObject{
 				if(leftCollide(tile.getX(), tile.getX() + tile.getWidth(), tile.getY(), tile.getY() + tile.getHeight())) {
 					this.x = (tile.getX() + tile.getWidth()) + 1;
 					this.cl = true;
+					this.isMovingLeft = false;
 					this.xMomentum = 0;
 					updateFuturePosition();
 					checkTileCollision(tile);
@@ -326,6 +327,7 @@ public abstract class Mob extends GameObject{
 				if(rightCollide(tile.getX(), tile.getX() + tile.getWidth(), tile.getY(), tile.getY() + tile.getHeight())) {
 					this.x = tile.getX() - ((this.width) + 1);
 					this.cr = true;
+					this.isMovingRight = false;
 					this.xMomentum = 0;
 					updateFuturePosition();
 					checkTileCollision(tile);
