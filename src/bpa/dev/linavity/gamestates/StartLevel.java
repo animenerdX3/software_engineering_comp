@@ -90,7 +90,7 @@ public class StartLevel extends BasicGameState{
 		bounds = new Rectangle((int) (Main.util.getPlayer().getX() - Main.util.getCam().getX()), (int) (Main.util.getPlayer().getY() - Main.util.getCam().getY()), 50, 50);
 		
 		//Create enemies
-		enemies[0] = new Starter(300, 200);
+		enemies[0] = new Starter(500, 750);
 		enemybounds = new Rectangle((int) (enemies[0].getX() - Main.util.getCam().getX()), (int) (enemies[0].getY() - Main.util.getCam().getY()), 50, 50);
 		
 	    moveLeft = new SpriteSheet("res/sprites/player/player_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions

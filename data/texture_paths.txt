@@ -11,7 +11,7 @@ res/tiles/dynamic/Lights/Circle_Light_On.png,true
 res/tiles/dynamic/Lights/Light_Off.png,true
 res/tiles/dynamic/Lights/Light_On.png,true
 res/tiles/dynamic/warphole/warphole.png,true
-res/tiles/static/Metal_Plate.png,false
+res/tiles/static/Metal_Plate.png,true
 res/tiles/static/Platform_Tile.png,false
 res/tiles/static/Vent.png,true
 res/tiles/static/grass_base.png,false

@@ -8,6 +8,8 @@ import bpa.dev.linavity.entities.Mob;
 
 public class Starter extends Mob{
 
+	private boolean isDetected;
+	
 	//Create enemy with constructor
 	public Starter(float x, float y) throws SlickException{
 		
@@ -27,9 +29,7 @@ public class Starter extends Mob{
 		this.health = 100;
 		this.damage = 0.25;
 		this.canJump = false;
-		
-		
-		
+		this.isDetected = false;
 	}
 	
 	
@@ -76,10 +76,11 @@ public class Starter extends Mob{
 	 */
 	private float xMovement() {
 
-		if(movingLeftOrRight()) {
-			if(isRunning()) {
+		detectPlayer(300,300,50,50);//Check to see if the player is in their range of vision
+		if(movingLeftOrRight()) {//Find out where the player is
+			if(isRunning()) {//Check if the enemy is running
 				return runningX();
-			}else{
+			}else{//The enemy is walking
 				return walkingX();
 			}
 		}
@@ -112,10 +113,11 @@ public class Starter extends Mob{
 	 */
 	private float runningX() {
 		
-		if(movingLeft()){ // Moving left
-			return -this.runSpeed * this.accessDelta;
-		}else if(movingRight()) { // Moving right
-			return this.runSpeed * this.accessDelta;
+		if(this.isDetected) {
+			if(movingLeft()) // Moving left
+				return -this.runSpeed * this.accessDelta;
+			else if(movingRight())  // Moving right
+				return this.runSpeed * this.accessDelta;
 		}
 		
 		return 0;
@@ -126,15 +128,31 @@ public class Starter extends Mob{
 	 */
 	private float walkingX() {
 		
-		if(movingLeft()){ // Moving left
-			return -this.walkSpeed * this.accessDelta;
-		}else if(movingRight()) { // Moving right
-			return this.walkSpeed * this.accessDelta;
+		if(this.isDetected) {
+			if(movingLeft()) // Moving left
+				return -this.walkSpeed * this.accessDelta;
+			else if(movingRight())  // Moving right
+				return this.walkSpeed * this.accessDelta;
 		}
 		
 		return 0;
 	}
 	
+	/**
+	 * Determines if the player is within detection radius of emeny
+	 * @param leftXRange the left side of the enemy in pixels
+	 * @param rightXRange the right side of the enemy in pixels
+	 * @param topYRange the top of the enemy in pixels
+	 * @param bottomYRange the bottom of the enemy in pixels
+	 */
+	private void detectPlayer(int leftXRange, int rightXRange, int topYRange, int bottomYRange) {
+		if(this.x - leftXRange <= Main.util.getPlayer().getX() && this.x + rightXRange >= Main.util.getPlayer().getX()) { //Check X Range
+			if(this.y - topYRange <= Main.util.getPlayer().getY() && this.y + bottomYRange >= Main.util.getPlayer().getY()) //Check Y Range
+				this.isDetected = true;
+		}
+		else
+			this.isDetected = false;
+	}
 	
 	/*
 	 * Return how the enemy is moving left or right based on input from the user
@@ -216,5 +234,17 @@ public class Starter extends Mob{
 			}
 		}
 	}//end of collideProjectile
+	
+	/* GETTERS */
+	
+	public boolean isDetected() {
+		return isDetected;
+	}
+	
+	/* SETTERS */
+	
+	public void setDetection(boolean isDetected) {
+		this.isDetected = isDetected;
+	}
 	
 }//end of class
