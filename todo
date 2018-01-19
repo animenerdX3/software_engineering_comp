@@ -10,18 +10,17 @@ CYCLE GOALS (✓)
 --------------------
 BY CYCLE 09: (✓) Finish Game states and get Start button to bring us to MainGame, World Borders and Running (~ o 3 o)~
 BY CYCLE 11: (✓) Get gravity working and start implementing some kind of level with blocks 
-BY CYCLE 13: () Start some collision and perfect our jumping / camera system
-BY CYCLE 15: ( )
-BY CYCLE 17: ( )
-BY CYCLE 19: ( )
+BY CYCLE 13: (✓) Start some collision and perfect our jumping / camera system
+BY CYCLE 17: ( ) Finish Core Functions So We Can Implement A Level
+BY CYCLE 19: ( ) Finish Everything: Submission On Day 1
 
 SIMPLE MILESTONES (Short-term goals)
 --------------------
 1.) ✓ Gamestates 
-2.) Sprites/Spritesheets
-3.) Level Designs (Need a way to actually design the level)
+2.) ✓ Sprites/Spritesheets
+3.) ✓ Level Designs (Need a way to actually design the level)
 4.) Super Basic Collectibles
-5.) Collisions
+5.) ✓ Collisions
 
 ADVANCED MILESTONES (Long-term goals)
 --------------------
@@ -29,11 +28,10 @@ ADVANCED MILESTONES (Long-term goals)
 2.) NPCs (If we're having any)
 3.) Dialogue boxes for NPC text(?)*(Depends on if we're going with a bigger focus on the story, but we'll probably need it in some form anyway)
 4.) Physics for objects
-5.) Background
-6.) Parallax Mapping
-7.) Health System
+5.) ✓ Background
+6.) ✓ Parallax Mapping
+7.) ✓ Health System
 8.) ✓ Jumping
-9.) Crouching
 
 MISCELLANEOUS
 --------------------
