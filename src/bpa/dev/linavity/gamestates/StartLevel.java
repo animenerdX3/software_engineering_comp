@@ -67,6 +67,7 @@ public class StartLevel extends BasicGameState{
 	Starter [] enemies = new Starter[1];
 	
 	Tile[][] screenTiles;
+	Tile[][] eventTiles;
 	
 	//Default constructor
 	public StartLevel(){ 
@@ -85,6 +86,7 @@ public class StartLevel extends BasicGameState{
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
 		Main.util.setLevel(new Level(0, "startlevel"));
+		Main.util.setEvents(new Level(0, "startlevel_events"));
 		bounds = new Rectangle((int) (Main.util.getPlayer().getX() - Main.util.getCam().getX()), (int) (Main.util.getPlayer().getY() - Main.util.getCam().getY()), 50, 50);
 		
 		//Create enemies
@@ -192,6 +194,31 @@ public class StartLevel extends BasicGameState{
 			}
 		}
 		// End of drawing screen tiles
+	
+		// Get a 2d array of tile objects that are contained within our camera's view
+		eventTiles = Main.util.getEvents().getScreenTiles(Main.util.getCam());
+		
+		// Temp x and y of tile in relation to the camera
+		float eventTileX, eventTileY;
+		
+		// Draw the tiles that belong on the screen.
+		for(int i = 0; i < eventTiles.length; i++) {
+			for(int j = 0; j < eventTiles[i].length; j++) {
+				if(eventTiles[i][j] != null) {
+					eventTileX = eventTiles[i][j].getX() - Main.util.getCam().getX(); // Get the tile's temp x location for the screen rendering
+					eventTileY = eventTiles[i][j].getY() - Main.util.getCam().getY(); // Get the tile's temp y location for the screen rendering
+					eventTiles[i][j].getTexture().draw(eventTileX, eventTileY); // Draw the tile
+					if(Main.util.debugMode) {
+						eventTiles[i][j].setCollisionBox(new Rectangle((int) eventTileX, (int) eventTileY, (int) eventTiles[i][j].getWidth(), (int) eventTiles[i][j].getHeight()));
+						if(!eventTiles[i][j].isPassable()) {
+							g.setColor(Color.white);
+							g.drawRect((int)eventTiles[i][j].getCollisionBox().getX(), (int) eventTiles[i][j].getCollisionBox().getY(), (int) eventTiles[i][j].getCollisionBox().getWidth(), (int)eventTiles[i][j].getCollisionBox().getHeight());
+						}
+					}
+				}
+			}
+		}
+		// End of drawing event tiles
 		
 	}
 

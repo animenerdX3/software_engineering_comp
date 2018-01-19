@@ -25,6 +25,7 @@ public class Utils {
 	private Player player; // Player Object
 	private MessageHandler messageHandler; // Message Handler Object
 	private Level level; // Level Object
+	private Level events;//Level Object For Events
 	private Gravity gravity; // Gravity Object
 	public Camera cam; // Camera Object
 	
@@ -113,6 +114,13 @@ public class Utils {
 		return level;
 	}
 	
+	/**
+	 * @return the events
+	 */
+	public Level getEvents() {
+		return events;
+	}
+	
 	// Setters
 	
 	public void setCam(Camera cam) {
@@ -145,6 +153,13 @@ public class Utils {
 	 */
 	public void setLevel(Level level) {
 		this.level = level;
+	}
+	
+	/**
+	 * @param events the events to set
+	 */
+	public void setEvents(Level events) {
+		this.events = events;
 	}
 	
 	public void setMusic(String musicDirectory) {

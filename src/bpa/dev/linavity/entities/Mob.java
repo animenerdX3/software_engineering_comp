@@ -145,6 +145,7 @@ public abstract class Mob extends GameObject{
 		
 		// Check for collisions with tiles
 		checkMobCollisions(Main.util.getLevel(), new Camera(this.x, this.y, this.collisionRadius));
+		checkMobCollisions(Main.util.getEvents(), new Camera(this.x, this.y, this.collisionRadius));
 		
 		// According to the inputs, update the mobs position in the game world
 		updateMobPos();
@@ -216,6 +217,8 @@ public abstract class Mob extends GameObject{
 	
 	private void checkTileCollision(Tile tile) {
 			
+			System.out.println("TILE X - "+tile.getX()+", TILE Y - "+tile.getY());
+			System.out.println("COLLISION BOX X - "+tile.getCollisionBox().getX()+", COLLISION BOX Y - "+tile.getCollisionBox().getY());
 		
 			//Moving Left - Check Collision
 			if(onRight(tile)) { //seeing if i am directly to the right of the tile we collided into
