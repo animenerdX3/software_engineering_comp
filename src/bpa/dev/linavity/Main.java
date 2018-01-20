@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import bpa.dev.linavity.utils.ErrorLog;
 import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.gamestates.*;
 
@@ -61,7 +62,7 @@ public class Main extends StateBasedGame{
 			appgc.setTargetFrameRate(FPS);
 			appgc.start();
 		} catch (SlickException e) {
-			e.printStackTrace();
+			ErrorLog.logError(e);
 		}
 	}
 

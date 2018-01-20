@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import bpa.dev.linavity.utils.ErrorLog;
+
 public class MusicManager {
 
 	private String [] music_queue;
@@ -23,7 +25,7 @@ public class MusicManager {
 		try {
 			music_queue = getMusicFiles(musicFile);//Get the array of music
 		} catch (FileNotFoundException e) {
-			e.printStackTrace(); 
+			ErrorLog.logError(e);
 			}
 	}//end of SoundManager
 	

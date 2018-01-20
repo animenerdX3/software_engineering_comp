@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import bpa.dev.linavity.utils.ErrorLog;
+
 public class TileManager {
 
 	private int texturecounter = 0;
@@ -22,7 +24,7 @@ public class TileManager {
 			String [] texturePaths = getTextureMap(textureFile);//Get the 2D array of ints for the world
 			splitPaths(texturePaths);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace(); 
+			ErrorLog.logError(e);
 			}
 	}
 	

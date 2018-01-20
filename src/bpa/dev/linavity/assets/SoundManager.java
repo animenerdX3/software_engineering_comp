@@ -7,6 +7,8 @@ import java.util.Scanner;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
+import bpa.dev.linavity.utils.ErrorLog;
+
 public class SoundManager {
 
 	private Sound [] sfx;
@@ -26,7 +28,7 @@ public class SoundManager {
 		try {
 			sfx = getSoundFiles(soundFile);//Get the array of sound effects
 		} catch (FileNotFoundException e) {
-			e.printStackTrace(); 
+			ErrorLog.logError(e);
 			}
 	}//end of SoundManager
 	
@@ -68,7 +70,7 @@ public class SoundManager {
 			try {
 				sfx_files[i] = new Sound(scan.nextLine());
 			} catch (SlickException e) {
-				e.printStackTrace();
+				ErrorLog.logError(e);
 			}
 		}
 		

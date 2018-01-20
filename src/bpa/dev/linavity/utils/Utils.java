@@ -166,7 +166,7 @@ public class Utils {
 		try {
 			music = new Music(musicDirectory);
 		} catch (SlickException e) {
-			e.printStackTrace();
+			ErrorLog.logError(e);
 		}
 	}
 	

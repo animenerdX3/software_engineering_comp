@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import bpa.dev.linavity.utils.ErrorLog;
+
 public class LevelManager {
 
 	private int [][] world;
@@ -17,7 +19,7 @@ public class LevelManager {
 		try {
 			world = getWorldMap(worldFile);//Get the 2D array of ints for the world
 		} catch (FileNotFoundException e) {
-			e.printStackTrace(); 
+			ErrorLog.logError(e);
 			}
 	}//end of LevelManager
 	

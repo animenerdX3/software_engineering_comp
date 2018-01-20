@@ -144,8 +144,8 @@ public abstract class Mob extends GameObject{
 		updateFuturePosition();
 		
 		// Check for collisions with tiles
-		checkMobCollisions(Main.util.getLevel(), new Camera(this.x, this.y, this.collisionRadius));
 		checkMobCollisions(Main.util.getEvents(), new Camera(this.x, this.y, this.collisionRadius));
+		checkMobCollisions(Main.util.getLevel(), new Camera(this.x, this.y, this.collisionRadius));
 		
 		// According to the inputs, update the mobs position in the game world
 		updateMobPos();

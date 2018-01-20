@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="lib/slick.jar"/>
 	<classpathentry kind="lib" path="lib/jogg-0.0.7.jar"/>
 	<classpathentry kind="lib" path="lib/jorbis-0.0.17-1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Anime/git/software_engineering_comp/lib/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
