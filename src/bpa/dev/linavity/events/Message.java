@@ -4,7 +4,9 @@ import bpa.dev.linavity.GameObject;
 
 public class Message {
 
+	// List of possible events and their ID's
 	public final static int gravPadRecharge = 0;
+	public final static int leverToggle = 1;
 
 	// The contents of our event messages
 	private GameObject to;

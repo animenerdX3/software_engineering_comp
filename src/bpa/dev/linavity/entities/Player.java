@@ -188,6 +188,7 @@ public class Player extends Mob {
 		if(isFlipping){
 			this.gravPackMomentum = Main.util.getGravity().getGravityPower() * -2;
 			this.gravPack.depletingGravPack();
+			
 		}else{
 			this.gravPackMomentum = 0;
 		}
@@ -430,9 +431,6 @@ public class Player extends Mob {
 				this.getMobImage().rotate(-rotateSpeed);
 			}
 			flipDuration += rotateSpeed;
-		}
-		if(flipDuration >= 180){
-			isFlipping = false;
 		}
 		
 	}

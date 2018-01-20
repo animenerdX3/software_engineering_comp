@@ -13,7 +13,7 @@ public class InputManager {
 	// Possible keyboard inputs by user
 	// Keyboard -> [W, A, S, D, LShift, LControl, ESC, Z] 
 	// Mouse -> [Mouse X Pos, Mouse Y Pos, left click]
-	private boolean[] keyLog = new boolean[8];
+	private boolean[] keyLog = new boolean[9];
 	private int[] mouseLog = new int[3];
 	
 	//Default constructor
@@ -74,6 +74,11 @@ public class InputManager {
 		//Z
 		if(input.isKeyPressed(Input.KEY_Z)){
 			keyLog[7] = true;
+		}
+		
+		//E
+		if(input.isKeyPressed(Input.KEY_E)) {
+			keyLog[8] = true;
 		}
 	}
 	

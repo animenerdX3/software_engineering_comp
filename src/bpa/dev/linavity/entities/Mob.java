@@ -80,61 +80,9 @@ public abstract class Mob extends GameObject{
 		// Character Variables
 		this.jumps = 0;
 		this.isAlive = true;
-		//this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
-		
-//		// Character Variables
-//		this.setMobImage(new Image("res/sprites/player/player_0.png")); //By default, our Mob has the player skin
-//		this.health = 100;
-//		this.gravPack = new GravityPack();
-//		
-//		// Dimension Variables
-//		this.width = this.getMobImage().getWidth() - 2;
-//		this.height = this.getMobImage().getHeight() - 2;
-//		
-//		
-//		
-//		// Position
-//		this.x = 100;
-//		this.y = 100;
-//		
-//		// Physic's Variables
-//		this.yMomentum = 0;
-//		this.xMomentum = 0;
-//		this.jumpMomentum = 0;
-//		this.jumpPower = -14;
-//		
-//		this.walkSpeed = 2;
-//		this.runSpeed = 4;
-//		
-//		this.isAlive = true;
-//		this.canJump = true;
-		
 		
 	}
-	
-	//Non-Default constructor
-//	public Mob(String textureDirectory, int x, int y) 
-//			throws SlickException{
-//		// Character Variables
-//		this.setMobImage(new Image(textureDirectory)); //By default, our Mob has the player skin
-//		
-//		this.x = x;
-//		this.y = y;
-//		
-//		// Enemy Stats
-//		this.walkSpeed = 1;
-//		this.runSpeed = 2;
-//				
-//		// Dimension Variables
-//		this.width = this.getMobImage().getWidth();
-//		this.height = this.getMobImage().getHeight();
-//		this.maxJumps = 1;
-//		this.isAlive = true;
-//		this.canJump = true;  
-//		
-//		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
-//	}
-	
+
 	/*
 	 * Make updates to the mob's stats, position, and collision detection
 	 */
@@ -144,8 +92,9 @@ public abstract class Mob extends GameObject{
 		updateFuturePosition();
 		
 		// Check for collisions with tiles
-		checkMobCollisions(Main.util.getLevel(), new Camera(this.x, this.y, this.collisionRadius));
 		checkMobCollisions(Main.util.getEvents(), new Camera(this.x, this.y, this.collisionRadius));
+		checkMobCollisions(Main.util.getLevel(), new Camera(this.x, this.y, this.collisionRadius));
+		
 		
 		// According to the inputs, update the mobs position in the game world
 		updateMobPos();
@@ -272,13 +221,16 @@ public abstract class Mob extends GameObject{
 	}
 	
 	private void checkDynamicTiles(Tile tile) {
-		if(tile.getId() == 5) {
+		
+		// GravPad Recharging the player's gravPad
+		if(tile.getId() == tile.gravPadID) {
 			Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.gravPadRecharge, 0.5f));
-			try {
-				tile.setTexture(new Image("res/tiles/dynamic/antigravity/antigravity_on.png"));
-			} catch (SlickException e) {
-				ErrorLog.logError(e);
-			}
+		}
+		
+		// Lever getting activated / toggled
+		if(tile.getId() == tile.leverID) {
+		//	Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.leverToggle, ));
+		//	tile.setTexture(texture);
 		}
 	}
 	
