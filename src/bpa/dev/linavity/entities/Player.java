@@ -32,7 +32,7 @@ public class Player extends Mob {
 		this.width = this.mobImage.getWidth() - 2;
 		this.height = this.mobImage.getHeight() - 2;
 		this.gravPack = new GravityPack(100);
-		this.maxJumps = 2;
+		this.maxJumps = 0;
 		this.walkSpeed = 0.125f;
 		this.runSpeed = 0.25f;
 		this.health = 100;
@@ -188,6 +188,7 @@ public class Player extends Mob {
 		if(isFlipping){
 			this.gravPackMomentum = Main.util.getGravity().getGravityPower() * -2;
 			this.gravPack.depletingGravPack();
+			
 		}else{
 			this.gravPackMomentum = 0;
 		}
@@ -430,9 +431,6 @@ public class Player extends Mob {
 				this.getMobImage().rotate(-rotateSpeed);
 			}
 			flipDuration += rotateSpeed;
-		}
-		if(flipDuration >= 180){
-			isFlipping = false;
 		}
 		
 	}

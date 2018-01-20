@@ -14,6 +14,10 @@ import bpa.dev.linavity.GameObject;
 
 public class Tile extends GameObject implements Shape {
 
+	// Final Ints for dynamic tile ID's
+	public final static int gravPadID = 5;
+	public final static int leverID = 20;
+	
 	// Tile ID
 	private int id;
 	
@@ -25,6 +29,9 @@ public class Tile extends GameObject implements Shape {
 	
 	// Tells the game whether or not the tile lets other objects pass through it.
 	private boolean passable;
+	
+	// Toggle boolean for dynamic tiles that need one
+	boolean toggle = false;
 
 	// the image of our tile
 	private Image texture = null;
