@@ -1,42 +1,27 @@
 package bpa.dev.linavity.gamestates;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
-import bpa.dev.linavity.entities.enemies.*;
+import bpa.dev.linavity.entities.Mob;
+import bpa.dev.linavity.entities.Player;
+import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.world.Level;
 import bpa.dev.linavity.world.ParallaxMap;
 
-/* Task List
-//TODO Also, use that method to have mobs check for collision
-*/
-
 public class StartLevel extends BasicGameState{
-
-	//Animation
-    private SpriteSheet moveRight; // initate a SpriteSheet
-    private Animation moveRightAni; // initate a Animation
-	
-    private SpriteSheet moveLeft; // initate a SpriteSheet
-    private Animation moveLeftAni; // initate a Animation
-	
-    private SpriteSheet standStill; //initiate a SpriteSheet
-    private Animation standStillAni;
-    
-    private Animation currentImage;
 	
 	// Images
 	private Image health_gui = null;
@@ -64,7 +49,7 @@ public class StartLevel extends BasicGameState{
 	private Rectangle enemybounds;
 	
 	//List of all possible enemies
-	Starter [] enemies = new Starter[1];
+	ArrayList <Mob> mobs = new ArrayList<Mob>();
 	
 	Tile[][] screenTiles;
 	Tile[][] eventTiles;
@@ -86,20 +71,15 @@ public class StartLevel extends BasicGameState{
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
 		Main.util.setLevel(new Level(0, "startlevel"));
-		Main.util.setEvents(new Level(0, "startlevel_events"));
-		bounds = new Rectangle((int) (Main.util.getPlayer().getX() - Main.util.getCam().getX()), (int) (Main.util.getPlayer().getY() - Main.util.getCam().getY()), 50, 50);
+		Main.util.setEvents(new Level(0, "startlevel_events"));		
 		
-		//Create enemies
-		enemies[0] = new Starter(500, 750);
-		enemybounds = new Rectangle((int) (enemies[0].getX() - Main.util.getCam().getX()), (int) (enemies[0].getY() - Main.util.getCam().getY()), 50, 50);
+		//Add mobs
+			mobs.add(Main.util.getPlayer());
+			mobs.add(new Starter(500, 750));
 		
-	    moveLeft = new SpriteSheet("res/sprites/player/player_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
-	    moveLeftAni = new Animation(moveLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    moveRight = new SpriteSheet("res/sprites/player/player_right_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
-	    moveRightAni = new Animation(moveRight, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    standStill = new SpriteSheet("res/sprites/player/player_0.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
-	    standStillAni = new Animation(standStill, 450); // declare a SpriteSheet and load it into java with its dimentions
-	    currentImage = standStillAni;
+		for(int i = 0; i < mobs.size() - 1; i++)
+			enemybounds = new Rectangle((int) (mobs.get(i).getX() - Main.util.getCam().getX()), (int) (mobs.get(i).getY() - Main.util.getCam().getY()), 50, 50);
+
 	}
 
 	/**
@@ -125,9 +105,10 @@ public class StartLevel extends BasicGameState{
 		}
 		
 		//Draw enemies
-		for(int i = 0; i < enemies.length; i++){
-			if(enemies[i].isAlive())
-				enemies[i].getMobImage().draw(enemies[i].getX() - Main.util.getCam().getX(), enemies[0].getY() - Main.util.getCam().getY());
+		for(int i = 0; i < mobs.size() - 1; i++){
+			if(mobs.get(i).isAlive())
+				mobs.get(i).getCurrentImage().draw(mobs.get(i).getX() - Main.util.cam.getX(), mobs.get(i).getY() - Main.util.cam.getY());
+
 		}
 		
 		//If a projectile exists, then draw it on the screen
@@ -135,17 +116,14 @@ public class StartLevel extends BasicGameState{
 			Main.util.getPlayer().getCurrentProjectile().getProjectileImage().draw(Main.util.getPlayer().getCurrentProjectile().getX() - Main.util.getCam().getX() + 100, Main.util.getPlayer().getCurrentProjectile().getY() - Main.util.getCam().getY() + 15);
 		}
 		
-		//Draw player
-		currentImage.draw(Main.util.getPlayer().getX() - Main.util.cam.getX(), Main.util.getPlayer().getY() - Main.util.cam.getY());
-		
 		if(Main.util.debugMode) {
 		
-		Main.util.getPlayer().setBoundingBox(new Rectangle((int) (Main.util.getPlayer().getX()- Main.util.getCam().getX()), (int) (Main.util.getPlayer().getY() - Main.util.getCam().getY()), (int) Main.util.getPlayer().getBoundingBox().getWidth(), (int) Main.util.getPlayer().getBoundingBox().getHeight()));
-		enemies[0].setBoundingBox(new Rectangle((int) (enemies[0].getX() - Main.util.getCam().getX()), (int) (enemies[0].getY() - Main.util.getCam().getY()), enemies[0].getWidth(), enemies[0].getHeight()));
 		g.setColor(Color.orange);
-		g.drawRect((int) Main.util.getPlayer().getBoundingBox().getX(), (int) Main.util.getPlayer().getBoundingBox().getY(), (int) Main.util.getPlayer().getBoundingBox().getWidth(), (int) Main.util.getPlayer().getBoundingBox().getHeight());
-
-		g.drawRect((int) enemies[0].getBoundingBox().getX(), (int) enemies[0].getBoundingBox().getY(), (int) enemies[0].getBoundingBox().getWidth(), (int) enemies[0].getBoundingBox().getHeight());
+		
+		for(int i = 0; i < mobs.size() - 1; i++) {
+		mobs.get(i).setBoundingBox(new Rectangle((int) (mobs.get(i).getX() - Main.util.getCam().getX()), (int) (mobs.get(i).getY() - Main.util.getCam().getY()), mobs.get(i).getWidth(), mobs.get(i).getHeight()));
+		g.drawRect((int) mobs.get(i).getBoundingBox().getX(), (int) mobs.get(i).getBoundingBox().getY(), (int) mobs.get(i).getBoundingBox().getWidth(), (int) mobs.get(i).getBoundingBox().getHeight());
+			}
 		}
 		
 		health_gui.draw(0,0);
@@ -250,21 +228,24 @@ public class StartLevel extends BasicGameState{
 		}
 		
 		//Animation
-		 moveLeftAni.update(delta); // this line makes sure the speed of the Animation is true
-		 moveRightAni.update(delta); // this line makes sure the speed of the Animation is true
-		 standStillAni.update(delta); // this line makes sure the speed of the Animation is true
+
+		for(int i = 0; i < mobs.size() - 1; i++) {
+			 mobs.get(i).getLeftAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getRightAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getStillAni().update(delta); // this line makes sure the speed of the Animation is true
+		}
 		
 		//dont mind this
 			
 		      if (Main.util.getKeyLogSpecificKey(1))
 		        {
-		            currentImage = moveLeftAni;
+		            mobs.get(0).setCurrentImage(mobs.get(0).getLeftAni());
 		        }
 		      else if (Main.util.getKeyLogSpecificKey(3))
 		        {
-		            currentImage = moveRightAni;
+		    	  	mobs.get(0).setCurrentImage(mobs.get(0).getRightAni());
 		        } else{
-		        	currentImage = standStillAni;
+		        	mobs.get(0).setCurrentImage(mobs.get(0).getStillAni());
 		        }
 		
 		// Open pop-up menu
@@ -279,7 +260,7 @@ public class StartLevel extends BasicGameState{
 			Main.util.getPlayer().setHealth(100);
 			Main.util.getPlayer().getGravPack().setGravpower(100);
 			Main.util.getPlayer().setX(100);
-			Main.util.getPlayer().setY(100);
+			Main.util.getPlayer().setY(1100);
 			sbg.enterState(2);
 		}
 		
@@ -304,7 +285,7 @@ public class StartLevel extends BasicGameState{
 		checkEnemyStatus();
 		
 		// Update Camera Coordinates
-		Main.util.getCam().updateCameraPos(Main.util.getPlayer().getX(), Main.util.getPlayer().getY());
+		Main.util.getCam().updateCameraPos(mobs.get(0).getX(), mobs.get(0).getY());
 		
 		// Open Pop-up menu
 		if(Main.util.getKeyLogSpecificKey(6)) {
@@ -334,7 +315,8 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void updatePlayer(int delta){
 		// Update the player's position
-		Main.util.getPlayer().update(delta);
+		Player playerObject = (Player) mobs.get(0);
+		playerObject.update(delta);
 	}
 	
 	/**
@@ -344,14 +326,18 @@ public class StartLevel extends BasicGameState{
 	public void updateEnemies(int delta){
 		
 		// Update the enemy's position
-		enemies[0].enemyUpdates(delta);
+		
+		Starter mobObject = (Starter) mobs.get(1);
+		
+		mobObject.enemyUpdates(delta);
+		
 		
 	}
 	
 	public void checkEnemyStatus(){
-		for(int i = 0; i < enemies.length; i++){
-			if(enemies[i].getHealth() <= 0){
-				enemies[i].setIsAlive(false);
+		for(int i = 0; i < mobs.size() - 1; i++){
+			if(mobs.get(i).getHealth() <= 0){
+				mobs.get(i).setIsAlive(false);
 			}
 		}
 	}

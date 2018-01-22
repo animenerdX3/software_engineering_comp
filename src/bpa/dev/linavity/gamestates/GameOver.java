@@ -118,6 +118,7 @@ public class GameOver extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( (gc.getWidth()/2) - (back.getWidth()/2) , (gc.getWidth()/2) - (back.getWidth()/2) + back.getWidth() , 500 , 500 + back.getHeight())){
 			if(input.isMousePressed(0)){
+				Main.util.getPlayer().setIsAlive(true);
 				sbg.enterState(1);
 			}
 			back = new Image("res/gui/buttons/button_back_hover.png");
