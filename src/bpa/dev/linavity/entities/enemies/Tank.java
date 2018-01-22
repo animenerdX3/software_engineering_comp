@@ -1,20 +1,17 @@
 package bpa.dev.linavity.entities.enemies;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
-
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.GravityPack;
 import bpa.dev.linavity.entities.Mob;
 
-public class Starter extends Mob{
+public class Tank extends Mob{
 
 	private boolean isDetected;
 	
 	//Create enemy with constructor
-	public Starter(float x, float y) throws SlickException{
+	public Tank(float x, float y) throws SlickException{
 		
 		// Call Mob Constructor
 		super();
@@ -22,25 +19,17 @@ public class Starter extends Mob{
 		// Enemy Signature (Eventually Read in from file)
 		this.x = x;
 		this.y = y;
-		this.mobName = "starter";
+		this.mobName = "tank";
 		this.width = 48;
 		this.height = 48;
 		this.gravPack = new GravityPack();
 		this.maxJumps = 0;
-		this.walkSpeed = 0.0625f;
-		this.runSpeed = 0.125f;
-		this.health = 100;
-		this.damage = 0.25;
+		this.walkSpeed = 0.0313f;
+		this.runSpeed = 0.0625f;
+		this.health = 50;
+		this.damage = 0.5;
 		this.canJump = false;
 		this.isDetected = false;
-		
-		this.moveLeft = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
-	    this.moveLeftAni = new Animation(this.moveLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    this.moveRight = new SpriteSheet("res/sprites/"+this.mobName+"/"+mobName+"_right_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
-	    this.moveRightAni = new Animation(this.moveRight, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    this.standStill = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
-	    this.standStillAni = new Animation(this.standStill, 450); // declare a SpriteSheet and load it into java with its dimensions
-	    this.currentImage = this.standStillAni;
 	}
 	
 	
@@ -87,7 +76,7 @@ public class Starter extends Mob{
 	 */
 	private float xMovement() {
 
-		detectPlayer(300,300,50,50);//Check to see if the player is in their range of vision
+		detectPlayer(500,500,50,50);//Check to see if the player is in their range of vision
 		if(movingLeftOrRight()) {//Find out where the player is
 			if(isRunning()) {//Check if the enemy is running
 				return runningX();
@@ -106,22 +95,11 @@ public class Starter extends Mob{
 	
 	// Determine if the enemy is moving left based on the player
 	private boolean movingLeft() {
-		
-		if(this.isDetected)
-			this.currentImage = this.moveLeftAni;
-		else
-			this.currentImage = this.standStillAni;
-		
 		return Main.util.getPlayer().getX() < getX();
 	}
 	
 	// Determine if the enemy is moving right based on the player
 	private boolean movingRight() {
-		if(this.isDetected)
-			this.currentImage = this.moveRightAni;
-		else
-			this.currentImage = this.standStillAni;
-			
 		return Main.util.getPlayer().getX() > getX();
 	}
 	
