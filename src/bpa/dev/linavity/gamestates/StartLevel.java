@@ -233,18 +233,39 @@ public class StartLevel extends BasicGameState{
 			 mobs.get(i).getLeftAni().update(delta); // this line makes sure the speed of the Animation is true
 			 mobs.get(i).getRightAni().update(delta); // this line makes sure the speed of the Animation is true
 			 mobs.get(i).getStillAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getMoveLeftFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getMoveRightFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getStandStillFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
 		}
 		
 		//dont mind this
 			
+/*
+ * Woah we can flip the player like this wow			
+ *  mobs.get(0).setCurrentImage(mobs.get(0).getStillAni())
+ *  Image uwu = mobs.get(0).getCurrentImage().getCurrentFrame();
+*/
+			
+		
 		      if (Main.util.getKeyLogSpecificKey(1))
 		        {
+		    	  if(Main.util.getPlayer().isFlipping())
+		    	  {
+		    		  mobs.get(0).setCurrentImage(mobs.get(0).getMoveLeftFlippedAni());
+		    	  }else
 		            mobs.get(0).setCurrentImage(mobs.get(0).getLeftAni());
 		        }
 		      else if (Main.util.getKeyLogSpecificKey(3))
 		        {
+		    	  if(Main.util.getPlayer().isFlipping())
+		    	  {
+		    		  mobs.get(0).setCurrentImage(mobs.get(0).getMoveRightFlippedAni()); 
+		    	  }else
 		    	  	mobs.get(0).setCurrentImage(mobs.get(0).getRightAni());
 		        } else{
+		        	if(Main.util.getPlayer().isFlipping()){
+		        		mobs.get(0).setCurrentImage(mobs.get(0).getStandStillFlippedAni());
+		        	}else
 		        	mobs.get(0).setCurrentImage(mobs.get(0).getStillAni());
 		        }
 		
