@@ -58,7 +58,7 @@ public class GravityPack{
 		this.setCanFlip(true);
 		if( this.gravpower > 100)
 			this.setGravpower(100);
-		else if (gravpower < 1){ //when i set gravpower to 0 or anything less set flip to false
+		else if (gravpower <= 0){ //when i set gravpower to 0 or anything less set flip to false
 			this.setGravpower(0);
 			this.setCanFlip(false);
 		}
