@@ -9,12 +9,12 @@ import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.GravityPack;
 import bpa.dev.linavity.entities.Mob;
 
-public class Starter extends Mob{
+public class Tank extends Mob{
 
 	private boolean isDetected;
 	
 	//Create enemy with constructor
-	public Starter(float x, float y) throws SlickException{
+	public Tank(float x, float y) throws SlickException{
 		
 		// Call Mob Constructor
 		super();
@@ -22,15 +22,15 @@ public class Starter extends Mob{
 		// Enemy Signature (Eventually Read in from file)
 		this.x = x;
 		this.y = y;
-		this.mobName = "starter";
+		this.mobName = "tank";
 		this.width = 48;
 		this.height = 48;
 		this.gravPack = new GravityPack();
 		this.maxJumps = 0;
-		this.walkSpeed = 0.0625f;
-		this.runSpeed = 0.125f;
-		this.health = 100;
-		this.damage = 0.25;
+		this.walkSpeed = 0.0313f;
+		this.runSpeed = 0.0625f;
+		this.health = 50;
+		this.damage = 0.5;
 		this.canJump = false;
 		this.isDetected = false;
 		
@@ -87,7 +87,7 @@ public class Starter extends Mob{
 	 */
 	private float xMovement() {
 
-		detectPlayer(300,300,50,50);//Check to see if the player is in their range of vision
+		detectPlayer(500,500,50,50);//Check to see if the player is in their range of vision
 		if(movingLeftOrRight()) {//Find out where the player is
 			if(isRunning()) {//Check if the enemy is running
 				return runningX();
@@ -105,25 +105,25 @@ public class Starter extends Mob{
 	}
 	
 	// Determine if the enemy is moving left based on the player
-	private boolean movingLeft() {
-		
-		if(this.isDetected)
-			this.currentImage = this.moveLeftAni;
-		else
-			this.currentImage = this.standStillAni;
-		
-		return Main.util.getPlayer().getX() < getX();
-	}
-	
-	// Determine if the enemy is moving right based on the player
-	private boolean movingRight() {
-		if(this.isDetected)
-			this.currentImage = this.moveRightAni;
-		else
-			this.currentImage = this.standStillAni;
+		private boolean movingLeft() {
 			
-		return Main.util.getPlayer().getX() > getX();
-	}
+			if(this.isDetected)
+				this.currentImage = this.moveLeftAni;
+			else
+				this.currentImage = this.standStillAni;
+			
+			return Main.util.getPlayer().getX() < getX();
+		}
+		
+		// Determine if the enemy is moving right based on the player
+		private boolean movingRight() {
+			if(this.isDetected)
+				this.currentImage = this.moveRightAni;
+			else
+				this.currentImage = this.standStillAni;
+				
+			return Main.util.getPlayer().getX() > getX();
+		}
 	
 	// Determines if the enemy is running
 	private boolean isRunning() {
@@ -249,7 +249,7 @@ public class Starter extends Mob{
 	}//end of collidePlayer
 	
 	public void collideProjectile(){
-
+		
 		if(Main.util.getPlayer().getCurrentProjectile().getX() >= getX() && Main.util.getPlayer().getCurrentProjectile().getX() <= (getX() + getWidth())) {
 			if(Main.util.getPlayer().getCurrentProjectile().getY() >= getY() - (getHeight() / 2)) {
 				if(Main.util.getPlayer().getCurrentProjectile().getY() <= getY() + getHeight()){

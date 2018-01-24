@@ -2,8 +2,10 @@ package bpa.dev.linavity.entities;
 
 import java.awt.Rectangle;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.events.*;
@@ -28,9 +30,9 @@ public class Player extends Mob {
 		// Player Signature
 		this.x = x;
 		this.y = y;
-		this.mobImage = new Image("res/sprites/player/player_0.png");
-		this.width = this.mobImage.getWidth() - 2;
-		this.height = this.mobImage.getHeight() - 2;
+		this.mobName = "player";
+		this.width = 48;
+		this.height = 48;
 		this.gravPack = new GravityPack(100);
 		this.maxJumps = 0;
 		this.walkSpeed = 0.125f;
@@ -40,8 +42,15 @@ public class Player extends Mob {
 		this.jumpPower = -14;
 		this.canJump = true;
 		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
-
 		this.isFlipping = false;
+		
+		this.moveLeft = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+	    this.moveLeftAni = new Animation(this.moveLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.moveRight = new SpriteSheet("res/sprites/"+this.mobName+"/"+mobName+"_right_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+	    this.moveRightAni = new Animation(this.moveRight, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.standStill = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+	    this.standStillAni = new Animation(this.standStill, 450); // declare a SpriteSheet and load it into java with its dimensions
+	    this.currentImage = this.standStillAni;
 	}
 	
 	@Override
@@ -246,6 +255,7 @@ public class Player extends Mob {
 	
 	
 	// Using keyLog from Utils now, movement may break for a bit
+	@Override
 	public void update(int delta) {
 		
 		/*
@@ -264,6 +274,8 @@ public class Player extends Mob {
 		this.gravPack.gravPowerCheck();
 		
 		updateMomentums();
+		
+		shootProjectile();
 		
 		super.updateMob(delta);
 		
@@ -423,15 +435,38 @@ public class Player extends Mob {
 //		
 	}//end of updatePos
 	
+	public void shootProjectile() {
+		//Projectile Functions
+		if(Main.util.getKeyLogSpecificKey(7)) {
+			if(!projectileExists) {//If projectile does not exist
+				projectileExists = true;				try {
+					if(Main.util.getPlayer().isMovingLeft)
+						currentProjectile = new Projectile(true, false);//Draw default projectile
+					else
+						currentProjectile = new Projectile(false, true);//Draw default projectile
+				} catch (SlickException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		if(projectileExists) {//If projectile exists, update the position
+			currentProjectile.updatePos();
+			if(currentProjectile.getX() > Main.util.getPlayer().getX() + 500 || currentProjectile.getX() < Main.util.getPlayer().getX() - 500) {//If projectile is 500 pixels away from player
+				currentProjectile = null;//Destroy object
+				projectileExists = false;//Projectile does not exist
+			}
+		}
+	}
+	
 	public void flipAnimation(){
-		if(isFlipping){
+/*		if(isFlipping){
 			if(Main.util.getGravity().getFlipDirection()){
 				this.getMobImage().rotate(rotateSpeed);
 			}else{
 				this.getMobImage().rotate(-rotateSpeed);
 			}
 			flipDuration += rotateSpeed;
-		}
+		}*/
 		
 	}
 	

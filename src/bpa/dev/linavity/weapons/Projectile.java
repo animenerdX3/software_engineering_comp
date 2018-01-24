@@ -1,5 +1,7 @@
 package bpa.dev.linavity.weapons;
 
+import java.awt.Rectangle;
+
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -15,28 +17,45 @@ public class Projectile {
 	private int speed;
 	
 	private float x, y;
+	private int width, height;
+	
+	private boolean shotLeft, shotRight;
+	
+	private Rectangle collisionBox = new Rectangle();
 	
 	//Starting projectile
-	public Projectile() throws SlickException {
+	public Projectile(boolean left, boolean right) throws SlickException {
 		this.projectileImage = new Image("res/projectile.png");
 		this.damage = 10;
-		this.speed = 10;
+		this.speed = 20;
 		this.x = Main.util.getPlayer().getX();
-		this.y = Main.util.getPlayer().getY();
+		this.y = Main.util.getPlayer().getY() + 12;
+		this.width = this.projectileImage.getWidth();
+		this.height = this.projectileImage.getHeight();
+		this.shotLeft = left;
+		this.shotRight = right;
+		this.collisionBox = new Rectangle((int)x, (int)y, width, height);
 	}
 	
 	//Non-Default Projectile
-	public Projectile(String imageDirectory, int damage, int speed) throws SlickException {
+	public Projectile(String imageDirectory, int damage, int speed, boolean left, boolean right) throws SlickException {
 		this.projectileImage = new Image(imageDirectory);
 		this.damage = damage;
 		this.speed = speed;
 		this.x = Main.util.getPlayer().getX();
 		this.y = Main.util.getPlayer().getY();
+		this.shotLeft = left;
+		this.shotRight = right;
 	}
 	
 	//Move Projectile Across the Screen
 	public void updatePos() {
-		this.x = this.x + this.speed;
+		if(this.shotLeft)
+			this.x = this.x - this.speed;
+		
+		else if(this.shotRight)
+			this.x = this.x + this.speed;
+		
 	}
 	
 	/* GETTERS */
@@ -50,7 +69,7 @@ public class Projectile {
 	}
 	
 	public int getSpeed() {
-		return damage;
+		return speed;
 	}
 
 	public float getX() {
@@ -59,6 +78,26 @@ public class Projectile {
 
 	public float getY() {
 		return y;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public boolean isShotLeft() {
+		return shotLeft;
+	}
+	
+	public boolean isShotRight() {
+		return shotRight;
+	}
+	
+	public Rectangle getCollisionBox() {
+		return collisionBox;
 	}
 	
 	/* SETTERS */
@@ -83,4 +122,15 @@ public class Projectile {
 		this.y = y;
 	}
 	
+	public void setShotLeft(boolean shotLeft) {
+		this.shotLeft = shotLeft;
+	}
+	
+	public void setShotRight(boolean shotRight) {
+		this.shotRight = shotRight;
+	}
+
+	public void setCollisionBox(Rectangle collisionBox) {
+		this.collisionBox = collisionBox;
+	}
 }//end of class

@@ -1,42 +1,26 @@
 package bpa.dev.linavity.gamestates;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
+import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.enemies.*;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.world.Level;
 import bpa.dev.linavity.world.ParallaxMap;
 
-/* Task List
-//TODO Also, use that method to have mobs check for collision
-*/
-
 public class StartLevel extends BasicGameState{
-
-	//Animation
-    private SpriteSheet moveRight; // initate a SpriteSheet
-    private Animation moveRightAni; // initate a Animation
-	
-    private SpriteSheet moveLeft; // initate a SpriteSheet
-    private Animation moveLeftAni; // initate a Animation
-	
-    private SpriteSheet standStill; //initiate a SpriteSheet
-    private Animation standStillAni;
-    
-    private Animation currentImage;
 	
 	// Images
 	private Image health_gui = null;
@@ -64,14 +48,14 @@ public class StartLevel extends BasicGameState{
 	private Rectangle enemybounds;
 	
 	//List of all possible enemies
-	Starter [] enemies = new Starter[1];
+	ArrayList <Mob> mobs = new ArrayList<Mob>();
 	
 	Tile[][] screenTiles;
 	Tile[][] eventTiles;
 	
 	//Default constructor
 	public StartLevel(){ 
-		
+
 	}
 	
 	/**
@@ -79,6 +63,7 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
+		mobs = getMobs();
 		back = new Image("res/gui/buttons/button_back.png");
 		bg = new ParallaxMap("res/bg.jpg", -450, 0.5f);
 		health_gui = new Image("res/gui/stats/health_bar.png");
@@ -86,22 +71,29 @@ public class StartLevel extends BasicGameState{
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
 		Main.util.setLevel(new Level(0, "startlevel"));
-		Main.util.setEvents(new Level(0, "startlevel_events"));
-		bounds = new Rectangle((int) (Main.util.getPlayer().getX() - Main.util.getCam().getX()), (int) (Main.util.getPlayer().getY() - Main.util.getCam().getY()), 50, 50);
-		
-		//Create enemies
-		enemies[0] = new Starter(500, 750);
-		enemybounds = new Rectangle((int) (enemies[0].getX() - Main.util.getCam().getX()), (int) (enemies[0].getY() - Main.util.getCam().getY()), 50, 50);
-		
-	    moveLeft = new SpriteSheet("res/sprites/player/player_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
-	    moveLeftAni = new Animation(moveLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    moveRight = new SpriteSheet("res/sprites/player/player_right_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
-	    moveRightAni = new Animation(moveRight, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    standStill = new SpriteSheet("res/sprites/player/player_0.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
-	    standStillAni = new Animation(standStill, 450); // declare a SpriteSheet and load it into java with its dimentions
-	    currentImage = standStillAni;
+		Main.util.setEvents(new Level(0, "startlevel_events"));		
+
+
+		for(int i = 0; i < mobs.size(); i++)
+			enemybounds = new Rectangle((int) (mobs.get(i).getX() - Main.util.getCam().getX()), (int) (mobs.get(i).getY() - Main.util.getCam().getY()), 50, 50);
+
 	}
 
+	public ArrayList<Mob> getMobs() throws SlickException {
+		//Add mobs
+		ArrayList <Mob> mobs = new ArrayList<Mob>();
+		
+		mobs.add(Main.util.getPlayer());
+		mobs.add(new Starter(500, 750));
+		mobs.add(new Tank(1100, 750));
+		mobs.add(new Tank(1200, 750));
+		mobs.add(new Bomber(600, 650));
+		mobs.add(new Bomber(615, 650));
+		mobs.add(new Bomber(660, 650));
+		
+		return mobs;
+	}
+	
 	/**
 	 * Renders content to the game / screen
 	 * Note: Positioning of objects matter: Draw backgrounds first, foregrounds last
@@ -122,30 +114,35 @@ public class StartLevel extends BasicGameState{
 			g.drawString("Collide right: " + Main.util.getPlayer().isCr(), 10,170);
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes.
 			g.drawString("Can Jump: "+Main.util.getPlayer().canJump(), 10, 230); 
+			if(Main.util.getPlayer().getCurrentProjectile() != null) {
+				g.drawString("Shot Left: "+Main.util.getPlayer().getCurrentProjectile().isShotLeft(), 10, 250); 
+				g.drawString("Shot Right: "+Main.util.getPlayer().getCurrentProjectile().isShotRight(), 10, 270); 
+			}
 		}
 		
 		//Draw enemies
-		for(int i = 0; i < enemies.length; i++){
-			if(enemies[i].isAlive())
-				enemies[i].getMobImage().draw(enemies[i].getX() - Main.util.getCam().getX(), enemies[0].getY() - Main.util.getCam().getY());
+		for(int i = 0; i < mobs.size(); i++){
+			if(mobs.get(i).isAlive())
+				mobs.get(i).getCurrentImage().draw(mobs.get(i).getX() - Main.util.cam.getX(), mobs.get(i).getY() - Main.util.cam.getY());
+			else if(i > 0)
+				mobs.remove(i);
 		}
 		
 		//If a projectile exists, then draw it on the screen
 		if(Main.util.getPlayer().isProjectileExists()) {
-			Main.util.getPlayer().getCurrentProjectile().getProjectileImage().draw(Main.util.getPlayer().getCurrentProjectile().getX() - Main.util.getCam().getX() + 100, Main.util.getPlayer().getCurrentProjectile().getY() - Main.util.getCam().getY() + 15);
+			Main.util.getPlayer().getCurrentProjectile().getProjectileImage().draw(Main.util.getPlayer().getCurrentProjectile().getX() - Main.util.getCam().getX(), Main.util.getPlayer().getCurrentProjectile().getY() - Main.util.getCam().getY());
+			if(Main.util.debugMode)
+				g.drawRect(Main.util.getPlayer().getCurrentProjectile().getX() - Main.util.getCam().getX(), Main.util.getPlayer().getCurrentProjectile().getY() - Main.util.getCam().getY(), Main.util.getPlayer().getCurrentProjectile().getWidth(), Main.util.getPlayer().getCurrentProjectile().getHeight());
 		}
-		
-		//Draw player
-		currentImage.draw(Main.util.getPlayer().getX() - Main.util.cam.getX(), Main.util.getPlayer().getY() - Main.util.cam.getY());
 		
 		if(Main.util.debugMode) {
 		
-		Main.util.getPlayer().setBoundingBox(new Rectangle((int) (Main.util.getPlayer().getX()- Main.util.getCam().getX()), (int) (Main.util.getPlayer().getY() - Main.util.getCam().getY()), (int) Main.util.getPlayer().getBoundingBox().getWidth(), (int) Main.util.getPlayer().getBoundingBox().getHeight()));
-		enemies[0].setBoundingBox(new Rectangle((int) (enemies[0].getX() - Main.util.getCam().getX()), (int) (enemies[0].getY() - Main.util.getCam().getY()), enemies[0].getWidth(), enemies[0].getHeight()));
 		g.setColor(Color.orange);
-		g.drawRect((int) Main.util.getPlayer().getBoundingBox().getX(), (int) Main.util.getPlayer().getBoundingBox().getY(), (int) Main.util.getPlayer().getBoundingBox().getWidth(), (int) Main.util.getPlayer().getBoundingBox().getHeight());
-
-		g.drawRect((int) enemies[0].getBoundingBox().getX(), (int) enemies[0].getBoundingBox().getY(), (int) enemies[0].getBoundingBox().getWidth(), (int) enemies[0].getBoundingBox().getHeight());
+		
+		for(int i = 0; i < mobs.size(); i++) {
+		mobs.get(i).setBoundingBox(new Rectangle((int) (mobs.get(i).getX() - Main.util.getCam().getX()), (int) (mobs.get(i).getY() - Main.util.getCam().getY()), mobs.get(i).getWidth(), mobs.get(i).getHeight()));
+		g.drawRect((int) mobs.get(i).getBoundingBox().getX(), (int) mobs.get(i).getBoundingBox().getY(), (int) mobs.get(i).getBoundingBox().getWidth(), (int) mobs.get(i).getBoundingBox().getHeight());
+			}
 		}
 		
 		health_gui.draw(0,0);
@@ -168,7 +165,6 @@ public class StartLevel extends BasicGameState{
 	 * @param g
 	 */
 	private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
-		
 		
 		// Get a 2d array of tile objects that are contained within our camera's view
 		screenTiles = Main.util.getLevel().getScreenTiles(Main.util.getCam());
@@ -227,9 +223,7 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-		
-		System.err.println("DELTA: "+delta+" | FPS: "+Main.appgc.getFPS());
-		
+				
 		// If the game is not paused
 		if(!menuOpen){
 			
@@ -250,21 +244,24 @@ public class StartLevel extends BasicGameState{
 		}
 		
 		//Animation
-		 moveLeftAni.update(delta); // this line makes sure the speed of the Animation is true
-		 moveRightAni.update(delta); // this line makes sure the speed of the Animation is true
-		 standStillAni.update(delta); // this line makes sure the speed of the Animation is true
+
+		for(int i = 0; i < mobs.size(); i++) {
+			 mobs.get(i).getLeftAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getRightAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getStillAni().update(delta); // this line makes sure the speed of the Animation is true
+		}
 		
 		//dont mind this
 			
 		      if (Main.util.getKeyLogSpecificKey(1))
 		        {
-		            currentImage = moveLeftAni;
+		            mobs.get(0).setCurrentImage(mobs.get(0).getLeftAni());
 		        }
 		      else if (Main.util.getKeyLogSpecificKey(3))
 		        {
-		            currentImage = moveRightAni;
+		    	  	mobs.get(0).setCurrentImage(mobs.get(0).getRightAni());
 		        } else{
-		        	currentImage = standStillAni;
+		        	mobs.get(0).setCurrentImage(mobs.get(0).getStillAni());
 		        }
 		
 		// Open pop-up menu
@@ -279,7 +276,7 @@ public class StartLevel extends BasicGameState{
 			Main.util.getPlayer().setHealth(100);
 			Main.util.getPlayer().getGravPack().setGravpower(100);
 			Main.util.getPlayer().setX(100);
-			Main.util.getPlayer().setY(100);
+			Main.util.getPlayer().setY(1100);
 			sbg.enterState(2);
 		}
 		
@@ -297,14 +294,12 @@ public class StartLevel extends BasicGameState{
 		collide(gc);
 		
 		// Update Player Attributes
-		updatePlayer(delta);
-		
-		updateEnemies(delta);
+		updateMobs(delta);
 		
 		checkEnemyStatus();
 		
 		// Update Camera Coordinates
-		Main.util.getCam().updateCameraPos(Main.util.getPlayer().getX(), Main.util.getPlayer().getY());
+		Main.util.getCam().updateCameraPos(mobs.get(0).getX(), mobs.get(0).getY());
 		
 		// Open Pop-up menu
 		if(Main.util.getKeyLogSpecificKey(6)) {
@@ -332,26 +327,16 @@ public class StartLevel extends BasicGameState{
 	 * Perform all updates to the player object
 	 * @param delta
 	 */
-	public void updatePlayer(int delta){
-		// Update the player's position
-		Main.util.getPlayer().update(delta);
-	}
-	
-	/**
-	 * Perform all updates to the enemy objects
-	 * @param delta
-	 */
-	public void updateEnemies(int delta){
-		
-		// Update the enemy's position
-		enemies[0].enemyUpdates(delta);
-		
+	public void updateMobs(int delta){
+		// Update the mob's position
+		for(int i = 0; i < mobs.size(); i++) 
+			mobs.get(i).update(delta);
 	}
 	
 	public void checkEnemyStatus(){
-		for(int i = 0; i < enemies.length; i++){
-			if(enemies[i].getHealth() <= 0){
-				enemies[i].setIsAlive(false);
+		for(int i = 0; i < mobs.size(); i++){
+			if(mobs.get(i).getHealth() <= 0){
+				mobs.get(i).setIsAlive(false);
 			}
 		}
 	}
@@ -433,7 +418,6 @@ public class StartLevel extends BasicGameState{
 	}
 	
 	public int getID() {
-		// TODO Auto-generated method stub
 		return StartLevel.id;
 	}
 	

@@ -9,12 +9,12 @@ import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.GravityPack;
 import bpa.dev.linavity.entities.Mob;
 
-public class Starter extends Mob{
+public class Bomber extends Mob{
 
 	private boolean isDetected;
 	
 	//Create enemy with constructor
-	public Starter(float x, float y) throws SlickException{
+	public Bomber(float x, float y) throws SlickException{
 		
 		// Call Mob Constructor
 		super();
@@ -22,7 +22,7 @@ public class Starter extends Mob{
 		// Enemy Signature (Eventually Read in from file)
 		this.x = x;
 		this.y = y;
-		this.mobName = "starter";
+		this.mobName = "bomber";
 		this.width = 48;
 		this.height = 48;
 		this.gravPack = new GravityPack();

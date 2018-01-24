@@ -72,7 +72,7 @@ public class InputManager {
 		}
 		
 		//Z
-		if(input.isKeyPressed(Input.KEY_Z)){
+		if(input.isKeyPressed(Input.KEY_ENTER)){
 			keyLog[7] = true;
 		}
 		

@@ -2,8 +2,10 @@ package bpa.dev.linavity.entities;
 
 import java.awt.Rectangle;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 
 import bpa.dev.linavity.GameObject;
 import bpa.dev.linavity.Main;
@@ -32,7 +34,7 @@ public abstract class Mob extends GameObject{
 		private boolean collideRight;
 	
 	// Character Variables
-		protected Image mobImage = null;
+		protected String mobName;
 		protected GravityPack gravPack = new GravityPack(0);
 		
 	// Physics Variables
@@ -64,6 +66,18 @@ public abstract class Mob extends GameObject{
 		protected boolean isMovingRight;
 		
 		protected Rectangle boundingBox = new Rectangle();
+		
+		//Animation
+	    protected SpriteSheet moveRight; // initate a SpriteSheet
+	    protected Animation moveRightAni; // initate a Animation
+		
+	    protected SpriteSheet moveLeft; // initate a SpriteSheet
+	    protected Animation moveLeftAni; // initate a Animation
+		
+	    protected SpriteSheet standStill; //initiate a SpriteSheet
+	    protected Animation standStillAni;
+	    
+	    protected Animation currentImage;
 	
 	//Default constructor
 	public Mob() 
@@ -75,11 +89,12 @@ public abstract class Mob extends GameObject{
 		this.collideDown = false;
 		this.collideLeft = false;
 		this.collideRight = false;
+		this.boundingBox = new Rectangle((int)x,(int)y,width,height);
 		
 		// Character Variables
 		this.jumps = 0;
 		this.isAlive = true;
-		
+	
 	}
 
 	/*
@@ -100,10 +115,16 @@ public abstract class Mob extends GameObject{
 		
 		// Update all mob stats
 		updateMobStats(delta);
+		
+		
+	}
+	
+	public void update(int delta) {
+		
 	}
 	
 	/*
-	 * upates the x1,x2,y1,y2 future positions of the mob to help detect collision
+	 * updates the x1,x2,y1,y2 future positions of the mob to help detect collision
 	 */
 	private void updateFuturePosition() {
 		this.futureX1 = this.x + this.xMomentum;
@@ -164,10 +185,7 @@ public abstract class Mob extends GameObject{
 	}
 	
 	private void checkTileCollision(Tile tile) {
-			
-			System.out.println("TILE X - "+tile.getX()+", TILE Y - "+tile.getY());
-			System.out.println("COLLISION BOX X - "+tile.getCollisionBox().getX()+", COLLISION BOX Y - "+tile.getCollisionBox().getY());
-		
+					
 			//Moving Left - Check Collision
 			if(onRight(tile)) { //seeing if i am directly to the right of the tile we collided into
 				if(leftCollide(tile.getX(), tile.getX() + tile.getWidth(), tile.getY(), tile.getY() + tile.getHeight())) {
@@ -347,13 +365,6 @@ public abstract class Mob extends GameObject{
 		return damage;
 	}
 
-	/**
-	 * @return the mobImage
-	 */
-	public Image getMobImage() {
-		return mobImage;
-	}
-	
 	public float getYmo() {
 		return yMomentum;
 	}
@@ -380,6 +391,22 @@ public abstract class Mob extends GameObject{
 	
 	public boolean isMovingRight() {
 		return isMovingRight;
+	}
+	
+	public Animation getLeftAni() {
+		return moveLeftAni;
+	}
+	
+	public Animation getRightAni() {
+		return moveRightAni;
+	}
+	
+	public Animation getStillAni() {
+		return standStillAni;
+	}
+	
+	public Animation getCurrentImage() {
+		return currentImage;
 	}
 	
 	/* SETTERS */
@@ -436,14 +463,6 @@ public abstract class Mob extends GameObject{
 	public  void setY(float y) {
 		this.y = y;
 	}
-	
-	/**
-	 * @param mobImage the mobImage to set
-	 */
-	public void setMobImage(Image mobImage) {
-		this.mobImage = mobImage;
-	}
-
 
 	public void setYmo(float ymo) {
 		this.yMomentum = ymo;
@@ -479,6 +498,10 @@ public abstract class Mob extends GameObject{
 	
 	public void setIsMovingRight(boolean isMovingRight) {
 		this.isMovingRight = isMovingRight;
+	}
+	
+	public void setCurrentImage(Animation currentImage) {
+		this.currentImage = currentImage;
 	}
 	
 }//end of class
