@@ -3,8 +3,8 @@ package bpa.dev.linavity.world;
 import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.entities.Camera;
+import bpa.dev.linavity.entities.tiles.Dynamic;
 import bpa.dev.linavity.entities.tiles.Tile;
-import bpa.dev.linavity.entities.tiles.foreground.dynamicTiles.Dynamic;
 import bpa.dev.linavity.gamestates.MainMenu;
 
 public class Level {

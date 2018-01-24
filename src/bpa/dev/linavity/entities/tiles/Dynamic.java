@@ -1,8 +1,6 @@
-package bpa.dev.linavity.entities.tiles.foreground.dynamicTiles;
+package bpa.dev.linavity.entities.tiles;
 
 import org.newdawn.slick.SlickException;
-
-import bpa.dev.linavity.entities.tiles.Tile;
 
 public class Dynamic extends Tile {
 
