@@ -9,6 +9,7 @@ import bpa.dev.linavity.assets.MusicManager;
 import bpa.dev.linavity.assets.SoundManager;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Player;
+import bpa.dev.linavity.entities.tiles.interactive.Lever;
 import bpa.dev.linavity.events.MessageHandler;
 import bpa.dev.linavity.physics.Gravity;
 import bpa.dev.linavity.world.Level;
@@ -40,6 +41,8 @@ public class Utils {
 	SoundManager sfxFiles = new SoundManager("data/sound_paths.txt");
 	private String [] musicQueue;
 	private Sound [] sfx;
+	
+	public Lever testLever = new Lever();
 	
 	// Default Constructor
 	public Utils() throws SlickException{

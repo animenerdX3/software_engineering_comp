@@ -1,9 +1,9 @@
 package bpa.dev.linavity.entities;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
@@ -11,8 +11,6 @@ import bpa.dev.linavity.GameObject;
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.events.Message;
-import bpa.dev.linavity.physics.Gravity;
-import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.world.Level;
 
 public abstract class Mob extends GameObject{
@@ -186,36 +184,39 @@ public abstract class Mob extends GameObject{
 		for(int r = 0; r < screenTiles.length; r++) { // Run through each row
 			for(int c = 0; c < screenTiles[0].length; c++) { // Run through each column
 				if(screenTiles[r][c] != null)  // If the tile exists
-					if(!screenTiles[r][c].isPassable()) // And the tile is not passable, check to see if it collides with the player
-						checkTileCollision(screenTiles[r][c]); // Is the mob colliding with this tile?
+						checkTileCollision(screenTiles[r][c], r, c); // Is the mob colliding with this tile?
 			}
 		}
 		
 	}
 	
-	private void checkTileCollision(Tile tile) {
+	private void checkTileCollision(Tile tile, int i, int j) {
 					
 			//Moving Left - Check Collision
 			if(onRight(tile)) { //seeing if i am directly to the right of the tile we collided into
 				if(leftCollide(tile.getX(), tile.getX() + (float) tile.getCollisionBox().getWidth(), tile.getY(), tile.getY() + (float) tile.getCollisionBox().getHeight())) {
-					this.x = (tile.getX() + (float) tile.getCollisionBox().getWidth()) + 1;
-					this.collideLeft = true;
-					this.isMovingLeft = false;
-					this.xMomentum = 0;
+					if(!tile.isPassable()) { // If tile is not passable, check to see if it collides with the player
+						this.x = (tile.getX() + (float) tile.getCollisionBox().getWidth()) + 1;
+						this.collideLeft = true;
+						this.isMovingLeft = false;
+						this.xMomentum = 0;
+					}
 					updateFuturePosition();
-					checkDynamicTiles(tile);
+					checkDynamicTiles(tile, i, j);
 				} 
 			}
 			
 			//Moving Right - Check Collision
 			else if(onLeft(tile)){
 				if(rightCollide(tile.getX(), tile.getX() + (float) tile.getCollisionBox().getWidth(), tile.getY(), tile.getY() + (float) tile.getCollisionBox().getHeight())) {
-					this.x = tile.getX() - ((this.width) + 1);
-					this.collideRight = true;
-					this.isMovingRight = false;
-					this.xMomentum = 0;
+					if(!tile.isPassable()) { // If tile is not passable, check to see if it collides with the player
+						this.x = tile.getX() - ((this.width) + 1);
+						this.collideRight = true;
+						this.isMovingRight = false;
+						this.xMomentum = 0;
+					}
 					updateFuturePosition();
-					checkDynamicTiles(tile);
+					checkDynamicTiles(tile, i, j);
 				}
 			}
 
@@ -223,27 +224,31 @@ public abstract class Mob extends GameObject{
 			else if(onTop(tile)){
 				
 				if(downCollide(tile.getX(), tile.getX() + (float) tile.getCollisionBox().getWidth(), tile.getY(), tile.getY() + (float) tile.getCollisionBox().getHeight())){
-					this.y = tile.getY() - (this.getHeight() + 1);
-					this.collideDown = true;
-					this.yMomentum = 0;
+					if(!tile.isPassable()) { // If tile is not passable, check to see if it collides with the player
+						this.y = tile.getY() - (this.getHeight() + 1);
+						this.collideDown = true;
+						this.yMomentum = 0;
+					}
 					updateFuturePosition();
-					checkDynamicTiles(tile);
+					checkDynamicTiles(tile, i, j);
 				}
 			}
 
 			//Moving Up - Check Collision
 			else if(onBottom(tile)){
 				if(upCollide(tile.getX(), tile.getX() + (float) tile.getCollisionBox().getWidth(), tile.getY(), tile.getY() + (float) tile.getCollisionBox().getHeight())) {
+					if(!tile.isPassable()) { // If tile is not passable, check to see if it collides with the player
 					this.y = (tile.getY() + (float) tile.getCollisionBox().getHeight()) + 1;
 					this.collideUp = true;
 					this.yMomentum = 0;
+					}
 					updateFuturePosition();
-					checkDynamicTiles(tile);
+					checkDynamicTiles(tile, i, j);
 				}
 			}
 	}
 	
-	private void checkDynamicTiles(Tile tile) {
+	private void checkDynamicTiles(Tile tile, int i, int j) {
 		
 		// GravPad Recharging the player's gravPad
 		if(tile.getId() == tile.gravPadID && this.collideDown == true) {
@@ -252,8 +257,7 @@ public abstract class Mob extends GameObject{
 		
 		// Lever getting activated / toggled
 		if(tile.getId() == tile.leverID) {
-		//	Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.leverToggle, ));
-		//	tile.setTexture(texture);
+			Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.leverToggle, 0));
 		}
 	}
 	

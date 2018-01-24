@@ -1,5 +1,6 @@
 package bpa.dev.linavity.entities;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.newdawn.slick.Animation;
@@ -8,8 +9,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import bpa.dev.linavity.Main;
-import bpa.dev.linavity.events.*;
-import bpa.dev.linavity.weapons.*;
+import bpa.dev.linavity.entities.tiles.Tile;
+import bpa.dev.linavity.entities.tiles.interactive.Lever;
+import bpa.dev.linavity.events.Message;
+import bpa.dev.linavity.weapons.Projectile;
 
 public class Player extends Mob {
 	
@@ -65,11 +68,34 @@ public class Player extends Mob {
 		// All Messages / Events for the player are handled here
 		
 		// ID 0: Recharge Gravity Pack
+		// ID 1: Toggle Lever
 		
 		if(message.getType() == Message.gravPadRecharge){	
 			System.err.println("RECHARGING...");
 			this.jumps = 0;
 			gravPack.setGravpower(gravPack.getGravpower() + (float) message.getData());
+		}
+		if(message.getType() == Message.leverToggle){	
+			
+			Main.util.testLever.setID((int) message.getData());
+			Main.util.testLever.setToggle(!Main.util.testLever.getToggle());
+			Main.util.testLever.callFunction();
+			if(Main.util.testLever.getToggle()) {
+				try {
+					Tile change = (Tile) message.getFrom();
+					change.setTexture(new Image("res/tiles/static/Lever_On.png"));
+				} catch (SlickException e) {
+					e.printStackTrace();
+				}
+			}
+			else {
+				try {
+					Tile change = (Tile) message.getFrom();
+					change.setTexture(new Image("res/tiles/static/Lever_Off.png"));
+				} catch (SlickException e) {
+					e.printStackTrace();
+				}
+			}
 			
 		}
 		

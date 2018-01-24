@@ -48,7 +48,7 @@ public class StartLevel extends BasicGameState{
 	private Rectangle enemybounds;
 	
 	//List of all possible enemies
-	ArrayList <Mob> mobs = new ArrayList<Mob>();
+	public static ArrayList <Mob> mobs = new ArrayList<Mob>();
 	
 	Tile[][] screenTiles;
 	Tile[][] eventTiles;

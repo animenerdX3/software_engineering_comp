@@ -1,5 +1,7 @@
 package bpa.dev.linavity.world;
 
+import java.awt.Point;
+
 import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.entities.Camera;
@@ -113,6 +115,10 @@ public class Level {
 
 	public Tile getSingleTile(int i, int j) {
 		return tiles[i][j];
+	}
+	
+	public Tile getSingleTile(Point coords) {
+		return tiles[coords.x][coords.y];
 	}
 	
 	/* SETTERS */
