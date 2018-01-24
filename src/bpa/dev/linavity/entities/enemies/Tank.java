@@ -261,19 +261,5 @@ public class Tank extends Mob{
 				}
 			}
 		}
-		
-	}//end of collideProjectile
-	
-	/* GETTERS */
-	
-	public boolean isDetected() {
-		return isDetected;
 	}
-	
-	/* SETTERS */
-	
-	public void setDetection(boolean isDetected) {
-		this.isDetected = isDetected;
-	}
-	
 }//end of class

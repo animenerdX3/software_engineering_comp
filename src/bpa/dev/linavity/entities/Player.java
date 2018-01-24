@@ -44,12 +44,18 @@ public class Player extends Mob {
 		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
 		this.isFlipping = false;
 		
-		this.moveLeft = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+		this.moveLeft = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
 	    this.moveLeftAni = new Animation(this.moveLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    this.moveRight = new SpriteSheet("res/sprites/"+this.mobName+"/"+mobName+"_right_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+	    this.moveRight = new SpriteSheet("res/sprites/"+this.mobName+"/"+mobName+"_right_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
 	    this.moveRightAni = new Animation(this.moveRight, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    this.standStill = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
-	    this.standStillAni = new Animation(this.standStill, 450); // declare a SpriteSheet and load it into java with its dimensions
+	    this.standStill = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
+	    this.standStillAni = new Animation(this.standStill, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.moveLeftFlipped = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_left_flip_ani.png",50,50);// declare a SpriteSheet and load it into java with its dimensions
+	    this.moveLeftFlippedAni = new Animation(this.moveLeftFlipped, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.moveRightFlipped = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_right_flip_ani.png",50,50);// declare a SpriteSheet and load it into java with its dimensions
+	    this.moveRightFlippedAni = new Animation(this.moveRightFlipped, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.standStillFlipped = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0_flip.png",50,50);// declare a SpriteSheet and load it into java with its dimensions
+	    this.standStillFlippedAni = new Animation(this.standStillFlipped, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
 	    this.currentImage = this.standStillAni;
 	}
 	

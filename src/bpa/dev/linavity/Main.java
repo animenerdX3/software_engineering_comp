@@ -55,7 +55,7 @@ public class Main extends StateBasedGame{
 	// Main Method
 	public static void main(String[] args){
 		try {
-			appgc = new AppGameContainer(new Main("Linavity - Version 1.03"));
+			appgc = new AppGameContainer(new Main("Linavity - Version 1.04"));
 			appgc.setDisplayMode(WIDTH, HEIGHT, false);
 			appgc.setAlwaysRender(true); // Constant Rendering 
 			appgc.setShowFPS(true);//Show FPS Counter

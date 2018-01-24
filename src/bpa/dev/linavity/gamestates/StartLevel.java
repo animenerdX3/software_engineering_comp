@@ -14,7 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
-import bpa.dev.linavity.entities.Mob;
+import bpa.dev.linavity.entities.*;
 import bpa.dev.linavity.entities.enemies.*;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.world.Level;
@@ -73,7 +73,6 @@ public class StartLevel extends BasicGameState{
 		Main.util.setLevel(new Level(0, "startlevel"));
 		Main.util.setEvents(new Level(0, "startlevel_events"));		
 
-
 		for(int i = 0; i < mobs.size(); i++)
 			enemybounds = new Rectangle((int) (mobs.get(i).getX() - Main.util.getCam().getX()), (int) (mobs.get(i).getY() - Main.util.getCam().getY()), 50, 50);
 
@@ -127,6 +126,7 @@ public class StartLevel extends BasicGameState{
 			else if(i > 0)
 				mobs.remove(i);
 		}
+
 		
 		//If a projectile exists, then draw it on the screen
 		if(Main.util.getPlayer().isProjectileExists()) {
@@ -140,6 +140,7 @@ public class StartLevel extends BasicGameState{
 		g.setColor(Color.orange);
 		
 		for(int i = 0; i < mobs.size(); i++) {
+
 		mobs.get(i).setBoundingBox(new Rectangle((int) (mobs.get(i).getX() - Main.util.getCam().getX()), (int) (mobs.get(i).getY() - Main.util.getCam().getY()), mobs.get(i).getWidth(), mobs.get(i).getHeight()));
 		g.drawRect((int) mobs.get(i).getBoundingBox().getX(), (int) mobs.get(i).getBoundingBox().getY(), (int) mobs.get(i).getBoundingBox().getWidth(), (int) mobs.get(i).getBoundingBox().getHeight());
 			}
@@ -245,22 +246,49 @@ public class StartLevel extends BasicGameState{
 		
 		//Animation
 
-		for(int i = 0; i < mobs.size(); i++) {
+
+		for(int i = 0; i < mobs.size() - 1; i++) {
 			 mobs.get(i).getLeftAni().update(delta); // this line makes sure the speed of the Animation is true
 			 mobs.get(i).getRightAni().update(delta); // this line makes sure the speed of the Animation is true
 			 mobs.get(i).getStillAni().update(delta); // this line makes sure the speed of the Animation is true
+			 if(i == 0) {//If we are updating the player
+				 mobs.get(i).getMoveLeftFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+				 mobs.get(i).getMoveRightFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+				 mobs.get(i).getStandStillFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+			 }
 		}
 		
 		//dont mind this
 			
+/*
+ * Woah we can flip the player like this wow			
+ *  mobs.get(0).setCurrentImage(mobs.get(0).getStillAni())
+ *  Image uwu = mobs.get(0).getCurrentImage().getCurrentFrame();
+*/
+			
+		
 		      if (Main.util.getKeyLogSpecificKey(1))
 		        {
+
+		    	  if(Main.util.getPlayer().isFlipping())
+		    	  {
+		    		  mobs.get(0).setCurrentImage(mobs.get(0).getMoveLeftFlippedAni());
+		    	  }else
 		            mobs.get(0).setCurrentImage(mobs.get(0).getLeftAni());
 		        }
 		      else if (Main.util.getKeyLogSpecificKey(3))
 		        {
+
+		    	  if(Main.util.getPlayer().isFlipping())
+		    	  {
+		    		  mobs.get(0).setCurrentImage(mobs.get(0).getMoveRightFlippedAni()); 
+		    	  }else
 		    	  	mobs.get(0).setCurrentImage(mobs.get(0).getRightAni());
 		        } else{
+
+		        	if(Main.util.getPlayer().isFlipping()){
+		        		mobs.get(0).setCurrentImage(mobs.get(0).getStandStillFlippedAni());
+		        	}else
 		        	mobs.get(0).setCurrentImage(mobs.get(0).getStillAni());
 		        }
 		
@@ -296,7 +324,7 @@ public class StartLevel extends BasicGameState{
 		// Update Player Attributes
 		updateMobs(delta);
 		
-		checkEnemyStatus();
+		checkMobStatus();
 		
 		// Update Camera Coordinates
 		Main.util.getCam().updateCameraPos(mobs.get(0).getX(), mobs.get(0).getY());
@@ -331,10 +359,12 @@ public class StartLevel extends BasicGameState{
 		// Update the mob's position
 		for(int i = 0; i < mobs.size(); i++) 
 			mobs.get(i).update(delta);
-	}
+}
 	
-	public void checkEnemyStatus(){
+	public void checkMobStatus(){
+
 		for(int i = 0; i < mobs.size(); i++){
+
 			if(mobs.get(i).getHealth() <= 0){
 				mobs.get(i).setIsAlive(false);
 			}

@@ -75,8 +75,17 @@ public abstract class Mob extends GameObject{
 	    protected Animation moveLeftAni; // initate a Animation
 		
 	    protected SpriteSheet standStill; //initiate a SpriteSheet
-	    protected Animation standStillAni;
+	    protected Animation standStillAni; // initate a Animation
 	    
+	    protected SpriteSheet moveRightFlipped; // initate a SpriteSheet
+	    protected Animation moveRightFlippedAni; // initate a Animation
+	    
+	    protected SpriteSheet moveLeftFlipped; // initate a SpriteSheet
+	    protected Animation moveLeftFlippedAni; // initate a Animation
+	    
+	    protected SpriteSheet standStillFlipped; // initate a SpriteSheet
+	    protected Animation standStillFlippedAni; // initate a Animation
+
 	    protected Animation currentImage;
 	
 	//Default constructor
@@ -409,6 +418,18 @@ public abstract class Mob extends GameObject{
 		return currentImage;
 	}
 	
+	public Animation getMoveRightFlippedAni() {
+			return moveRightFlippedAni;
+		}
+
+	public Animation getMoveLeftFlippedAni() {
+			return moveLeftFlippedAni;
+		}
+
+	public Animation getStandStillFlippedAni() {
+			return standStillFlippedAni;
+		}
+
 	/* SETTERS */
 
 	public void setCu(boolean cu) {
