@@ -1,10 +1,2 @@
 sfx/menu_select.wav
-sfx/menu_select.wav
-sfx/menu_select.wav
-sfx/menu_select.wav
-sfx/menu_select.wav
-sfx/menu_select.wav
-sfx/menu_select.wav
-sfx/menu_select.wav
-sfx/menu_select.wav
-sfx/menu_select.wav
+sfx/laser.wav

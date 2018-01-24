@@ -446,11 +446,16 @@ public class Player extends Mob {
 		//Projectile Functions
 		if(Main.util.getKeyLogSpecificKey(7)) {
 			if(!projectileExists) {//If projectile does not exist
-				projectileExists = true;				try {
-					if(Main.util.getPlayer().isMovingLeft)
+				projectileExists = true;				
+				try {
+					if(Main.util.getPlayer().isMovingLeft) {
+						Main.util.getSFX(1).play(1f, Main.util.getSoundManager().getVolume());
 						currentProjectile = new Projectile(true, false);//Draw default projectile
-					else
+					}
+					else {
+						Main.util.getSFX(1).play(1f, Main.util.getSoundManager().getVolume());
 						currentProjectile = new Projectile(false, true);//Draw default projectile
+					}
 				} catch (SlickException e) {
 					e.printStackTrace();
 				}
