@@ -197,50 +197,47 @@ public abstract class Mob extends GameObject{
 					
 			//Moving Left - Check Collision
 			if(onRight(tile)) { //seeing if i am directly to the right of the tile we collided into
-				if(leftCollide(tile.getX(), tile.getX() + tile.getWidth(), tile.getY(), tile.getY() + tile.getHeight())) {
-					this.x = (tile.getX() + tile.getWidth()) + 1;
+				if(leftCollide(tile.getX(), tile.getX() + (float) tile.getCollisionBox().getWidth(), tile.getY(), tile.getY() + (float) tile.getCollisionBox().getHeight())) {
+					this.x = (tile.getX() + (float) tile.getCollisionBox().getWidth()) + 1;
 					this.collideLeft = true;
 					this.isMovingLeft = false;
 					this.xMomentum = 0;
 					updateFuturePosition();
-					checkTileCollision(tile);
 					checkDynamicTiles(tile);
 				} 
 			}
 			
 			//Moving Right - Check Collision
 			else if(onLeft(tile)){
-				if(rightCollide(tile.getX(), tile.getX() + tile.getWidth(), tile.getY(), tile.getY() + tile.getHeight())) {
+				if(rightCollide(tile.getX(), tile.getX() + (float) tile.getCollisionBox().getWidth(), tile.getY(), tile.getY() + (float) tile.getCollisionBox().getHeight())) {
 					this.x = tile.getX() - ((this.width) + 1);
 					this.collideRight = true;
 					this.isMovingRight = false;
 					this.xMomentum = 0;
 					updateFuturePosition();
-					checkTileCollision(tile);
 					checkDynamicTiles(tile);
 				}
 			}
 
 			//Moving Down - Check Collision
 			else if(onTop(tile)){
-				if(downCollide(tile.getX(), tile.getX() + tile.getWidth(), tile.getY(), tile.getY() + tile.getHeight())){
+				
+				if(downCollide(tile.getX(), tile.getX() + (float) tile.getCollisionBox().getWidth(), tile.getY(), tile.getY() + (float) tile.getCollisionBox().getHeight())){
 					this.y = tile.getY() - (this.getHeight() + 1);
 					this.collideDown = true;
 					this.yMomentum = 0;
 					updateFuturePosition();
-					checkTileCollision(tile);
 					checkDynamicTiles(tile);
 				}
 			}
 
 			//Moving Up - Check Collision
 			else if(onBottom(tile)){
-				if(upCollide(tile.getX(), tile.getX() + tile.getWidth(), tile.getY(), tile.getY() + tile.getHeight())) {
-					this.y = (tile.getY() + tile.getHeight()) + 1;
+				if(upCollide(tile.getX(), tile.getX() + (float) tile.getCollisionBox().getWidth(), tile.getY(), tile.getY() + (float) tile.getCollisionBox().getHeight())) {
+					this.y = (tile.getY() + (float) tile.getCollisionBox().getHeight()) + 1;
 					this.collideUp = true;
 					this.yMomentum = 0;
 					updateFuturePosition();
-					checkTileCollision(tile);
 					checkDynamicTiles(tile);
 				}
 			}
@@ -249,7 +246,7 @@ public abstract class Mob extends GameObject{
 	private void checkDynamicTiles(Tile tile) {
 		
 		// GravPad Recharging the player's gravPad
-		if(tile.getId() == tile.gravPadID) {
+		if(tile.getId() == tile.gravPadID && this.collideDown == true) {
 			Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.gravPadRecharge, 0.5f));
 		}
 		
@@ -262,7 +259,7 @@ public abstract class Mob extends GameObject{
 	
 	// Check to see if the mob is on the right side of a tile
 	private boolean onRight(Tile tile) {
-		return this.x > (tile.getX() + tile.getWidth());
+		return this.x > (tile.getX() + (float) tile.getCollisionBox().getWidth());
 	}
 	
 	// Check to see if the mob is on the right side of a tile
@@ -272,7 +269,7 @@ public abstract class Mob extends GameObject{
 	
 	// Check to see if the mob is on the right side of a tile
 	private boolean onBottom(Tile tile) {
-		return this.y > (tile.getY() + tile.getHeight());
+		return this.y > (tile.getY() + (float) tile.getCollisionBox().getHeight());
 	}
 	
 	// Check to see if the mob is on the right side of a tile
@@ -429,6 +426,7 @@ public abstract class Mob extends GameObject{
 	public Animation getStandStillFlippedAni() {
 			return standStillFlippedAni;
 		}
+
 
 	/* SETTERS */
 

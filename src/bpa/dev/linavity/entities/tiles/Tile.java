@@ -22,10 +22,11 @@ public class Tile extends GameObject implements Shape {
 	private int id;
 	
 	// X and Y position of the tile in the level (not relative position)
-	private float x, y;
+	protected float x, y;
+	protected float xOffset, yOffset;
 
 	// Width and height of the tiles (Right now, typically 64x64)
-	private int height, width;
+	protected int height, width;
 	
 	// Tells the game whether or not the tile lets other objects pass through it.
 	private boolean passable;
@@ -41,7 +42,7 @@ public class Tile extends GameObject implements Shape {
 	String[] texturePaths = all_tiles.getTextures();
 	boolean[] isPassable = all_tiles.getPassable();
 	
-	private Rectangle collisionBox;
+	protected Rectangle collisionBox;
 	
 	public Tile(int i, int j, int id) 
 			throws SlickException{
@@ -50,6 +51,8 @@ public class Tile extends GameObject implements Shape {
 		this.x = j * 50; // I & J are the positions of the tile in the 2d array of tiles that make up our level
 		this.y = i * 50; // We multiply by 64 since that is the height and width of the tile, to get the proper coordinate of the tile in our level
 		this.id = id;
+		this.xOffset = 0;
+		this.yOffset = 0;
 
 		
 			if(isPassable[id])
@@ -58,7 +61,7 @@ public class Tile extends GameObject implements Shape {
 				passable = false;
 			
 		this.texture = new Image(texturePaths[id]);
-		this.collisionBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
+		this.collisionBox = new Rectangle((int) (this.x + this.xOffset), (int) (this.y+this.yOffset), (int) this.width, (int) this.height);
 	}
 	
 

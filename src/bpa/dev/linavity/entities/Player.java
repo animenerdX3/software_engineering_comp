@@ -68,6 +68,7 @@ public class Player extends Mob {
 		
 		if(message.getType() == Message.gravPadRecharge){	
 			System.err.println("RECHARGING...");
+			this.jumps = 0;
 			gravPack.setGravpower(gravPack.getGravpower() + (float) message.getData());
 			
 		}
@@ -216,7 +217,7 @@ public class Player extends Mob {
 		if(this.isFlipping) {
 			jumpMod = -1;
 			if(this.collideUp)
-				this.jumps = 0;
+				this.jumps = -2;
 		}
 
 		if(!maxJumps()) {
