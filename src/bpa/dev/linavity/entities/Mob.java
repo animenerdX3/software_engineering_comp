@@ -255,6 +255,10 @@ public abstract class Mob extends GameObject{
 			Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.gravPadRecharge, 0.5f));
 		}
 		
+		if(tile.getId() == tile.warpHoleID) {
+			Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.endLevel, null));
+		}
+		
 		// Lever getting activated / toggled
 		if(tile.getId() == tile.leverID) {
 			Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.leverToggle, 0));

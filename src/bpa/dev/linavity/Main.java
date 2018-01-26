@@ -28,6 +28,7 @@ public class Main extends StateBasedGame{
 	
 	// Application Properties
 	public static AppGameContainer appgc;
+	public static StateBasedGame currentLevel;
 	public static final int WIDTH = 900;
 	public static final int HEIGHT = 900;
 	public static final int FPS = 60;
@@ -46,6 +47,7 @@ public class Main extends StateBasedGame{
 	// Initiate our game states
 	public void initStatesList(GameContainer gc) throws SlickException {
 		util = new Utils();
+		currentLevel = this;
 		this.getState(mainmenu).init(gc, this);
 		this.getState(basicgame).init(gc , this);
 		this.getState(gameover).init(gc , this);

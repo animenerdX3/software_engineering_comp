@@ -322,6 +322,8 @@ public class StartLevel extends BasicGameState{
 		// Check Collisions
 		collide(gc);
 		
+		endLevel(sbg);
+		
 		// Update Player Attributes
 		updateMobs(delta);
 		
@@ -381,6 +383,16 @@ public class StartLevel extends BasicGameState{
 		//enemies[0].updateMob();
 		
 	}//end of collide
+	
+	/**
+	 * Founds out when the gamestate should change
+	 * @param gc
+	 */
+	public void endLevel(StateBasedGame sbg) {
+		if(Main.util.getPlayer().isReadyForNextLevel()) {
+			sbg.enterState(getID() + 1);
+		}
+	}
 	
 
 	/**

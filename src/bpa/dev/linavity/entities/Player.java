@@ -1,6 +1,5 @@
 package bpa.dev.linavity.entities;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.newdawn.slick.Animation;
@@ -10,7 +9,6 @@ import org.newdawn.slick.SpriteSheet;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.tiles.Tile;
-import bpa.dev.linavity.entities.tiles.interactive.Lever;
 import bpa.dev.linavity.events.Message;
 import bpa.dev.linavity.weapons.Projectile;
 
@@ -22,6 +20,7 @@ public class Player extends Mob {
 	int jumps;
 	private boolean projectileExists = false;
 	private Projectile currentProjectile;
+	private boolean readyForNextLevel;
 	
 	private GravityPack gravPack;
 	
@@ -46,6 +45,7 @@ public class Player extends Mob {
 		this.canJump = true;
 		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
 		this.isFlipping = false;
+		this.readyForNextLevel = false;
 		
 		this.moveLeft = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
 	    this.moveLeftAni = new Animation(this.moveLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
@@ -97,6 +97,10 @@ public class Player extends Mob {
 				}
 			}
 			
+		}
+		
+		if(message.getType() == Message.endLevel) {
+			this.readyForNextLevel = true;
 		}
 		
 	}
@@ -556,6 +560,10 @@ public class Player extends Mob {
 		return gravPack;
 	}
 	
+	public boolean isReadyForNextLevel() {
+		return readyForNextLevel;
+	}
+	
 	/* SETTERS */
 	
 	public void setProjectileExists(boolean projectileExists) {
@@ -572,6 +580,10 @@ public class Player extends Mob {
 	
 	public void setGravPack(GravityPack gravPack){
 		this.gravPack = gravPack;
+	}
+	
+	public void setReadyForNextLevel (boolean readyForNextLevel) {
+		this.readyForNextLevel = readyForNextLevel;
 	}
 	
 }//end of class

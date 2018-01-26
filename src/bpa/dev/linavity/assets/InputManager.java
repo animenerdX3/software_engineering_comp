@@ -2,11 +2,6 @@ package bpa.dev.linavity.assets;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
-
-import bpa.dev.linavity.entities.Player;
-import bpa.dev.linavity.gamestates.StartLevel;
-import bpa.dev.linavity.physics.Gravity;
 
 public class InputManager {
 	

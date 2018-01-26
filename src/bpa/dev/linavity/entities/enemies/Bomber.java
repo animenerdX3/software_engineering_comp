@@ -1,5 +1,7 @@
 package bpa.dev.linavity.entities.enemies;
 
+import java.util.Random;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -12,6 +14,15 @@ import bpa.dev.linavity.entities.Mob;
 public class Bomber extends Mob{
 
 	private boolean isDetected;
+	
+	Random ran = new Random();
+	
+	float direction = 20;
+	float chanceToMove = ran.nextFloat();
+	float moving = ran.nextInt(6) + direction;
+	float counter = 0;
+	
+	boolean autoDirectionLeft;
 	
 	//Create enemy with constructor
 	public Bomber(float x, float y) throws SlickException{
@@ -101,28 +112,62 @@ public class Bomber extends Mob{
 	
 	// Determines if the enemy is moving in the X direction
 	private boolean movingLeftOrRight() {
+		if(this.isDetected && movingLeft())
+			this.currentImage = this.moveLeftAni;
+		else if(this.isDetected && movingRight())
+			this.currentImage = this.moveRightAni;
+		else
+			this.currentImage = this.standStillAni;
+		
 		return movingLeft() || movingRight();
 	}
 	
 	// Determine if the enemy is moving left based on the player
 	private boolean movingLeft() {
 		
-		if(this.isDetected)
-			this.currentImage = this.moveLeftAni;
-		else
-			this.currentImage = this.standStillAni;
-		
 		return Main.util.getPlayer().getX() < getX();
 	}
 	
 	// Determine if the enemy is moving right based on the player
 	private boolean movingRight() {
-		if(this.isDetected)
-			this.currentImage = this.moveRightAni;
-		else
-			this.currentImage = this.standStillAni;
 			
 		return Main.util.getPlayer().getX() > getX();
+	}
+	
+	public float idleMovement() {
+		if(chanceToMove < 0.005f) {
+			if(counter < moving) {
+				if(autoDirectionLeft) {
+					this.currentImage = this.moveLeftAni;
+					return AILeft();
+				}
+				else {
+					this.currentImage = this.moveRightAni;
+					return AIRight();
+				}		
+			}
+			else {
+				counter = 0;
+				moving = ran.nextInt(6) + direction;
+				autoDirectionLeft = !autoDirectionLeft;
+				chanceToMove = ran.nextFloat();
+				return 0;
+			}
+		}
+		else {
+			chanceToMove = ran.nextFloat();
+			return 0;
+		}
+	}
+	
+	public float AILeft() {
+		counter = counter + this.walkSpeed;
+		return -this.walkSpeed * this.accessDelta;
+	}
+	
+	public float AIRight() {
+		counter = counter + this.walkSpeed;
+		return this.walkSpeed * this.accessDelta;
 	}
 	
 	// Determines if the enemy is running
@@ -156,8 +201,7 @@ public class Bomber extends Mob{
 			else if(movingRight())  // Moving right
 				return this.walkSpeed * this.accessDelta;
 		}
-		
-		return 0;
+		return idleMovement();
 	}
 	
 	/**

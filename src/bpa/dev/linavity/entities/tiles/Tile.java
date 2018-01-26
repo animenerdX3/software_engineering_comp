@@ -16,6 +16,7 @@ public class Tile extends GameObject implements Shape {
 
 	// Final Ints for dynamic tile ID's
 	public final static int gravPadID = 5;
+	public final static int warpHoleID = 12;
 	public final static int leverID = 20;
 	
 	// Tile ID

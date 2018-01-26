@@ -2,6 +2,7 @@ package bpa.dev.linavity.entities.tiles.interactive;
 
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.gamestates.StartLevel;
 
@@ -27,7 +28,9 @@ public class Lever {
 			System.out.println("ON");
 		else if(this.id == 1) {
 			try {
-				StartLevel.mobs.add(new Starter(400, 1100));
+				if(Main.currentLevel.getCurrentStateID() == 1) 
+					StartLevel.mobs.add(new Starter(400, 1100));
+				
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
