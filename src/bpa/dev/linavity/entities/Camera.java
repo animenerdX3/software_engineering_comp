@@ -31,8 +31,16 @@ public class Camera {
 	
 	//Updates the x and y of the camera 
 	public void updateCameraPos(float x, float y){
-		this.x = x - 425;
-		this.y = y - 720;
+		if(Main.util.getPlayer().getX() <= Main.util.getLevel().getLevelWidth() - 425 && Main.util.getPlayer().getX() >= 425)
+			this.x = x - 425;
+
+		if(Main.util.getPlayer().getY() <= Main.util.getLevel().getLevelHeight() - 99 && Main.util.getPlayer().getY() >= 600)
+			this.y = y - 720;
+	}
+	
+	public void outOfBoundsKill() {
+		if(Main.util.getPlayer().getY() >= Main.util.getLevel().getLevelHeight() + 100 || Main.util.getPlayer().getY() < -50)
+			Main.util.getPlayer().setHealth(Main.util.getPlayer().getHealth() - 1);
 	}
 	
 	/* GETTERS */

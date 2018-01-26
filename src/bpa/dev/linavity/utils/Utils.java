@@ -46,7 +46,7 @@ public class Utils {
 	
 	// Default Constructor
 	public Utils() throws SlickException{
-		this.player = new Player(100, 1100);
+		this.player = new Player(450, 1100);
 	    this.cam = new Camera(this.getPlayer().getX(), this.getPlayer().getY());
 		this.musicQueue = musicManager.getMusicQueue();
 		this.sfx = sfxFiles.getSfx();

@@ -12,7 +12,9 @@ import bpa.dev.linavity.gamestates.MainMenu;
 public class Level {
 
 	// Level ID
-	int id;
+	private int id;
+	
+	private int levelWidth, levelHeight;
 	
 	// 2d array of tile objects that makes up the level
 	private Tile[][] tiles;
@@ -31,6 +33,8 @@ public class Level {
 		int [][] tileIDs = level.getWorld();
 		tiles = new Tile[tileIDs.length][tileIDs[0].length];//Create a 2D array with the same size as the tileIDs array
 		tiles = createLevel(tileIDs);//Populate the array with tiles based on the tilesID array
+		this.levelWidth = tileIDs[0].length * 50;
+		this.levelHeight = tileIDs.length * 50;
 	}
 	
 	/**
@@ -121,6 +125,14 @@ public class Level {
 		return tiles[coords.x][coords.y];
 	}
 	
+	public int getLevelWidth() {
+		return levelWidth;
+	}
+	
+	public int getLevelHeight() {
+		return levelHeight;
+	}
+	
 	/* SETTERS */
 	
 	public void setId(int id) {
@@ -132,5 +144,12 @@ public class Level {
 		this.tiles = tiles;
 	}
 	
+	public void setLevelWidth(int levelWidth) {
+		this.levelWidth = levelWidth;
+	}
+
+	public void setLevelHeight(int levelHeight) {
+		this.levelHeight = levelHeight;
+	}
 	
 }//end of class

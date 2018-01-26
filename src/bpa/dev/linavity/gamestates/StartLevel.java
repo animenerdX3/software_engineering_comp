@@ -303,8 +303,9 @@ public class StartLevel extends BasicGameState{
 		if(Main.util.getPlayer().getHealth() <= 0) {
 			Main.util.getPlayer().setHealth(100);
 			Main.util.getPlayer().getGravPack().setGravpower(100);
-			Main.util.getPlayer().setX(100);
+			Main.util.getPlayer().setX(450);
 			Main.util.getPlayer().setY(1100);
+			Main.util.getPlayer().setIsAlive(true);
 			sbg.enterState(2);
 		}
 		
@@ -328,7 +329,7 @@ public class StartLevel extends BasicGameState{
 		
 		// Update Camera Coordinates
 		Main.util.getCam().updateCameraPos(mobs.get(0).getX(), mobs.get(0).getY());
-		
+		Main.util.getCam().outOfBoundsKill();		
 		// Open Pop-up menu
 		if(Main.util.getKeyLogSpecificKey(6)) {
 			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
