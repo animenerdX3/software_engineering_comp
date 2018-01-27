@@ -32,6 +32,7 @@ public class Main extends StateBasedGame{
 	public static final int WIDTH = 900;
 	public static final int HEIGHT = 900;
 	public static final int FPS = 60;
+	public static final String [] icons = new String[] {"res/gui/icon_32_32.png", "res/gui/icon_24_24.png", "res/gui/icon_16_16.png"};
 	
 	// Utility Object - Gives access to other objects that are needed throughout the entire program.
 	public static Utils util;
@@ -62,6 +63,7 @@ public class Main extends StateBasedGame{
 			appgc.setDisplayMode(WIDTH, HEIGHT, false);
 			appgc.setAlwaysRender(true); // Constant Rendering 
 			appgc.setTargetFrameRate(FPS);//Set framerate
+			appgc.setIcons(icons);
 			appgc.start();//Start the program
 		} catch (SlickException e) {
 			ErrorLog.logError(e);
