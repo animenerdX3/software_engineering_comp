@@ -65,7 +65,7 @@ public class StartLevel extends BasicGameState{
 			throws SlickException {
 		mobs = getMobs();
 		back = new Image("res/gui/buttons/button_back.png");
-		bg = new ParallaxMap("res/bg.jpg", -450, 0.5f);
+		bg = new ParallaxMap("res/bg.jpg", -450, 0.5f, true);
 		health_gui = new Image("res/gui/stats/health_bar.png");
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
 		grav_gui = new Image("res/gui/stats/grav_pack.png");

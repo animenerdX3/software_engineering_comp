@@ -10,11 +10,13 @@ public class ParallaxMap {
 	private Image backgroundLayer;
 	
 	private float x, speed;
+	private boolean autoScroll;
 	
-	public ParallaxMap(String directory, float x, float speed) throws SlickException {
+	public ParallaxMap(String directory, float x, float speed, boolean autoScroll) throws SlickException {
 		this.backgroundLayer = new Image(directory);
 		this.x = x;
 		this.speed = speed;
+		this.autoScroll = autoScroll;
 	}
 
 	public void moveBackground() {
@@ -28,6 +30,9 @@ public class ParallaxMap {
 			else if(Main.util.getPlayer().isMovingRight()) {
 				this.x = x - speed;
 			}
+			//If not moving, just let it scroll
+			else if (this.autoScroll)
+				this.x = x + (speed/2);
 		}
 	}
 	
@@ -45,6 +50,10 @@ public class ParallaxMap {
 		return speed;
 	}
 	
+	public boolean isAutoScroll() {
+		return autoScroll;
+	}
+	
 	/* SETTERS */
 	
 	public void setBackgroundLayer(Image backgroundLayer) {
@@ -57,6 +66,10 @@ public class ParallaxMap {
 	
 	public void setSpeed(float speed) {
 		this.speed = speed;
+	}
+	
+	public void setAutoScroll(boolean autoScroll) {
+		this.autoScroll = autoScroll;
 	}
 	
 }//end of class
