@@ -48,10 +48,10 @@ public class Main extends StateBasedGame{
 	public void initStatesList(GameContainer gc) throws SlickException {
 		util = new Utils();
 		currentLevel = this;
-		this.getState(mainmenu).init(gc, this);
-		this.getState(basicgame).init(gc , this);
-		this.getState(gameover).init(gc , this);
-			this.enterState(mainmenu);
+		for(int i = 0; i < 3; i++)
+			this.getState(i).init(gc, this);
+			
+		this.enterState(mainmenu);
 	}
 	
 	// Main Method

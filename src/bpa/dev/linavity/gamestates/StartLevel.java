@@ -234,6 +234,9 @@ public class StartLevel extends BasicGameState{
 			// Make all game information updates
 			gameUpdates(gc, sbg, delta);
 			
+			//Update Animations
+			updateAnimation(delta);
+			
 			// Message Handler
 			Main.util.getMessageHandler().dispatchMessages();
 			
@@ -241,56 +244,9 @@ public class StartLevel extends BasicGameState{
 			
 		}
 		else {
-			Main.util.getMusic().pause();
+			stopAnimation();//Stop updating animation
+			Main.util.getMusic().pause();//Pause the music
 		}
-		
-		//Animation
-
-
-		for(int i = 0; i < mobs.size() - 1; i++) {
-			 mobs.get(i).getLeftAni().update(delta); // this line makes sure the speed of the Animation is true
-			 mobs.get(i).getRightAni().update(delta); // this line makes sure the speed of the Animation is true
-			 mobs.get(i).getStillAni().update(delta); // this line makes sure the speed of the Animation is true
-			 if(i == 0) {//If we are updating the player
-				 mobs.get(i).getMoveLeftFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
-				 mobs.get(i).getMoveRightFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
-				 mobs.get(i).getStandStillFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
-			 }
-		}
-		
-		//dont mind this
-			
-/*
- * Woah we can flip the player like this wow			
- *  mobs.get(0).setCurrentImage(mobs.get(0).getStillAni())
- *  Image uwu = mobs.get(0).getCurrentImage().getCurrentFrame();
-*/
-			
-		
-		      if (Main.util.getKeyLogSpecificKey(1))
-		        {
-
-		    	  if(Main.util.getPlayer().isFlipping())
-		    	  {
-		    		  mobs.get(0).setCurrentImage(mobs.get(0).getMoveLeftFlippedAni());
-		    	  }else
-		            mobs.get(0).setCurrentImage(mobs.get(0).getLeftAni());
-		        }
-		      else if (Main.util.getKeyLogSpecificKey(3))
-		        {
-
-		    	  if(Main.util.getPlayer().isFlipping())
-		    	  {
-		    		  mobs.get(0).setCurrentImage(mobs.get(0).getMoveRightFlippedAni()); 
-		    	  }else
-		    	  	mobs.get(0).setCurrentImage(mobs.get(0).getRightAni());
-		        } else{
-
-		        	if(Main.util.getPlayer().isFlipping()){
-		        		mobs.get(0).setCurrentImage(mobs.get(0).getStandStillFlippedAni());
-		        	}else
-		        	mobs.get(0).setCurrentImage(mobs.get(0).getStillAni());
-		        }
 		
 		// Open pop-up menu
 		openMenu(gc, delta);
@@ -318,10 +274,8 @@ public class StartLevel extends BasicGameState{
 	 * @param delta
 	 */
 	private void gameUpdates(GameContainer gc, StateBasedGame sbg, int delta) {
-
-		// Check Collisions
-		collide(gc);
 		
+		//Check for End of Level
 		endLevel(sbg);
 		
 		// Update Player Attributes
@@ -362,7 +316,55 @@ public class StartLevel extends BasicGameState{
 		// Update the mob's position
 		for(int i = 0; i < mobs.size(); i++) 
 			mobs.get(i).update(delta);
-}
+	}
+	
+	public void updateAnimation(int delta) {
+		
+		//Animation
+		for(int i = 0; i < mobs.size(); i++) {
+			 mobs.get(i).getLeftAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getRightAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getStillAni().update(delta); // this line makes sure the speed of the Animation is true
+			 if(i == 0) {//If we are updating the player
+				 mobs.get(i).getMoveLeftFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+				 mobs.get(i).getMoveRightFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+				 mobs.get(i).getStandStillFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+			 }
+		}
+		
+	}//end of updateAnimation
+	
+	public void startAnimation() {
+		
+		//Starts animation for all mobs
+		for(int i = 0; i < mobs.size(); i++) {
+			 mobs.get(i).getLeftAni().start(); 
+			 mobs.get(i).getRightAni().start();
+			 mobs.get(i).getStillAni().start(); 
+			 if(i == 0) {//If we are updating the player
+				 mobs.get(i).getMoveLeftFlippedAni().start();
+				 mobs.get(i).getMoveRightFlippedAni().start(); 
+				 mobs.get(i).getStandStillFlippedAni().start(); 
+			 }
+		}
+		
+	}//end of stopAnimation
+	
+	public void stopAnimation() {
+		
+		//Stop animation for all mobs
+		for(int i = 0; i < mobs.size(); i++) {
+			 mobs.get(i).getLeftAni().stop(); 
+			 mobs.get(i).getRightAni().stop();
+			 mobs.get(i).getStillAni().stop(); 
+			 if(i == 0) {//If we are updating the player
+				 mobs.get(i).getMoveLeftFlippedAni().stop();
+				 mobs.get(i).getMoveRightFlippedAni().stop(); 
+				 mobs.get(i).getStandStillFlippedAni().stop(); 
+			 }
+		}
+		
+	}//end of stopAnimation
 	
 	public void checkMobStatus(){
 
@@ -373,16 +375,6 @@ public class StartLevel extends BasicGameState{
 			}
 		}
 	}
-	
-	/**
-	 * Implements collision to mobs
-	 * @param gc
-	 */
-	public void collide(GameContainer gc){
-
-		//enemies[0].updateMob();
-		
-	}//end of collide
 	
 	/**
 	 * Founds out when the gamestate should change
@@ -456,6 +448,7 @@ public class StartLevel extends BasicGameState{
 		Input input = gc.getInput(); // Creating our input object
 		if(input.isKeyPressed(Input.KEY_ESCAPE)){
 			Main.util.getMusic().resume();
+			startAnimation();
 			menuOpen = !menuOpen; // ! Makes the escape toggle
 		}
 	}

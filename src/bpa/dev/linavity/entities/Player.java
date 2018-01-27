@@ -310,6 +310,8 @@ public class Player extends Mob {
 		
 		this.gravPack.gravPowerCheck();
 		
+		checkFlipAnimation();
+		
 		updateMomentums();
 		
 		shootProjectile();
@@ -470,7 +472,34 @@ public class Player extends Mob {
 //		
 //		gravPack.gravPowerCheck();
 //		
-	}//end of updatePos
+	}//end of update
+	
+	public void checkFlipAnimation() {
+		  //If Moving Left Upside Down
+	      if (Main.util.getKeyLogSpecificKey(1)) {
+	    	  if(isFlipping())
+	    		  setCurrentImage(getMoveLeftFlippedAni());
+	    	  else
+	            setCurrentImage(getLeftAni());
+	        }
+	      
+	      //If Moving Right Upside Down
+	      else if (Main.util.getKeyLogSpecificKey(3)) {
+
+	    	  if(Main.util.getPlayer().isFlipping())
+	    		  setCurrentImage(getMoveRightFlippedAni()); 
+	    	  else
+	    	  	setCurrentImage(getRightAni());
+	      }
+	      
+	      //If Still Upside Down
+	      else{
+	        	if(Main.util.getPlayer().isFlipping())
+	        		setCurrentImage(getStandStillFlippedAni());
+	        	else
+	        	setCurrentImage(getStillAni());
+	        }
+	}//end of checkFlipAnimation
 	
 	public void shootProjectile() {
 		//Projectile Functions
