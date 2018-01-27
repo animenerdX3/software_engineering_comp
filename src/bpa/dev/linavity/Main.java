@@ -48,6 +48,7 @@ public class Main extends StateBasedGame{
 	public void initStatesList(GameContainer gc) throws SlickException {
 		util = new Utils();
 		currentLevel = this;
+		appgc.setShowFPS(util.debugMode);//Show FPS Counter
 		for(int i = 0; i < 3; i++)
 			this.getState(i).init(gc, this);
 			
@@ -60,9 +61,8 @@ public class Main extends StateBasedGame{
 			appgc = new AppGameContainer(new Main("Linavity - Version 1.04"));
 			appgc.setDisplayMode(WIDTH, HEIGHT, false);
 			appgc.setAlwaysRender(true); // Constant Rendering 
-			appgc.setShowFPS(true);//Show FPS Counter
-			appgc.setTargetFrameRate(FPS);
-			appgc.start();
+			appgc.setTargetFrameRate(FPS);//Set framerate
+			appgc.start();//Start the program
 		} catch (SlickException e) {
 			ErrorLog.logError(e);
 		}

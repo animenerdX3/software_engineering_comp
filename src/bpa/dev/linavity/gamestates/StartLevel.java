@@ -22,14 +22,17 @@ import bpa.dev.linavity.world.ParallaxMap;
 
 public class StartLevel extends BasicGameState{
 	
-	// Images
+	//GUI
 	private Image health_gui = null;
 	private Image health_bar = null;
 	private Image grav_gui = null;
 	private Image grav_bar = null;
+	
+	//Pause Menu
 	private Image pause_menu_ui = null;
 	private Image back = null;
 	
+	//Parallax Backgrounds for Our Level
 	private ParallaxMap bg;
 	
 	// ID of the gamestate
@@ -38,31 +41,23 @@ public class StartLevel extends BasicGameState{
 	// Whether or not the pop-up menu is open
 	private boolean menuOpen = false;
 	
-	
-	//Variables to set up our level
-	
+	//Mouse Coordinates
 	private int xpos; // Mouse's X position
 	private int ypos; // Mouse's Y position
-	
-	private Rectangle bounds;
-	private Rectangle enemybounds;
 	
 	//List of all possible enemies
 	public static ArrayList <Mob> mobs = new ArrayList<Mob>();
 	
-	Tile[][] screenTiles;
-	Tile[][] eventTiles;
-	
-	//Default constructor
-	public StartLevel(){ 
-
-	}
+	//Tiles for our level
+	private Tile[][] screenTiles;
+	private Tile[][] eventTiles;
 	
 	/**
 	 * This runs as soon as we compile the program
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
+		
 		mobs = getMobs();
 		back = new Image("res/gui/buttons/button_back.png");
 		bg = new ParallaxMap("res/bg.jpg", -450, 0.5f, true);
@@ -71,14 +66,11 @@ public class StartLevel extends BasicGameState{
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
 		Main.util.setLevel(new Level(0, "startlevel"));
-		Main.util.setEvents(new Level(0, "startlevel_events"));		
+		Main.util.setEvents(new Level(0, "startlevel_events"));	
+		
+	}//end of init
 
-		for(int i = 0; i < mobs.size(); i++)
-			enemybounds = new Rectangle((int) (mobs.get(i).getX() - Main.util.getCam().getX()), (int) (mobs.get(i).getY() - Main.util.getCam().getY()), 50, 50);
-
-	}
-
-	public ArrayList<Mob> getMobs() throws SlickException {
+	private ArrayList<Mob> getMobs() throws SlickException {
 		//Add mobs
 		ArrayList <Mob> mobs = new ArrayList<Mob>();
 		
@@ -91,7 +83,7 @@ public class StartLevel extends BasicGameState{
 		mobs.add(new Bomber(660, 650));
 		
 		return mobs;
-	}
+	}//end of getMobs
 	
 	/**
 	 * Renders content to the game / screen
@@ -157,7 +149,7 @@ public class StartLevel extends BasicGameState{
 			renderMenu(gc, g);
 		}
 		
-	}
+	}//end of render
 
 	/**
 	 * Render the screen based on where the camera is on our map
@@ -217,7 +209,23 @@ public class StartLevel extends BasicGameState{
 		}
 		// End of drawing event tiles
 		
-	}
+	}//end of renderScreen
+
+	/**
+	 * @method renderMenu
+	 * @description draws the images needed for the popup menu
+	 * 
+	 * @param
+	 * GameContainer gc, Graphics g
+	 * 
+	 * @return
+	 * 	void:
+	 */
+	private void renderMenu(GameContainer gc, Graphics g){
+		// Back Button
+		g.drawImage(pause_menu_ui, 0,0); // Setting the pause menu ui
+		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 400); // Setting the x value as half of the game container and adjusting for the width of the button
+	}//end of renderMenu
 
 	/**
 	 * Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
@@ -256,16 +264,21 @@ public class StartLevel extends BasicGameState{
 		xpos = ExtraMouseFunctions.getMouseX(gc.getWidth()); // Updates the x coordinate of the mouse
 		ypos = ExtraMouseFunctions.getMouseY(gc.getHeight()); // Updates the y coordinate of the mouse
 		
-		if(Main.util.getPlayer().getHealth() <= 0) {
-			Main.util.getPlayer().setHealth(100);
-			Main.util.getPlayer().getGravPack().setGravpower(100);
-			Main.util.getPlayer().setX(450);
-			Main.util.getPlayer().setY(1100);
-			Main.util.getPlayer().setIsAlive(true);
-			sbg.enterState(2);
-		}
+	}//end of update
+	
+	/**
+	 * Our input method uses the input manager class to update all of out input logs
+	 * @param gc
+	 */
+	private void input(GameContainer gc){
+	
+		// Update our keyboard log
+		Main.util.setKeyLog(Main.util.getIm().getKeyLog(gc));
 		
-	}
+		// Update our mouse log
+		Main.util.setMouseLog(Main.util.getIm().getMouseLog(gc));
+		
+	}//end of input
 	
 	/**
 	 * Make all info game updates
@@ -278,63 +291,44 @@ public class StartLevel extends BasicGameState{
 		//Check for End of Level
 		endLevel(sbg);
 		
-		// Update Player Attributes
+		// Update Mob Attributes
 		updateMobs(delta);
 		
-		checkMobStatus();
+		//Check to see if mobs are alive
+		checkMobStatus(sbg);
 		
 		// Update Camera Coordinates
 		Main.util.getCam().updateCameraPos(mobs.get(0).getX(), mobs.get(0).getY());
-		Main.util.getCam().outOfBoundsKill();		
+		Main.util.getCam().outOfBoundsKill()
+		;		
 		// Open Pop-up menu
 		if(Main.util.getKeyLogSpecificKey(6)) {
 			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
 			menuOpen = !menuOpen;
 		}
-	}
-
+	}//end of gameUpdates
 	
 	/**
-	 * Our input method uses the input manager class to update all of out input logs
+	 * Founds out when the gamestate should change
 	 * @param gc
 	 */
-	public void input(GameContainer gc){
-	
-		// Update our keyboard log
-		Main.util.setKeyLog(Main.util.getIm().getKeyLog(gc));
-		
-		// Update our mouse log
-		Main.util.setMouseLog(Main.util.getIm().getMouseLog(gc));
-		
-	}
-	
+	private void endLevel(StateBasedGame sbg) {
+		if(Main.util.getPlayer().isReadyForNextLevel()) {
+			sbg.enterState(getID() + 1);
+		}
+	}//end of endLevel
+
 	/**
 	 * Perform all updates to the player object
 	 * @param delta
 	 */
-	public void updateMobs(int delta){
+	private void updateMobs(int delta){
 		// Update the mob's position
 		for(int i = 0; i < mobs.size(); i++) 
 			mobs.get(i).update(delta);
-	}
+	}//end of updateMobs
 	
-	public void updateAnimation(int delta) {
-		
-		//Animation
-		for(int i = 0; i < mobs.size(); i++) {
-			 mobs.get(i).getLeftAni().update(delta); // this line makes sure the speed of the Animation is true
-			 mobs.get(i).getRightAni().update(delta); // this line makes sure the speed of the Animation is true
-			 mobs.get(i).getStillAni().update(delta); // this line makes sure the speed of the Animation is true
-			 if(i == 0) {//If we are updating the player
-				 mobs.get(i).getMoveLeftFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
-				 mobs.get(i).getMoveRightFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
-				 mobs.get(i).getStandStillFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
-			 }
-		}
-		
-	}//end of updateAnimation
-	
-	public void startAnimation() {
+	private void startAnimation() {
 		
 		//Starts animation for all mobs
 		for(int i = 0; i < mobs.size(); i++) {
@@ -350,7 +344,23 @@ public class StartLevel extends BasicGameState{
 		
 	}//end of stopAnimation
 	
-	public void stopAnimation() {
+	private void updateAnimation(int delta) {
+		
+		//Animation
+		for(int i = 0; i < mobs.size(); i++) {
+			 mobs.get(i).getLeftAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getRightAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getStillAni().update(delta); // this line makes sure the speed of the Animation is true
+			 if(i == 0) {//If we are updating the player
+				 mobs.get(i).getMoveLeftFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+				 mobs.get(i).getMoveRightFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+				 mobs.get(i).getStandStillFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+			 }
+		}
+		
+	}//end of updateAnimation
+
+	private void stopAnimation() {
 		
 		//Stop animation for all mobs
 		for(int i = 0; i < mobs.size(); i++) {
@@ -366,42 +376,29 @@ public class StartLevel extends BasicGameState{
 		
 	}//end of stopAnimation
 	
-	public void checkMobStatus(){
+	private void checkMobStatus(StateBasedGame sbg){
 
 		for(int i = 0; i < mobs.size(); i++){
-
 			if(mobs.get(i).getHealth() <= 0){
 				mobs.get(i).setIsAlive(false);
+				if(i == 0)
+					resetLevel(sbg);
 			}
 		}
-	}
+	}//end of checkMobStatus
 	
 	/**
-	 * Founds out when the gamestate should change
-	 * @param gc
+	 * Resets the level when the player dies
+	 * @param sbg
 	 */
-	public void endLevel(StateBasedGame sbg) {
-		if(Main.util.getPlayer().isReadyForNextLevel()) {
-			sbg.enterState(getID() + 1);
-		}
-	}
-	
-
-	/**
-	 * @method renderMenu
-	 * @description draws the images needed for the popup menu
-	 * 
-	 * @param
-	 * GameContainer gc, Graphics g
-	 * 
-	 * @return
-	 * 	void:
-	 */
-	public void renderMenu(GameContainer gc, Graphics g){
-		// Back Button
-		g.drawImage(pause_menu_ui, 0,0); // Setting the pause menu ui
-		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 400); // Setting the x value as half of the game container and adjusting for the width of the button
-	}
+	private void resetLevel(StateBasedGame sbg) {
+		Main.util.getPlayer().setHealth(100);
+		Main.util.getPlayer().getGravPack().setGravpower(100);
+		Main.util.getPlayer().setX(450);
+		Main.util.getPlayer().setY(1100);
+		Main.util.getPlayer().setIsAlive(true);
+		sbg.enterState(2);
+	}//end of resetLevel
 	
 	/**
 	 * @method checkMenu
@@ -414,7 +411,7 @@ public class StartLevel extends BasicGameState{
 	 * 	void:
 	 * @throws SlickException 
 	 */
-	public void checkMenu(GameContainer gc, StateBasedGame sbg) 
+	private void checkMenu(GameContainer gc, StateBasedGame sbg) 
 			throws SlickException{
 		
 		// Create our input object
@@ -437,24 +434,24 @@ public class StartLevel extends BasicGameState{
 			back = new Image("res/gui/buttons/button_back_hover.png");
 		}
 		
-	}
+	}//end of checkMenu
 	
 	/**
 	 * Checks for the user input of the escape key to toggle the in-game menu...
 	 * @param gc
 	 * @param delta
 	 */
-	public void openMenu(GameContainer gc, int delta){
+	private void openMenu(GameContainer gc, int delta){
 		Input input = gc.getInput(); // Creating our input object
 		if(input.isKeyPressed(Input.KEY_ESCAPE)){
 			Main.util.getMusic().resume();
 			startAnimation();
 			menuOpen = !menuOpen; // ! Makes the escape toggle
 		}
-	}
+	}//end of openMenu
 	
 	public int getID() {
 		return StartLevel.id;
-	}
+	}//end of getID
 	
 }//end of class
