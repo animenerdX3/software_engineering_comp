@@ -6,9 +6,9 @@ import org.newdawn.slick.Input;
 public class InputManager {
 	
 	// Possible keyboard inputs by user
-	// Keyboard -> [W, A, S, D, LShift, LControl, ESC, Z] 
+	// Keyboard -> [W, A, S, D, LShift, LControl, ESC, Enter] 
 	// Mouse -> [Mouse X Pos, Mouse Y Pos, left click]
-	private boolean[] keyLog = new boolean[9];
+	private boolean[] keyLog = new boolean[10];
 	private int[] mouseLog = new int[3];
 	
 	//Default constructor
@@ -45,13 +45,13 @@ public class InputManager {
 		if(input.isKeyPressed(Input.KEY_SPACE)){
 			keyLog[0] = true;
 		}
-		if(input.isKeyDown(Input.KEY_A)){
+		if(input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)){
 			keyLog[1] = true;
 		}
-		if(input.isKeyDown(Input.KEY_S)){
+		if(input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)){
 			keyLog[2] = true;
 		}
-		if(input.isKeyDown(Input.KEY_D)){
+		if(input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)){
 			keyLog[3] = true;
 		}
 		
@@ -66,7 +66,7 @@ public class InputManager {
 			keyLog[6] = true;
 		}
 		
-		//Z
+		//Enter
 		if(input.isKeyPressed(Input.KEY_ENTER)){
 			keyLog[7] = true;
 		}
@@ -75,6 +75,12 @@ public class InputManager {
 		if(input.isKeyPressed(Input.KEY_E)) {
 			keyLog[8] = true;
 		}
+		
+		//W
+		if(input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) {
+			keyLog[9] = true;
+		}
+
 	}
 	
 	/**
@@ -106,4 +112,12 @@ public class InputManager {
 
 	}
 
+	public int getKeyLogLength() {
+		return keyLog.length;
+	}//end of getKeyLogLength
+	
+	public int getMouseLogLength() {
+		return mouseLog.length;
+	}//end of getKeyLogLength
+	
 }//end of class

@@ -32,8 +32,8 @@ public class Utils {
 	
 	// List of all user inputs
 	public InputManager im = new InputManager();
-	private boolean[] keyLog = new boolean[7]; // Keyboard
-	private int[] mouseLog = new int[3]; // Mouse
+	private boolean[] keyLog = new boolean[im.getKeyLogLength()]; // Keyboard
+	private int[] mouseLog = new int[im.getMouseLogLength()]; // Mouse
 	
 	// Music Objects
 	private MusicManager musicManager = new MusicManager("data/music_paths.txt");

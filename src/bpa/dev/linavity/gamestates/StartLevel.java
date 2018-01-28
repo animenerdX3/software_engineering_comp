@@ -345,7 +345,6 @@ public class StartLevel extends BasicGameState{
 	}//end of stopAnimation
 	
 	private void updateAnimation(int delta) {
-		
 		//Animation
 		for(int i = 0; i < mobs.size(); i++) {
 			 mobs.get(i).getLeftAni().update(delta); // this line makes sure the speed of the Animation is true
@@ -397,7 +396,7 @@ public class StartLevel extends BasicGameState{
 		Main.util.getPlayer().setX(450);
 		Main.util.getPlayer().setY(1100);
 		Main.util.getPlayer().setIsAlive(true);
-		sbg.enterState(2);
+		sbg.enterState(Main.gameover);
 	}//end of resetLevel
 	
 	/**
@@ -428,7 +427,8 @@ public class StartLevel extends BasicGameState{
 				Main.util.getMusic().stop();
 				Main.util.setMusic(Main.util.getMusicQueue(0));
 				Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
-				sbg.enterState(0);
+				startAnimation();
+				sbg.enterState(Main.mainmenu);
 				menuOpen = false;
 			}
 			back = new Image("res/gui/buttons/button_back_hover.png");

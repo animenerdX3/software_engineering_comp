@@ -19,6 +19,7 @@ public class MainMenu extends BasicGameState{
 	public static int id = 0;
 	
 	// The X & Y positions of the mouse
+	public int prevXpos, prevYpos;
 	public int xpos, ypos;
 	
 	// Our images
@@ -37,6 +38,10 @@ public class MainMenu extends BasicGameState{
 	private Image back = null;
 	
 	private boolean isOption = false;
+	
+	//Menu Controllers
+	private int menuSize;
+	private int currentSelection;
 	
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
@@ -62,7 +67,9 @@ public class MainMenu extends BasicGameState{
 		plusSFX = new Image("res/gui/buttons/button_plus.png"); // Plus Button	
 		minusSFX = new Image("res/gui/buttons/button_minus.png"); // Minus Button	
 		back = new Image("res/gui/buttons/button_back.png"); // Back Button	
-		
+
+		menuSize = 3;
+		currentSelection = -1;
 		Main.util.setMusic(Main.util.getMusicQueue(0));
 		Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
 	}
@@ -100,21 +107,22 @@ public class MainMenu extends BasicGameState{
 		
 		Input input = gc.getInput(); // Create our input object
 		
+		prevXpos = xpos;
+		prevYpos = ypos;
 		xpos = ExtraMouseFunctions.getMouseX(gc.getWidth()); // Updates the x coordinate of the mouse
 		ypos = ExtraMouseFunctions.getMouseY(gc.getHeight()); // Updates the y coordinate of the mouse
 
 		
-		// CHECK OUR MOUSE INPUT //
+		// Check User Input //
 		
 		if(!isOption){
 			mainButtonAction(gc, sbg, input); // If the option menu has not been selected, check for the main section's buttons
-		}else{
+			cycleSelection(input);//Check for key input
+			checkMouseBounds();//Check to see if the mouse is moving
+		}else
 			optionButtonAction(gc, sbg, input); // If the option menu is selected, check for the option section's buttons
-		}
 		
-		// END OUR MOUSE INPUT
-
-	}
+	}//end of update
 
 
 	/**
@@ -139,6 +147,31 @@ public class MainMenu extends BasicGameState{
 	}
 	
 
+	private void cycleSelection(Input input) {
+		if(input.isKeyPressed(Input.KEY_S) || input.isKeyPressed(Input.KEY_DOWN)) {
+			if(currentSelection + 1 == menuSize)
+				currentSelection = 0;
+			else
+				currentSelection = currentSelection + 1;
+		}
+		else if(input.isKeyPressed(Input.KEY_W) || input.isKeyPressed(Input.KEY_UP)) {
+			if(currentSelection - 1 < 0)
+				currentSelection = menuSize - 1;
+			else
+				currentSelection = currentSelection - 1;
+		}
+	}//end of cycleSelection
+	
+	private void checkMouseBounds() {
+		int buffer = 1;
+		boolean checkLeftPixels = prevXpos <= xpos - buffer;
+		boolean checkRightPixels = prevXpos >= xpos + buffer;
+		boolean checkTopPixels = prevYpos <= ypos - buffer;
+		boolean checkBottomPixels = prevYpos >= ypos + buffer;
+		if(checkLeftPixels || checkRightPixels && checkTopPixels || checkBottomPixels)
+			currentSelection = -1;
+	}//end of checkMouseBounds
+	
 	/**
 	 * @method mainButtonAction
 	 * @description checks the button detection and handles the according events in the main section of our main menu
@@ -160,12 +193,14 @@ public class MainMenu extends BasicGameState{
 		// Play Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( (gc.getWidth()/2) - (play.getWidth()/2) , (gc.getWidth()/2) - (play.getWidth()/2) + play.getWidth() , 300 , 300 + play.getHeight())) {
-			if(input.isMousePressed(0)){		
-				input.clearKeyPressedRecord();
-				sbg.enterState(1);
-				Main.util.getMusic().stop();
-				Main.util.setMusic(Main.util.getMusicQueue(1));
-				Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
+			if(input.isMousePressed(0))	
+				MainMenuButton(input, sbg);
+
+			play = new Image("res/gui/buttons/button_play_hover.png");
+		}
+		else if(currentSelection == 0) {
+			if(input.isKeyPressed(Input.KEY_ENTER)){
+				MainMenuButton(input, sbg);
 			}
 			play = new Image("res/gui/buttons/button_play_hover.png");
 		}
@@ -173,8 +208,14 @@ public class MainMenu extends BasicGameState{
 		// Options Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( (gc.getWidth()/2) - (options.getWidth()/2) , (gc.getWidth()/2) - (options.getWidth()/2) + options.getWidth() , 400 , 400 + options.getHeight())){
-			if(input.isMousePressed(0)){
-				isOption = true;
+			if(input.isMousePressed(0))
+				OptionButton();
+			
+			options = new Image("res/gui/buttons/button_options_hover.png");
+		}
+		else if(currentSelection == 1) {
+			if(input.isKeyPressed(Input.KEY_ENTER)){
+				OptionButton();
 			}
 			options = new Image("res/gui/buttons/button_options_hover.png");
 		}
@@ -182,11 +223,34 @@ public class MainMenu extends BasicGameState{
 		// Exit Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( (gc.getWidth()/2) - (exit.getWidth()/2) , (gc.getWidth()/2) - (exit.getWidth()/2) + exit.getWidth() , 500 , 500 + exit.getHeight())){
-			if(input.isMousePressed(0)){
-				System.exit(0);
+			if(input.isMousePressed(0))
+				ExitButton();
+
+			exit = new Image("res/gui/buttons/button_exit_hover.png");
+		}
+		else if(currentSelection == 2) {
+			if(input.isKeyPressed(Input.KEY_ENTER)){
+				ExitButton();
 			}
 			exit = new Image("res/gui/buttons/button_exit_hover.png");
 		}
+		
+	}//end of mainButtonAction
+	
+	private void MainMenuButton(Input input, StateBasedGame sbg) {
+		input.clearKeyPressedRecord();
+		sbg.enterState(Main.startlevel);
+		Main.util.getMusic().stop();
+		Main.util.setMusic(Main.util.getMusicQueue(1));
+		Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
+	}
+	
+	private void OptionButton() {
+		isOption = true;
+	}
+	
+	private void ExitButton() {
+		System.exit(0);
 	}
 	
 	/**
@@ -297,8 +361,10 @@ public class MainMenu extends BasicGameState{
 			}
 			back = new Image("res/gui/buttons/button_back_hover.png");
 		}
+		else if(input.isKeyPressed(Input.KEY_ESCAPE))
+			isOption = false;
 		
-	}
+	}//end of optionButtonAction
 	
 	
 	/**
@@ -331,4 +397,4 @@ public class MainMenu extends BasicGameState{
 		return MainMenu.id;
 	}
 	
-}
+}//end of class
