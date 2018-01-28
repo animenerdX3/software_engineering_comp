@@ -615,4 +615,8 @@ public class Player extends Mob {
 		this.readyForNextLevel = readyForNextLevel;
 	}
 	
+	public String toString() {
+		return this.x+","+this.y;
+	}
+	
 }//end of class

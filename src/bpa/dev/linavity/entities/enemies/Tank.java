@@ -307,4 +307,9 @@ public class Tank extends Mob{
 			}
 		}
 	}
+	
+	public String toString() {
+		return this.x+","+this.y;
+	}
+	
 }//end of class

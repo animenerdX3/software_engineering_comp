@@ -1,6 +1,5 @@
 package bpa.dev.linavity.entities;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.newdawn.slick.Animation;
@@ -529,6 +528,10 @@ public abstract class Mob extends GameObject{
 	
 	public void setCurrentImage(Animation currentImage) {
 		this.currentImage = currentImage;
+	}
+	
+	public String toString() {
+		return "";
 	}
 	
 }//end of class

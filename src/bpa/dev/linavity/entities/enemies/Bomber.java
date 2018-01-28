@@ -320,4 +320,8 @@ public class Bomber extends Mob{
 		this.isDetected = isDetected;
 	}
 	
+	public String toString() {
+		return this.x+","+this.y;
+	}
+	
 }//end of class

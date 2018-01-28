@@ -120,6 +120,8 @@ public class GameOver extends BasicGameState{
 			if(input.isMousePressed(0)){
 				input.clearKeyPressedRecord();
 				Main.util.getPlayer().setIsAlive(true);
+				Main.util.setMusic(Main.util.getMusicQueue(1));
+				Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
 				sbg.enterState(Main.startlevel);
 			}
 			back = new Image("res/gui/buttons/button_back_hover.png");

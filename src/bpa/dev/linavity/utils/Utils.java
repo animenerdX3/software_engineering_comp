@@ -44,9 +44,11 @@ public class Utils {
 	
 	public Lever testLever = new Lever();
 	
+	public boolean loadGame = true;
+	
 	// Default Constructor
 	public Utils() throws SlickException{
-		this.player = new Player(450, 1100);
+		this.player = new Player(450,1100);
 	    this.cam = new Camera(this.getPlayer().getX(), this.getPlayer().getY());
 		this.musicQueue = musicManager.getMusicQueue();
 		this.sfx = sfxFiles.getSfx();
@@ -125,6 +127,10 @@ public class Utils {
 	}
 	
 	// Setters
+	
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 	
 	public void setCam(Camera cam) {
 		this.cam = cam;

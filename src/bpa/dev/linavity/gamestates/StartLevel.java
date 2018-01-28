@@ -14,9 +14,15 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
-import bpa.dev.linavity.entities.*;
-import bpa.dev.linavity.entities.enemies.*;
+import bpa.dev.linavity.entities.Mob;
+import bpa.dev.linavity.entities.Player;
+import bpa.dev.linavity.entities.enemies.Bomber;
+import bpa.dev.linavity.entities.enemies.Starter;
+import bpa.dev.linavity.entities.enemies.Tank;
 import bpa.dev.linavity.entities.tiles.Tile;
+import bpa.dev.linavity.utils.ErrorLog;
+import bpa.dev.linavity.utils.LoadGame;
+import bpa.dev.linavity.utils.SaveGame;
 import bpa.dev.linavity.world.Level;
 import bpa.dev.linavity.world.ParallaxMap;
 
@@ -58,7 +64,13 @@ public class StartLevel extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		
-		mobs = getMobs();
+		LoadGame load = new LoadGame(1);
+		
+		if(Main.util.loadGame)
+			mobs = getMobs(load);
+		else
+			mobs = getMobs();
+		
 		back = new Image("res/gui/buttons/button_back.png");
 		bg = new ParallaxMap("res/bg.jpg", -450, 0, 0.5f, 0,  true);
 		health_gui = new Image("res/gui/stats/health_bar.png");
@@ -74,16 +86,36 @@ public class StartLevel extends BasicGameState{
 		//Add mobs
 		ArrayList <Mob> mobs = new ArrayList<Mob>();
 		
+		Main.util.setPlayer(new Player(450,1100));
 		mobs.add(Main.util.getPlayer());
 		mobs.add(new Starter(500, 750));
 		mobs.add(new Tank(1100, 750));
 		mobs.add(new Tank(1200, 750));
-		mobs.add(new Bomber(600, 650));
-		mobs.add(new Bomber(615, 650));
-		mobs.add(new Bomber(660, 650));
+		mobs.add(new Bomber(600, 750));
+		mobs.add(new Bomber(615, 750));
+		mobs.add(new Bomber(660, 750));
 		
 		return mobs;
 	}//end of getMobs
+	
+	private ArrayList<Mob> getMobs(LoadGame loadFile) throws SlickException {
+		//Add mobs
+		ArrayList <Mob> mobs = new ArrayList<Mob>();
+		
+		float[] xPos = loadFile.getXPos();
+		float[] yPos = loadFile.getYPos();
+		
+		Main.util.setPlayer(new Player(xPos[0],yPos[0]));
+		mobs.add(Main.util.getPlayer());
+		mobs.add(new Starter(xPos[1], yPos[1]));
+		mobs.add(new Tank(xPos[2], yPos[2]));
+		mobs.add(new Tank(xPos[3], yPos[3]));
+		mobs.add(new Bomber(xPos[4], yPos[4]));
+		mobs.add(new Bomber(xPos[5], yPos[5]));
+		mobs.add(new Bomber(xPos[6], yPos[6]));
+		
+		return mobs;
+	}//end of loadMobs
 	
 	/**
 	 * Renders content to the game / screen
@@ -295,7 +327,7 @@ public class StartLevel extends BasicGameState{
 		updateMobs(delta);
 		
 		//Check to see if mobs are alive
-		checkMobStatus(sbg);
+		checkMobStatus(gc, sbg);
 		
 		// Update Camera Coordinates
 		Main.util.getCam().updateCameraPos(mobs.get(0).getX(), mobs.get(0).getY());
@@ -375,13 +407,17 @@ public class StartLevel extends BasicGameState{
 		
 	}//end of stopAnimation
 	
-	private void checkMobStatus(StateBasedGame sbg){
+	private void checkMobStatus(GameContainer gc, StateBasedGame sbg){
 
 		for(int i = 0; i < mobs.size(); i++){
 			if(mobs.get(i).getHealth() <= 0){
 				mobs.get(i).setIsAlive(false);
 				if(i == 0)
-					resetLevel(sbg);
+					try {
+						resetLevel(gc, sbg);
+					} catch (SlickException e) {
+						ErrorLog.logError(e);
+					}
 			}
 		}
 	}//end of checkMobStatus
@@ -389,13 +425,13 @@ public class StartLevel extends BasicGameState{
 	/**
 	 * Resets the level when the player dies
 	 * @param sbg
+	 * @throws SlickException 
 	 */
-	private void resetLevel(StateBasedGame sbg) {
+	private void resetLevel(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		Main.util.getPlayer().setHealth(100);
 		Main.util.getPlayer().getGravPack().setGravpower(100);
-		Main.util.getPlayer().setX(450);
-		Main.util.getPlayer().setY(1100);
-		Main.util.getPlayer().setIsAlive(true);
+		Main.util.getMusic().stop();
+		sbg.getState(StartLevel.id).init(gc, sbg);
 		sbg.enterState(Main.gameover);
 	}//end of resetLevel
 	
@@ -428,6 +464,8 @@ public class StartLevel extends BasicGameState{
 				Main.util.setMusic(Main.util.getMusicQueue(0));
 				Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
 				startAnimation();
+				SaveGame saveProgress = new SaveGame(mobs);
+				saveProgress.createSave();
 				sbg.enterState(Main.mainmenu);
 				menuOpen = false;
 			}
