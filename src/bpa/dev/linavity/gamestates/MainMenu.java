@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
+import bpa.dev.linavity.world.ParallaxMap;
 
 
 public class MainMenu extends BasicGameState{
@@ -23,7 +24,7 @@ public class MainMenu extends BasicGameState{
 	public int xpos, ypos;
 	
 	// Our images
-	private Image bg = null;
+	private ParallaxMap bg;
 	private Image play = null;
 	private Image exit = null;
 	private Image emptySlider = null;
@@ -48,7 +49,7 @@ public class MainMenu extends BasicGameState{
 			throws SlickException {
 		
 		// Initialize our image objects
-		bg = new Image("res/titlescreen.jpg"); // Menu Background
+		bg = new ParallaxMap("res/titlescreen.jpg", 0, 0, 0, 0.1f, true);// Menu Background
 		
 		// Main Menu Buttons
 		play = new Image("res/gui/buttons/button_play.png"); // Play Button
@@ -81,7 +82,8 @@ public class MainMenu extends BasicGameState{
 		// DRAW OUR MENU UI //
 		
 		// Background Image
-		g.drawImage(bg, 0, 0);
+		bg.getBackgroundLayer().draw(bg.getX(), bg.getY());
+		
 		if(Main.util.debugMode)
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 30); // Draw our mouse position for debugging purposes. 
 		
@@ -104,6 +106,8 @@ public class MainMenu extends BasicGameState{
 		// this is different from the shapes that are drawn based on coordinates going from the top right of the screen.
 		// Because of this difference, we've created our own mouse functions that take into account the game container
 		// dimensions, to give us a proper X and Y value that line up with the coordinates of all of our other objects.
+		
+		bg.moveBackground();
 		
 		Input input = gc.getInput(); // Create our input object
 		
