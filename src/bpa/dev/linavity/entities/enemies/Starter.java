@@ -324,7 +324,7 @@ public class Starter extends Mob{
 	}
 	
 	public String toString() {
-		return this.x+","+this.y;
+		return "Starter,"+this.x+","+this.y+","+this.health;
 	}
 	
 }//end of class

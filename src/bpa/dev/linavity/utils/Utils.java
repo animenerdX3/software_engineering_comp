@@ -44,10 +44,18 @@ public class Utils {
 	
 	public Lever testLever = new Lever();
 	
-	public boolean loadGame = true;
+	//Loading Objects
+	private LoadGame slotOneData;
+	private LoadGame slotTwoData;
+	private LoadGame slotThreeData;
+	private LoadGame currentLoadData;
+	public boolean loadGame = false;
 	
 	// Default Constructor
 	public Utils() throws SlickException{
+		this.slotOneData = new LoadGame(1);
+		this.slotTwoData = new LoadGame(2);
+		this.slotThreeData = new LoadGame(3);
 		this.player = new Player(450,1100);
 	    this.cam = new Camera(this.getPlayer().getX(), this.getPlayer().getY());
 		this.musicQueue = musicManager.getMusicQueue();
@@ -126,6 +134,26 @@ public class Utils {
 		return events;
 	}
 	
+	public boolean getLoadGame() {
+		return loadGame;
+	}
+	
+	public LoadGame getSlotOneData() {
+		return slotOneData;
+	}
+	
+	public LoadGame getSlotTwoData() {
+		return slotTwoData;
+	}
+	
+	public LoadGame getSlotThreeData() {
+		return slotThreeData;
+	}
+	
+	public LoadGame getCurrentLoadData() {
+		return currentLoadData;
+	}
+	
 	// Setters
 	
 	public void setPlayer(Player player) {
@@ -181,6 +209,26 @@ public class Utils {
 	
 	public void setSFX(Sound [] sfx) {
 		this.sfx = sfx;
+	}
+	
+	public void setSlotOneData(LoadGame slotOneData) {
+		this.slotOneData = slotOneData;
+	}
+	
+	public void setSlotTwoData(LoadGame slotTwoData) {
+		this.slotTwoData = slotTwoData;
+	}
+	
+	public void setSlotThreeData(LoadGame slotThreeData) {
+		this.slotThreeData = slotThreeData;
+	}
+	
+	public void setCurrentLoadData(LoadGame currentLoadData) {
+		this.currentLoadData = currentLoadData;
+	}
+	
+	public void setLoadGame(boolean loadGame) {
+		this.loadGame = loadGame;
 	}
 	
 }//end of class

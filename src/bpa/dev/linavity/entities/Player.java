@@ -616,7 +616,7 @@ public class Player extends Mob {
 	}
 	
 	public String toString() {
-		return this.x+","+this.y;
+		return "Player,"+this.x+","+this.y+","+this.health+","+this.gravPack.toString()+","+this.isFlipping;
 	}
 	
 }//end of class

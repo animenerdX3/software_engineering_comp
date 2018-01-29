@@ -1,6 +1,6 @@
 package bpa.dev.linavity.gamestates;
 
-
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -25,13 +25,19 @@ public class MainMenu extends BasicGameState{
 	
 	// Our images
 	private ParallaxMap bg;
+	private Image title = null;
 	private Image play = null;
+	private Image load = null;
 	private Image exit = null;
 	private Image emptySlider = null;
 	private Image musicSlider = null;
 	private Image sfxSlider = null;
 	private Image options = null;
 	private Image optionsBG = null;
+	private Image loadBG = null;
+	private Image slotOne = null;
+	private Image slotTwo = null;
+	private Image slotThree = null;
 	private Image plusMusic = null;
 	private Image minusMusic = null;
 	private Image plusSFX = null;
@@ -39,6 +45,7 @@ public class MainMenu extends BasicGameState{
 	private Image back = null;
 	
 	private boolean isOption = false;
+	private boolean isLoad = false;
 	
 	//Menu Controllers
 	private int menuSize;
@@ -49,13 +56,31 @@ public class MainMenu extends BasicGameState{
 			throws SlickException {
 		
 		// Initialize our image objects
-		bg = new ParallaxMap("res/titlescreen.jpg", 0, 0, 0, 0.1f, true);// Menu Background
+		bg = new ParallaxMap("res/titlescreen.jpg", 0, 0, 0, -3f, true);// Menu Background
+		title = new Image("res/title.png");
 		
 		// Main Menu Buttons
-		play = new Image("res/gui/buttons/button_play.png"); // Play Button
+		play = new Image("res/gui/buttons/button_new.png"); // Play Button
+		load = new Image("res/gui/buttons/button_load.png"); //Load Button
 		exit = new Image("res/gui/buttons/button_exit.png"); // Exit Button
 		options = new Image("res/gui/buttons/button_options.png"); // Options Button
 		optionsBG = new Image("res/gui/options_bg.png"); //Options Background
+		
+		//Load Menu Objects
+		loadBG = new Image("res/gui/load_screen.png");
+		
+		if(Main.util.getSlotOneData().getLoadFile() != null)
+			slotOne = new Image("res/gui/save_slot.png");
+		else
+			slotOne = new Image("res/gui/empty_save_slot.png");
+		if(Main.util.getSlotTwoData().getLoadFile() != null)
+			slotTwo = new Image("res/gui/save_slot.png");
+		else
+			slotTwo = new Image("res/gui/empty_save_slot.png");
+		if(Main.util.getSlotThreeData().getLoadFile() != null)
+			slotThree = new Image("res/gui/save_slot.png");
+		else
+			slotThree = new Image("res/gui/empty_save_slot.png");
 		
 		//Option Image Objects
 		emptySlider = new Image("res/gui/stats/empty_slider.png");
@@ -69,7 +94,7 @@ public class MainMenu extends BasicGameState{
 		minusSFX = new Image("res/gui/buttons/button_minus.png"); // Minus Button	
 		back = new Image("res/gui/buttons/button_back.png"); // Back Button	
 
-		menuSize = 3;
+		menuSize = 4;
 		currentSelection = -1;
 		Main.util.setMusic(Main.util.getMusicQueue(0));
 		Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
@@ -81,17 +106,24 @@ public class MainMenu extends BasicGameState{
 		
 		// DRAW OUR MENU UI //
 		
+		g.setColor(Color.white);
+		
 		// Background Image
 		bg.getBackgroundLayer().draw(bg.getX(), bg.getY());
+		
+		if(!isLoad)
+			g.drawImage(title, 0, 0);
 		
 		if(Main.util.debugMode)
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 30); // Draw our mouse position for debugging purposes. 
 		
 		// Button Rendering
-		if(!isOption){ 
+		if(!isOption && !isLoad){ 
 			renderMainMenuScreenMain(gc, g); // If the option menu has not been selected, render the main section of the menu
-		}else{ 
+		}else if (isOption && !isLoad){ 
 			renderMainMenuScreenOptions(gc, g); // If the option menu is selected, render the options section of the menu
+		}else if(!isOption && isLoad) {
+			renderMainMenuScreenLoad(gc, g); // If the option menu is selected, render the options section of the menu
 		}
 		
 		// END OUR MENU UI //
@@ -119,12 +151,19 @@ public class MainMenu extends BasicGameState{
 		
 		// Check User Input //
 		
-		if(!isOption){
+		if(!isOption && !isLoad){
 			mainButtonAction(gc, sbg, input); // If the option menu has not been selected, check for the main section's buttons
 			cycleSelection(input);//Check for key input
 			checkMouseBounds();//Check to see if the mouse is moving
-		}else
+		}
+		else if(isOption && !isLoad) {
 			optionButtonAction(gc, sbg, input); // If the option menu is selected, check for the option section's buttons
+		}
+		else if(!isOption && isLoad) {
+			loadButtonAction(gc, sbg, input); // If the load menu is selected, check for the load section's buttons
+			cycleSelection(input);//Check for key input
+			checkMouseBounds();//Check to see if the mouse is moving
+		}
 		
 	}//end of update
 
@@ -143,11 +182,14 @@ public class MainMenu extends BasicGameState{
 		// Play Button 
 		g.drawImage(play, (gc.getWidth()/2) - (play.getWidth()/2), 300); // Setting the x value as half of the game container and adjusting for the width of the button
 		
+		//Load Button
+		g.drawImage(load, (gc.getWidth()/2) - (load.getWidth()/2), 400); // Setting the x value as half of the game container and adjusting for the width of the button
+		
 		// Options Button
-		g.drawImage(options, (gc.getWidth()/2) - (play.getWidth()/2), 400); // Setting the x value as half of the game container and adjusting for the width of the button
+		g.drawImage(options, (gc.getWidth()/2) - (options.getWidth()/2), 500); // Setting the x value as half of the game container and adjusting for the width of the button
 		
 		// Exit Button
-		g.drawImage(exit, (gc.getWidth()/2) - (play.getWidth()/2), 500); // Setting the x value as half of the game container and adjusting for the width of the button
+		g.drawImage(exit, (gc.getWidth()/2) - (exit.getWidth()/2), 600); // Setting the x value as half of the game container and adjusting for the width of the button
 	}
 	
 
@@ -190,34 +232,60 @@ public class MainMenu extends BasicGameState{
 	public void mainButtonAction(GameContainer gc, StateBasedGame sbg, Input input) 
 			throws SlickException{
 		
-		play = new Image("res/gui/buttons/button_play.png");
+		play = new Image("res/gui/buttons/button_new.png");
+		load = new Image("res/gui/buttons/button_load.png");
 		options = new Image("res/gui/buttons/button_options.png");
 		exit = new Image("res/gui/buttons/button_exit.png");
 
 		// Play Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( (gc.getWidth()/2) - (play.getWidth()/2) , (gc.getWidth()/2) - (play.getWidth()/2) + play.getWidth() , 300 , 300 + play.getHeight())) {
-			if(input.isMousePressed(0))	
-				MainMenuButton(input, sbg);
+			if(input.isMousePressed(0)) {
+				input.clearKeyPressedRecord();
+				Main.util.setLoadGame(false);
+				sbg.getState(Main.startlevel).init(gc, sbg);
+				StartGame(input, sbg, Main.startlevel);
+			}
 
-			play = new Image("res/gui/buttons/button_play_hover.png");
+			play = new Image("res/gui/buttons/button_new_hover.png");
 		}
 		else if(currentSelection == 0) {
 			if(input.isKeyPressed(Input.KEY_ENTER)){
-				MainMenuButton(input, sbg);
+				Main.util.setLoadGame(false);
+				sbg.getState(Main.startlevel).init(gc, sbg);
+				StartGame(input, sbg, Main.startlevel);
 			}
-			play = new Image("res/gui/buttons/button_play_hover.png");
+			play = new Image("res/gui/buttons/button_new_hover.png");
+		}
+		
+		// Load Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(checkBounds( (gc.getWidth()/2) - (load.getWidth()/2) , (gc.getWidth()/2) - (load.getWidth()/2) + load.getWidth() , 400 , 400 + load.getHeight())){
+			if(input.isMousePressed(0)) {
+				input.clearKeyPressedRecord();
+				LoadButton();
+			}
+			
+			load = new Image("res/gui/buttons/button_load_hover.png");
+		}
+		else if(currentSelection == 1) {
+			if(input.isKeyPressed(Input.KEY_ENTER)){
+				LoadButton();
+			}
+			load = new Image("res/gui/buttons/button_load_hover.png");
 		}
 		
 		// Options Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (options.getWidth()/2) , (gc.getWidth()/2) - (options.getWidth()/2) + options.getWidth() , 400 , 400 + options.getHeight())){
-			if(input.isMousePressed(0))
+		if(checkBounds( (gc.getWidth()/2) - (options.getWidth()/2) , (gc.getWidth()/2) - (options.getWidth()/2) + options.getWidth() , 500 , 500 + options.getHeight())){
+			if(input.isMousePressed(0)) {
+				input.clearKeyPressedRecord();
 				OptionButton();
+			}
 			
 			options = new Image("res/gui/buttons/button_options_hover.png");
 		}
-		else if(currentSelection == 1) {
+		else if(currentSelection == 2) {
 			if(input.isKeyPressed(Input.KEY_ENTER)){
 				OptionButton();
 			}
@@ -226,13 +294,13 @@ public class MainMenu extends BasicGameState{
 		
 		// Exit Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (exit.getWidth()/2) , (gc.getWidth()/2) - (exit.getWidth()/2) + exit.getWidth() , 500 , 500 + exit.getHeight())){
+		if(checkBounds( (gc.getWidth()/2) - (exit.getWidth()/2) , (gc.getWidth()/2) - (exit.getWidth()/2) + exit.getWidth() , 600 , 600 + exit.getHeight())){
 			if(input.isMousePressed(0))
 				ExitButton();
 
 			exit = new Image("res/gui/buttons/button_exit_hover.png");
 		}
-		else if(currentSelection == 2) {
+		else if(currentSelection == 3) {
 			if(input.isKeyPressed(Input.KEY_ENTER)){
 				ExitButton();
 			}
@@ -241,12 +309,16 @@ public class MainMenu extends BasicGameState{
 		
 	}//end of mainButtonAction
 	
-	private void MainMenuButton(Input input, StateBasedGame sbg) {
+	private void StartGame(Input input, StateBasedGame sbg, int gameStateID) {
 		input.clearKeyPressedRecord();
-		sbg.enterState(Main.startlevel);
+		sbg.enterState(gameStateID);
 		Main.util.getMusic().stop();
 		Main.util.setMusic(Main.util.getMusicQueue(1));
 		Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
+	}
+	
+	private void LoadButton() {
+		isLoad = true;
 	}
 	
 	private void OptionButton() {
@@ -256,6 +328,59 @@ public class MainMenu extends BasicGameState{
 	private void ExitButton() {
 		System.exit(0);
 	}
+
+	/**
+	 * @method renderMainMenuScreenLoad
+	 * @description draws the images needed for the main screen options of the main menu
+	 * 
+	 * @param
+	 * GameContainer gc, Graphics g
+	 * 
+	 * @return
+	 * 	void:
+	 */
+	public void renderMainMenuScreenLoad(GameContainer gc, Graphics g){
+
+		//Background Image
+		g.drawImage(loadBG, 0,0);
+
+		g.drawImage(slotOne, 100, 150);
+		g.setColor(Color.white);
+		
+		if(Main.util.getSlotOneData().getLoadFile() != null) {
+			try {
+				g.drawImage(new Image("res/gui/slot1.png"), 100, 150);
+				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 150+75);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		g.drawImage(slotTwo, 100, 350);
+		
+		if(Main.util.getSlotTwoData().getLoadFile() != null) {
+			try {
+				g.drawImage(new Image("res/gui/slot2.png"), 100, 350);
+				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 350+75);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		g.drawImage(slotThree, 100, 550);
+		
+		if(Main.util.getSlotThreeData().getLoadFile() != null) {
+			try {
+				g.drawImage(new Image("res/gui/slot3.png"), 100, 550);
+				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 550+75);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		// Back Button
+		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 750); // Setting the x value as half of the game container and adjusting for the width of the button
+	}	
 	
 	/**
 	 * @method renderMainMenuScreenOptions
@@ -268,7 +393,6 @@ public class MainMenu extends BasicGameState{
 	 * 	void:
 	 */
 	public void renderMainMenuScreenOptions(GameContainer gc, Graphics g){
-
 		//Background Image
 		g.drawImage(optionsBG, 0,0);
 		
@@ -288,6 +412,134 @@ public class MainMenu extends BasicGameState{
 		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 700); // Setting the x value as half of the game container and adjusting for the width of the button
 	}
 
+	/**
+	 * @method loadButtonAction
+	 * @description checks the button detection and handles the according events in the load section of our main menu
+	 * 
+	 * @param
+	 * GameContainer gc
+	 * 
+	 * @return
+	 * 	void:
+	 * @throws SlickException 
+	 */
+	public void loadButtonAction(GameContainer gc, StateBasedGame sbg, Input input) 
+			throws SlickException{
+				
+		if(Main.util.getSlotOneData().getLoadFile() != null)
+			slotOne = new Image("res/gui/save_slot.png");
+		else
+			slotOne = new Image("res/gui/empty_save_slot.png");
+		if(Main.util.getSlotTwoData().getLoadFile() != null)
+			slotTwo = new Image("res/gui/save_slot.png");
+		else
+			slotTwo = new Image("res/gui/empty_save_slot.png");
+		if(Main.util.getSlotThreeData().getLoadFile() != null)
+			slotThree = new Image("res/gui/save_slot.png");
+		else
+			slotThree = new Image("res/gui/empty_save_slot.png");
+		
+		back = new Image("res/gui/buttons/button_back.png"); // Back Button	
+		
+		// Slot 1 Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(checkBounds( 100 , 100 + slotOne.getWidth() , 150, 150 + slotOne.getHeight())){
+			if(input.isMousePressed(0))
+				slotData(gc, input, sbg, 1);
+			
+			if(Main.util.getSlotOneData().getLoadFile() != null)
+				slotOne = new Image("res/gui/save_slot_hover.png");
+			else
+				slotOne = new Image("res/gui/empty_save_slot_hover.png");
+		}
+		else if(currentSelection == 0) {
+				if(input.isKeyPressed(Input.KEY_ENTER))
+					slotData(gc, input, sbg, 1);
+
+			if(Main.util.getSlotOneData().getLoadFile() != null)
+				slotOne = new Image("res/gui/save_slot_hover.png");
+			else
+				slotOne = new Image("res/gui/empty_save_slot_hover.png");
+		}
+		
+		// Slot 2 Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(checkBounds( 100 , 100 + slotTwo.getWidth() , 350, 350 + slotTwo.getHeight())){
+			if(input.isMousePressed(0))
+				slotData(gc, input, sbg, 2);
+				
+			if(Main.util.getSlotTwoData().getLoadFile() != null)
+				slotTwo = new Image("res/gui/save_slot_hover.png");
+			else
+				slotTwo = new Image("res/gui/empty_save_slot_hover.png");
+		}
+		else if(currentSelection == 1) {
+			if(input.isKeyPressed(Input.KEY_ENTER))
+				slotData(gc, input, sbg, 2);
+
+		if(Main.util.getSlotTwoData().getLoadFile() != null)
+			slotTwo = new Image("res/gui/save_slot_hover.png");
+		else
+			slotTwo = new Image("res/gui/empty_save_slot_hover.png");
+		}
+		
+		// Slot 3 Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(checkBounds( 100 , 100 + slotThree.getWidth() , 550, 550 + slotThree.getHeight())){
+			if(input.isMousePressed(0))
+				slotData(gc, input, sbg, 3);
+				
+			if(Main.util.getSlotThreeData().getLoadFile() != null)
+				slotThree = new Image("res/gui/save_slot_hover.png");
+			else
+				slotThree = new Image("res/gui/empty_save_slot_hover.png");
+		}
+		else if(currentSelection == 2) {
+			if(input.isKeyPressed(Input.KEY_ENTER))
+				slotData(gc, input, sbg, 3);
+
+		if(Main.util.getSlotThreeData().getLoadFile() != null)
+			slotThree = new Image("res/gui/save_slot_hover.png");
+		else
+			slotThree = new Image("res/gui/empty_save_slot_hover.png");
+		}
+		
+		// Back Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(checkBounds( (gc.getWidth()/2) - (back.getWidth()/2) , (gc.getWidth()/2) - (back.getWidth()/2) + back.getWidth() , 750 , 750 + back.getHeight())){
+			if(input.isMousePressed(0)){
+				isLoad = false;
+			}
+			back = new Image("res/gui/buttons/button_back_hover.png");
+		}
+		else if(currentSelection == 3) {
+			if(input.isKeyPressed(Input.KEY_ENTER))
+				isLoad = false;
+			back = new Image("res/gui/buttons/button_back_hover.png");
+		}
+		
+		else if(input.isKeyPressed(Input.KEY_ESCAPE))
+			isLoad = false;
+		
+	}//end of loadButtonAction
+	
+	public void slotData(GameContainer gc, Input input, StateBasedGame sbg, int slot) throws SlickException{
+		if(Main.util.getSlotOneData().getLoadFile() != null) {
+			isLoad = false;
+			
+			if(slot == 1)
+				Main.util.setCurrentLoadData(Main.util.getSlotOneData());
+			else if(slot == 2)
+				Main.util.setCurrentLoadData(Main.util.getSlotTwoData());
+			else if(slot == 3)
+				Main.util.setCurrentLoadData(Main.util.getSlotThreeData());
+			
+			Main.util.setLoadGame(true);
+			sbg.getState(Main.util.getCurrentLoadData().getGameStateFound()).init(gc, sbg);
+			StartGame(input, sbg, Main.util.getCurrentLoadData().getGameStateFound());
+		}
+	}//end of slotData
+	
 	/**
 	 * @method optionButtonAction
 	 * @description checks the button detection and handles the according events in the options section of our main menu

@@ -14,6 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
+import bpa.dev.linavity.entities.GravityPack;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
@@ -36,6 +37,16 @@ public class StartLevel extends BasicGameState{
 	
 	//Pause Menu
 	private Image pause_menu_ui = null;
+	private Image resume = null;
+	private Image retry = null;
+	private Image saveData = null;
+	private Image returnMenu = null;
+	
+	//Save Menu
+	private Image saveBG = null;
+	private Image slotOne = null;
+	private Image slotTwo = null;
+	private Image slotThree = null;
 	private Image back = null;
 	
 	//Parallax Backgrounds for Our Level
@@ -46,6 +57,7 @@ public class StartLevel extends BasicGameState{
 	
 	// Whether or not the pop-up menu is open
 	private boolean menuOpen = false;
+	private boolean saveOpen = false;
 	
 	//Mouse Coordinates
 	private int xpos; // Mouse's X position
@@ -64,14 +76,35 @@ public class StartLevel extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		
-		LoadGame load = new LoadGame(1);
-		
-		if(Main.util.loadGame)
-			mobs = getMobs(load);
+		if(Main.util.getLoadGame()) {
+			mobs = getMobs(Main.util.getCurrentLoadData());
+			Main.util.setLoadGame(false);
+		}
 		else
 			mobs = getMobs();
 		
+		pause_menu_ui = new Image("res/gui/pausemenu.png");
+		resume = new Image("res/gui/buttons/button_resume.png");
+		retry = new Image("res/gui/buttons/button_retry.png");
+		saveData = new Image("res/gui/buttons/button_save.png");
+		returnMenu = new Image("res/gui/buttons/button_return.png");
 		back = new Image("res/gui/buttons/button_back.png");
+		
+		//Save Images
+		saveBG = new Image("res/gui/save_screen.png");
+		if(Main.util.getSlotOneData().getLoadFile() != null)
+			slotOne = new Image("res/gui/save_slot.png");
+		else
+			slotOne = new Image("res/gui/empty_save_slot.png");
+		if(Main.util.getSlotTwoData().getLoadFile() != null)
+			slotTwo = new Image("res/gui/save_slot.png");
+		else
+			slotTwo = new Image("res/gui/empty_save_slot.png");
+		if(Main.util.getSlotThreeData().getLoadFile() != null)
+			slotThree = new Image("res/gui/save_slot.png");
+		else
+			slotThree = new Image("res/gui/empty_save_slot.png");
+		
 		bg = new ParallaxMap("res/bg.jpg", -450, 0, 0.5f, 0,  true);
 		health_gui = new Image("res/gui/stats/health_bar.png");
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
@@ -102,17 +135,29 @@ public class StartLevel extends BasicGameState{
 		//Add mobs
 		ArrayList <Mob> mobs = new ArrayList<Mob>();
 		
+		String[] classNames = loadFile.getClassNames();
 		float[] xPos = loadFile.getXPos();
 		float[] yPos = loadFile.getYPos();
+		double[] healthStats = loadFile.getHealthStats();
+		float gravPower = loadFile.getGravPowerCheck();
+		boolean isFlipping = loadFile.getFlipping();
 		
-		Main.util.setPlayer(new Player(xPos[0],yPos[0]));
-		mobs.add(Main.util.getPlayer());
-		mobs.add(new Starter(xPos[1], yPos[1]));
-		mobs.add(new Tank(xPos[2], yPos[2]));
-		mobs.add(new Tank(xPos[3], yPos[3]));
-		mobs.add(new Bomber(xPos[4], yPos[4]));
-		mobs.add(new Bomber(xPos[5], yPos[5]));
-		mobs.add(new Bomber(xPos[6], yPos[6]));
+		for(int i = 0; i < classNames.length - 1; i++) {
+			if(classNames[i].equalsIgnoreCase("Player")) {
+				Main.util.setPlayer(new Player(xPos[i], yPos[i]));
+				mobs.add(Main.util.getPlayer());
+				Main.util.getPlayer().getGravPack().setGravpower(gravPower);
+				Main.util.getPlayer().setIsFlipping(isFlipping);
+			}
+			else if(classNames[i].equalsIgnoreCase("Starter"))
+				mobs.add(new Starter(xPos[i], yPos[i]));
+			else if(classNames[i].equalsIgnoreCase("Tank"))
+				mobs.add(new Tank(xPos[i], yPos[i]));
+			else if(classNames[i].equalsIgnoreCase("Bomber"))
+				mobs.add(new Bomber(xPos[i], yPos[i]));
+			
+			mobs.get(i).setHealth(healthStats[i]);
+		}
 		
 		return mobs;
 	}//end of loadMobs
@@ -177,9 +222,11 @@ public class StartLevel extends BasicGameState{
 		grav_bar.draw(318,850,(float) (318+(Main.util.getPlayer().getGravPack().getGravpower() * 2.7)),850+27,0,0,(float) (Main.util.getPlayer().getGravPack().getGravpower() * 2.7),27);
 		
 		//Draw menu, if open
-		if(menuOpen){
+		if(menuOpen && !saveOpen)
 			renderMenu(gc, g);
-		}
+		else if(saveOpen && !menuOpen) 
+			renderSaveMenu(gc, g);
+		
 		
 	}//end of render
 
@@ -256,9 +303,65 @@ public class StartLevel extends BasicGameState{
 	private void renderMenu(GameContainer gc, Graphics g){
 		// Back Button
 		g.drawImage(pause_menu_ui, 0,0); // Setting the pause menu ui
-		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 400); // Setting the x value as half of the game container and adjusting for the width of the button
+		g.drawImage(resume, (gc.getWidth()/2) - (resume.getWidth()/2), 325); // Setting the x value as half of the game container and adjusting for the width of the button
+		g.drawImage(retry, (gc.getWidth()/2) - (retry.getWidth()/2), 405); // Setting the x value as half of the game container and adjusting for the width of the button
+		g.drawImage(saveData, (gc.getWidth()/2) - (saveData.getWidth()/2), 485); // Setting the x value as half of the game container and adjusting for the width of the button
+		g.drawImage(returnMenu, (gc.getWidth()/2) - (returnMenu.getWidth()/2), 565); // Setting the x value as half of the game container and adjusting for the width of the button
 	}//end of renderMenu
 
+	/**
+	 * @method renderSaveMenu
+	 * @description draws the images needed for the save menu
+	 * 
+	 * @param
+	 * GameContainer gc, Graphics g
+	 * 
+	 * @return
+	 * 	void:
+	 */
+	public void renderSaveMenu(GameContainer gc, Graphics g){
+
+		//Background Image
+		g.drawImage(saveBG, 0,0);
+
+		g.drawImage(slotOne, 100, 150);
+		g.setColor(Color.white);
+		
+		if(Main.util.getSlotOneData().getLoadFile() != null) {
+			try {
+				g.drawImage(new Image("res/gui/slot1.png"), 100, 150);
+				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 150+75);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		g.drawImage(slotTwo, 100, 350);
+		
+		if(Main.util.getSlotTwoData().getLoadFile() != null) {
+			try {
+				g.drawImage(new Image("res/gui/slot2.png"), 100, 350);
+				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 350+75);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		g.drawImage(slotThree, 100, 550);
+		
+		if(Main.util.getSlotThreeData().getLoadFile() != null) {
+			try {
+				g.drawImage(new Image("res/gui/slot3.png"), 100, 550);
+				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 550+75);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		// Back Button
+		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 750); // Setting the x value as half of the game container and adjusting for the width of the button
+	}	
+	
 	/**
 	 * Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
 	 */
@@ -266,7 +369,7 @@ public class StartLevel extends BasicGameState{
 			throws SlickException {
 				
 		// If the game is not paused
-		if(!menuOpen){
+		if(!menuOpen && !saveOpen){
 			
 			// Make all keyboard-based updates
 			input(gc);
@@ -283,14 +386,14 @@ public class StartLevel extends BasicGameState{
 			bg.moveBackground();
 			
 		}
-		else {
+		else if(menuOpen && !saveOpen) {
 			stopAnimation();//Stop updating animation
 			Main.util.getMusic().pause();//Pause the music
+			// Open pop-up menu
+			checkMenu(gc, sbg);
 		}
-		
-		// Open pop-up menu
-		openMenu(gc, delta);
-		checkMenu(gc, sbg);
+		else if(!menuOpen && saveOpen)
+			checkSaveMenu(gc,sbg);
 		
 		//Mouse Functions
 		xpos = ExtraMouseFunctions.getMouseX(gc.getWidth()); // Updates the x coordinate of the mouse
@@ -453,40 +556,158 @@ public class StartLevel extends BasicGameState{
 		Input input = gc.getInput();
 		
 		pause_menu_ui = new Image("res/gui/pausemenu.png");//Pause menu user interface
-		back = new Image("res/gui/buttons/button_back.png");
+		resume = new Image("res/gui/buttons/button_resume.png");
+		retry = new Image("res/gui/buttons/button_retry.png");
+		saveData = new Image("res/gui/buttons/button_save.png");
+		returnMenu = new Image("res/gui/buttons/button_return.png");
 		
-		// Back Button
+		// Resume Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(MainMenu.checkBounds( (gc.getWidth()/2) - (back.getWidth()/2) , (gc.getWidth()/2) - (back.getWidth()/2) + back.getWidth() , 400 , 400 + back.getHeight(), xpos, ypos)){
+		if(MainMenu.checkBounds( (gc.getWidth()/2) - (resume.getWidth()/2) , (gc.getWidth()/2) - (resume.getWidth()/2) + resume.getWidth() , 325 , 325 + resume.getHeight(), xpos, ypos)){
+			if(input.isMousePressed(0)){
+				Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
+				Main.util.getMusic().resume();
+				startAnimation();
+				menuOpen = false;
+			}
+			resume = new Image("res/gui/buttons/button_resume_hover.png");
+		}
+		else if(input.isKeyPressed(Input.KEY_ESCAPE)){
+			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
+			Main.util.getMusic().resume();
+			startAnimation();
+			menuOpen = false; // ! Makes the escape toggle
+		}
+		
+		// Retry Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(MainMenu.checkBounds( (gc.getWidth()/2) - (retry.getWidth()/2) , (gc.getWidth()/2) - (retry.getWidth()/2) + retry.getWidth() , 405 , 405 + retry.getHeight(), xpos, ypos)){
+			if(input.isMousePressed(0)){
+				input.clearKeyPressedRecord();
+				menuOpen = false;
+				Main.util.getPlayer().setHealth(100);
+				Main.util.getPlayer().getGravPack().setGravpower(100);
+				Main.util.getMusic().stop();
+				sbg.getState(StartLevel.id).init(gc, sbg);
+				Main.util.setMusic(Main.util.getMusicQueue(1));
+				Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
+			}
+			retry = new Image("res/gui/buttons/button_retry_hover.png");
+		}
+		
+		// Save Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(MainMenu.checkBounds( (gc.getWidth()/2) - (saveData.getWidth()/2) , (gc.getWidth()/2) - (saveData.getWidth()/2) + saveData.getWidth() , 485 , 485 + saveData.getHeight(), xpos, ypos)){
+			if(input.isMousePressed(0)){
+				input.clearKeyPressedRecord();
+				menuOpen = false;
+				saveOpen = true;
+			}
+			saveData = new Image("res/gui/buttons/button_save_hover.png");
+		}
+		
+		// Return Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(MainMenu.checkBounds( (gc.getWidth()/2) - (returnMenu.getWidth()/2) , (gc.getWidth()/2) - (returnMenu.getWidth()/2) + returnMenu.getWidth() , 565 , 565 + returnMenu.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				input.clearKeyPressedRecord();
 				Main.util.getMusic().stop();
 				Main.util.setMusic(Main.util.getMusicQueue(0));
 				Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
 				startAnimation();
-				SaveGame saveProgress = new SaveGame(mobs);
-				saveProgress.createSave();
 				sbg.enterState(Main.mainmenu);
 				menuOpen = false;
 			}
-			back = new Image("res/gui/buttons/button_back_hover.png");
+			returnMenu = new Image("res/gui/buttons/button_return_hover.png");
 		}
 		
 	}//end of checkMenu
 	
 	/**
-	 * Checks for the user input of the escape key to toggle the in-game menu...
-	 * @param gc
-	 * @param delta
+	 * @method checkSaveMenu
+	 * @description checks the button detection and handles the according events in the  save menu
+	 * 
+	 * @param
+	 * GameContainer gc
+	 * 
+	 * @return
+	 * 	void:
+	 * @throws SlickException 
 	 */
-	private void openMenu(GameContainer gc, int delta){
-		Input input = gc.getInput(); // Creating our input object
-		if(input.isKeyPressed(Input.KEY_ESCAPE)){
-			Main.util.getMusic().resume();
-			startAnimation();
-			menuOpen = !menuOpen; // ! Makes the escape toggle
+	private void checkSaveMenu(GameContainer gc, StateBasedGame sbg) 
+			throws SlickException{
+		
+		Input input = gc.getInput();
+		
+		if(Main.util.getSlotOneData().getLoadFile() != null)
+			slotOne = new Image("res/gui/save_slot.png");
+		else
+			slotOne = new Image("res/gui/empty_save_slot.png");
+		if(Main.util.getSlotTwoData().getLoadFile() != null)
+			slotTwo = new Image("res/gui/save_slot.png");
+		else
+			slotTwo = new Image("res/gui/empty_save_slot.png");
+		if(Main.util.getSlotThreeData().getLoadFile() != null)
+			slotThree = new Image("res/gui/save_slot.png");
+		else
+			slotThree = new Image("res/gui/empty_save_slot.png");
+		
+		back = new Image("res/gui/buttons/button_back.png"); // Back Button	
+		
+		// Slot 1 Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(MainMenu.checkBounds( 100 , 100 + slotOne.getWidth() , 150, 150 + slotOne.getHeight(), xpos, ypos)){
+			if(input.isMousePressed(0)){
+				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 1);
+				saveProgress.createSave();
+			}
+			if(Main.util.getSlotOneData().getLoadFile() != null)
+				slotOne = new Image("res/gui/save_slot_hover.png");
+			else
+				slotOne = new Image("res/gui/empty_save_slot_hover.png");
 		}
-	}//end of openMenu
+		
+		// Slot 2 Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(MainMenu.checkBounds( 100 , 100 + slotTwo.getWidth() , 350, 350 + slotTwo.getHeight(), xpos, ypos)){
+			if(input.isMousePressed(0)){
+				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 2);
+				saveProgress.createSave();
+			}
+			if(Main.util.getSlotTwoData().getLoadFile() != null)
+				slotTwo = new Image("res/gui/save_slot_hover.png");
+			else
+				slotTwo = new Image("res/gui/empty_save_slot_hover.png");
+		}
+		
+		// Slot 3 Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(MainMenu.checkBounds( 100 , 100 + slotThree.getWidth() , 550, 550 + slotThree.getHeight(), xpos, ypos)){
+			if(input.isMousePressed(0)){
+				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 3);
+				saveProgress.createSave();
+			}
+			if(Main.util.getSlotThreeData().getLoadFile() != null)
+				slotThree = new Image("res/gui/save_slot_hover.png");
+			else
+				slotThree = new Image("res/gui/empty_save_slot_hover.png");
+		}
+		
+		// Back Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(MainMenu.checkBounds( (gc.getWidth()/2) - (back.getWidth()/2) , (gc.getWidth()/2) - (back.getWidth()/2) + back.getWidth() , 750 , 750 + back.getHeight(), xpos, ypos)){
+			if(input.isMousePressed(0)){
+				saveOpen = false;
+				menuOpen = true;
+			}
+			back = new Image("res/gui/buttons/button_back_hover.png");
+		}
+		else if(input.isKeyPressed(Input.KEY_ESCAPE)) {
+			saveOpen = false;
+			menuOpen = true;
+		}
+		
+	}//end of loadButtonAction
 	
 	public int getID() {
 		return StartLevel.id;

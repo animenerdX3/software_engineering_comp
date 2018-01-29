@@ -72,6 +72,8 @@ public class GravityPack{
 		this.canFlip = canFlip;
 	}
 	
-	
+	public String toString() {
+		return ""+this.gravpower;
+	}
 	
 }//end of class

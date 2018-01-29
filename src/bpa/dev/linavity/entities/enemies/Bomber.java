@@ -321,7 +321,7 @@ public class Bomber extends Mob{
 	}
 	
 	public String toString() {
-		return this.x+","+this.y;
+		return "Bomber,"+this.x+","+this.y+","+this.health;
 	}
 	
 }//end of class

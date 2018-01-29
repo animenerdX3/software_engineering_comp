@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import org.newdawn.slick.SlickException;
+
 import bpa.dev.linavity.Main;
+import bpa.dev.linavity.entities.GravityPack;
 
 public class LoadGame {	
 	
@@ -13,20 +16,23 @@ public class LoadGame {
 	
 	//Data loaded
 	
-	private int Xcounter = 0;
-	private int Ycounter = 0;
+	private int classNameCounter, Xcounter, Ycounter, healthCounter;
 	
-	private float [] xPos;
-	private float [] yPos;
+	private int findGameState;
+	private String [] classNames;
+	private float [] xPos, yPos;
+	private double [] healthStats;
+	private float gravPowerCheck;
+	private boolean isFlipped;
 	
 	public LoadGame(int saveSlot) {
-		this.saveSlot = 1;
+		this.saveSlot = saveSlot;
 		this.loadFile = new File("saves/linavitySave_"+this.saveSlot+".data");
 		try {
 			String [] data = getLoadFile(this.loadFile);
 			splitPaths(data);
 		} catch (FileNotFoundException e) {
-			Main.util.loadGame = false;
+			this.loadFile = null;
 		}
 	}
 	
@@ -60,8 +66,10 @@ public class LoadGame {
 		
 		String [] temp_loadFile = new String[checkSize(loadFile)];//the world array
 		
+		classNames = new String[temp_loadFile.length];
 		xPos = new float[temp_loadFile.length];
 		yPos = new float[temp_loadFile.length];
+		healthStats = new double[temp_loadFile.length];
 		
 		for(int i = 0; i < temp_loadFile.length; i++) {
 			temp_loadFile[i] = scan.nextLine();
@@ -75,9 +83,24 @@ public class LoadGame {
 	public void splitPaths(String[] loadData){
 		for(int i = 0; i < loadData.length; i++){
 			String [] properties = loadData[i].split(",");
-			addToX(properties[0]);
-			addToY(properties[1]);
+			if(i != 0) {
+				addToClass(properties[0]);
+				addToX(properties[1]);
+				addToY(properties[2]);
+				addToHealth(properties[3]);
+				if(i == 1) {//If getting player data
+					addToGravPack(properties[4]);
+					addToFlipping(properties[5]);
+				}
+			}
+			else
+				findGameState = Integer.parseInt(properties[0]);
 		}
+	}//end of splitPaths
+	
+	public void addToClass(String className) {
+		classNames[classNameCounter] = className;
+		classNameCounter++;
 	}
 	
 	public void addToX(String xPosition){
@@ -90,12 +113,51 @@ public class LoadGame {
 		Ycounter++;
 	}
 	
+	public void addToHealth(String health) {
+		healthStats[healthCounter] = Double.parseDouble(health);
+		healthCounter++;
+	}
+	
+	public void addToGravPack(String gravPack) {
+		gravPowerCheck = Float.parseFloat(gravPack);
+	}
+	
+	public void addToFlipping(String isFlipped) {
+		this.isFlipped = Boolean.parseBoolean(isFlipped);
+	}
+	
+	/* GETTERS */
+	
+	public int getGameStateFound() {
+		return findGameState;
+	}
+	
+	public File getLoadFile() {
+		return loadFile;
+	}
+	
+	public String[] getClassNames() {
+		return classNames;
+	}
+	
 	public float[] getXPos() {
 		return xPos;
 	}
 	
 	public float[] getYPos() {
 		return yPos;
+	}
+	
+	public double[] getHealthStats() {
+		return healthStats;
+	}
+	
+	public float getGravPowerCheck() {
+		return gravPowerCheck;
+	}
+	
+	public boolean getFlipping() {
+		return isFlipped;
 	}
 	
 }//end of class
