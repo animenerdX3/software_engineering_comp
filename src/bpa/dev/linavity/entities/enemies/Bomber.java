@@ -267,30 +267,26 @@ public class Bomber extends Mob{
 	@Override
 	public void update(int delta) {
 
-		collidePlayer();
 		
 		if(Main.util.getPlayer().getCurrentProjectile() != null)
 			collideProjectile();
 		
 		updateMomentums(); 
 		
+		if(this.collidePlayer)
+			dealDamage();
+		
 		super.updateMob(delta);
 		
 	}//end of moveEnemy
 	
-	public void collidePlayer() {
+	public void dealDamage() {
 		
-		if(Main.util.getPlayer().getX() >= getX() && Main.util.getPlayer().getX() <= getX() + getWidth()) {
-			if(Main.util.getPlayer().getY() >= getY() - (getHeight() / 2)) {
-				if(Main.util.getPlayer().getY() <= getY() + getHeight()){
-					System.out.println("Damage Taken");
-					Main.util.getPlayer().setHealth(Main.util.getPlayer().getHealth() - getDamage());
-					System.out.println("HEALTH: "+ Main.util.getPlayer().getHealth());
-				}
-			}
-		}
+		System.out.println("Damage Taken");
+		Main.util.getPlayer().setHealth(Main.util.getPlayer().getHealth() - getDamage());
+		System.out.println("HEALTH: "+ Main.util.getPlayer().getHealth());
 		
-	}//end of collidePlayer
+	}//end of dealDamage
 	
 	public void collideProjectile(){
 

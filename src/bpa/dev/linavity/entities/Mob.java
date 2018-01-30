@@ -1,6 +1,7 @@
 package bpa.dev.linavity.entities;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.SlickException;
@@ -17,18 +18,18 @@ public abstract class Mob extends GameObject{
 	// Dimension Variables
 		// The x and y coordinates of the mob in the world
 		protected float x, y;
-		private float futureX1, futureX2, futureY1, futureY2;
+		protected float futureX1, futureX2, futureY1, futureY2;
 		// The width and height of the mob
 		protected int width, height;
 	
 	// Collision Variables
 		// The radius around the mob that we check for collisions
-		private int collisionRadius;
+		protected int collisionRadius;
 		// On which side(s) is the mob colliding
 		protected boolean collideUp;
 		protected boolean collideDown;
-		private boolean collideLeft;
-		private boolean collideRight;
+		protected boolean collideLeft;
+		protected boolean collideRight;
 	
 	// Character Variables
 		protected String mobName;
@@ -84,7 +85,10 @@ public abstract class Mob extends GameObject{
 	    protected Animation standStillFlippedAni; // initate a Animation
 
 	    protected Animation currentImage;
-	
+		
+		protected boolean autoDirectionLeft;
+		protected boolean collidePlayer;
+	    
 	//Default constructor
 	public Mob() 
 			throws SlickException{
@@ -100,6 +104,7 @@ public abstract class Mob extends GameObject{
 		// Character Variables
 		this.jumps = 0;
 		this.isAlive = true;
+		this.collidePlayer = false;
 	
 	}
 
@@ -115,6 +120,13 @@ public abstract class Mob extends GameObject{
 		checkMobCollisions(Main.util.getEvents(), new Camera(this.x, this.y, this.collisionRadius));
 		checkMobCollisions(Main.util.getLevel(), new Camera(this.x, this.y, this.collisionRadius));
 		
+		ArrayList<Mob>levelMobs = Main.util.getLevelMobs();
+		
+		if(this != Main.util.getPlayer())
+			collideWithMob(Main.util.getPlayer());
+		else
+			for(int i = 1; i < levelMobs.size(); i++)
+				collideWithMob(levelMobs.get(i));
 		
 		// According to the inputs, update the mobs position in the game world
 		updateMobPos();
@@ -132,7 +144,7 @@ public abstract class Mob extends GameObject{
 	/*
 	 * updates the x1,x2,y1,y2 future positions of the mob to help detect collision
 	 */
-	private void updateFuturePosition() {
+	protected void updateFuturePosition() {
 		this.futureX1 = this.x + this.xMomentum;
 		this.futureX2 = this.x + this.width + this.xMomentum;
 		this.futureY1 = this.y + this.yMomentum;
@@ -186,7 +198,7 @@ public abstract class Mob extends GameObject{
 						checkTileCollision(screenTiles[r][c], r, c); // Is the mob colliding with this tile?
 			}
 		}
-		
+
 	}
 	
 	private void checkTileCollision(Tile tile, int i, int j) {
@@ -245,7 +257,67 @@ public abstract class Mob extends GameObject{
 					checkDynamicTiles(tile, i, j);
 				}
 			}
-	}
+	}//end of checkTileCollision
+	
+	protected void collideWithMob(Mob mob) {
+		//Moving Left - Check Collision
+				if(onRight(mob)) { //seeing if i am directly to the right of the tile we collided into
+					if(leftCollide(mob.getX(), mob.getX() + (float) mob.getBoundingBox().getWidth(), mob.getY(), mob.getY() + (float) mob.getBoundingBox().getHeight())) {
+							this.x = (mob.getX() + (float) mob.getBoundingBox().getWidth()) + 1;
+							this.collideLeft = true;
+							this.isMovingLeft = false;
+							this.xMomentum = 0;
+							this.autoDirectionLeft = !this.autoDirectionLeft;
+							this.collidePlayer = true;
+							updateFuturePosition();
+					}
+					else
+						this.collidePlayer = false;
+				}
+				
+				//Moving Right - Check Collision
+				else if(onLeft(mob)){
+					if(rightCollide(mob.getX(), mob.getX() + (float) mob.getBoundingBox().getWidth(), mob.getY(), mob.getY() + (float) mob.getBoundingBox().getHeight())) {
+							this.x = mob.getX() - ((this.width) + 1);
+							this.collideRight = true;
+							this.isMovingRight = false;
+							this.xMomentum = 0;
+							this.autoDirectionLeft = !this.autoDirectionLeft;
+							this.collidePlayer = true;
+							updateFuturePosition();
+					}
+					else
+						this.collidePlayer = false;
+				}
+
+				//Moving Down - Check Collision
+				else if(onTop(mob)){
+					
+					if(downCollide(mob.getX(), mob.getX() + (float) mob.getBoundingBox().getWidth(), mob.getY(), mob.getY() + (float) mob.getBoundingBox().getHeight())){
+							this.y = mob.getY() - (this.getHeight() + 1);
+							this.collideDown = true;
+							this.yMomentum = 0;
+							this.collidePlayer = true;
+							updateFuturePosition();
+					}
+					else
+						this.collidePlayer = false;
+				}
+
+				//Moving Up - Check Collision
+				else if(onBottom(mob)){
+					if(upCollide(mob.getX(), mob.getX() + (float) mob.getBoundingBox().getWidth(), mob.getY(), mob.getY() + (float) mob.getBoundingBox().getHeight())) {
+						this.y = (mob.getY() + (float) mob.getBoundingBox().getHeight()) + 1;
+						this.collideUp = true;
+						this.yMomentum = 0;
+						this.collidePlayer = true;
+						updateFuturePosition();
+						}
+					else
+						this.collidePlayer = false;
+				}
+				
+	}//end of collideWithMob
 	
 	private void checkDynamicTiles(Tile tile, int i, int j) {
 		
@@ -282,6 +354,26 @@ public abstract class Mob extends GameObject{
 	// Check to see if the mob is on the right side of a tile
 	private boolean onTop(Tile tile) {
 		return (this.y + this.height) < tile.getY();
+	}
+	
+	// Check to see if the mob is on the right side of a tile
+	private boolean onRight(Mob mob) {
+		return this.x > (mob.getX() + (float) mob.getBoundingBox().getWidth());
+	}
+	
+	// Check to see if the mob is on the right side of a tile
+	private boolean onLeft(Mob mob) {
+		return (this.x + this.width) < mob.getX();
+	}
+	
+	// Check to see if the mob is on the right side of a tile
+	private boolean onBottom(Mob mob) {
+		return this.y > (mob.getY() + (float) mob.getBoundingBox().getHeight());
+	}
+	
+	// Check to see if the mob is on the right side of a tile
+	private boolean onTop(Mob mob) {
+		return (this.y + this.height) < mob.getY();
 	}
 	
 	// Check to see whether or not the mob is colliding with an object (up)
@@ -368,6 +460,14 @@ public abstract class Mob extends GameObject{
 	 */
 	public float getY() {
 		return y;
+	}
+	
+	public float getXMomentum() {
+		return xMomentum;
+	}
+	
+	public float getYMomentum() {
+		return yMomentum;
 	}
 	
 	public double getHealth() {
@@ -490,8 +590,12 @@ public abstract class Mob extends GameObject{
 		this.y = y;
 	}
 
-	public void setYmo(float ymo) {
-		this.yMomentum = ymo;
+	public void setXMomentum(float xMomentum) {
+		this.xMomentum = xMomentum;
+	}
+	
+	public void setYMomentum(float yMomentum) {
+		this.yMomentum = yMomentum;
 	}
 	
 	public void setJumpNum(int jumpNum){

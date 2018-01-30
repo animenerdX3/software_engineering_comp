@@ -1,5 +1,7 @@
 package bpa.dev.linavity.utils;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -8,6 +10,7 @@ import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.assets.MusicManager;
 import bpa.dev.linavity.assets.SoundManager;
 import bpa.dev.linavity.entities.Camera;
+import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.tiles.interactive.Lever;
 import bpa.dev.linavity.events.MessageHandler;
@@ -51,6 +54,10 @@ public class Utils {
 	private LoadGame currentLoadData;
 	public boolean loadGame = false;
 	
+	private ArrayList<Mob> levelMobs;
+	
+	private int levelTime;
+	
 	// Default Constructor
 	public Utils() throws SlickException{
 		this.slotOneData = new LoadGame(1);
@@ -62,6 +69,7 @@ public class Utils {
 		this.sfx = sfxFiles.getSfx();
 		this.gravity = new Gravity();
 		this.setMessageHandler(new MessageHandler());
+		this.levelTime = 0;
 	}
 	
 	
@@ -154,6 +162,14 @@ public class Utils {
 		return currentLoadData;
 	}
 	
+	public ArrayList<Mob> getLevelMobs() {
+		return levelMobs;
+	}
+	
+	public int getLevelTime() {
+		return levelTime;
+	}
+	
 	// Setters
 	
 	public void setPlayer(Player player) {
@@ -229,6 +245,14 @@ public class Utils {
 	
 	public void setLoadGame(boolean loadGame) {
 		this.loadGame = loadGame;
+	}
+	
+	public void setLevelMobs(ArrayList<Mob>levelMobs) {
+		this.levelMobs = levelMobs;
+	}
+	
+	public void setLevelTime(int levelTime) {
+		this.levelTime = levelTime;
 	}
 	
 }//end of class

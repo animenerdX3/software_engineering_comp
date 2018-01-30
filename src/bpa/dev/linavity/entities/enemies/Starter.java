@@ -1,5 +1,6 @@
 package bpa.dev.linavity.entities.enemies;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.newdawn.slick.Animation;
@@ -20,8 +21,6 @@ public class Starter extends Mob{
 	float chanceToMove = ran.nextFloat();
 	float moving = ran.nextInt(6) + direction;
 	float counter = 0;
-	
-	boolean autoDirectionLeft;
 	
 	//Create enemy with constructor
 	public Starter(float x, float y) throws SlickException{
@@ -268,29 +267,24 @@ public class Starter extends Mob{
 	 */
 	@Override
 	public void update(int delta) {
-
-		collidePlayer();
 		
 		if(Main.util.getPlayer().getCurrentProjectile() != null)
 			collideProjectile();
 		
 		updateMomentums(); 
 		
+		if(this.collidePlayer)
+			dealDamage();
+		
 		super.updateMob(delta);
 		
 	}//end of moveEnemy
 	
-	public void collidePlayer() {
+	public void dealDamage() {
 		
-		if(Main.util.getPlayer().getX() >= getX() && Main.util.getPlayer().getX() <= getX() + getWidth()) {
-			if(Main.util.getPlayer().getY() >= getY() - (getHeight() / 2)) {
-				if(Main.util.getPlayer().getY() <= getY() + getHeight()){
-					System.out.println("Damage Taken");
-					Main.util.getPlayer().setHealth(Main.util.getPlayer().getHealth() - getDamage());
-					System.out.println("HEALTH: "+ Main.util.getPlayer().getHealth());
-				}
-			}
-		}
+		System.out.println("Damage Taken");
+		Main.util.getPlayer().setHealth(Main.util.getPlayer().getHealth() - getDamage());
+		System.out.println("HEALTH: "+ Main.util.getPlayer().getHealth());
 		
 	}//end of collidePlayer
 	

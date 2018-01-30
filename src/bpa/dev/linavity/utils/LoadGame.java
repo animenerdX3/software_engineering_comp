@@ -19,6 +19,7 @@ public class LoadGame {
 	private int classNameCounter, Xcounter, Ycounter, healthCounter;
 	
 	private int findGameState;
+	private int levelTime;
 	private String [] classNames;
 	private float [] xPos, yPos;
 	private double [] healthStats;
@@ -83,18 +84,20 @@ public class LoadGame {
 	public void splitPaths(String[] loadData){
 		for(int i = 0; i < loadData.length; i++){
 			String [] properties = loadData[i].split(",");
-			if(i != 0) {
+			if(i >= 2) {
 				addToClass(properties[0]);
 				addToX(properties[1]);
 				addToY(properties[2]);
 				addToHealth(properties[3]);
-				if(i == 1) {//If getting player data
+				if(i == 2) {//If getting player data
 					addToGravPack(properties[4]);
 					addToFlipping(properties[5]);
 				}
 			}
-			else
+			else if (i == 0)
 				findGameState = Integer.parseInt(properties[0]);
+			else if (i == 1)
+				levelTime = Integer.parseInt(properties[0]);
 		}
 	}//end of splitPaths
 	
@@ -130,6 +133,10 @@ public class LoadGame {
 	
 	public int getGameStateFound() {
 		return findGameState;
+	}
+	
+	public int getLevelTime() {
+		return levelTime;
 	}
 	
 	public File getLoadFile() {

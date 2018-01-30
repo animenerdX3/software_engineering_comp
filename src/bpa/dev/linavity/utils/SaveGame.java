@@ -14,13 +14,15 @@ import bpa.dev.linavity.entities.*;
 public class SaveGame {
 
 	private String gameStateID;
+	private String levelTimer;
 	private int saveSlot;
 	private ArrayList<Mob> mobPositions;
 	private File saveFile;
 	private boolean canOverWrite;
 	
-	public SaveGame(ArrayList<Mob> mobPositions, int gameStateID, int saveSlot) {
+	public SaveGame(ArrayList<Mob> mobPositions, int gameStateID, int saveSlot, int levelTimer) {
 		this.gameStateID = ""+gameStateID;
+		this.levelTimer = ""+levelTimer;
 		this.mobPositions = mobPositions;
 		this.saveSlot = saveSlot;
 		this.saveFile = new File("saves/linavitySave_"+this.saveSlot+".data");
@@ -94,9 +96,11 @@ public class SaveGame {
 	}//end of overWriteSave
 	
 	public void saveMobs(BufferedWriter bw) throws IOException {
-		for(int i = -1; i < mobPositions.size(); i++) {
-			if(i == -1)
+		for(int i = -2; i < mobPositions.size(); i++) {
+			if(i == -2)
 				bw.write(this.gameStateID);
+			else if(i == -1)
+				bw.write(this.levelTimer);
 			else
 				bw.write(this.mobPositions.get(i).toString());
 			bw.newLine();

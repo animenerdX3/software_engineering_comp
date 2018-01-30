@@ -180,16 +180,16 @@ public class MainMenu extends BasicGameState{
 	 */
 	public void renderMainMenuScreenMain(GameContainer gc, Graphics g){
 		// Play Button 
-		g.drawImage(play, (gc.getWidth()/2) - (play.getWidth()/2), 300); // Setting the x value as half of the game container and adjusting for the width of the button
+		g.drawImage(play, (gc.getWidth()/2) - (play.getWidth()/2), 350); // Setting the x value as half of the game container and adjusting for the width of the button
 		
 		//Load Button
-		g.drawImage(load, (gc.getWidth()/2) - (load.getWidth()/2), 400); // Setting the x value as half of the game container and adjusting for the width of the button
+		g.drawImage(load, (gc.getWidth()/2) - (load.getWidth()/2), 450); // Setting the x value as half of the game container and adjusting for the width of the button
 		
 		// Options Button
-		g.drawImage(options, (gc.getWidth()/2) - (options.getWidth()/2), 500); // Setting the x value as half of the game container and adjusting for the width of the button
+		g.drawImage(options, (gc.getWidth()/2) - (options.getWidth()/2), 550); // Setting the x value as half of the game container and adjusting for the width of the button
 		
 		// Exit Button
-		g.drawImage(exit, (gc.getWidth()/2) - (exit.getWidth()/2), 600); // Setting the x value as half of the game container and adjusting for the width of the button
+		g.drawImage(exit, (gc.getWidth()/2) - (exit.getWidth()/2), 650); // Setting the x value as half of the game container and adjusting for the width of the button
 	}
 	
 
@@ -239,7 +239,7 @@ public class MainMenu extends BasicGameState{
 
 		// Play Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (play.getWidth()/2) , (gc.getWidth()/2) - (play.getWidth()/2) + play.getWidth() , 300 , 300 + play.getHeight())) {
+		if(checkBounds( (gc.getWidth()/2) - (play.getWidth()/2) , (gc.getWidth()/2) - (play.getWidth()/2) + play.getWidth() , 350 , 350 + play.getHeight())) {
 			if(input.isMousePressed(0)) {
 				input.clearKeyPressedRecord();
 				Main.util.setLoadGame(false);
@@ -260,7 +260,7 @@ public class MainMenu extends BasicGameState{
 		
 		// Load Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (load.getWidth()/2) , (gc.getWidth()/2) - (load.getWidth()/2) + load.getWidth() , 400 , 400 + load.getHeight())){
+		if(checkBounds( (gc.getWidth()/2) - (load.getWidth()/2) , (gc.getWidth()/2) - (load.getWidth()/2) + load.getWidth() , 450 , 450 + load.getHeight())){
 			if(input.isMousePressed(0)) {
 				input.clearKeyPressedRecord();
 				LoadButton();
@@ -277,7 +277,7 @@ public class MainMenu extends BasicGameState{
 		
 		// Options Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (options.getWidth()/2) , (gc.getWidth()/2) - (options.getWidth()/2) + options.getWidth() , 500 , 500 + options.getHeight())){
+		if(checkBounds( (gc.getWidth()/2) - (options.getWidth()/2) , (gc.getWidth()/2) - (options.getWidth()/2) + options.getWidth() , 550 , 550 + options.getHeight())){
 			if(input.isMousePressed(0)) {
 				input.clearKeyPressedRecord();
 				OptionButton();
@@ -294,7 +294,7 @@ public class MainMenu extends BasicGameState{
 		
 		// Exit Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( (gc.getWidth()/2) - (exit.getWidth()/2) , (gc.getWidth()/2) - (exit.getWidth()/2) + exit.getWidth() , 600 , 600 + exit.getHeight())){
+		if(checkBounds( (gc.getWidth()/2) - (exit.getWidth()/2) , (gc.getWidth()/2) - (exit.getWidth()/2) + exit.getWidth() , 650 , 650 + exit.getHeight())){
 			if(input.isMousePressed(0))
 				ExitButton();
 

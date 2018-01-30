@@ -14,7 +14,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
-import bpa.dev.linavity.entities.GravityPack;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
@@ -77,11 +76,16 @@ public class StartLevel extends BasicGameState{
 			throws SlickException {
 		
 		if(Main.util.getLoadGame()) {
+			Main.util.setLevelTime(Main.util.getCurrentLoadData().getLevelTime());
 			mobs = getMobs(Main.util.getCurrentLoadData());
 			Main.util.setLoadGame(false);
 		}
-		else
+		else {
+			Main.util.setLevelTime(0);
 			mobs = getMobs();
+		}
+		
+		Main.util.setLevelMobs(mobs);
 		
 		pause_menu_ui = new Image("res/gui/pausemenu.png");
 		resume = new Image("res/gui/buttons/button_resume.png");
@@ -125,8 +129,8 @@ public class StartLevel extends BasicGameState{
 		mobs.add(new Tank(1100, 750));
 		mobs.add(new Tank(1200, 750));
 		mobs.add(new Bomber(600, 750));
-		mobs.add(new Bomber(615, 750));
 		mobs.add(new Bomber(660, 750));
+		mobs.add(new Bomber(720, 750));
 		
 		return mobs;
 	}//end of getMobs
@@ -142,7 +146,7 @@ public class StartLevel extends BasicGameState{
 		float gravPower = loadFile.getGravPowerCheck();
 		boolean isFlipping = loadFile.getFlipping();
 		
-		for(int i = 0; i < classNames.length - 1; i++) {
+		for(int i = 0; i < classNames.length - 2; i++) {
 			if(classNames[i].equalsIgnoreCase("Player")) {
 				Main.util.setPlayer(new Player(xPos[i], yPos[i]));
 				mobs.add(Main.util.getPlayer());
@@ -196,6 +200,9 @@ public class StartLevel extends BasicGameState{
 				mobs.remove(i);
 		}
 
+		g.setColor(Color.red);
+		g.drawString("Timer: "+Main.util.getLevelTime() / 1000, 800,50);
+		g.setColor(Color.white);
 		
 		//If a projectile exists, then draw it on the screen
 		if(Main.util.getPlayer().isProjectileExists()) {
@@ -226,7 +233,6 @@ public class StartLevel extends BasicGameState{
 			renderMenu(gc, g);
 		else if(saveOpen && !menuOpen) 
 			renderSaveMenu(gc, g);
-		
 		
 	}//end of render
 
@@ -367,9 +373,11 @@ public class StartLevel extends BasicGameState{
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-				
+		
 		// If the game is not paused
 		if(!menuOpen && !saveOpen){
+			
+			updateTimer(delta);
 			
 			// Make all keyboard-based updates
 			input(gc);
@@ -400,6 +408,10 @@ public class StartLevel extends BasicGameState{
 		ypos = ExtraMouseFunctions.getMouseY(gc.getHeight()); // Updates the y coordinate of the mouse
 		
 	}//end of update
+	
+	private void updateTimer(int delta) {
+		Main.util.setLevelTime((Main.util.getLevelTime() + delta));
+	}//end of updateTimer
 	
 	/**
 	 * Our input method uses the input manager class to update all of out input logs
@@ -658,7 +670,7 @@ public class StartLevel extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(MainMenu.checkBounds( 100 , 100 + slotOne.getWidth() , 150, 150 + slotOne.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
-				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 1);
+				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 1, Main.util.getLevelTime());
 				saveProgress.createSave();
 			}
 			if(Main.util.getSlotOneData().getLoadFile() != null)
@@ -671,7 +683,7 @@ public class StartLevel extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(MainMenu.checkBounds( 100 , 100 + slotTwo.getWidth() , 350, 350 + slotTwo.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
-				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 2);
+				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 2, Main.util.getLevelTime());
 				saveProgress.createSave();
 			}
 			if(Main.util.getSlotTwoData().getLoadFile() != null)
@@ -684,7 +696,7 @@ public class StartLevel extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(MainMenu.checkBounds( 100 , 100 + slotThree.getWidth() , 550, 550 + slotThree.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
-				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 3);
+				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 3, Main.util.getLevelTime());
 				saveProgress.createSave();
 			}
 			if(Main.util.getSlotThreeData().getLoadFile() != null)

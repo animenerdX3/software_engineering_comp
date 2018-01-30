@@ -1,6 +1,7 @@
 package bpa.dev.linavity.entities;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
@@ -549,19 +550,19 @@ public class Player extends Mob {
 
 		if(Main.util.getGravity().getFlipDirection()){ // Reverse Gravity
 				if((gravPower / -1) > 0){
-					this.setYmo(-power);
+					this.setYMomentum(-power);
 					setCanJump(false);
 				}else{
-					this.setYmo(power);//Sets Y-Momentum to 14, this makes the player fight against gravity
+					this.setYMomentum(power);//Sets Y-Momentum to 14, this makes the player fight against gravity
 					setCanJump(false);
 				}
 			
 		}else{ // Regular Gravity
 				if((gravPower / -1) > 0){
-					this.setYmo(-power);
+					this.setYMomentum(-power);
 					setCanJump(false);
 				}else{
-					this.setYmo(power);//Sets Y-Momentum to 14, this makes the player fight against gravity'
+					this.setYMomentum(power);//Sets Y-Momentum to 14, this makes the player fight against gravity'
 					setCanJump(false);
 				}
 			
