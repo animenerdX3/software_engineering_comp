@@ -17,9 +17,13 @@ public class Bomber extends Mob{
 	
 	Random ran = new Random();
 	
+	//The least amount of distance the bomber can move
 	float direction = 20;
+	//The bomber's chance to move: a random number between 0f and 1f
 	float chanceToMove = ran.nextFloat();
+	//The distance the bomber will move
 	float moving = ran.nextInt(6) + direction;
+	//The counter for movement
 	float counter = 0;
 	
 	boolean autoDirectionLeft;
@@ -134,13 +138,21 @@ public class Bomber extends Mob{
 		return Main.util.getPlayer().getX() > getX();
 	}
 	
+	/**
+	 * 
+	 * @return movement for the enemy when they cannot detect the player
+	 */
 	public float idleMovement() {
+		//Give the bomber a random chance to move
 		if(chanceToMove < 0.005f) {
+			//Move a specific amount of pixels
 			if(counter < moving) {
+				//If true, move to the left
 				if(autoDirectionLeft) {
 					this.currentImage = this.moveLeftAni;
 					return AILeft();
 				}
+				//Move to the right
 				else {
 					this.currentImage = this.moveRightAni;
 					return AIRight();
@@ -158,7 +170,7 @@ public class Bomber extends Mob{
 			chanceToMove = ran.nextFloat();
 			return 0;
 		}
-	}
+	}//end of idleMovement
 	
 	public float AILeft() {
 		counter = counter + this.walkSpeed;
@@ -218,10 +230,10 @@ public class Bomber extends Mob{
 		}
 		else
 			this.isDetected = false;
-	}
+	}//end of detectPlayer
 	
 	/*
-	 * Return how the enemy is moving left or right based on input from the user
+	 * Return how the enemy is moving up or down
 	 */
 	private float yMovement() {
 		
@@ -242,7 +254,7 @@ public class Bomber extends Mob{
 			this.jumps = 0;
 		
 		return jumpMomentum;
-	}
+	}//end of yMovement
 	
 	// Determine whether the enemy has jumped more than it's max
 	private boolean maxJumps() {
@@ -252,16 +264,14 @@ public class Bomber extends Mob{
 			return true;
 	}
 	
-	// Determines if the enemy is running
+	// Tells the bomber that it cannot jump
 	private boolean jumping() {
 		return false;
 	}
 	
-	// END OF ENEMY MOMENTUM CONTROL //
-	
 	
 	/**
-	 * Enemy movement AI
+	 * update the bomber's functions
 	 * @param delta
 	 */
 	@Override
@@ -280,6 +290,9 @@ public class Bomber extends Mob{
 		
 	}//end of moveEnemy
 	
+	/**
+	 * deals damage to the player
+	 */
 	public void dealDamage() {
 		
 		System.out.println("Damage Taken");
@@ -288,6 +301,9 @@ public class Bomber extends Mob{
 		
 	}//end of dealDamage
 	
+	/**
+	 * checks to see if the bomber has been hit with a projectile
+	 */
 	public void collideProjectile(){
 
 		if(Main.util.getPlayer().getCurrentProjectile().getX() >= getX() && Main.util.getPlayer().getCurrentProjectile().getX() <= (getX() + getWidth())) {
@@ -306,17 +322,29 @@ public class Bomber extends Mob{
 	
 	/* GETTERS */
 	
+	/**
+	 * 
+	 * @return if true, the player is detected. if false, the player is not detected
+	 */
 	public boolean isDetected() {
 		return isDetected;
 	}
 	
 	/* SETTERS */
 	
+	/**
+	 * changes the bomber's detection
+	 * @param isDetected
+	 */
 	public void setDetection(boolean isDetected) {
 		this.isDetected = isDetected;
 	}
 	
+	/**
+	 * overwrites toString method for saving purposes
+	 */
 	public String toString() {
+		//Save the class name, x position, y position, and health
 		return "Bomber,"+this.x+","+this.y+","+this.health;
 	}
 	

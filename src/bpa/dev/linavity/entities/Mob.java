@@ -65,7 +65,7 @@ public abstract class Mob extends GameObject{
 		
 		protected Rectangle boundingBox = new Rectangle();
 		
-		//Animation
+	//Animation
 	    protected SpriteSheet moveRight; // initate a SpriteSheet
 	    protected Animation moveRightAni; // initate a Animation
 		
@@ -86,6 +86,7 @@ public abstract class Mob extends GameObject{
 
 	    protected Animation currentImage;
 		
+	//Mob Movement Variables
 		protected boolean autoDirectionLeft;
 		protected boolean collidePlayer;
 	    
@@ -120,13 +121,18 @@ public abstract class Mob extends GameObject{
 		checkMobCollisions(Main.util.getEvents(), new Camera(this.x, this.y, this.collisionRadius));
 		checkMobCollisions(Main.util.getLevel(), new Camera(this.x, this.y, this.collisionRadius));
 		
+		//Check for collisions with mobs
+		
+		//Get the level mobs
 		ArrayList<Mob>levelMobs = Main.util.getLevelMobs();
 		
+		//If the current mob is not the player, check if they are colliding with the player
 		if(this != Main.util.getPlayer())
-			collideWithMob(Main.util.getPlayer());
+			collideWithMob(Main.util.getPlayer());//Is the mob colliding with the player?
+		//If the current mob is the player, check if they are colliding with the other mobs
 		else
 			for(int i = 1; i < levelMobs.size(); i++)
-				collideWithMob(levelMobs.get(i));
+				collideWithMob(levelMobs.get(i));//Is the player colliding with a mob?
 		
 		// According to the inputs, update the mobs position in the game world
 		updateMobPos();
@@ -134,12 +140,15 @@ public abstract class Mob extends GameObject{
 		// Update all mob stats
 		updateMobStats(delta);
 		
-		
-	}
+	}//end of updateMob
 	
+	/**
+	 * default update method, for use in the child classes
+	 * @param delta
+	 */
 	public void update(int delta) {
 		
-	}
+	}//end of update
 	
 	/*
 	 * updates the x1,x2,y1,y2 future positions of the mob to help detect collision
@@ -149,7 +158,7 @@ public abstract class Mob extends GameObject{
 		this.futureX2 = this.x + this.width + this.xMomentum;
 		this.futureY1 = this.y + this.yMomentum;
 		this.futureY2 = this.y + this.height + this.yMomentum;
-	}
+	}//end of updateFuturePosition
 	
 	/*
 	 * Update the mobs x and y positions
@@ -157,50 +166,60 @@ public abstract class Mob extends GameObject{
 	protected void updateMobPos() {
 		this.x = updateX();
 		this.y = updateY();
-	}
+	}//end pf updateMobPos
 	
 	/*
 	 * Update the mobs x position based on it's x momentum
 	 */
 	private float updateX() {
 		return this.x += this.xMomentum;
-	}
+	}//end of updateX
 	
 	/*
 	 * Update the mobs y position based on it's y momentum
 	 */
 	private float updateY() {
 		return this.y += this.yMomentum;
-	}
+	}//end of updateY
 	
-	/*
-	 * Update mob stats based on game events
-	 * 
-	 *  Might not need this depending on how we handle messages
-	 * 
+	/**
+	 * uses delta to update our mobs
+	 * @param delta
 	 */
 	private void updateMobStats(int delta) {
 		this.accessDelta = delta;
-	}
+	}//end of updateMobStats
 	
+	/**
+	 * check if the mob collides with an object
+	 * @param level
+	 * @param cam
+	 */
 	public void checkMobCollisions(Level level, Camera cam) {
 		
 		Tile[][] screenTiles = level.getScreenTiles(cam); // Load in the visible part of the level
 		
+		//Reset our collision variables
 		this.collideLeft = false;
 		this.collideRight = false;
 		this.collideUp = false;
 		this.collideDown = false;
 		
+		//Check for through our level map
 		for(int r = 0; r < screenTiles.length; r++) { // Run through each row
-			for(int c = 0; c < screenTiles[0].length; c++) { // Run through each column
+			for(int c = 0; c < screenTiles[0].length; c++) // Run through each column
 				if(screenTiles[r][c] != null)  // If the tile exists
 						checkTileCollision(screenTiles[r][c], r, c); // Is the mob colliding with this tile?
-			}
 		}
 
-	}
+	}//end of checkMobCollisions
 	
+	/**
+	 * check to see if the mob has collided with a tile
+	 * @param tile
+	 * @param i tile row in the level
+	 * @param j tile column in the level
+	 */
 	private void checkTileCollision(Tile tile, int i, int j) {
 					
 			//Moving Left - Check Collision
@@ -259,6 +278,10 @@ public abstract class Mob extends GameObject{
 			}
 	}//end of checkTileCollision
 	
+	/**
+	 * check to see if the mob has collided with a mob
+	 * @param mob
+	 */
 	protected void collideWithMob(Mob mob) {
 		//Moving Left - Check Collision
 				if(onRight(mob)) { //seeing if i am directly to the right of the tile we collided into
@@ -319,6 +342,12 @@ public abstract class Mob extends GameObject{
 				
 	}//end of collideWithMob
 	
+	/**
+	 * check to see if the mob is colliding with any dynamic tiles
+	 * @param tile
+	 * @param i
+	 * @param j
+	 */
 	private void checkDynamicTiles(Tile tile, int i, int j) {
 		
 		// GravPad Recharging the player's gravPad
@@ -334,7 +363,7 @@ public abstract class Mob extends GameObject{
 		if(tile.getId() == tile.leverID) {
 			Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.leverToggle, 0));
 		}
-	}
+	}//end of checkDynamicTiles
 	
 	// Check to see if the mob is on the right side of a tile
 	private boolean onRight(Tile tile) {
@@ -406,130 +435,193 @@ public abstract class Mob extends GameObject{
 	/* GETTERS */
 	
 	/**
-	 * @return the cu
+	 * @return if true, the mob is colliding up. if false, the mob is not
 	 */
 	public boolean isCu() {
 		return collideUp;
 	}
 
 	/**
-	 * @return the cd
+	 * @return if true, the mob is colliding down. if false, the mob is not
 	 */
 	public boolean isCd() {
 		return collideDown;
 	}
 
 	/**
-	 * @return the cl
+	 * @return if true, the mob is colliding left. if false, the mob is not
 	 */
 	public boolean isCl() {
 		return collideLeft;
 	}
 
 	/**
-	 * @return the cr
+	 * @return if true, the mob is colliding right. if false, the mob is not
 	 */
 	public boolean isCr() {
 		return collideRight;
 	}
 
 	/**
-	 * @return the width
+	 * @return the mob's width
 	 */
 	public int getWidth() {
 		return width;
 	}
 
 	/**
-	 * @return the height
+	 * @return the mob's height
 	 */
 	public int getHeight() {
 		return height;
 	}
 	
 	/**
-	 * @return the x
+	 * @return the mob's x
 	 */
 	public float getX() {
 		return x;
 	}
 
-
 	/**
-	 * @return the y
+	 * @return the mob's y
 	 */
 	public float getY() {
 		return y;
 	}
 	
+	/**
+	 * 
+	 * @return the mob's x momentum
+	 */
 	public float getXMomentum() {
 		return xMomentum;
 	}
 	
+	/**
+	 * 
+	 * @return the mob's y momentum
+	 */
 	public float getYMomentum() {
 		return yMomentum;
 	}
 	
+	/**
+	 * 
+	 * @return the mob's health
+	 */
 	public double getHealth() {
 		return health;
 	}
 	
+	/**
+	 * 
+	 * @return the mob's damage
+	 */
 	public double getDamage() {
 		return damage;
 	}
 
-	public float getYmo() {
-		return yMomentum;
-	}
-	
+	/**
+	 * 
+	 * @return the mob's number of allowed jumps
+	 */
 	public int getJumpNum(){
 		return maxJumps;
 	}
 	
+	/**
+	 * 
+	 * @return if true, the mob is alive. if false, the mob is not alive
+	 */
 	public boolean isAlive() {
 		return isAlive;
 	}
 	
+	/**
+	 * 
+	 * @return the mob's bounding box
+	 */
 	public Rectangle getBoundingBox() {
 		return boundingBox;
 	}
 	
+	/**
+	 * 
+	 * @return if true, the mob can jump. if false, the mob cannot jump.
+	 */
 	public boolean canJump() {
 		return canJump;
 	}
 
+	/**
+	 * 
+	 * @return if true, the mob is moving left. if false, the mob is not
+	 */
 	public boolean isMovingLeft() {
 		return isMovingLeft;
 	}
 	
+	/**
+	 * 
+	 * @return if true, the mob is moving right. if false, the mob is not
+	 */
 	public boolean isMovingRight() {
 		return isMovingRight;
 	}
 	
+	/**
+	 * 
+	 * @return the mob's left animation
+	 */
 	public Animation getLeftAni() {
 		return moveLeftAni;
 	}
 	
+	/**
+	 * 
+	 * @return the mob's right animation
+	 */
 	public Animation getRightAni() {
 		return moveRightAni;
 	}
 	
+	/**
+	 * 
+	 * @return the mob's still animation
+	 */
 	public Animation getStillAni() {
 		return standStillAni;
 	}
 	
+	/**
+	 * 
+	 * @return the mob's current animation image
+	 */
 	public Animation getCurrentImage() {
 		return currentImage;
 	}
 	
+	/**
+	 * 
+	 * @return the mob's right animation flipped (for reverse gravity)
+	 */
 	public Animation getMoveRightFlippedAni() {
 			return moveRightFlippedAni;
 		}
 
+	/**
+	 * 
+	 * @return the mob's left animation flipped (for reverse gravity)
+	 */
 	public Animation getMoveLeftFlippedAni() {
 			return moveLeftFlippedAni;
 		}
 
+	/**
+	 * 
+	 * @return the mob's still animation flipped (for reverse gravity)
+	 */
 	public Animation getStandStillFlippedAni() {
 			return standStillFlippedAni;
 		}
@@ -537,105 +629,156 @@ public abstract class Mob extends GameObject{
 
 	/* SETTERS */
 
+	/**
+	 * changes the collision up boolean
+	 * @param cu
+	 */
 	public void setCu(boolean cu) {
 		this.collideUp = cu;
 	}
 
 	/**
-	 * @param cd the cd to set
+	 * changes the collision down boolean
+	 * @param cd
 	 */
 	public void setCd(boolean cd) {
 		this.collideDown = cd;
 	}
 
 	/**
-	 * @param cl the cl to set
+	 * changes the collision left boolean
+	 * @param cl
 	 */
 	public void setCl(boolean cl) {
 		this.collideLeft = cl;
 	}
 
 	/**
-	 * @param cr the cr to set
+	 * changes the collision right boolean
+	 * @param cr
 	 */
 	public void setCr(boolean cr) {
 		this.collideRight = cr;
 	}
 	
 	/**
-	 * @param width the width to set
+	 * changes the mob's width
+	 * @param width
 	 */
 	public void setWidth(int width) {
 		this.width = width;
 	}
 
 	/**
-	 * @param height the height to set
+	 * changes the mob's height
+	 * @param height
 	 */
 	public void setHeight(int height) {
 		this.height = height;
 	}
 	
 	/**
-	 * @param x the x to set
+	 * changes the mob's x position
+	 * @param x
 	 */
 	public  void setX(float x) {
 		this.x = x;
 	}
 
 	/**
-	 * @param y the y to set
+	 * changes the mob's y position
+	 * @param y
 	 */
 	public  void setY(float y) {
 		this.y = y;
 	}
 
+	/**
+	 * changes the mob's x momentum
+	 * @param xMomentum
+	 */
 	public void setXMomentum(float xMomentum) {
 		this.xMomentum = xMomentum;
 	}
 	
+	/**
+	 * changes the mob's y momentum
+	 * @param yMomentum
+	 */
 	public void setYMomentum(float yMomentum) {
 		this.yMomentum = yMomentum;
 	}
 	
+	/**
+	 * changes the mob's number of allowed jumps
+	 * @param jumpNum
+	 */
 	public void setJumpNum(int jumpNum){
 		this.maxJumps = jumpNum;
 	}
 	
+	/**
+	 * changes the mob's health
+	 * @param health
+	 */
 	public void setHealth(double health) {
 		this.health = health;
 	}
 	
+	/**
+	 * changes the mob's damage
+	 * @param damage
+	 */
 	public void setDamage(double damage) {
 		this.damage = damage;
 	}
 	
+	/**
+	 * changes the mob's alive boolean
+	 * @param isAlive
+	 */
 	public void setIsAlive(boolean isAlive){
 		this.isAlive = isAlive;
 	}
 
+	/**
+	 * changes the mob's bounding box
+	 * @param boundingBox
+	 */
 	public void setBoundingBox(Rectangle boundingBox) {
 		this.boundingBox = boundingBox;
 	}
 	
+	/**
+	 * changes the mob's jump boolean
+	 * @param canJump
+	 */
 	public void setCanJump(boolean canJump) {
 		this.canJump = canJump;
 	}
 	
+	/**
+	 * changes the mob's moving left boolean
+	 * @param isMovingLeft
+	 */
 	public void setIsMovingLeft(boolean isMovingLeft) {
 		this.isMovingLeft = isMovingLeft;
 	}
 	
+	/**
+	 * changes the mob's moving right boolean
+	 * @param isMovingRight
+	 */
 	public void setIsMovingRight(boolean isMovingRight) {
 		this.isMovingRight = isMovingRight;
 	}
 	
+	/**
+	 * changes the mob's current animation image
+	 * @param currentImage
+	 */
 	public void setCurrentImage(Animation currentImage) {
 		this.currentImage = currentImage;
-	}
-	
-	public String toString() {
-		return "";
 	}
 	
 }//end of class

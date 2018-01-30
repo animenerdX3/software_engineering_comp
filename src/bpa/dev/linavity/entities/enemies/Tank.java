@@ -17,9 +17,13 @@ public class Tank extends Mob{
 	
 	Random ran = new Random();
 	
+	//The least amount of distance the bomber can move
 	float direction = 5;
+	//The bomber's chance to move: a random number between 0f and 1f
 	float chanceToMove = ran.nextFloat();
+	//The distance the bomber will move
 	float moving = ran.nextInt(6) + direction;
+	//The counter for movement
 	float counter = 0;
 	
 	boolean autoDirectionLeft;
@@ -52,10 +56,7 @@ public class Tank extends Mob{
 	    this.standStill = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
 	    this.standStillAni = new Animation(this.standStill, 450); // declare a SpriteSheet and load it into java with its dimensions
 	    this.currentImage = this.standStillAni;
-	}
-	
-	
-	// ENEMY MOMENTUM CONTROL // 
+	} 
 	
 	/*
 	 * Update the enemy's x and y momentum
@@ -108,7 +109,7 @@ public class Tank extends Mob{
 		}
 		
 		return 0;
-	}
+	}//end of xMovement
 	
 	// Determines if the enemy is moving in the X direction
 	private boolean movingLeftOrRight() {
@@ -134,13 +135,21 @@ public class Tank extends Mob{
 			return Main.util.getPlayer().getX() > getX();
 		}
 	
+		/**
+		 * 
+		 * @return movement for the enemy when they cannot detect the player
+		 */
 		public float idleMovement() {
+			//Give the bomber a random chance to move
 			if(chanceToMove < 0.01f) {
+				//Move a specific amount of pixels
 				if(counter < moving) {
+					//If true, move to the left
 					if(autoDirectionLeft) {
 						this.currentImage = this.moveLeftAni;
 						return AILeft();
 					}
+					//Move to the right
 					else {
 						this.currentImage = this.moveRightAni;
 						return AIRight();
@@ -158,7 +167,7 @@ public class Tank extends Mob{
 				chanceToMove = ran.nextFloat();
 				return 0;
 			}
-		}
+		}//end of idleMovement
 		
 		public float AILeft() {
 			counter = counter + this.walkSpeed;
@@ -243,7 +252,7 @@ public class Tank extends Mob{
 			this.jumps = 0;
 		
 		return jumpMomentum;
-	}
+	}//end of yMovement
 	
 	// Determine whether the enemy has jumped more than it's max
 	private boolean maxJumps() {
@@ -253,13 +262,10 @@ public class Tank extends Mob{
 			return true;
 	}
 	
-	// Determines if the enemy is running
+	// Tells the tank that they cannot jump
 	private boolean jumping() {
 		return false;
-	}
-	
-	// END OF ENEMY MOMENTUM CONTROL //
-	
+	}	
 	
 	/**
 	 * Enemy movement AI
@@ -280,14 +286,20 @@ public class Tank extends Mob{
 		
 	}//end of moveEnemy
 	
+	/**
+	 * deals damage to the player
+	 */
 	public void dealDamage() {
 		
 		System.out.println("Damage Taken");
 		Main.util.getPlayer().setHealth(Main.util.getPlayer().getHealth() - getDamage());
 		System.out.println("HEALTH: "+ Main.util.getPlayer().getHealth());
 		
-	}//end of collidePlayer
+	}//end of dealDamage
 	
+	/**
+	 * Checks to see if the tank has been hit with a projectile
+	 */
 	public void collideProjectile(){
 		
 		if(Main.util.getPlayer().getCurrentProjectile().getX() >= getX() && Main.util.getPlayer().getCurrentProjectile().getX() <= (getX() + getWidth())) {
@@ -303,6 +315,29 @@ public class Tank extends Mob{
 		}
 	}
 	
+	/* GETTERS */
+	
+	/**
+	 * 
+	 * @return if true, the player is detected. if false, the player is not detected
+	 */
+	public boolean isDetected() {
+		return isDetected;
+	}
+	
+	/* SETTERS */
+	
+	/**
+	 * changes the bomber's detection
+	 * @param isDetected
+	 */
+	public void setDetection(boolean isDetected) {
+		this.isDetected = isDetected;
+	}
+	
+	/**
+	 * overwrites toString method for saving purposes
+	 */
 	public String toString() {
 		return "Tank,"+this.x+","+this.y+","+this.health;
 	}

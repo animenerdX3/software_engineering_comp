@@ -23,31 +23,36 @@ public class MainMenu extends BasicGameState{
 	public int prevXpos, prevYpos;
 	public int xpos, ypos;
 	
-	// Our images
+	//Title Screen Images
 	private ParallaxMap bg;
 	private Image title = null;
 	private Image play = null;
 	private Image load = null;
+	private Image options = null;
 	private Image exit = null;
+	
+	//Option Screen Images
+	private Image optionsBG = null;
 	private Image emptySlider = null;
 	private Image musicSlider = null;
+	private Image plusMusic = null;
+	private Image minusMusic = null;
 	private Image sfxSlider = null;
-	private Image options = null;
-	private Image optionsBG = null;
+	private Image plusSFX = null;
+	private Image minusSFX = null;
+	
+	//Load Screen Images
 	private Image loadBG = null;
 	private Image slotOne = null;
 	private Image slotTwo = null;
 	private Image slotThree = null;
-	private Image plusMusic = null;
-	private Image minusMusic = null;
-	private Image plusSFX = null;
-	private Image minusSFX = null;
+	
+	//Back Button
 	private Image back = null;
 	
-	private boolean isOption = false;
-	private boolean isLoad = false;
-	
 	//Menu Controllers
+	private boolean isLoad = false;
+	private boolean isOption = false;
 	private int menuSize;
 	private int currentSelection;
 	
@@ -64,7 +69,6 @@ public class MainMenu extends BasicGameState{
 		load = new Image("res/gui/buttons/button_load.png"); //Load Button
 		exit = new Image("res/gui/buttons/button_exit.png"); // Exit Button
 		options = new Image("res/gui/buttons/button_options.png"); // Options Button
-		optionsBG = new Image("res/gui/options_bg.png"); //Options Background
 		
 		//Load Menu Objects
 		loadBG = new Image("res/gui/load_screen.png");
@@ -83,6 +87,7 @@ public class MainMenu extends BasicGameState{
 			slotThree = new Image("res/gui/empty_save_slot.png");
 		
 		//Option Image Objects
+		optionsBG = new Image("res/gui/options_bg.png"); //Options Background
 		emptySlider = new Image("res/gui/stats/empty_slider.png");
 		musicSlider = new Image("res/gui/stats/music_slider.png");
 		sfxSlider = new Image("res/gui/stats/sfx_slider.png");
@@ -94,11 +99,14 @@ public class MainMenu extends BasicGameState{
 		minusSFX = new Image("res/gui/buttons/button_minus.png"); // Minus Button	
 		back = new Image("res/gui/buttons/button_back.png"); // Back Button	
 
+		//Menu Controllers
 		menuSize = 4;
 		currentSelection = -1;
+		
+		//Start Music
 		Main.util.setMusic(Main.util.getMusicQueue(0));
 		Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
-	}
+	}//end of init
 
 	// Renders content to the game / screen
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
@@ -128,7 +136,7 @@ public class MainMenu extends BasicGameState{
 		
 		// END OUR MENU UI //
 
-	}
+	}//end of render
 
 	// Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
@@ -193,6 +201,89 @@ public class MainMenu extends BasicGameState{
 	}
 	
 
+	/**
+	 * @method renderMainMenuScreenLoad
+	 * @description draws the images needed for the main screen options of the main menu
+	 * 
+	 * @param
+	 * GameContainer gc, Graphics g
+	 * 
+	 * @return
+	 * 	void:
+	 */
+	public void renderMainMenuScreenLoad(GameContainer gc, Graphics g){
+	
+		//Background Image
+		g.drawImage(loadBG, 0,0);
+	
+		g.drawImage(slotOne, 100, 150);
+		g.setColor(Color.white);
+		
+		if(Main.util.getSlotOneData().getLoadFile() != null) {
+			try {
+				g.drawImage(new Image("res/gui/slot1.png"), 100, 150);
+				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 150+75);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		g.drawImage(slotTwo, 100, 350);
+		
+		if(Main.util.getSlotTwoData().getLoadFile() != null) {
+			try {
+				g.drawImage(new Image("res/gui/slot2.png"), 100, 350);
+				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 350+75);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		g.drawImage(slotThree, 100, 550);
+		
+		if(Main.util.getSlotThreeData().getLoadFile() != null) {
+			try {
+				g.drawImage(new Image("res/gui/slot3.png"), 100, 550);
+				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 550+75);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		// Back Button
+		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 750); // Setting the x value as half of the game container and adjusting for the width of the button
+	}
+
+	/**
+	 * @method renderMainMenuScreenOptions
+	 * @description draws the images needed for the main screen options of the main menu
+	 * 
+	 * @param
+	 * GameContainer gc, Graphics g
+	 * 
+	 * @return
+	 * 	void:
+	 */
+	public void renderMainMenuScreenOptions(GameContainer gc, Graphics g){
+		//Background Image
+		g.drawImage(optionsBG, 0,0);
+		
+		//Music Options
+		g.drawImage(emptySlider, 448, 445);
+		musicSlider.draw(448,445,(float) (448+((Main.util.getMusicManager().getVolume() * 100) * 3.77)),445+35,0,0,(float) ((Main.util.getMusicManager().getVolume() * 100) * 3.77),35);
+		g.drawImage(plusMusic, 545, 485);
+		g.drawImage(minusMusic, 662, 485);
+		
+		//SFX Options
+		g.drawImage(emptySlider, 448, 445 + 135);
+		sfxSlider.draw(448,445 + 135,(float) (448+((Main.util.getSoundManager().getVolume() * 100) * 3.77)),(445+135)+35,0,0,(float) ((Main.util.getSoundManager().getVolume() * 100) * 3.77),35);
+		g.drawImage(plusSFX, 545, 485 + 135);
+		g.drawImage(minusSFX, 662, 485 + 135);
+	
+		// Back Button
+		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 700); // Setting the x value as half of the game container and adjusting for the width of the button
+	}
+
 	private void cycleSelection(Input input) {
 		if(input.isKeyPressed(Input.KEY_S) || input.isKeyPressed(Input.KEY_DOWN)) {
 			if(currentSelection + 1 == menuSize)
@@ -218,6 +309,43 @@ public class MainMenu extends BasicGameState{
 			currentSelection = -1;
 	}//end of checkMouseBounds
 	
+	private void StartGame(Input input, StateBasedGame sbg, int gameStateID) {
+		input.clearKeyPressedRecord();
+		sbg.enterState(gameStateID);
+		Main.util.getMusic().stop();
+		Main.util.setMusic(Main.util.getMusicQueue(1));
+		Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
+	}
+	
+	private void LoadButton() {
+		isLoad = true;
+	}
+	
+	private void OpenSave(GameContainer gc, Input input, StateBasedGame sbg, int slot) throws SlickException{
+		if(Main.util.getSlotOneData().getLoadFile() != null) {
+			isLoad = false;
+			
+			if(slot == 1)
+				Main.util.setCurrentLoadData(Main.util.getSlotOneData());
+			else if(slot == 2)
+				Main.util.setCurrentLoadData(Main.util.getSlotTwoData());
+			else if(slot == 3)
+				Main.util.setCurrentLoadData(Main.util.getSlotThreeData());
+			
+			Main.util.setLoadGame(true);
+			sbg.getState(Main.util.getCurrentLoadData().getGameStateFound()).init(gc, sbg);
+			StartGame(input, sbg, Main.util.getCurrentLoadData().getGameStateFound());
+		}
+	}//end of OpenSave
+
+	private void OptionButton() {
+		isOption = true;
+	}
+	
+	private void ExitButton() {
+		System.exit(0);
+	}
+
 	/**
 	 * @method mainButtonAction
 	 * @description checks the button detection and handles the according events in the main section of our main menu
@@ -236,7 +364,7 @@ public class MainMenu extends BasicGameState{
 		load = new Image("res/gui/buttons/button_load.png");
 		options = new Image("res/gui/buttons/button_options.png");
 		exit = new Image("res/gui/buttons/button_exit.png");
-
+	
 		// Play Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( (gc.getWidth()/2) - (play.getWidth()/2) , (gc.getWidth()/2) - (play.getWidth()/2) + play.getWidth() , 350 , 350 + play.getHeight())) {
@@ -246,7 +374,7 @@ public class MainMenu extends BasicGameState{
 				sbg.getState(Main.startlevel).init(gc, sbg);
 				StartGame(input, sbg, Main.startlevel);
 			}
-
+	
 			play = new Image("res/gui/buttons/button_new_hover.png");
 		}
 		else if(currentSelection == 0) {
@@ -297,7 +425,7 @@ public class MainMenu extends BasicGameState{
 		if(checkBounds( (gc.getWidth()/2) - (exit.getWidth()/2) , (gc.getWidth()/2) - (exit.getWidth()/2) + exit.getWidth() , 650 , 650 + exit.getHeight())){
 			if(input.isMousePressed(0))
 				ExitButton();
-
+	
 			exit = new Image("res/gui/buttons/button_exit_hover.png");
 		}
 		else if(currentSelection == 3) {
@@ -308,109 +436,6 @@ public class MainMenu extends BasicGameState{
 		}
 		
 	}//end of mainButtonAction
-	
-	private void StartGame(Input input, StateBasedGame sbg, int gameStateID) {
-		input.clearKeyPressedRecord();
-		sbg.enterState(gameStateID);
-		Main.util.getMusic().stop();
-		Main.util.setMusic(Main.util.getMusicQueue(1));
-		Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
-	}
-	
-	private void LoadButton() {
-		isLoad = true;
-	}
-	
-	private void OptionButton() {
-		isOption = true;
-	}
-	
-	private void ExitButton() {
-		System.exit(0);
-	}
-
-	/**
-	 * @method renderMainMenuScreenLoad
-	 * @description draws the images needed for the main screen options of the main menu
-	 * 
-	 * @param
-	 * GameContainer gc, Graphics g
-	 * 
-	 * @return
-	 * 	void:
-	 */
-	public void renderMainMenuScreenLoad(GameContainer gc, Graphics g){
-
-		//Background Image
-		g.drawImage(loadBG, 0,0);
-
-		g.drawImage(slotOne, 100, 150);
-		g.setColor(Color.white);
-		
-		if(Main.util.getSlotOneData().getLoadFile() != null) {
-			try {
-				g.drawImage(new Image("res/gui/slot1.png"), 100, 150);
-				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 150+75);
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		g.drawImage(slotTwo, 100, 350);
-		
-		if(Main.util.getSlotTwoData().getLoadFile() != null) {
-			try {
-				g.drawImage(new Image("res/gui/slot2.png"), 100, 350);
-				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 350+75);
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		g.drawImage(slotThree, 100, 550);
-		
-		if(Main.util.getSlotThreeData().getLoadFile() != null) {
-			try {
-				g.drawImage(new Image("res/gui/slot3.png"), 100, 550);
-				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 550+75);
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		// Back Button
-		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 750); // Setting the x value as half of the game container and adjusting for the width of the button
-	}	
-	
-	/**
-	 * @method renderMainMenuScreenOptions
-	 * @description draws the images needed for the main screen options of the main menu
-	 * 
-	 * @param
-	 * GameContainer gc, Graphics g
-	 * 
-	 * @return
-	 * 	void:
-	 */
-	public void renderMainMenuScreenOptions(GameContainer gc, Graphics g){
-		//Background Image
-		g.drawImage(optionsBG, 0,0);
-		
-		//Music Options
-		g.drawImage(emptySlider, 448, 445);
-		musicSlider.draw(448,445,(float) (448+((Main.util.getMusicManager().getVolume() * 100) * 3.77)),445+35,0,0,(float) ((Main.util.getMusicManager().getVolume() * 100) * 3.77),35);
-		g.drawImage(plusMusic, 545, 485);
-		g.drawImage(minusMusic, 662, 485);
-		
-		//SFX Options
-		g.drawImage(emptySlider, 448, 445 + 135);
-		sfxSlider.draw(448,445 + 135,(float) (448+((Main.util.getSoundManager().getVolume() * 100) * 3.77)),(445+135)+35,0,0,(float) ((Main.util.getSoundManager().getVolume() * 100) * 3.77),35);
-		g.drawImage(plusSFX, 545, 485 + 135);
-		g.drawImage(minusSFX, 662, 485 + 135);
-
-		// Back Button
-		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 700); // Setting the x value as half of the game container and adjusting for the width of the button
-	}
 
 	/**
 	 * @method loadButtonAction
@@ -446,7 +471,7 @@ public class MainMenu extends BasicGameState{
 		if(checkBounds( 100 , 100 + slotOne.getWidth() , 150, 150 + slotOne.getHeight())){
 			if(input.isMousePressed(0)) {
 				if(Main.util.getSlotOneData().getLoadFile() != null)
-					slotData(gc, input, sbg, 1);
+					OpenSave(gc, input, sbg, 1);
 			}
 			
 			if(Main.util.getSlotOneData().getLoadFile() != null)
@@ -457,7 +482,7 @@ public class MainMenu extends BasicGameState{
 		else if(currentSelection == 0) {
 				if(input.isKeyPressed(Input.KEY_ENTER)) {
 					if(Main.util.getSlotOneData().getLoadFile() != null)
-						slotData(gc, input, sbg, 1);
+						OpenSave(gc, input, sbg, 1);
 				}
 
 			if(Main.util.getSlotOneData().getLoadFile() != null)
@@ -471,7 +496,7 @@ public class MainMenu extends BasicGameState{
 		if(checkBounds( 100 , 100 + slotTwo.getWidth() , 350, 350 + slotTwo.getHeight())){
 			if(input.isMousePressed(0)) {
 				if(Main.util.getSlotTwoData().getLoadFile() != null)
-					slotData(gc, input, sbg, 2);
+					OpenSave(gc, input, sbg, 2);
 			}
 				
 			if(Main.util.getSlotTwoData().getLoadFile() != null)
@@ -482,7 +507,7 @@ public class MainMenu extends BasicGameState{
 		else if(currentSelection == 1) {
 			if(input.isKeyPressed(Input.KEY_ENTER)) {
 				if(Main.util.getSlotTwoData().getLoadFile() != null)
-					slotData(gc, input, sbg, 2);
+					OpenSave(gc, input, sbg, 2);
 			}
 
 		if(Main.util.getSlotTwoData().getLoadFile() != null)
@@ -496,7 +521,7 @@ public class MainMenu extends BasicGameState{
 		if(checkBounds( 100 , 100 + slotThree.getWidth() , 550, 550 + slotThree.getHeight())){
 			if(input.isMousePressed(0)){
 				if(Main.util.getSlotThreeData().getLoadFile() != null)
-					slotData(gc, input, sbg, 3);
+					OpenSave(gc, input, sbg, 3);
 			}
 				
 			if(Main.util.getSlotThreeData().getLoadFile() != null)
@@ -507,7 +532,7 @@ public class MainMenu extends BasicGameState{
 		else if(currentSelection == 2) {
 			if(input.isKeyPressed(Input.KEY_ENTER)) {
 				if(Main.util.getSlotThreeData().getLoadFile() != null)
-					slotData(gc, input, sbg, 3);
+					OpenSave(gc, input, sbg, 3);
 			}
 
 		if(Main.util.getSlotThreeData().getLoadFile() != null)
@@ -534,23 +559,6 @@ public class MainMenu extends BasicGameState{
 			isLoad = false;
 		
 	}//end of loadButtonAction
-	
-	public void slotData(GameContainer gc, Input input, StateBasedGame sbg, int slot) throws SlickException{
-		if(Main.util.getSlotOneData().getLoadFile() != null) {
-			isLoad = false;
-			
-			if(slot == 1)
-				Main.util.setCurrentLoadData(Main.util.getSlotOneData());
-			else if(slot == 2)
-				Main.util.setCurrentLoadData(Main.util.getSlotTwoData());
-			else if(slot == 3)
-				Main.util.setCurrentLoadData(Main.util.getSlotThreeData());
-			
-			Main.util.setLoadGame(true);
-			sbg.getState(Main.util.getCurrentLoadData().getGameStateFound()).init(gc, sbg);
-			StartGame(input, sbg, Main.util.getCurrentLoadData().getGameStateFound());
-		}
-	}//end of slotData
 	
 	/**
 	 * @method optionButtonAction

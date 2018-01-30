@@ -40,7 +40,7 @@ public class LoadGame {
 	/**
 	 * 
 	 * @param checkSize
-	 * @return row size of the array
+	 * @return the size of our array
 	 * 
 	 */
 	public int checkSize(File loadFile) throws FileNotFoundException {
@@ -57,9 +57,9 @@ public class LoadGame {
 	}//end of checkSize
 	
 	/**
-	 * Gets the texture paths from the file specified
-	 * @param textureFile
-	 * @return a 2D array with the information of our mobs
+	 * Gets the load file data from the file specified
+	 * @param loadFile
+	 * @return an array with the information of our mobs
 	 * @throws FileNotFoundException
 	 */
 	public String[] getLoadFile(File loadFile) throws FileNotFoundException{
@@ -83,21 +83,22 @@ public class LoadGame {
 
 	public void splitPaths(String[] loadData){
 		for(int i = 0; i < loadData.length; i++){
-			String [] properties = loadData[i].split(",");
+			String [] properties = loadData[i].split(",");//Split our row into pieces
 			if(i >= 2) {
-				addToClass(properties[0]);
-				addToX(properties[1]);
-				addToY(properties[2]);
-				addToHealth(properties[3]);
+				addToClass(properties[0]);//Add to class information
+				addToX(properties[1]);//Add to x position information
+				addToY(properties[2]);//Add to y position information
+				addToHealth(properties[3]);//Add to health data
 				if(i == 2) {//If getting player data
-					addToGravPack(properties[4]);
-					addToFlipping(properties[5]);
+					addToGravPack(properties[4]);//Add to gravity pack data
+					addToFlipping(properties[5]);//Add to flipping data
 				}
 			}
+			
 			else if (i == 0)
-				findGameState = Integer.parseInt(properties[0]);
+				findGameState = Integer.parseInt(properties[0]);//Set game state
 			else if (i == 1)
-				levelTime = Integer.parseInt(properties[0]);
+				levelTime = Integer.parseInt(properties[0]);//Set timer
 		}
 	}//end of splitPaths
 	

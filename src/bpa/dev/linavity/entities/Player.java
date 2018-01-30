@@ -1,7 +1,6 @@
 package bpa.dev.linavity.entities;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
@@ -63,10 +62,11 @@ public class Player extends Mob {
 	    this.currentImage = this.standStillAni;
 	}
 	
+	/**
+	 * All Messages / Events for the player are handled here
+	 */
 	@Override
 	public void onMessage(Message message){
-		
-		// All Messages / Events for the player are handled here
 		
 		// ID 0: Recharge Gravity Pack
 		// ID 1: Toggle Lever
@@ -106,8 +106,6 @@ public class Player extends Mob {
 		
 	}
 	
-	// PLAYER MOMENTUM CONTROL // 
-	
 	/*
 	 * Update the player's x and y momentum
 	 */
@@ -125,7 +123,6 @@ public class Player extends Mob {
 		return setXMomentum;
 	}
 	
-	
 	/*
 	 * Update the player's y momentum
 	 */
@@ -142,7 +139,7 @@ public class Player extends Mob {
 		
 		// Return our calculated yMomentum
 		return setYMomentum;
-	}
+	}//end of determineYMomentum
 	
 	/*
 	 * Return how the player is moving left or right based on input from the user
@@ -162,7 +159,7 @@ public class Player extends Mob {
 		}
 		
 		return 0;
-	}
+	}//end of xMovement
 	
 	// Determines if the player is moving in the X direction
 	private boolean movingLeftOrRight() {
@@ -200,7 +197,7 @@ public class Player extends Mob {
 				this.setIsMovingLeft(true);
 				return -this.walkSpeed * this.accessDelta;
 			}
-			else {
+			else {//Don't Move
 				this.setIsMovingLeft(false);
 				this.setIsMovingRight(false);
 			}
@@ -209,14 +206,14 @@ public class Player extends Mob {
 			this.setIsMovingRight(true);
 			return this.walkSpeed * this.accessDelta;
 			}
-			else {
+			else {//Don't move
 				this.setIsMovingLeft(false);
 				this.setIsMovingRight(false);
 			}
 		}
 		
 		return 0;
-	}
+	}//end of walkingX
 	
 	
 	/*
@@ -242,16 +239,19 @@ public class Player extends Mob {
 			
 		// End of Gravity Pack Control
 		
-		// Jumping
 		
 		int jumpMod = 1;
+		//If the player is flipped
 		if(this.isFlipping) {
 			jumpMod = -1;
+			//If the player is colliding up
 			if(this.collideUp)
 				this.jumps = -2;
 		}
 
+		//If their maximum jumps have not been reached
 		if(!maxJumps()) {
+			//If they are jumping
 			if(jumping()) {
 				this.jumps++;
 				this.jumpMomentum = jumpPower;
@@ -264,12 +264,12 @@ public class Player extends Mob {
 				this.jumpMomentum = 0;
 		}
 		
+		//The the player is colliding down
 		if(this.collideDown)
 			this.jumps = -1;
-		// End of Jumping
 		
 		return (jumpMod * this.jumpMomentum) + this.gravPackMomentum;
-	}
+	}//end of yMovement
 	
 	// Determine whether the player is trying to use their gravity pack
 	private boolean isUsingGravPack(){
@@ -289,10 +289,10 @@ public class Player extends Mob {
 		return Main.util.getKeyLogSpecificKey(0);
 	}
 	
-	// END OF PLAYER MOMENTUM CONTROL //
 	
-	
-	// Using keyLog from Utils now, movement may break for a bit
+	/**
+	 * update the player's functions
+	 */
 	@Override
 	public void update(int delta) {
 		
@@ -300,182 +300,32 @@ public class Player extends Mob {
 		 *MOVEMENT
 		 * Keys
 		 * Space - Jump (0)
-		 * A - Left (1)
-		 * S - Down (2)
-		 * D - Right (3)
+		 * A or Left Arrow - Left (1)
+		 * S or Down Arrow - Down (2)
+		 * D or Right Arrow - Right (3)
 		 *  
-		 * Left-Shift (4) 
+		 * Left Shift - Run (4)
+		 * Left-Control - Reverse Gravity(5) 
 		 * 
-		 * Z - Shoot (7) 
+		 * Enter - Shoot (7) 
 		 */
 		
 		this.gravPack.gravPowerCheck();
 		
-		checkFlipAnimation();
+		checkAnimation();
 		
 		updateMomentums();
 		
 		shootProjectile();
 		
 		super.updateMob(delta);
-		
-//		if(Main.util.getGravity().getFlipDirection()){ // Reverse Gravity
-//			gravPack.depletingGravPack();
-//			if(this.isCu())
-//				setCanJump(true);
-//		}else{ // Regular Gravity
-//			if(this.isCd())
-//				setCanJump(true);
-//		}
-//		
-//		
-//		
-//		if(Main.util.getKeyLogSpecificKey(0)) { //Check For Jump Key
-//			
-//			//By default, the player can only jump once
-//			//If the current jump is less or equal to the number of allowed jumps, jump
-//			if(jumps <= jumpNum && canJump()){
-//				this.isMovingLeft = false;
-//				this.isMovingRight = false;
-//				System.out.println("DOUBLE JUMPING");
-//				jump(Main.util.getGravity().getGravityPower());
-//				jumps++;
-//			}
-//			//If not falling, the player can jump
-//			else if(canJump()){
-//				this.isMovingLeft = false;
-//				this.isMovingRight = false;
-//				System.out.println("NOT FALL JUMPING");
-//				jump(Main.util.getGravity().getGravityPower());
-//				jumps = 1;
-//			}
-//		}
-//			
-//		/**
-//		 * if left or right
-//		 * 		if run
-//		 * 			move (5 or -5) ... I am running
-//		 * 		else 
-//		 * 			move (2 or -2) ... I am walking 
-//		 */
-//
-//		
-//			if(Main.util.getKeyLogSpecificKey(1) && Main.util.getKeyLogSpecificKey(4)) {  //Check For Run Left:  A + Left-Shift Pressed Together
-//				this.setX( (int) getX() - 5);
-//				this.isMovingLeft = true;
-//				this.isMovingRight = false;
-//				try {
-//					if(Main.util.getGravity().getFlipDirection()) {
-//						this.setMobImage(new Image("res/sprites/player/player_0.png"));
-//						this.getMobImage().rotate(flipDuration);
-//					}
-//					else {
-//						this.setMobImage(new Image("res/sprites/player/player_1.png"));
-//					}
-//				} catch (SlickException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			else if(Main.util.getKeyLogSpecificKey(1)) { //Check For A Key
-//				this.setX((int) getX() - 2);
-//				this.isMovingLeft = true;
-//				this.isMovingRight = false;
-//				try {
-//					if(Main.util.getGravity().getFlipDirection()) {
-//						this.setMobImage(new Image("res/sprites/player/player_0.png"));
-//						this.getMobImage().rotate(flipDuration);
-//					}
-//					else {
-//						this.setMobImage(new Image("res/sprites/player/player_1.png"));
-//					}
-//				} catch (SlickException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			
-//			if(Main.util.getKeyLogSpecificKey(3) && Main.util.getKeyLogSpecificKey(4)) {  //Check For Run Right:  D + Left-Shift Pressed Together
-//				this.setX( (int) getX() + 5);
-//				this.isMovingRight = true;
-//				this.isMovingLeft = false;
-//				try {
-//					if(Main.util.getGravity().getFlipDirection()) {
-//						this.setMobImage(new Image("res/sprites/player/player_1.png"));
-//						this.getMobImage().rotate(flipDuration);
-//					}
-//					else {
-//						this.setMobImage(new Image("res/sprites/player/player_0.png"));
-//					}
-//				} catch (SlickException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			else if(Main.util.getKeyLogSpecificKey(3)) { //Check For D key
-//				this.setX((int) getX() + 2);
-//				this.isMovingRight = true;
-//				this.isMovingLeft = false;
-//				try {
-//					if(Main.util.getGravity().getFlipDirection()) {
-//						this.setMobImage(new Image("res/sprites/player/player_1.png"));
-//						this.getMobImage().rotate(flipDuration);
-//					}
-//					else {
-//						this.setMobImage(new Image("res/sprites/player/player_0.png"));
-//					}
-//				} catch (SlickException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			
-//		// If the user presses control, reverse gravity
-//		if(! isFlipping ){
-//			if(Main.util.getKeyLogSpecificKey(5) && this.gravPack.getGravpower() > 0){
-//				isFlipping = true; // The player is currently flipping
-//				Main.util.getGravity().setFlipDirection(!Main.util.getGravity().getFlipDirection()); // Switch the direction in which the player is flipping
-//				flipDuration = 0;
-//				Main.util.getGravity().flipGravity();
-//			}
-//		}
-//		
-//		flipAnimation();
-//		
-//		if(this.gravPack.getGravpower() < 0){
-//			Main.util.getGravity().setFlipDirection(false); // Switch the direction in which the player is flipping
-//			isFlipping = true;
-//			flipDuration = 0;
-//			Main.util.getGravity().flipGravity();
-//			this.gravPack.setGravpower(0);
-//		}
-//		
-//		if(Main.util.getGravity().getFlipDirection()){ // Reverse Gravity
-//				super.updatePlayer(Main.util.getGravity().getGravityPower());
-//		}else{ // Regular Gravity
-//				super.updatePlayer(Main.util.getGravity().getGravityPower());
-//		}
-//		
-//		//Projectile Functions
-//		if(Main.util.getKeyLogSpecificKey(7)) {
-//			if(!projectileExists) {//If projectile does not exist
-//				projectileExists = true;
-//				try {
-//					currentProjectile = new Projectile();//Draw default projectile
-//				} catch (SlickException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//		if(projectileExists) {//If projectile exists, update the position
-//			currentProjectile.updatePos();
-//			if(currentProjectile.getX() > Main.util.getPlayer().getX() + 500) {//If projectile is 500 pixels away from player
-//				currentProjectile = null;//Destroy object
-//				projectileExists = false;//Projectile does not exist
-//			}
-//		}
-//		
-//		gravPack.gravPowerCheck();
-//		
+	
 	}//end of update
 	
-	public void checkFlipAnimation() {
+	/**
+	 * Checks the player's animation
+	 */
+	public void checkAnimation() {
 		  //If Moving Left Upside Down
 	      if (Main.util.getKeyLogSpecificKey(1)) {
 	    	  if(isFlipping())
@@ -502,16 +352,21 @@ public class Player extends Mob {
 	        }
 	}//end of checkFlipAnimation
 	
+	/**
+	 * handles all projectile shooting functions
+	 */
 	public void shootProjectile() {
 		//Projectile Functions
 		if(Main.util.getKeyLogSpecificKey(7)) {
 			if(!projectileExists) {//If projectile does not exist
 				projectileExists = true;				
 				try {
+					//If the player is moving left, shoot in the left direction
 					if(Main.util.getPlayer().isMovingLeft) {
 						Main.util.getSFX(1).play(1f, Main.util.getSoundManager().getVolume());
 						currentProjectile = new Projectile(true, false);//Draw default projectile
 					}
+					//If the player is moving right, shoot in the right direction
 					else {
 						Main.util.getSFX(1).play(1f, Main.util.getSoundManager().getVolume());
 						currentProjectile = new Projectile(false, true);//Draw default projectile
@@ -528,8 +383,11 @@ public class Player extends Mob {
 				projectileExists = false;//Projectile does not exist
 			}
 		}
-	}
+	}//end of shootProjectile
 	
+	/**
+	 * Creates an animation for when the player reverses gravity
+	 */
 	public void flipAnimation(){
 /*		if(isFlipping){
 			if(Main.util.getGravity().getFlipDirection()){
@@ -539,8 +397,7 @@ public class Player extends Mob {
 			}
 			flipDuration += rotateSpeed;
 		}*/
-		
-	}
+	}//end of flipAnimation
 	
 	// Player jumping function
 	public void jump(int gravPower){
@@ -574,49 +431,93 @@ public class Player extends Mob {
 	
 	/* GETTERS */
 	
+	/**
+	 * 
+	 * @return if true, a projectile currently exists. if false, there is none
+	 */
 	public boolean isProjectileExists() {
 		return projectileExists;
 	}
 
+	/**
+	 * 
+	 * @return the player's projectile
+	 */
 	public Projectile getCurrentProjectile() {
 		return currentProjectile;
 	}
 
+	/**
+	 * 
+	 * @return if true, the player is flipping. if false, the player is not
+	 */
 	public boolean isFlipping(){
 		return isFlipping;
 	}
 	
+	/**
+	 * 
+	 * @return the player's gravity pack
+	 */
 	public GravityPack getGravPack(){
 		return gravPack;
 	}
 	
+	/**
+	 * 
+	 * @return if true, the player can transition to the next level. if false, the player cannot
+	 */
 	public boolean isReadyForNextLevel() {
 		return readyForNextLevel;
 	}
 	
 	/* SETTERS */
 	
+	/**
+	 * changes the projectile's existence
+	 * @param projectileExists
+	 */
 	public void setProjectileExists(boolean projectileExists) {
 		this.projectileExists = projectileExists;
 	}
 
+	/**
+	 * changes the projectile
+	 * @param currentProjectile
+	 */
 	public void setCurrentProjectile(Projectile currentProjectile) {
 		this.currentProjectile = currentProjectile;
 	}
 
+	/**
+	 * changes the flipping boolean
+	 * @param isFlipping
+	 */
 	public void setIsFlipping(boolean isFlipping){
 		this.isFlipping = isFlipping;
 	}
 	
+	/**
+	 * changes the player's gravity pack
+	 * @param gravPack
+	 */
 	public void setGravPack(GravityPack gravPack){
 		this.gravPack = gravPack;
 	}
 	
+	/**
+	 * changes the player's ready for next level boolean
+	 * @param readyForNextLevel
+	 */
 	public void setReadyForNextLevel (boolean readyForNextLevel) {
 		this.readyForNextLevel = readyForNextLevel;
 	}
 	
+	/**
+	 * overwrite's the class's toString method for saving purposes
+	 */
 	public String toString() {
+		//Save the class name, x position, y position, health, gravity pack, and flipping boolean
 		return "Player,"+this.x+","+this.y+","+this.health+","+this.gravPack.toString()+","+this.isFlipping;
 	}
 	

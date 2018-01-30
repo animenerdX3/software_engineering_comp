@@ -17,9 +17,13 @@ public class Starter extends Mob{
 	
 	Random ran = new Random();
 	
+	//The least amount of distance the bomber can move
 	float direction = 10;
+	//The bomber's chance to move: a random number between 0f and 1f
 	float chanceToMove = ran.nextFloat();
+	//The distance the bomber will move
 	float moving = ran.nextInt(6) + direction;
+	//The counter for movement
 	float counter = 0;
 	
 	//Create enemy with constructor
@@ -107,7 +111,7 @@ public class Starter extends Mob{
 		}
 		
 		return 0;
-	}
+	}//end of xMovement
 	
 	// Determines if the enemy is moving in the X direction
 	private boolean movingLeftOrRight() {
@@ -134,6 +138,9 @@ public class Starter extends Mob{
 		return Main.util.getPlayer().getX() > getX();
 	}
 	
+	/**
+	 * @return movement for the enemy when they cannot detect the player
+	 */
 	public float idleMovement() {
 		if(chanceToMove < 0.01f) {
 			if(counter < moving) {
@@ -203,7 +210,7 @@ public class Starter extends Mob{
 		}
 		return idleMovement();
 	
-	}
+	}//end of walkingX
 	
 	/**
 	 * Determines if the player is within detection radius of emeny
@@ -219,10 +226,10 @@ public class Starter extends Mob{
 		}
 		else
 			this.isDetected = false;
-	}
+	}//end of detectPlayer
 	
 	/*
-	 * Return how the enemy is moving left or right based on input from the user
+	 * Return how the enemy is moving up or down
 	 */
 	private float yMovement() {
 		
@@ -243,7 +250,7 @@ public class Starter extends Mob{
 			this.jumps = 0;
 		
 		return jumpMomentum;
-	}
+	}//end of yMovement
 	
 	// Determine whether the enemy has jumped more than it's max
 	private boolean maxJumps() {
@@ -253,12 +260,10 @@ public class Starter extends Mob{
 			return true;
 	}
 	
-	// Determines if the enemy is running
+	// Tells the starter that they cannot jump
 	private boolean jumping() {
 		return false;
 	}
-	
-	// END OF ENEMY MOMENTUM CONTROL //
 	
 	
 	/**
@@ -278,16 +283,22 @@ public class Starter extends Mob{
 		
 		super.updateMob(delta);
 		
-	}//end of moveEnemy
+	}//end of updateEnemy
 	
+	/**
+	 * deals damage to the player
+	 */
 	public void dealDamage() {
 		
 		System.out.println("Damage Taken");
 		Main.util.getPlayer().setHealth(Main.util.getPlayer().getHealth() - getDamage());
 		System.out.println("HEALTH: "+ Main.util.getPlayer().getHealth());
 		
-	}//end of collidePlayer
+	}//end of dealDamage
 	
+	/**
+	 * checks to see if the starter has been hit with a projectile
+	 */
 	public void collideProjectile(){
 
 		if(Main.util.getPlayer().getCurrentProjectile().getX() >= getX() && Main.util.getPlayer().getCurrentProjectile().getX() <= (getX() + getWidth())) {
@@ -307,17 +318,29 @@ public class Starter extends Mob{
 	
 	/* GETTERS */
 	
+	/**
+	 * 
+	 * @return if true, the player is detected. if false, the player is not
+	 */
 	public boolean isDetected() {
 		return isDetected;
 	}
 	
 	/* SETTERS */
 	
+	/**
+	 * changes the detection of the player
+	 * @param isDetected
+	 */
 	public void setDetection(boolean isDetected) {
 		this.isDetected = isDetected;
 	}
 	
+	/**
+	 * overwrites the toString class for saving purposes
+	 */
 	public String toString() {
+		//Save the class name, the x position, the y position, and the health
 		return "Starter,"+this.x+","+this.y+","+this.health;
 	}
 	

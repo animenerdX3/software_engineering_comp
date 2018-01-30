@@ -7,7 +7,6 @@ import bpa.dev.linavity.utils.Utils;
 
 public class GravityPack{
 
-	
 	private float depletionRate;
 	private float gravpower;
 	private boolean canFlip;
@@ -20,34 +19,17 @@ public class GravityPack{
 	
 	public GravityPack(float gravpower) throws SlickException {
 		this.depletionRate = 0.3f;
-		this.setGravpower(gravpower);
+		this.gravpower = gravpower;
 		this.canFlip = true;
 	}
 	
-
+	/**
+	 * Drain gravity power from the player's gravity pack based on our depletion rate
+	 */
 	public void depletingGravPack(){
-			System.out.println("Depleting Gravity");
-			System.out.println("Depletion Rate: "+this.depletionRate);
-			System.out.println("Power: "+ Main.util.getPlayer().getGravPack().getGravpower());
-			Main.util.getPlayer().getGravPack().setGravpower(Main.util.getPlayer().getGravPack().getGravpower() - depletionRate);
-	}
+		Main.util.getPlayer().getGravPack().setGravpower(Main.util.getPlayer().getGravPack().getGravpower() - depletionRate);
+	}//end of depletingGravPack
 
-	public float getDepletionRate() {
-		return depletionRate;
-	}
-
-	public void setDepletionRate(float depletionRate) {
-		this.depletionRate = depletionRate;
-	}
-
-	public float getGravpower() {
-		return gravpower;
-	}
-
-	public void setGravpower(float gravpower) {
-		this.gravpower = gravpower;
-	}
-	
 	/**
 	 * going to check for the constraints on the the gravity power 
 	 * and also set the flip boolean when needed
@@ -64,14 +46,61 @@ public class GravityPack{
 		}
 	}
 
+	/* GETTERS */
+	
+	/**
+	 * 
+	 * @return our gravity pack's depletion rate
+	 */
+	public float getDepletionRate() {
+		return depletionRate;
+	}
+
+	/**
+	 * 
+	 * @return the gravity power in our gravity pack
+	 */
+	public float getGravpower() {
+		return gravpower;
+	}
+
+	/**
+	 * 
+	 * @return if true, the user can flip the gravity pack. if false, the user cannot flip
+	 */
 	public boolean isCanFlip() {
 		return canFlip;
 	}
 
+	/* SETTERS */
+	
+	/**
+	 * changes the depletion rate
+	 * @param depletionRate
+	 */
+	public void setDepletionRate(float depletionRate) {
+		this.depletionRate = depletionRate;
+	}
+
+	/**
+	 * changes the gravity power
+	 * @param gravpower
+	 */
+	public void setGravpower(float gravpower) {
+		this.gravpower = gravpower;
+	}
+
+	/**
+	 * changes the flipping boolean
+	 * @param canFlip
+	 */
 	public void setCanFlip(boolean canFlip) {
 		this.canFlip = canFlip;
 	}
 	
+	/**
+	 * Overwrites the class's toString method for saving purposes
+	 */
 	public String toString() {
 		return ""+this.gravpower;
 	}

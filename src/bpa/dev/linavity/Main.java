@@ -21,7 +21,10 @@ import bpa.dev.linavity.gamestates.*;
 
 public class Main extends StateBasedGame{
 
-	// Game State Identifier
+	//Game Version
+	public static final double version = 1.05;
+	
+	// Game State Identifiers
 	public static final int mainmenu = 0;
 	public static final int startlevel = 1;
 	public static final int gameover = 2;
@@ -39,33 +42,42 @@ public class Main extends StateBasedGame{
 	
 	// Class Constructor
 	public Main(String name) {
+		//Sets the name of our window
 		super(name);
+		//Add our states to the game
 		this.addState(new MainMenu());
 		this.addState(new StartLevel());
 		this.addState(new GameOver());
 	}
 
-	// Initiate our game states
+	/**
+	 * set data and enter our first gamestate
+	 */
 	public void initStatesList(GameContainer gc) throws SlickException {
+		//Set universal data
 		util = new Utils();
 		currentLevel = this;
 		appgc.setShowFPS(util.debugMode);//Show FPS Counter
-			
+		
+		//Enter the main menu 
 		this.enterState(mainmenu);
-	}
+	}//end of initStatesList
 	
-	// Main Method
+	/**
+	 * the main method: runs the whole program
+	 * @param args
+	 */
 	public static void main(String[] args){
 		try {
-			appgc = new AppGameContainer(new Main("Linavity - Version 1.04"));
-			appgc.setDisplayMode(WIDTH, HEIGHT, false);
+			appgc = new AppGameContainer(new Main("Linavity - Version "+version));//Creates our game container
+			appgc.setDisplayMode(WIDTH, HEIGHT, false);//Set size of our window
 			appgc.setAlwaysRender(true); // Constant Rendering 
 			appgc.setTargetFrameRate(FPS);//Set framerate
-			appgc.setIcons(icons);
+			appgc.setIcons(icons);//Set icons
 			appgc.start();//Start the program
 		} catch (SlickException e) {
-			ErrorLog.logError(e);
+			ErrorLog.logError(e);//Write to errorlog file
 		}
-	}
+	}//end of main
 
 }//end of class
