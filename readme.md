@@ -33,3 +33,11 @@ CHRIS
 - Error Logs
 YANNICK
 - Mob Animation
+
+Things For Yannick "The Meat Beating Beast" Almeida To Do:
+1. When the player moves left, make their animation stay left. This will require a stillImageLeft and stillImageRight animation.
+The end goal is so when the player moves left and stops, he is still looking left and vice versa. We need this for projectiles.
+2. The flip animation for reverse gravity.
+2.5. If you wanna try your hand on something new, try findin a way for us to have a text box in our game, so the user can input their name or something.
+With love,
+Ya boi
