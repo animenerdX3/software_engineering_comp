@@ -40,7 +40,7 @@ public class ParallaxMap {
 				this.y = y + (Yspeed/2);
 			}
 			if(this.y < -(this.backgroundLayer.getHeight() - 900)){
-				this.y = 0;
+				this.y = this.y - this.y;
 			}
 		}
 	}

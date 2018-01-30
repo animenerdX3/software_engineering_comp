@@ -56,7 +56,7 @@ public class MainMenu extends BasicGameState{
 			throws SlickException {
 		
 		// Initialize our image objects
-		bg = new ParallaxMap("res/titlescreen.jpg", 0, 0, 0, -3f, true);// Menu Background
+		bg = new ParallaxMap("res/titlescreen.png", 0, 0, 0, -3f, true);// Menu Background
 		title = new Image("res/title.png");
 		
 		// Main Menu Buttons
@@ -444,8 +444,10 @@ public class MainMenu extends BasicGameState{
 		// Slot 1 Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( 100 , 100 + slotOne.getWidth() , 150, 150 + slotOne.getHeight())){
-			if(input.isMousePressed(0))
-				slotData(gc, input, sbg, 1);
+			if(input.isMousePressed(0)) {
+				if(Main.util.getSlotOneData().getLoadFile() != null)
+					slotData(gc, input, sbg, 1);
+			}
 			
 			if(Main.util.getSlotOneData().getLoadFile() != null)
 				slotOne = new Image("res/gui/save_slot_hover.png");
@@ -453,8 +455,10 @@ public class MainMenu extends BasicGameState{
 				slotOne = new Image("res/gui/empty_save_slot_hover.png");
 		}
 		else if(currentSelection == 0) {
-				if(input.isKeyPressed(Input.KEY_ENTER))
-					slotData(gc, input, sbg, 1);
+				if(input.isKeyPressed(Input.KEY_ENTER)) {
+					if(Main.util.getSlotOneData().getLoadFile() != null)
+						slotData(gc, input, sbg, 1);
+				}
 
 			if(Main.util.getSlotOneData().getLoadFile() != null)
 				slotOne = new Image("res/gui/save_slot_hover.png");
@@ -465,8 +469,10 @@ public class MainMenu extends BasicGameState{
 		// Slot 2 Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( 100 , 100 + slotTwo.getWidth() , 350, 350 + slotTwo.getHeight())){
-			if(input.isMousePressed(0))
-				slotData(gc, input, sbg, 2);
+			if(input.isMousePressed(0)) {
+				if(Main.util.getSlotTwoData().getLoadFile() != null)
+					slotData(gc, input, sbg, 2);
+			}
 				
 			if(Main.util.getSlotTwoData().getLoadFile() != null)
 				slotTwo = new Image("res/gui/save_slot_hover.png");
@@ -474,8 +480,10 @@ public class MainMenu extends BasicGameState{
 				slotTwo = new Image("res/gui/empty_save_slot_hover.png");
 		}
 		else if(currentSelection == 1) {
-			if(input.isKeyPressed(Input.KEY_ENTER))
-				slotData(gc, input, sbg, 2);
+			if(input.isKeyPressed(Input.KEY_ENTER)) {
+				if(Main.util.getSlotTwoData().getLoadFile() != null)
+					slotData(gc, input, sbg, 2);
+			}
 
 		if(Main.util.getSlotTwoData().getLoadFile() != null)
 			slotTwo = new Image("res/gui/save_slot_hover.png");
@@ -486,8 +494,10 @@ public class MainMenu extends BasicGameState{
 		// Slot 3 Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( 100 , 100 + slotThree.getWidth() , 550, 550 + slotThree.getHeight())){
-			if(input.isMousePressed(0))
-				slotData(gc, input, sbg, 3);
+			if(input.isMousePressed(0)){
+				if(Main.util.getSlotThreeData().getLoadFile() != null)
+					slotData(gc, input, sbg, 3);
+			}
 				
 			if(Main.util.getSlotThreeData().getLoadFile() != null)
 				slotThree = new Image("res/gui/save_slot_hover.png");
@@ -495,8 +505,10 @@ public class MainMenu extends BasicGameState{
 				slotThree = new Image("res/gui/empty_save_slot_hover.png");
 		}
 		else if(currentSelection == 2) {
-			if(input.isKeyPressed(Input.KEY_ENTER))
-				slotData(gc, input, sbg, 3);
+			if(input.isKeyPressed(Input.KEY_ENTER)) {
+				if(Main.util.getSlotThreeData().getLoadFile() != null)
+					slotData(gc, input, sbg, 3);
+			}
 
 		if(Main.util.getSlotThreeData().getLoadFile() != null)
 			slotThree = new Image("res/gui/save_slot_hover.png");
