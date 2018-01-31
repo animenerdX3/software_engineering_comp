@@ -1,0 +1,8 @@
+res/tiles/blank.png,true
+res/tiles/static/floor_rust1.png,false
+res/tiles/static/floor_rust2.png,false
+res/tiles/static/floor.png,false
+res/tiles/static/glass.png,true
+res/tiles/dynamic/antigravity/antigravity_off.png,false
+res/tiles/dynamic/antigravity/antigravity_on.png,false
+res/tiles/dynamic/antigravity/antigravity_on_light.png,true
