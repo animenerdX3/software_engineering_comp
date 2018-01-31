@@ -34,7 +34,7 @@ public class TileManager {
 	 * @return textures as a file
 	 */
 	public File getFile(String directory) {
-		return new File("data/"+directory+".txt");
+		return new File("data/"+directory+".assets");
 	}//end of getFile
 	
 	/**

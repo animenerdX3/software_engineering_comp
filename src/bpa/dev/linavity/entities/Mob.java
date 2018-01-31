@@ -123,6 +123,8 @@ public abstract class Mob extends GameObject{
 		
 		//Check for collisions with mobs
 		
+		this.collidePlayer = false;
+		
 		//Get the level mobs
 		ArrayList<Mob>levelMobs = Main.util.getLevelMobs();
 		
@@ -292,10 +294,9 @@ public abstract class Mob extends GameObject{
 							this.xMomentum = 0;
 							this.autoDirectionLeft = !this.autoDirectionLeft;
 							this.collidePlayer = true;
+							mob.collidePlayer = true;
 							updateFuturePosition();
 					}
-					else
-						this.collidePlayer = false;
 				}
 				
 				//Moving Right - Check Collision
@@ -307,24 +308,23 @@ public abstract class Mob extends GameObject{
 							this.xMomentum = 0;
 							this.autoDirectionLeft = !this.autoDirectionLeft;
 							this.collidePlayer = true;
+							mob.collidePlayer = true;
 							updateFuturePosition();
 					}
-					else
-						this.collidePlayer = false;
 				}
 
 				//Moving Down - Check Collision
 				else if(onTop(mob)){
 					
 					if(downCollide(mob.getX(), mob.getX() + (float) mob.getBoundingBox().getWidth(), mob.getY(), mob.getY() + (float) mob.getBoundingBox().getHeight())){
+							System.out.println("COLLIDE DOWN");
 							this.y = mob.getY() - (this.getHeight() + 1);
 							this.collideDown = true;
 							this.yMomentum = 0;
 							this.collidePlayer = true;
+							mob.collidePlayer = true;
 							updateFuturePosition();
 					}
-					else
-						this.collidePlayer = false;
 				}
 
 				//Moving Up - Check Collision
@@ -334,10 +334,9 @@ public abstract class Mob extends GameObject{
 						this.collideUp = true;
 						this.yMomentum = 0;
 						this.collidePlayer = true;
+						mob.collidePlayer = true;
 						updateFuturePosition();
 						}
-					else
-						this.collidePlayer = false;
 				}
 				
 	}//end of collideWithMob
@@ -430,7 +429,6 @@ public abstract class Mob extends GameObject{
 	private boolean inRangeY(float objY1, float objY2) {
 		return ((this.y + this.height) >= objY1) && (this.y <= objY2);
 	}
-
 	
 	/* GETTERS */
 	
@@ -483,11 +481,27 @@ public abstract class Mob extends GameObject{
 		return x;
 	}
 
+	public float getFutureX1() {
+		return futureX1;
+	}
+
+	public float getFutureX2() {
+		return futureX2;
+	}
+
 	/**
 	 * @return the mob's y
 	 */
 	public float getY() {
 		return y;
+	}
+	
+	public float getFutureY1() {
+		return futureY1;
+	}
+
+	public float getFutureY2() {
+		return futureY2;
 	}
 	
 	/**
@@ -626,9 +640,15 @@ public abstract class Mob extends GameObject{
 			return standStillFlippedAni;
 		}
 
-
+	/**
+	 * 
+	 * @return if true, the player and mob are colliding. If false, they are not
+	 */
+	public boolean isCollidePlayer() {
+		return collidePlayer;
+	}
+	
 	/* SETTERS */
-
 	/**
 	 * changes the collision up boolean
 	 * @param cu
@@ -685,6 +705,14 @@ public abstract class Mob extends GameObject{
 		this.x = x;
 	}
 
+	public void setFutureX1(float futureX1) {
+		this.futureX1 = futureX1;
+	}
+
+	public void setFutureX2(float futureX2) {
+		this.futureX2 = futureX2;
+	}
+	
 	/**
 	 * changes the mob's y position
 	 * @param y
@@ -693,6 +721,14 @@ public abstract class Mob extends GameObject{
 		this.y = y;
 	}
 
+	public void setFutureY1(float futureY1) {
+		this.futureY1 = futureY1;
+	}
+
+	public void setFutureY2(float futureY2) {
+		this.futureY2 = futureY2;
+	}
+	
 	/**
 	 * changes the mob's x momentum
 	 * @param xMomentum

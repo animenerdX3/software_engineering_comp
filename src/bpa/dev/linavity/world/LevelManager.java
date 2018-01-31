@@ -29,7 +29,7 @@ public class LevelManager {
 	 * @return level as a file
 	 */
 	public File getFile(String directory) {
-		return new File("data/rooms/"+directory+".txt");
+		return new File("data/rooms/"+directory+".lvl");
 	}//end of getFile
 	
 	/**

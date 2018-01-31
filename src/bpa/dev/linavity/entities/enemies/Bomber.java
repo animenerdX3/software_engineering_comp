@@ -38,7 +38,7 @@ public class Bomber extends Mob{
 		this.x = x;
 		this.y = y;
 		this.mobName = "bomber";
-		this.width = 48;
+		this.width = 43;
 		this.height = 48;
 		this.gravPack = new GravityPack();
 		this.maxJumps = 0;

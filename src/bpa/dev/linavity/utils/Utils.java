@@ -40,12 +40,12 @@ public class Utils {
 	private int[] mouseLog = new int[im.getMouseLogLength()]; // Mouse
 	
 	// Music Objects
-	private MusicManager musicManager = new MusicManager("data/music_paths.txt");
+	private MusicManager musicManager = new MusicManager("data/music_paths.assets");
 	private Music music;
 	private String [] musicQueue;
 	
 	//Sound Effect Objects
-	SoundManager sfxFiles = new SoundManager("data/sound_paths.txt");
+	SoundManager sfxFiles = new SoundManager("data/sound_paths.assets");
 	private Sound [] sfx;
 	
 	//Handler for Levers

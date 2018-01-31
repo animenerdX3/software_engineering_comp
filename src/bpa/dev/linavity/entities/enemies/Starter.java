@@ -1,5 +1,6 @@
 package bpa.dev.linavity.entities.enemies;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -32,11 +33,11 @@ public class Starter extends Mob{
 		// Call Mob Constructor
 		super();
 		
-		// Enemy Signature (Eventually Read in from file)
+		// Enemy Signature
 		this.x = x;
 		this.y = y;
 		this.mobName = "starter";
-		this.width = 48;
+		this.width = 40;
 		this.height = 48;
 		this.gravPack = new GravityPack();
 		this.maxJumps = 0;

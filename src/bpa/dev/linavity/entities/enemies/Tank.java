@@ -279,8 +279,9 @@ public class Tank extends Mob{
 		
 		updateMomentums(); 
 		
-		if(this.collidePlayer)
+		if(this.collidePlayer) {
 			dealDamage();
+		}
 		
 		super.updateMob(delta);
 		

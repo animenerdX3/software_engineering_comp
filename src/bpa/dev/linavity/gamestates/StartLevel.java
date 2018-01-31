@@ -14,6 +14,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
+import bpa.dev.linavity.collectibles.GravPack;
+import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
@@ -64,6 +66,8 @@ public class StartLevel extends BasicGameState{
 	
 	//List of all possible enemies
 	public static ArrayList <Mob> mobs = new ArrayList<Mob>();
+	//List of all items
+	public static ArrayList <Item> items = new ArrayList<Item>();
 	
 	//Tiles for our level
 	private Tile[][] screenTiles;
@@ -79,10 +83,12 @@ public class StartLevel extends BasicGameState{
 			Main.util.setLevelTime(Main.util.getCurrentLoadData().getLevelTime());
 			mobs = getMobs(Main.util.getCurrentLoadData());
 			Main.util.setLoadGame(false);
+			items = getItems();
 		}
 		else {
 			Main.util.setLevelTime(0);
 			mobs = getMobs();
+			items = getItems();
 		}
 		
 		Main.util.setLevelMobs(mobs);
@@ -164,7 +170,16 @@ public class StartLevel extends BasicGameState{
 		}
 		
 		return mobs;
-	}//end of loadMobs
+	}//end of getMobs
+	
+	private ArrayList<Item> getItems() throws SlickException {
+		//Add mobs
+		ArrayList <Item> items = new ArrayList<Item>();
+		
+		items.add(new GravPack(2150, 750, "gravitypack"));
+		
+		return items;
+	}//end of getMobs
 	
 	/**
 	 * Renders content to the game / screen
@@ -200,6 +215,14 @@ public class StartLevel extends BasicGameState{
 				mobs.remove(i);
 		}
 
+		//Draw items
+		for(int i = 0; i < items.size(); i++) {
+			if(items.get(i).isActive())
+				items.get(i).getItemAni().draw(items.get(i).getX() - Main.util.cam.getX(), items.get(i).getY() - Main.util.cam.getY());
+			else
+				items.remove(i);
+		}
+		
 		g.setColor(Color.red);
 		g.drawString("Timer: "+Main.util.getLevelTime() / 1000, 800,50);
 		g.setColor(Color.white);
@@ -220,6 +243,12 @@ public class StartLevel extends BasicGameState{
 		mobs.get(i).setBoundingBox(new Rectangle((int) (mobs.get(i).getX() - Main.util.getCam().getX()), (int) (mobs.get(i).getY() - Main.util.getCam().getY()), mobs.get(i).getWidth(), mobs.get(i).getHeight()));
 		g.drawRect((int) mobs.get(i).getBoundingBox().getX(), (int) mobs.get(i).getBoundingBox().getY(), (int) mobs.get(i).getBoundingBox().getWidth(), (int) mobs.get(i).getBoundingBox().getHeight());
 			}
+		
+		for(int i = 0; i < items.size(); i++) {
+			items.get(i).setCollisionBox(new Rectangle((int) (items.get(i).getX() - Main.util.getCam().getX()), (int) (items.get(i).getY() - Main.util.getCam().getY()), (int)items.get(i).getWidth(), (int)items.get(i).getHeight()));
+			g.drawRect((int) items.get(i).getCollisionBox().getX(), (int) items.get(i).getCollisionBox().getY(), (int) items.get(i).getCollisionBox().getWidth(), (int) items.get(i).getCollisionBox().getHeight());
+		}
+		
 		}
 		
 		health_gui.draw(0,0);
@@ -440,6 +469,7 @@ public class StartLevel extends BasicGameState{
 		
 		// Update Mob Attributes
 		updateMobs(delta);
+		updateItems();
 		
 		//Check to see if mobs are alive
 		checkMobStatus(gc, sbg);
@@ -475,6 +505,11 @@ public class StartLevel extends BasicGameState{
 			mobs.get(i).update(delta);
 	}//end of updateMobs
 	
+	private void updateItems() {
+		for(int i = 0; i < items.size(); i++)
+			items.get(i).update();
+	}
+	
 	private void startAnimation() {
 		
 		//Starts animation for all mobs
@@ -488,6 +523,9 @@ public class StartLevel extends BasicGameState{
 				 mobs.get(i).getStandStillFlippedAni().start(); 
 			 }
 		}
+		
+		for(int i = 0; i < items.size(); i++)
+			items.get(i).getItemAni().start();
 		
 	}//end of stopAnimation
 	
@@ -504,6 +542,9 @@ public class StartLevel extends BasicGameState{
 			 }
 		}
 		
+		for(int i = 0; i < items.size(); i++)
+			items.get(i).getItemAni().update(delta);
+		
 	}//end of updateAnimation
 
 	private void stopAnimation() {
@@ -519,6 +560,9 @@ public class StartLevel extends BasicGameState{
 				 mobs.get(i).getStandStillFlippedAni().stop(); 
 			 }
 		}
+		
+		for(int i = 0; i < items.size(); i++)
+			items.get(i).getItemAni().stop();
 		
 	}//end of stopAnimation
 	
