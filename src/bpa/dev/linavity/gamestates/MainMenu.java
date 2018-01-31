@@ -6,15 +6,19 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.gui.AbstractComponent;
+import org.newdawn.slick.gui.ComponentListener;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
+import bpa.dev.linavity.utils.ErrorLog;
 import bpa.dev.linavity.world.ParallaxMap;
 
 
-public class MainMenu extends BasicGameState{
+public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	
 	// Gamestate ID (0) <-- Main Menu
 	public static int id = 0;
@@ -23,6 +27,10 @@ public class MainMenu extends BasicGameState{
 	public int prevXpos, prevYpos;
 	public int xpos, ypos;
 	
+	//TextField
+/*	private TextField name;
+	private String namevalue;*/
+		
 	//Title Screen Images
 	private ParallaxMap bg;
 	private Image title = null;
@@ -30,7 +38,7 @@ public class MainMenu extends BasicGameState{
 	private Image load = null;
 	private Image options = null;
 	private Image exit = null;
-	
+
 	//Option Screen Images
 	private Image optionsBG = null;
 	private Image emptySlider = null;
@@ -60,6 +68,11 @@ public class MainMenu extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		
+		//TODO Implement in StartLevel
+		//Text Field Data
+/*		name = new TextField(gc,gc.getDefaultFont(),100,100,300,20,this);
+		namevalue = "DefaultName";*/
+				
 		// Initialize our image objects
 		bg = new ParallaxMap("res/titlescreen.png", 0, 0, 0, -3f, true);// Menu Background
 		title = new Image("res/title.png");
@@ -112,6 +125,11 @@ public class MainMenu extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		
+/*		if(namevalue.equalsIgnoreCase("DefaultName"))
+			name.render(gc, g);
+		
+		gc.getDefaultFont().drawString(100, 300, "Stored Name: "+namevalue);*/
+		
 		// DRAW OUR MENU UI //
 		
 		g.setColor(Color.white);
@@ -138,6 +156,13 @@ public class MainMenu extends BasicGameState{
 
 	}//end of render
 
+/*	public void componentActivated(AbstractComponent source) { 
+		  if (source == name) { 
+		   namevalue = name.getText(); 
+		  } 
+		 
+	}//end of componentActivated 
+*/	
 	// Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
@@ -271,14 +296,14 @@ public class MainMenu extends BasicGameState{
 		//Music Options
 		g.drawImage(emptySlider, 448, 445);
 		musicSlider.draw(448,445,(float) (448+((Main.util.getMusicManager().getVolume() * 100) * 3.77)),445+35,0,0,(float) ((Main.util.getMusicManager().getVolume() * 100) * 3.77),35);
-		g.drawImage(plusMusic, 545, 485);
-		g.drawImage(minusMusic, 662, 485);
+		g.drawImage(minusMusic, 545, 485);
+		g.drawImage(plusMusic, 662, 485);
 		
 		//SFX Options
 		g.drawImage(emptySlider, 448, 445 + 135);
 		sfxSlider.draw(448,445 + 135,(float) (448+((Main.util.getSoundManager().getVolume() * 100) * 3.77)),(445+135)+35,0,0,(float) ((Main.util.getSoundManager().getVolume() * 100) * 3.77),35);
-		g.drawImage(plusSFX, 545, 485 + 135);
-		g.drawImage(minusSFX, 662, 485 + 135);
+		g.drawImage(minusSFX, 545, 485 + 135);
+		g.drawImage(plusSFX, 662, 485 + 135);
 	
 		// Back Button
 		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 700); // Setting the x value as half of the game container and adjusting for the width of the button
@@ -580,20 +605,9 @@ public class MainMenu extends BasicGameState{
 		minusSFX = new Image("res/gui/buttons/button_minus.png"); // Minus Button	
 		back = new Image("res/gui/buttons/button_back.png"); // Back Button	
 		
-		// Plus Music Button
+		// Minus Music
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( 545 , 545 + minusSFX.getWidth() , 485, 485 + minusSFX.getHeight())){
-			if(input.isMouseButtonDown(0)){
-				if(Main.util.getMusicManager().getVolume() <= 0.995f)
-						Main.util.getMusicManager().setVolume(Main.util.getMusicManager().getVolume() + 0.005f);
-						Main.util.getMusic().setVolume(Main.util.getMusicManager().getVolume());
-			}
-			plusMusic = new Image("res/gui/buttons/button_plus_hover.png");
-		}
-		
-		// Minus Music Button
-		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( 662 , 662 + minusMusic.getWidth() , 485, 485 + minusMusic.getHeight())){
+		if(checkBounds( 545 , 545 + minusMusic.getWidth() , 485, 485 + minusMusic.getHeight())){
 			if(input.isMouseButtonDown(0)){
 				if(Main.util.getMusicManager().getVolume() >= 0.005f)
 						Main.util.getMusicManager().setVolume(Main.util.getMusicManager().getVolume() - 0.005f);
@@ -602,9 +616,33 @@ public class MainMenu extends BasicGameState{
 			minusMusic = new Image("res/gui/buttons/button_minus_hover.png");
 		}
 		
-		// Plus SFX Button
+		// Plus Music Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(checkBounds( 662 , 662 + plusMusic.getWidth() , 485, 485 + plusMusic.getHeight())){
+			if(input.isMouseButtonDown(0)){
+				if(Main.util.getMusicManager().getVolume() <= 0.995f)
+						Main.util.getMusicManager().setVolume(Main.util.getMusicManager().getVolume() + 0.005f);
+						Main.util.getMusic().setVolume(Main.util.getMusicManager().getVolume());
+			}
+			plusMusic = new Image("res/gui/buttons/button_plus_hover.png");
+		}
+		
+		// Minus SFX Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( 545 , 545 + minusSFX.getWidth() , 485 + 135 , 485 + 135 + minusSFX.getHeight())){
+			if(input.isMouseButtonDown(0)){
+				if(Main.util.getSoundManager().getVolume() >= 0.005f) {
+						Main.util.getSoundManager().setVolume(Main.util.getSoundManager().getVolume() - 0.005f);
+						if(Main.util.getSoundManager().getVolume() % 0.1f > 0.095f)
+							Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
+				}
+			}
+			minusSFX = new Image("res/gui/buttons/button_minus_hover.png");
+		}
+		
+		// Plus SFX Button
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		if(checkBounds( 662 , 662 + plusSFX.getWidth() , 485 + 135 , 485 + 135 + plusSFX.getHeight())){
 			if(input.isMouseButtonDown(0)){
 				if(Main.util.getSoundManager().getVolume() <= 0.995f)
 						Main.util.getSoundManager().setVolume(Main.util.getSoundManager().getVolume() + 0.005f);
@@ -614,19 +652,6 @@ public class MainMenu extends BasicGameState{
 						}
 			}
 			plusSFX = new Image("res/gui/buttons/button_plus_hover.png");
-		}
-		
-		// Minus SFX Button
-		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		if(checkBounds( 662 , 662 + minusSFX.getWidth() , 485 + 135 , 485 + 135 + minusSFX.getHeight())){
-			if(input.isMouseButtonDown(0)){
-				if(Main.util.getSoundManager().getVolume() >= 0.005f) {
-						Main.util.getSoundManager().setVolume(Main.util.getSoundManager().getVolume() - 0.005f);
-						if(Main.util.getSoundManager().getVolume() % 0.1f > 0.095f)
-							Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
-				}
-			}
-			minusSFX = new Image("res/gui/buttons/button_minus_hover.png");
 		}
 		
 		// Back Button
