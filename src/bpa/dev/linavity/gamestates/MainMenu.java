@@ -6,15 +6,19 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.gui.AbstractComponent;
+import org.newdawn.slick.gui.ComponentListener;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
+import bpa.dev.linavity.utils.ErrorLog;
 import bpa.dev.linavity.world.ParallaxMap;
 
 
-public class MainMenu extends BasicGameState{
+public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	
 	// Gamestate ID (0) <-- Main Menu
 	public static int id = 0;
@@ -23,6 +27,10 @@ public class MainMenu extends BasicGameState{
 	public int prevXpos, prevYpos;
 	public int xpos, ypos;
 	
+	//TextField
+/*	private TextField name;
+	private String namevalue;*/
+		
 	//Title Screen Images
 	private ParallaxMap bg;
 	private Image title = null;
@@ -60,6 +68,11 @@ public class MainMenu extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		
+		//TODO Implement in StartL
+		//Text Field Data
+/*		name = new TextField(gc,gc.getDefaultFont(),100,100,300,20,this);
+		namevalue = "DefaultName";*/
+				
 		// Initialize our image objects
 		bg = new ParallaxMap("res/titlescreen.png", 0, 0, 0, -3f, true);// Menu Background
 		title = new Image("res/title.png");
@@ -112,6 +125,11 @@ public class MainMenu extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		
+/*		if(namevalue.equalsIgnoreCase("DefaultName"))
+			name.render(gc, g);
+		
+		gc.getDefaultFont().drawString(100, 300, "Stored Name: "+namevalue);*/
+		
 		// DRAW OUR MENU UI //
 		
 		g.setColor(Color.white);
@@ -138,6 +156,13 @@ public class MainMenu extends BasicGameState{
 
 	}//end of render
 
+/*	public void componentActivated(AbstractComponent source) { 
+		  if (source == name) { 
+		   namevalue = name.getText(); 
+		  } 
+		 
+	}//end of componentActivated 
+*/	
 	// Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
