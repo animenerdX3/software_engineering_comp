@@ -68,7 +68,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		
-		//TODO Implement in StartL
+		//TODO Implement in StartLevel
 		//Text Field Data
 /*		name = new TextField(gc,gc.getDefaultFont(),100,100,300,20,this);
 		namevalue = "DefaultName";*/
