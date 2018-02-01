@@ -891,7 +891,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 							if(Main.util.getInventory().getItems().get(counter) instanceof HealthPack){
 								new UseItem("health");
 								Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(counter));
-							} if(Main.util.getInventory().getItems().get(counter) instanceof GravCapsule){
+							} else if(Main.util.getInventory().getItems().get(counter) instanceof GravCapsule){
 								new UseItem("gravcapsule");
 								Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(counter));
 							}
