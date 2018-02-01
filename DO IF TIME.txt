@@ -1,0 +1,8 @@
+Do If Time List: 
+
+1. Peter wants to get married and have kids
+2. Make seperate sprites for the player when grav pack is obtained
+3. Rotate image when Grav Pack is activated
+4. Create new enemy that crawls on the wall or ceiling
+5. Easter Eggs in the video game itself (level design, players, etc.)
+6. 
