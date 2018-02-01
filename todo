@@ -19,15 +19,15 @@ SIMPLE MILESTONES (Short-term goals)
 1.) ✓ Gamestates 
 2.) ✓ Sprites/Spritesheets
 3.) ✓ Level Designs (Need a way to actually design the level)
-4.) Super Basic Collectibles
+4.) ✓ Super Basic Collectibles
 5.) ✓ Collisions
 
 ADVANCED MILESTONES (Long-term goals)
 --------------------
 1.) ✓ Scrolling Map (Map moves with main character)
-2.) NPCs (If we're having any)
+2.) ✓ NPCs (If we're having any)
 3.) Dialogue boxes for NPC text(?)*(Depends on if we're going with a bigger focus on the story, but we'll probably need it in some form anyway)
-4.) Physics for objects
+4.) ✓ Physics for objects
 5.) ✓ Background
 6.) ✓ Parallax Mapping
 7.) ✓ Health System
