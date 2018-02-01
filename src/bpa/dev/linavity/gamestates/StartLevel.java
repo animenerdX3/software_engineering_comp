@@ -73,6 +73,8 @@ public class StartLevel extends BasicGameState{
 	private Tile[][] screenTiles;
 	private Tile[][] eventTiles;
 	
+	private boolean alertPlayer;
+	
 	/**
 	 * This runs as soon as we compile the program
 	 */
@@ -80,10 +82,12 @@ public class StartLevel extends BasicGameState{
 			throws SlickException {
 		
 		if(Main.util.getLoadGame()) {
+			Main.util.getCam().setX(Main.util.getCurrentLoadData().getCamX());
+			Main.util.getCam().setY(Main.util.getCurrentLoadData().getCamY());
 			Main.util.setLevelTime(Main.util.getCurrentLoadData().getLevelTime());
 			mobs = getMobs(Main.util.getCurrentLoadData());
-			Main.util.setLoadGame(false);
 			items = getItems();
+			Main.util.setLoadGame(false);
 		}
 		else {
 			Main.util.setLevelTime(0);
@@ -426,6 +430,8 @@ public class StartLevel extends BasicGameState{
 		else if(menuOpen && !saveOpen) {
 			stopAnimation();//Stop updating animation
 			Main.util.getMusic().pause();//Pause the music
+			if(Main.util.getSFX(2).playing())
+				Main.util.getSFX(2).stop();
 			// Open pop-up menu
 			checkMenu(gc, sbg);
 		}
@@ -467,6 +473,9 @@ public class StartLevel extends BasicGameState{
 		//Check for End of Level
 		endLevel(sbg);
 		
+		//Check to see if player is dying
+		alertPlayer(15);
+		
 		// Update Mob Attributes
 		updateMobs(delta);
 		updateItems();
@@ -495,6 +504,23 @@ public class StartLevel extends BasicGameState{
 		}
 	}//end of endLevel
 
+	private void alertPlayer(double alertHealth) {
+		if(Main.util.getPlayer().getHealth() <= alertHealth && Main.util.getPlayer().getHealth() != 0 && !alertPlayer) {
+			alertPlayer = true;
+			playDeathSound();
+		}else if(Main.util.getPlayer().getHealth() > alertHealth) {
+			Main.util.getSFX(2).stop();
+			if(!Main.util.getMusic().playing())
+				Main.util.getMusic().resume();
+			alertPlayer = false;
+		}
+	}
+	
+	private void playDeathSound() {
+		Main.util.getMusic().pause();
+		Main.util.getSFX(2).loop(1f, Main.util.getSoundManager().getVolume());
+	}
+	
 	/**
 	 * Perform all updates to the player object
 	 * @param delta
@@ -516,11 +542,13 @@ public class StartLevel extends BasicGameState{
 		for(int i = 0; i < mobs.size(); i++) {
 			 mobs.get(i).getLeftAni().start(); 
 			 mobs.get(i).getRightAni().start();
-			 mobs.get(i).getStillAni().start(); 
+			 mobs.get(i).getStillLeftAni().start();
+			 mobs.get(i).getStillRightAni().start(); 
 			 if(i == 0) {//If we are updating the player
 				 mobs.get(i).getMoveLeftFlippedAni().start();
 				 mobs.get(i).getMoveRightFlippedAni().start(); 
-				 mobs.get(i).getStandStillFlippedAni().start(); 
+				 mobs.get(i).getStandStillLeftFlippedAni().start(); 
+				 mobs.get(i).getStandStillRightFlippedAni().start(); 
 			 }
 		}
 		
@@ -534,11 +562,13 @@ public class StartLevel extends BasicGameState{
 		for(int i = 0; i < mobs.size(); i++) {
 			 mobs.get(i).getLeftAni().update(delta); // this line makes sure the speed of the Animation is true
 			 mobs.get(i).getRightAni().update(delta); // this line makes sure the speed of the Animation is true
-			 mobs.get(i).getStillAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getStillLeftAni().update(delta); // this line makes sure the speed of the Animation is true
+			 mobs.get(i).getStillRightAni().update(delta); // this line makes sure the speed of the Animation is true
 			 if(i == 0) {//If we are updating the player
 				 mobs.get(i).getMoveLeftFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
 				 mobs.get(i).getMoveRightFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
-				 mobs.get(i).getStandStillFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+				 mobs.get(i).getStandStillLeftFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
+				 mobs.get(i).getStandStillRightFlippedAni().update(delta); // this line makes sure the speed of the Animation is true
 			 }
 		}
 		
@@ -553,11 +583,13 @@ public class StartLevel extends BasicGameState{
 		for(int i = 0; i < mobs.size(); i++) {
 			 mobs.get(i).getLeftAni().stop(); 
 			 mobs.get(i).getRightAni().stop();
-			 mobs.get(i).getStillAni().stop(); 
+			 mobs.get(i).getStillLeftAni().stop(); 
+			 mobs.get(i).getStillRightAni().stop(); 
 			 if(i == 0) {//If we are updating the player
 				 mobs.get(i).getMoveLeftFlippedAni().stop();
 				 mobs.get(i).getMoveRightFlippedAni().stop(); 
-				 mobs.get(i).getStandStillFlippedAni().stop(); 
+				 mobs.get(i).getStandStillLeftFlippedAni().stop();
+				 mobs.get(i).getStandStillRightFlippedAni().stop(); 
 			 }
 		}
 		
@@ -624,6 +656,7 @@ public class StartLevel extends BasicGameState{
 				Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
 				Main.util.getMusic().resume();
 				startAnimation();
+				alertPlayer = false;
 				menuOpen = false;
 			}
 			resume = new Image("res/gui/buttons/button_resume_hover.png");
@@ -632,6 +665,7 @@ public class StartLevel extends BasicGameState{
 			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
 			Main.util.getMusic().resume();
 			startAnimation();
+			alertPlayer = false;
 			menuOpen = false; // ! Makes the escape toggle
 		}
 		
@@ -714,7 +748,7 @@ public class StartLevel extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(MainMenu.checkBounds( 100 , 100 + slotOne.getWidth() , 150, 150 + slotOne.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
-				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 1, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 1, Main.util.getLevelTime());
 				saveProgress.createSave();
 			}
 			if(Main.util.getSlotOneData().getLoadFile() != null)
@@ -727,7 +761,7 @@ public class StartLevel extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(MainMenu.checkBounds( 100 , 100 + slotTwo.getWidth() , 350, 350 + slotTwo.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
-				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 2, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 2, Main.util.getLevelTime());
 				saveProgress.createSave();
 			}
 			if(Main.util.getSlotTwoData().getLoadFile() != null)
@@ -740,7 +774,7 @@ public class StartLevel extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(MainMenu.checkBounds( 100 , 100 + slotThree.getWidth() , 550, 550 + slotThree.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
-				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, 3, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 3, Main.util.getLevelTime());
 				saveProgress.createSave();
 			}
 			if(Main.util.getSlotThreeData().getLoadFile() != null)

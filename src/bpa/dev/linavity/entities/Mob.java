@@ -72,8 +72,11 @@ public abstract class Mob extends GameObject{
 	    protected SpriteSheet moveLeft; // initate a SpriteSheet
 	    protected Animation moveLeftAni; // initate a Animation
 		
-	    protected SpriteSheet standStill; //initiate a SpriteSheet
-	    protected Animation standStillAni; // initate a Animation
+	    protected SpriteSheet standStillLeft; //initiate a SpriteSheet
+	    protected Animation standStillLeftAni; // initate a Animation
+	    
+	    protected SpriteSheet standStillRight; //initiate a SpriteSheet
+	    protected Animation standStillRightAni; // initate a Animation
 	    
 	    protected SpriteSheet moveRightFlipped; // initate a SpriteSheet
 	    protected Animation moveRightFlippedAni; // initate a Animation
@@ -81,9 +84,13 @@ public abstract class Mob extends GameObject{
 	    protected SpriteSheet moveLeftFlipped; // initate a SpriteSheet
 	    protected Animation moveLeftFlippedAni; // initate a Animation
 	    
-	    protected SpriteSheet standStillFlipped; // initate a SpriteSheet
-	    protected Animation standStillFlippedAni; // initate a Animation
+	    protected SpriteSheet standStillLeftFlipped; // initate a SpriteSheet
+	    protected Animation standStillLeftFlippedAni; // initate a Animation
+	    
+	    protected SpriteSheet standStillRightFlipped; // initate a SpriteSheet
+	    protected Animation standStillRightFlippedAni; // initate a Animation
 
+	    protected Animation currentStillImage;
 	    protected Animation currentImage;
 		
 	//Mob Movement Variables
@@ -604,8 +611,16 @@ public abstract class Mob extends GameObject{
 	 * 
 	 * @return the mob's still animation
 	 */
-	public Animation getStillAni() {
-		return standStillAni;
+	public Animation getStillLeftAni() {
+		return standStillLeftAni;
+	}
+	
+	/**
+	 * 
+	 * @return the mob's still animation
+	 */
+	public Animation getStillRightAni() {
+		return standStillRightAni;
 	}
 	
 	/**
@@ -614,6 +629,14 @@ public abstract class Mob extends GameObject{
 	 */
 	public Animation getCurrentImage() {
 		return currentImage;
+	}
+	
+	/**
+	 * 
+	 * @return the mob's current still animation
+	 */
+	public Animation getCurrentStillImage() {
+		return currentStillImage;
 	}
 	
 	/**
@@ -636,9 +659,18 @@ public abstract class Mob extends GameObject{
 	 * 
 	 * @return the mob's still animation flipped (for reverse gravity)
 	 */
-	public Animation getStandStillFlippedAni() {
-			return standStillFlippedAni;
+	public Animation getStandStillLeftFlippedAni() {
+			return standStillLeftFlippedAni;
 		}
+	
+	/**
+	 * 
+	 * @return the mob's still animation flipped (for reverse gravity)
+	 */
+	public Animation getStandStillRightFlippedAni() {
+			return standStillRightFlippedAni;
+		}
+
 
 	/**
 	 * 
@@ -815,6 +847,14 @@ public abstract class Mob extends GameObject{
 	 */
 	public void setCurrentImage(Animation currentImage) {
 		this.currentImage = currentImage;
+	}
+	
+	/**
+	 * changes the mob's current still animation image
+	 * @param currentStillImage
+	 */
+	public void setCurrentStillImage(Animation stillCurrentImage) {
+		this.currentStillImage = stillCurrentImage;
 	}
 	
 }//end of class

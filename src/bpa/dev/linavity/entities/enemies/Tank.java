@@ -14,6 +14,7 @@ import bpa.dev.linavity.entities.Mob;
 public class Tank extends Mob{
 
 	private boolean isDetected;
+	private boolean toggleDirection;
 	
 	Random ran = new Random();
 	
@@ -53,9 +54,11 @@ public class Tank extends Mob{
 	    this.moveLeftAni = new Animation(this.moveLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
 	    this.moveRight = new SpriteSheet("res/sprites/"+this.mobName+"/"+mobName+"_right_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
 	    this.moveRightAni = new Animation(this.moveRight, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    this.standStill = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
-	    this.standStillAni = new Animation(this.standStill, 450); // declare a SpriteSheet and load it into java with its dimensions
-	    this.currentImage = this.standStillAni;
+	    this.standStillLeft = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_1.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+	    this.standStillLeftAni = new Animation(this.standStillLeft, 450); // declare a SpriteSheet and load it into java with its dimensions
+	    this.standStillRight = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+	    this.standStillRightAni = new Animation(this.standStillRight, 450); // declare a SpriteSheet and load it into java with its dimensions
+	    this.currentImage = this.standStillRightAni;
 	} 
 	
 	/*
@@ -115,10 +118,16 @@ public class Tank extends Mob{
 	private boolean movingLeftOrRight() {
 		if(this.isDetected && movingLeft())
 			this.currentImage = this.moveLeftAni;
+		
 		else if(this.isDetected && movingRight())
 			this.currentImage = this.moveRightAni;
-		else
-			this.currentImage = this.standStillAni;
+		
+		else {
+			if(toggleDirection)
+				this.currentImage = this.standStillLeftAni;
+			else
+				this.currentImage = this.standStillRightAni;
+		}
 		
 		return movingLeft() || movingRight();
 	}
@@ -146,11 +155,13 @@ public class Tank extends Mob{
 				if(counter < moving) {
 					//If true, move to the left
 					if(autoDirectionLeft) {
+						toggleDirection = true;
 						this.currentImage = this.moveLeftAni;
 						return AILeft();
 					}
 					//Move to the right
 					else {
+						toggleDirection = false;
 						this.currentImage = this.moveRightAni;
 						return AIRight();
 					}		

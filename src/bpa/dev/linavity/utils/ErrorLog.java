@@ -23,7 +23,7 @@ public class ErrorLog {
 			if(!error.exists())//If the file does not exist, create it
 				error.createNewFile();
 			
-			fw = new FileWriter(error.getAbsoluteFile(), true);
+			fw = new FileWriter(error.getAbsoluteFile(), false);
 			bw = new BufferedWriter(fw);
 			bw.write(e.toString());//Write to the file
 			

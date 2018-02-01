@@ -21,6 +21,7 @@ public class Player extends Mob {
 	private boolean projectileExists = false;
 	private Projectile currentProjectile;
 	private boolean readyForNextLevel;
+	private boolean toggleDirection = false;
 	
 	private GravityPack gravPack;
 	
@@ -51,15 +52,20 @@ public class Player extends Mob {
 	    this.moveLeftAni = new Animation(this.moveLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
 	    this.moveRight = new SpriteSheet("res/sprites/"+this.mobName+"/"+mobName+"_right_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
 	    this.moveRightAni = new Animation(this.moveRight, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    this.standStill = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
-	    this.standStillAni = new Animation(this.standStill, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.standStillLeft = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_1.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
+	    this.standStillLeftAni = new Animation(this.standStillLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.standStillRight = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
+	    this.standStillRightAni = new Animation(this.standStillRight, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
 	    this.moveLeftFlipped = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_left_flip_ani.png",50,50);// declare a SpriteSheet and load it into java with its dimensions
 	    this.moveLeftFlippedAni = new Animation(this.moveLeftFlipped, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
 	    this.moveRightFlipped = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_right_flip_ani.png",50,50);// declare a SpriteSheet and load it into java with its dimensions
 	    this.moveRightFlippedAni = new Animation(this.moveRightFlipped, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    this.standStillFlipped = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0_flip.png",50,50);// declare a SpriteSheet and load it into java with its dimensions
-	    this.standStillFlippedAni = new Animation(this.standStillFlipped, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    this.currentImage = this.standStillAni;
+	    this.standStillLeftFlipped = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0_flip.png",50,50);// declare a SpriteSheet and load it into java with its dimensions
+	    this.standStillLeftFlippedAni = new Animation(this.standStillLeftFlipped, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.standStillRightFlipped = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_1_flip.png",50,50);// declare a SpriteSheet and load it into java with its dimensions
+	    this.standStillRightFlippedAni = new Animation(this.standStillRightFlipped, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.currentImage = this.standStillRightAni;
+	    this.currentStillImage = this.standStillRightAni;
 	}
 	
 	/**
@@ -223,8 +229,9 @@ public class Player extends Mob {
 		
 		// Gravity Pack Control
 		if(this.gravPack.isCanFlip()) { // If the player's gravity pack is currently able to fight gravity
-			if(isUsingGravPack()) // And the player is trying to use their gravity pack
+			if(isUsingGravPack()) { // And the player is trying to use their gravity pack
 				this.isFlipping = !this.isFlipping;
+			}
 		}else{
 			this.isFlipping = false;
 		}
@@ -326,8 +333,10 @@ public class Player extends Mob {
 	 * Checks the player's animation
 	 */
 	public void checkAnimation() {
+		
 		  //If Moving Left Upside Down
 	      if (Main.util.getKeyLogSpecificKey(1)) {
+	    	  toggleDirection = true;
 	    	  if(isFlipping())
 	    		  setCurrentImage(getMoveLeftFlippedAni());
 	    	  else
@@ -336,7 +345,7 @@ public class Player extends Mob {
 	      
 	      //If Moving Right Upside Down
 	      else if (Main.util.getKeyLogSpecificKey(3)) {
-
+	    	  toggleDirection = false;
 	    	  if(Main.util.getPlayer().isFlipping())
 	    		  setCurrentImage(getMoveRightFlippedAni()); 
 	    	  else
@@ -345,12 +354,20 @@ public class Player extends Mob {
 	      
 	      //If Still Upside Down
 	      else{
-	        	if(Main.util.getPlayer().isFlipping())
-	        		setCurrentImage(getStandStillFlippedAni());
-	        	else
-	        	setCurrentImage(getStillAni());
+	        	if(Main.util.getPlayer().isFlipping()) {
+	        		if(toggleDirection)
+	        			setCurrentImage(getStandStillLeftFlippedAni());
+	        		else
+	        			setCurrentImage(getStandStillRightFlippedAni());
+	        	}
+	        	else {
+	        		if(toggleDirection)
+		        		setCurrentImage(getStillLeftAni());
+	        		else
+		        		setCurrentImage(getStillRightAni());
+	        	}
 	        }
-	}//end of checkFlipAnimation
+	}//end of checkAnimation
 	
 	/**
 	 * handles all projectile shooting functions
@@ -362,7 +379,7 @@ public class Player extends Mob {
 				projectileExists = true;				
 				try {
 					//If the player is moving left, shoot in the left direction
-					if(Main.util.getPlayer().isMovingLeft) {
+					if(toggleDirection) {
 						Main.util.getSFX(1).play(1f, Main.util.getSoundManager().getVolume());
 						currentProjectile = new Projectile(true, false);//Draw default projectile
 					}

@@ -15,6 +15,7 @@ import bpa.dev.linavity.entities.Mob;
 public class Starter extends Mob{
 
 	private boolean isDetected;
+	private boolean toggleDirection;
 	
 	Random ran = new Random();
 	
@@ -48,14 +49,15 @@ public class Starter extends Mob{
 		this.canJump = false;
 		this.isDetected = false;
 		
-		this.moveLeft = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
+		this.moveLeft = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
 	    this.moveLeftAni = new Animation(this.moveLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    this.moveRight = new SpriteSheet("res/sprites/"+this.mobName+"/"+mobName+"_right_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
+	    this.moveRight = new SpriteSheet("res/sprites/"+this.mobName+"/"+mobName+"_right_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
 	    this.moveRightAni = new Animation(this.moveRight, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    this.standStill = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
-	    this.standStillAni = new Animation(this.standStill, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-
-	    this.currentImage = this.standStillAni;
+	    this.standStillLeft = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_1.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+	    this.standStillLeftAni = new Animation(this.standStillLeft, 450); // declare a SpriteSheet and load it into java with its dimensions
+	    this.standStillRight = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_0.png",50,50); // declare a SpriteSheet and load it into java with its dimentions
+	    this.standStillRightAni = new Animation(this.standStillRight, 450); // declare a SpriteSheet and load it into java with its dimensions
+	    this.currentImage = this.standStillRightAni;
 	}
 	
 	
@@ -117,12 +119,18 @@ public class Starter extends Mob{
 	// Determines if the enemy is moving in the X direction
 	private boolean movingLeftOrRight() {
 		
-		if(this.isDetected && movingLeft())
+		if(this.isDetected && movingLeft()) 
 			this.currentImage = this.moveLeftAni;
-		else if(this.isDetected && movingRight())
+		
+		else if(this.isDetected && movingRight()) 
 			this.currentImage = this.moveRightAni;
-		else
-			this.currentImage = this.standStillAni;
+		
+		else {
+			if(toggleDirection)
+				this.currentImage = this.standStillLeftAni;
+			else
+				this.currentImage = this.standStillRightAni;
+		}
 		
 		return movingLeft() || movingRight();
 	}
@@ -169,11 +177,13 @@ public class Starter extends Mob{
 	}
 	
 	public float AILeft() {
+		toggleDirection = true;
 		counter = counter + this.walkSpeed;
 		return -this.walkSpeed * this.accessDelta;
 	}
 	
 	public float AIRight() {
+		toggleDirection = false;
 		counter = counter + this.walkSpeed;
 		return this.walkSpeed * this.accessDelta;
 	}

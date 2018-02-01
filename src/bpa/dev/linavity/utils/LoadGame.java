@@ -19,6 +19,7 @@ public class LoadGame {
 	private int classNameCounter, Xcounter, Ycounter, healthCounter;
 	
 	private int findGameState;
+	private float camX, camY;
 	private int levelTime;
 	private String [] classNames;
 	private float [] xPos, yPos;
@@ -84,21 +85,23 @@ public class LoadGame {
 	public void splitPaths(String[] loadData){
 		for(int i = 0; i < loadData.length; i++){
 			String [] properties = loadData[i].split(",");//Split our row into pieces
-			if(i >= 2) {
+			if(i >= 1) {
 				addToClass(properties[0]);//Add to class information
 				addToX(properties[1]);//Add to x position information
 				addToY(properties[2]);//Add to y position information
 				addToHealth(properties[3]);//Add to health data
-				if(i == 2) {//If getting player data
+				if(i == 1) {//If getting player data
 					addToGravPack(properties[4]);//Add to gravity pack data
 					addToFlipping(properties[5]);//Add to flipping data
 				}
 			}
 			
-			else if (i == 0)
+			else if (i == 0) {
 				findGameState = Integer.parseInt(properties[0]);//Set game state
-			else if (i == 1)
-				levelTime = Integer.parseInt(properties[0]);//Set timer
+				camX = Float.parseFloat(properties[1]);
+				camY = Float.parseFloat(properties[2]);
+				levelTime = Integer.parseInt(properties[3]);
+			}
 		}
 	}//end of splitPaths
 	
@@ -134,6 +137,14 @@ public class LoadGame {
 	
 	public int getGameStateFound() {
 		return findGameState;
+	}
+	
+	public float getCamX() {
+		return camX;
+	}
+	
+	public float getCamY() {
+		return camY;
 	}
 	
 	public int getLevelTime() {

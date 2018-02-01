@@ -1,1 +1,1 @@
-java.io.FileNotFoundException: data\muic_paths.txt (The system cannot find the file specified)java.io.FileNotFoundException: data\muic_paths.txt (The system cannot find the file specified)java.io.FileNotFoundException: data\muic_paths.txt (The system cannot find the file specified)java.io.FileNotFoundException: data\muic_paths.txt (The system cannot find the file specified)java.io.FileNotFoundException: data\musc_paths.txt (The system cannot find the file specified)
+org.newdawn.slick.SlickException: Failed to load sound: sfx/menu_select.wav
