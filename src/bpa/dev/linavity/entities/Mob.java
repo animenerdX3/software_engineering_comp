@@ -125,11 +125,10 @@ public abstract class Mob extends GameObject{
 		updateFuturePosition();
 		
 		// Check for collisions with tiles
-		checkMobCollisions(Main.util.getEvents(), new Camera(this.x, this.y, this.collisionRadius));
-		checkMobCollisions(Main.util.getLevel(), new Camera(this.x, this.y, this.collisionRadius));
+		checkMobCollisions(Main.util.getLevel().getScreenTiles(new Camera(this.x, this.y, this.collisionRadius), Main.util.getLevel().getEvents()), new Camera(this.x, this.y, this.collisionRadius));
+		checkMobCollisions(Main.util.getLevel().getScreenTiles(new Camera(this.x, this.y, this.collisionRadius), Main.util.getLevel().getMap()), new Camera(this.x, this.y, this.collisionRadius));
 		
 		//Check for collisions with mobs
-		
 		this.collidePlayer = false;
 		
 		//Get the level mobs
@@ -204,9 +203,7 @@ public abstract class Mob extends GameObject{
 	 * @param level
 	 * @param cam
 	 */
-	public void checkMobCollisions(Level level, Camera cam) {
-		
-		Tile[][] screenTiles = level.getScreenTiles(cam); // Load in the visible part of the level
+	public void checkMobCollisions(Tile[][] screenTiles, Camera cam) {
 		
 		//Reset our collision variables
 		this.collideLeft = false;

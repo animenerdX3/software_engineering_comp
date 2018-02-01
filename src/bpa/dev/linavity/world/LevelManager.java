@@ -1,27 +1,147 @@
 package bpa.dev.linavity.world;
 
+import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.newdawn.slick.SlickException;
+
+import bpa.dev.linavity.entities.tiles.Dynamic;
+import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.utils.ErrorLog;
 
 public class LevelManager {
-
-	private int [][] world;
+	
+	
+	// File Instance Variables
+	File mapFile;
+	File eventsFile;
+	File channelsFile;
+	File configFile;
+	File characterFile;
+	File mobsFile;
+	
 	
 	/**
-	 * Get the file name for a level and read it in
+	 * Create all level info based on a level ID
 	 * @param directory
 	 */
-	public LevelManager(String directory) {
-		File worldFile = getFile(directory);//Turn into a file type
+	public LevelManager(int id) {
+		
+		// FILE CREATION
+		mapFile = getFile("data/levels/" + id + "/" + id + ".map");
+		eventsFile = getFile("data/levels/" + id + "/" + id + ".events");
+		channelsFile = getFile("data/levels/" + id + "/" + id + ".channels");
+		configFile = getFile("data/levels/" + id + "/" + id + ".levelConfig");
+		characterFile = getFile("data/levels/" + id + "/" + id + ".character");
+		mobsFile = getFile("data/levels/" + id + "/" + id + ".mobs");
+		// END OF FILE CREATION
+		
+	}//end of LevelManager
+	
+	
+	// Gives the level its map
+	public Tile[][] makeMap() throws SlickException {
+		
 		try {
-			world = getWorldMap(worldFile);//Get the 2D array of ints for the world
+			return createTileArray(get2DIntArray(mapFile));
 		} catch (FileNotFoundException e) {
 			ErrorLog.logError(e);
+			return null;
+		}
+		
+	}
+	
+	// Gives the level its events
+	public Tile[][] makeEvents() throws SlickException {
+		
+		try {
+			return createTileArray(get2DIntArray(eventsFile));
+		} catch (FileNotFoundException e) {
+			ErrorLog.logError(e);
+			return null;
+		}
+		
+	}
+	
+	// Gives the level its channels
+	public ArrayList<Point[]> makeChannels() throws SlickException, FileNotFoundException {
+
+		ArrayList<Point[]> channels = new ArrayList<Point[]>();
+		
+		String[] tempChannelArray = getStringArray(channelsFile);
+		
+		for(int i = 0; i < tempChannelArray.length; i++) {
+			channels.add(makePointArray(tempChannelArray[i]));
+		}
+		
+		return channels;
+	}
+	
+	public int[][] makeConfig() {
+		return null;
+	}
+	
+	public int[][] makeCharacter() {
+		return null;
+	}
+	 
+	public int[][] mobs() {
+		return null;
+	}
+	
+	
+	// TILE MANAGEMENT
+	
+	public Point[] makePointArray(String line) {
+		
+		String[] tempStringArray = line.split(",");
+		
+		Point[] tempPointArray = new Point[tempStringArray.length / 2];
+		
+		for(int i = 0; i < tempPointArray.length; i += 2) {
+			tempPointArray[i] = new Point(Integer.parseInt(tempStringArray[i]), Integer.parseInt(tempStringArray[i+1])); 
+		}
+		
+		return tempPointArray;
+		
+	}
+	
+	/**
+	 * Converts the 2D array of ids to an array of tile objects
+	 * 
+	 * @param tileIDs	2D tile ID array
+	 * @return tiles	a 2D array of tile objects for the level
+	 * 
+	 */
+	private Tile[][] createTileArray(int[][] tileIDs) throws SlickException {
+		
+		Tile[][] tiles = new Tile[tileIDs.length][tileIDs[0].length]; //Create a 2D array with the same size as the tileIDs array
+		
+		for(int i = 0; i < tileIDs.length; i++) {//Parse through tile ID 2D array
+			
+			for(int j = 0; j < tileIDs[i].length; j++) {//Parse through a single row
+				
+				// Depending on the tile ID's determine the type of tile that is being generated
+				if(tileIDs[i][j] > 4){
+					if(tileIDs[i][j] == 5)
+						tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 40, 50, 10);
+					else
+						tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 0, 50, 50);
+				}else{
+					tiles[i][j] = new Tile(i, j, tileIDs[i][j]);//Create a tile based on the id
+				}
+				
 			}
-	}//end of LevelManager
+			
+		}
+	
+		return tiles;//Return 2D array of tiles
+	}
+	
+	// END OF TILE MANAGEMENT 
 	
 	/**
 	 * Converts the String into a file type
@@ -29,18 +149,18 @@ public class LevelManager {
 	 * @return level as a file
 	 */
 	public File getFile(String directory) {
-		return new File("data/rooms/"+directory+".lvl");
+		return new File(directory);
 	}//end of getFile
 	
 	/**
 	 * 
-	 * @param worldFile
+	 * @param file
 	 * @return row size of the array
 	 * 
 	 */
-	public int checkSize(File worldFile) throws FileNotFoundException {
+	public int checkSize(File file) throws FileNotFoundException {
 		int arraysize = 0;
-		Scanner scan = new Scanner(worldFile);
+		Scanner scan = new Scanner(file);
 		
 		while(scan.hasNextLine()) {
 			scan.nextLine();
@@ -53,42 +173,63 @@ public class LevelManager {
 	
 	/**
 	 * Gets the world map from the file specified
-	 * @param worldFile
+	 * @param file
 	 * @return a 2D array with the information of our world
 	 * @throws FileNotFoundException
 	 */
-	public int[][] getWorldMap(File worldFile) throws FileNotFoundException{
-		Scanner scan = new Scanner(worldFile);
+	public int[][] get2DIntArray(File file) throws FileNotFoundException{
 		
-		int [][] temp_world = null;//the world array
-		String [] worldRow = new String[checkSize(worldFile)];//an array for one row
+		Scanner scan = new Scanner(file);
 		
-		for(int i = 0; i < worldRow.length; i++) {
-			worldRow[i] = scan.nextLine();//Get the next row in the file
-			String [] worldCol = worldRow[i].split(",");//Split the row into columns
+		int [][] tempArray = null;//the world array
+		String [] row = new String[checkSize(file)];//an array for one row
+		
+		for(int i = 0; i < row.length; i++) {
+			row[i] = scan.nextLine();//Get the next row in the file
+			String [] col = row[i].split(",");//Split the row into columns
 			if(i == 0) {//Once we initialize the size of our columns, we can get the size of the 2D array
-				temp_world = new int[worldRow.length][worldCol.length];//Set the size of the 2D array
+				tempArray = new int[row.length][col.length];//Set the size of the 2D array
 			}
-			for(int x = 0; x < worldCol.length; x++) {
-				temp_world[i][x] = Integer.parseInt(worldCol[x]);//Put each element into the array
+			for(int x = 0; x < col.length; x++) {
+				tempArray[i][x] = Integer.parseInt(col[x]);//Put each element into the array
 			}
 		}
 		
 		scan.close();//Close the scanner
-		return temp_world;//Return the world
+		return tempArray;//Return the 2d int array
 		
-	}//end of getWorldMap
-
-	/* GETTERS */
+	} // End of get2DIntArray
 	
-	public int[][] getWorld() {
-		return world;
-	}
-
-	/* SETTERS */
+	/**
+	 * Gets a string array from a file
+	 * @param file
+	 * @return a string array
+	 * @throws FileNotFoundException
+	 */
+	public String[] getStringArray(File file) throws FileNotFoundException {
 	
-	public void setWorld(int[][] world) {
-		this.world = world;
-	}
+		// Create scanner object from file
+		Scanner scan = new Scanner(file);
+		
+		// Create a temporary string array the length of lines in the file
+		String[] temp = new String[checkSize(file)];
+		
+		// For the length of the array, assign strings to the array
+		for(int i = 0; i < temp.length; i++) {
+			temp[i] = scan.nextLine();
+		}
+		
+		// Close the scanner object
+		scan.close();
+		
+		// Return our string array
+		return temp;
+		
+		
+	} // End of getStringArray
+
+	// Getters
+	
+	// Setters
 	
 }//end of class

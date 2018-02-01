@@ -1,6 +1,8 @@
 package bpa.dev.linavity.world;
 
 import java.awt.Point;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import org.newdawn.slick.SlickException;
 
@@ -10,119 +12,132 @@ import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.gamestates.MainMenu;
 
 public class Level {
-
-	// Level ID
-	private int id;
 	
+	// Level ID, Width and Height
+	private int id;
 	private int levelWidth, levelHeight;
 	
-	// 2d array of tile objects that makes up the level
-	private Tile[][] tiles;
+	// Level Data
+	private Tile[][] map;
+	private Tile[][] events;
+	
+	private ArrayList<Point[]> channels;
+	
+	private int[][] config;
+	
+	private int[][] character;
+	private int[][] mobs;
 
 	/**
 	 * Constructor: Creates a level for our gamestate
 	 * 
 	 * @param id	id for the tiles
-	 * @param tileIDs	2D array for the level tile IDs
+	 * @throws FileNotFoundException 
 	 * 
 	 * 
 	 */
-	public Level(int id, String directory) 
-			throws SlickException{
-		LevelManager level = new LevelManager(directory);
-		int [][] tileIDs = level.getWorld();
-		tiles = new Tile[tileIDs.length][tileIDs[0].length];//Create a 2D array with the same size as the tileIDs array
-		tiles = createLevel(tileIDs);//Populate the array with tiles based on the tilesID array
-		this.levelWidth = tileIDs[0].length * 50;
-		this.levelHeight = tileIDs.length * 50;
-	}
-	
-	/**
-	 * Converts the 2D array of ids to an array of tile objects
-	 * 
-	 * @param tileIDs	2D tile ID array
-	 * @return tiles	a 2D array of tile objects for the level
-	 * 
-	 */
-	private Tile[][] createLevel(int[][] tileIDs) 
-			throws SlickException {
+	public Level(int id) throws SlickException, FileNotFoundException{
 		
-		for(int i = 0; i < tileIDs.length; i++) {//Parse through tile ID 2D array
-			
-			for(int j = 0; j < tileIDs[i].length; j++) {//Parse through a single row
-				
-				// Depending on the tile ID's determine the type of tile that is being generated
-				if(tileIDs[i][j] > 4){
-					if(tileIDs[i][j] == 5)
-						tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 40, 50, 10);
-					else
-						tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 0, 50, 50);
-				}else{
-					tiles[i][j] = new Tile(i, j, tileIDs[i][j]);//Create a tile based on the id
-				}
-				
-				
-				
-			}
-			
-		}
-	
-		return tiles;//Return 2D array of tiles
+		LevelManager lm = new LevelManager(id);
+		
+		this.map = lm.makeMap();
+		this.events = lm.makeEvents();
+		//this.channels = lm.makeChannels();
+		
+		this.levelWidth = map[0].length * 50;
+		this.levelHeight = map.length * 50;
+
 	}
 	
 	// Returns a 2d array of tiles that are within the boundaries of our camera object
-	public Tile[][] getScreenTiles(Camera cam) {
-		
-		// Get a 2d array of tile objects that are contained within our camera's view
-		Tile[][] screenTiles = new Tile[19][19];
-		
-		// Temp x and y of tile in relation to the camera
-		float tileX, tileY;
-		
-		//Counters for where the tile should be placed in the smaller 2d array that we return
-		int screenI = 0;
-		int screenJ = 0;
-		
-		boolean isALine = false;
-		
-		for(int i = 0; i < tiles.length; i++) {
-			for(int j = 0; j < tiles[i].length; j++) {
-				tileX = tiles[i][j].getX() - cam.getX();
-				tileY = tiles[i][j].getY() - cam.getY();
-				if(MainMenu.checkBounds(-cam.getBuffer(), 900, -cam.getBuffer(), 900, tileX, tileY)) {
-					screenTiles[screenI][screenJ] = tiles[i][j];
-					if(screenJ < 18)
-						screenJ++;
-					isALine = true;
+		public Tile[][] getScreenTiles(Camera cam, Tile[][] tiles) {
+			
+			// Get a 2d array of tile objects that are contained within our camera's view
+			Tile[][] screenTiles = new Tile[19][19];
+			
+			// Temp x and y of tile in relation to the camera
+			float tileX, tileY;
+			
+			//Counters for where the tile should be placed in the smaller 2d array that we return
+			int screenI = 0;
+			int screenJ = 0;
+			
+			boolean isALine = false;
+			
+			for(int i = 0; i < tiles.length; i++) {
+				for(int j = 0; j < tiles[i].length; j++) {
+					tileX = tiles[i][j].getX() - cam.getX();
+					tileY = tiles[i][j].getY() - cam.getY();
+					if(MainMenu.checkBounds(-cam.getBuffer(), 900, -cam.getBuffer(), 900, tileX, tileY)) {
+						screenTiles[screenI][screenJ] = tiles[i][j];
+						if(screenJ < 18)
+							screenJ++;
+						isALine = true;
+					}
+					
 				}
-				
+				screenJ = 0;
+				if(isALine) {
+					screenI++;
+					isALine = false;
+				}
 			}
-			screenJ = 0;
-			if(isALine) {
-				screenI++;
-				isALine = false;
-			}
+			
+			return screenTiles;
 		}
-		
-		return screenTiles;
-	}
 	
-	/* GETTERS */
+	// Getters
 	
-	public int getId() {
-		return id;
-	}
-	
-	public Tile[][] getTiles() {
-		return tiles;
+	/**
+	 * @return the map
+	 */
+	public Tile[][] getMap() {
+		return map;
 	}
 
-	public Tile getSingleTile(int i, int j) {
-		return tiles[i][j];
+
+
+	/**
+	 * @return the events
+	 */
+	public Tile[][] getEvents() {
+		return events;
 	}
-	
-	public Tile getSingleTile(Point coords) {
-		return tiles[coords.x][coords.y];
+
+
+
+	/**
+	 * @return the channels
+	 */
+	public ArrayList<Point[]> getChannels() {
+		return channels;
+	}
+
+
+
+	/**
+	 * @return the config
+	 */
+	public int[][] getConfig() {
+		return config;
+	}
+
+
+
+	/**
+	 * @return the character
+	 */
+	public int[][] getCharacter() {
+		return character;
+	}
+
+
+
+	/**
+	 * @return the mobs
+	 */
+	public int[][] getMobs() {
+		return mobs;
 	}
 	
 	public int getLevelWidth() {
@@ -133,15 +148,66 @@ public class Level {
 		return levelHeight;
 	}
 	
-	/* SETTERS */
+	public int getId() {
+		return id;
+	}
 	
-	public void setId(int id) {
-		this.id = id;
+	// Setters
+
+	/**
+	 * @param map the map to set
+	 */
+	public void setMap(Tile[][] map) {
+		this.map = map;
 	}
 
 
-	public void setTiles(Tile[][] tiles) {
-		this.tiles = tiles;
+
+	/**
+	 * @param events the events to set
+	 */
+	public void setEvents(Tile[][] events) {
+		this.events = events;
+	}
+
+
+
+	/**
+	 * @param channels the channels to set
+	 */
+	public void setChannels(ArrayList<Point[]> channels) {
+		this.channels = channels;
+	}
+
+
+
+	/**
+	 * @param config the config to set
+	 */
+	public void setConfig(int[][] config) {
+		this.config = config;
+	}
+
+
+
+	/**
+	 * @param character the character to set
+	 */
+	public void setCharacter(int[][] character) {
+		this.character = character;
+	}
+
+
+
+	/**
+	 * @param mobs the mobs to set
+	 */
+	public void setMobs(int[][] mobs) {
+		this.mobs = mobs;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public void setLevelWidth(int levelWidth) {
@@ -151,5 +217,18 @@ public class Level {
 	public void setLevelHeight(int levelHeight) {
 		this.levelHeight = levelHeight;
 	}
+
+
+	// Old getter for a single tile
+
+//	public Tile getSingleTile(int i, int j) {
+//		return tiles[i][j];
+//	}
+//	
+//	public Tile getSingleTile(Point coords) {
+//		return tiles[coords.x][coords.y];
+//	}
+	
+	
 	
 }//end of class
