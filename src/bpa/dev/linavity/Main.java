@@ -46,7 +46,7 @@ public class Main extends StateBasedGame{
 		super(name);
 		//Add our states to the game
 		this.addState(new MainMenu());
-		this.addState(new StartLevel());
+		this.addState(new GameLevel());
 		this.addState(new GameOver());
 	}
 

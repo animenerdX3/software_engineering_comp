@@ -9,6 +9,7 @@ import org.newdawn.slick.Sound;
 import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.assets.MusicManager;
 import bpa.dev.linavity.assets.SoundManager;
+import bpa.dev.linavity.collectibles.Inventory;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
@@ -63,6 +64,9 @@ public class Utils {
 	
 	//The current level's timer
 	private int levelTime;
+	
+	//The inventory system
+	private Inventory inventory;
 	
 	// Default Constructor
 	public Utils() throws SlickException{
@@ -258,8 +262,16 @@ public class Utils {
 		return levelTime;
 	}
 	
-	/* SETTERS */
+	/**
+	 * 
+	 * @return the universal inventory
+	 */
+	public Inventory getInventory() {
+		return inventory;
+	}
 	
+	/* SETTERS */
+
 	/**
 	 * changes player object
 	 * @param player
@@ -398,6 +410,14 @@ public class Utils {
 	 */
 	public void setLevelTime(int levelTime) {
 		this.levelTime = levelTime;
+	}
+
+	/**
+	 * changes the inventory system
+	 * @param inventory
+	 */
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
 	}
 	
 }//end of class

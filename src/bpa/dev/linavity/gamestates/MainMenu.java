@@ -336,6 +336,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	
 	private void StartGame(Input input, StateBasedGame sbg, int gameStateID) {
 		input.clearKeyPressedRecord();
+		Main.appgc.setMouseGrabbed(true);
 		sbg.enterState(gameStateID);
 		Main.util.getMusic().stop();
 		Main.util.setMusic(Main.util.getMusicQueue(1));

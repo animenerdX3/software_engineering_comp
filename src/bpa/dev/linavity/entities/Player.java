@@ -22,6 +22,7 @@ public class Player extends Mob {
 	private Projectile currentProjectile;
 	private boolean readyForNextLevel;
 	private boolean toggleDirection = false;
+	private boolean inventoryOpen;
 	
 	private GravityPack gravPack;
 	
@@ -66,6 +67,8 @@ public class Player extends Mob {
 	    this.standStillRightFlippedAni = new Animation(this.standStillRightFlipped, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
 	    this.currentImage = this.standStillRightAni;
 	    this.currentStillImage = this.standStillRightAni;
+	    
+	    this.inventoryOpen = false;
 	}
 	
 	/**
@@ -152,7 +155,7 @@ public class Player extends Mob {
 	 */
 	private float xMovement() {
 
-		if(movingLeftOrRight()) {
+		if(movingLeftOrRight() && !this.inventoryOpen) {
 			if(isRunning()) {
 				return runningX();
 			}else{
@@ -229,7 +232,7 @@ public class Player extends Mob {
 		
 		// Gravity Pack Control
 		if(this.gravPack.isCanFlip()) { // If the player's gravity pack is currently able to fight gravity
-			if(isUsingGravPack()) { // And the player is trying to use their gravity pack
+			if(isUsingGravPack() && !this.inventoryOpen) { // And the player is trying to use their gravity pack
 				this.isFlipping = !this.isFlipping;
 			}
 		}else{
@@ -259,7 +262,7 @@ public class Player extends Mob {
 		//If their maximum jumps have not been reached
 		if(!maxJumps()) {
 			//If they are jumping
-			if(jumping()) {
+			if(jumping() && !this.inventoryOpen) {
 				this.jumps++;
 				this.jumpMomentum = jumpPower;
 			}
@@ -315,6 +318,7 @@ public class Player extends Mob {
 		 * Left-Control - Reverse Gravity(5) 
 		 * 
 		 * Enter - Shoot (7) 
+		 * I - Inventory (10)
 		 */
 		
 		this.gravPack.gravPowerCheck();
@@ -335,7 +339,7 @@ public class Player extends Mob {
 	public void checkAnimation() {
 		
 		  //If Moving Left Upside Down
-	      if (Main.util.getKeyLogSpecificKey(1)) {
+	      if (Main.util.getKeyLogSpecificKey(1) && !this.inventoryOpen) {
 	    	  toggleDirection = true;
 	    	  if(isFlipping())
 	    		  setCurrentImage(getMoveLeftFlippedAni());
@@ -344,7 +348,7 @@ public class Player extends Mob {
 	        }
 	      
 	      //If Moving Right Upside Down
-	      else if (Main.util.getKeyLogSpecificKey(3)) {
+	      else if (Main.util.getKeyLogSpecificKey(3) && !this.inventoryOpen) {
 	    	  toggleDirection = false;
 	    	  if(Main.util.getPlayer().isFlipping())
 	    		  setCurrentImage(getMoveRightFlippedAni()); 
@@ -374,7 +378,7 @@ public class Player extends Mob {
 	 */
 	public void shootProjectile() {
 		//Projectile Functions
-		if(Main.util.getKeyLogSpecificKey(7)) {
+		if(Main.util.getKeyLogSpecificKey(7) && !this.inventoryOpen) {
 			if(!projectileExists) {//If projectile does not exist
 				projectileExists = true;				
 				try {
@@ -488,8 +492,16 @@ public class Player extends Mob {
 		return readyForNextLevel;
 	}
 	
-	/* SETTERS */
+	/**
+	 * 
+	 * @return if true, the inventory is open. if false, the inventory is not open
+	 */
+	public boolean isInventoryOpen() {
+		return inventoryOpen;
+	}
 	
+	/* SETTERS */
+
 	/**
 	 * changes the projectile's existence
 	 * @param projectileExists
@@ -528,6 +540,14 @@ public class Player extends Mob {
 	 */
 	public void setReadyForNextLevel (boolean readyForNextLevel) {
 		this.readyForNextLevel = readyForNextLevel;
+	}
+	
+	/**
+	 * changes the player's inventory open boolean
+	 * @param inventoryOpen
+	 */
+	public void setInventoryOpen(boolean inventoryOpen) {
+		this.inventoryOpen = inventoryOpen;
 	}
 	
 	/**

@@ -20,7 +20,6 @@ public class Inventory {
 	
 	public void removeFromInventory(Item item) {
 		this.items.remove(item);
-	}
-	
+	}	
 	
 }//end of class

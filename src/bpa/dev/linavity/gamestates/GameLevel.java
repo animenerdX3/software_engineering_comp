@@ -28,7 +28,7 @@ import bpa.dev.linavity.utils.SaveGame;
 import bpa.dev.linavity.world.Level;
 import bpa.dev.linavity.world.ParallaxMap;
 
-public class StartLevel extends BasicGameState{
+public class GameLevel extends BasicGameState{
 	
 	//GUI
 	private Image health_gui = null;
@@ -49,6 +49,10 @@ public class StartLevel extends BasicGameState{
 	private Image slotTwo = null;
 	private Image slotThree = null;
 	private Image back = null;
+	
+	//Inventory Menu
+	private Image inventoryBG;
+	private Image [][] itemSlots;
 	
 	//Parallax Backgrounds for Our Level
 	private ParallaxMap bg;
@@ -118,6 +122,13 @@ public class StartLevel extends BasicGameState{
 			slotThree = new Image("res/gui/save_slot.png");
 		else
 			slotThree = new Image("res/gui/empty_save_slot.png");
+		
+		//Inventory Images
+		inventoryBG = new Image("res/gui/inventory/inventoryBG.png");
+		itemSlots = new Image[2][4];
+		for(int i = 0; i < itemSlots.length; i++)
+			for(int x = 0; x < itemSlots[0].length; x++)
+				itemSlots[i][x] = new Image("res/gui/inventory/item_slot.png");
 		
 		bg = new ParallaxMap("res/bg.jpg", -450, 0, 0.5f, 0,  true);
 		health_gui = new Image("res/gui/stats/health_bar.png");
@@ -262,9 +273,11 @@ public class StartLevel extends BasicGameState{
 		grav_bar.draw(318,850,(float) (318+(Main.util.getPlayer().getGravPack().getGravpower() * 2.7)),850+27,0,0,(float) (Main.util.getPlayer().getGravPack().getGravpower() * 2.7),27);
 		
 		//Draw menu, if open
-		if(menuOpen && !saveOpen)
+		if(!menuOpen && !saveOpen && Main.util.getPlayer().isInventoryOpen())
+			renderInventoryMenu(gc, g);
+		else if(menuOpen && !saveOpen && !Main.util.getPlayer().isInventoryOpen())
 			renderMenu(gc, g);
-		else if(saveOpen && !menuOpen) 
+		else if(saveOpen && !menuOpen && !Main.util.getPlayer().isInventoryOpen()) 
 			renderSaveMenu(gc, g);
 		
 	}//end of render
@@ -358,7 +371,7 @@ public class StartLevel extends BasicGameState{
 	 * @return
 	 * 	void:
 	 */
-	public void renderSaveMenu(GameContainer gc, Graphics g){
+	private void renderSaveMenu(GameContainer gc, Graphics g){
 
 		//Background Image
 		g.drawImage(saveBG, 0,0);
@@ -401,6 +414,21 @@ public class StartLevel extends BasicGameState{
 		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 750); // Setting the x value as half of the game container and adjusting for the width of the button
 	}	
 	
+	private void renderInventoryMenu(GameContainer gc, Graphics g) {
+		//Background Image
+		g.drawImage(inventoryBG, 0, 0);
+		int slotX = 35;
+		int slotY = 248;
+		for(int i = 0; i < itemSlots.length; i++) {
+			for(int x = 0; x < itemSlots[0].length; x++) {
+				g.drawImage(itemSlots[i][x], slotX, slotY);
+				slotX = slotX + 216;
+			}
+				slotX = 35;
+				slotY = slotY + 305;
+		}
+	}//end of renderInventoryMenu
+	
 	/**
 	 * Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
 	 */
@@ -409,6 +437,9 @@ public class StartLevel extends BasicGameState{
 		
 		// If the game is not paused
 		if(!menuOpen && !saveOpen){
+			
+			if(Main.util.getPlayer().isInventoryOpen())
+				checkInventoryMenu(gc);
 			
 			updateTimer(delta);
 			
@@ -428,6 +459,7 @@ public class StartLevel extends BasicGameState{
 			
 		}
 		else if(menuOpen && !saveOpen) {
+			Main.appgc.setMouseGrabbed(false);
 			stopAnimation();//Stop updating animation
 			Main.util.getMusic().pause();//Pause the music
 			if(Main.util.getSFX(2).playing())
@@ -435,8 +467,10 @@ public class StartLevel extends BasicGameState{
 			// Open pop-up menu
 			checkMenu(gc, sbg);
 		}
-		else if(!menuOpen && saveOpen)
+		else if(!menuOpen && saveOpen) {
+			Main.appgc.setMouseGrabbed(false);
 			checkSaveMenu(gc,sbg);
+		}
 		
 		//Mouse Functions
 		xpos = ExtraMouseFunctions.getMouseX(gc.getWidth()); // Updates the x coordinate of the mouse
@@ -492,6 +526,12 @@ public class StartLevel extends BasicGameState{
 			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
 			menuOpen = !menuOpen;
 		}
+		
+		if(Main.util.getKeyLogSpecificKey(10)) {
+			Main.appgc.setMouseGrabbed(Main.util.getPlayer().isInventoryOpen());
+			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
+			Main.util.getPlayer().setInventoryOpen(!Main.util.getPlayer().isInventoryOpen());
+		}
 	}//end of gameUpdates
 	
 	/**
@@ -527,14 +567,15 @@ public class StartLevel extends BasicGameState{
 	 */
 	private void updateMobs(int delta){
 		// Update the mob's position
-		for(int i = 0; i < mobs.size(); i++) 
+		for(int i = 0; i < mobs.size(); i++)
 			mobs.get(i).update(delta);
+		
 	}//end of updateMobs
 	
 	private void updateItems() {
 		for(int i = 0; i < items.size(); i++)
 			items.get(i).update();
-	}
+	}//end of updateItems
 	
 	private void startAnimation() {
 		
@@ -622,7 +663,7 @@ public class StartLevel extends BasicGameState{
 		Main.util.getPlayer().setHealth(100);
 		Main.util.getPlayer().getGravPack().setGravpower(100);
 		Main.util.getMusic().stop();
-		sbg.getState(StartLevel.id).init(gc, sbg);
+		sbg.getState(GameLevel.id).init(gc, sbg);
 		sbg.enterState(Main.gameover);
 	}//end of resetLevel
 	
@@ -653,6 +694,7 @@ public class StartLevel extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(MainMenu.checkBounds( (gc.getWidth()/2) - (resume.getWidth()/2) , (gc.getWidth()/2) - (resume.getWidth()/2) + resume.getWidth() , 325 , 325 + resume.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
+				Main.appgc.setMouseGrabbed(true);
 				Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
 				Main.util.getMusic().resume();
 				startAnimation();
@@ -662,6 +704,7 @@ public class StartLevel extends BasicGameState{
 			resume = new Image("res/gui/buttons/button_resume_hover.png");
 		}
 		else if(input.isKeyPressed(Input.KEY_ESCAPE)){
+			Main.appgc.setMouseGrabbed(true);
 			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
 			Main.util.getMusic().resume();
 			startAnimation();
@@ -678,7 +721,7 @@ public class StartLevel extends BasicGameState{
 				Main.util.getPlayer().setHealth(100);
 				Main.util.getPlayer().getGravPack().setGravpower(100);
 				Main.util.getMusic().stop();
-				sbg.getState(StartLevel.id).init(gc, sbg);
+				sbg.getState(GameLevel.id).init(gc, sbg);
 				Main.util.setMusic(Main.util.getMusicQueue(1));
 				Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
 			}
@@ -748,7 +791,7 @@ public class StartLevel extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(MainMenu.checkBounds( 100 , 100 + slotOne.getWidth() , 150, 150 + slotOne.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
-				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 1, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 1, Main.util.getLevelTime());
 				saveProgress.createSave();
 			}
 			if(Main.util.getSlotOneData().getLoadFile() != null)
@@ -761,7 +804,7 @@ public class StartLevel extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(MainMenu.checkBounds( 100 , 100 + slotTwo.getWidth() , 350, 350 + slotTwo.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
-				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 2, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 2, Main.util.getLevelTime());
 				saveProgress.createSave();
 			}
 			if(Main.util.getSlotTwoData().getLoadFile() != null)
@@ -774,7 +817,7 @@ public class StartLevel extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(MainMenu.checkBounds( 100 , 100 + slotThree.getWidth() , 550, 550 + slotThree.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
-				SaveGame saveProgress = new SaveGame(mobs, StartLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 3, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 3, Main.util.getLevelTime());
 				saveProgress.createSave();
 			}
 			if(Main.util.getSlotThreeData().getLoadFile() != null)
@@ -797,10 +840,53 @@ public class StartLevel extends BasicGameState{
 			menuOpen = true;
 		}
 		
-	}//end of loadButtonAction
+	}//end of checkSaveMenu
+	
+	/**
+	 * @method checknventoryMenu
+	 * @description checks mouse actions for the inventory menu
+	 * 
+	 * @param
+	 * GameContainer gc, StateBasedGame sbg, Input input
+	 * 
+	 * @return
+	 * 	void:
+	 * @throws SlickException 
+	 */
+	private void checkInventoryMenu(GameContainer gc) 
+			throws SlickException{
+		
+		// Create our input object
+		Input input = gc.getInput();
+		
+		//Inventory Images
+		inventoryBG = new Image("res/gui/inventory/inventoryBG.png");
+		for(int i = 0; i < itemSlots.length; i++)
+			for(int x = 0; x < itemSlots[0].length; x++)
+				itemSlots[i][x] = new Image("res/gui/inventory/item_slot.png");
+		
+		// Inventory Slots
+		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
+		int slotX = 35;
+		int slotY = 248;
+		for(int i = 0; i < itemSlots.length; i++) {
+			for(int x = 0; x < itemSlots[0].length; x++) {
+				if(MainMenu.checkBounds( slotX, slotX + itemSlots[i][x].getWidth() ,  slotY, slotY + itemSlots[i][x].getHeight(), xpos, ypos)){
+					if(input.isMousePressed(0)){
+						
+					}
+					itemSlots[i][x] = new Image("res/gui/inventory/item_slot_hover.png");
+				}
+				slotX = slotX + 216;
+			}
+			slotX = 35;
+			slotY = slotY + 305;
+		}
+		
+	}//end of checkInventoryMenu
 	
 	public int getID() {
-		return StartLevel.id;
+		return GameLevel.id;
 	}//end of getID
 	
 }//end of class

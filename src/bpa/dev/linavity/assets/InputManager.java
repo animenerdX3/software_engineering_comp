@@ -8,7 +8,7 @@ public class InputManager {
 	// Possible keyboard inputs by user
 	// Keyboard -> [Space, A, S, D, Shift, Control, Escape, Enter, E, W] 
 	// Mouse -> [Mouse X Pos, Mouse Y Pos, left click]
-	private boolean[] keyLog = new boolean[10];
+	private boolean[] keyLog = new boolean[11];
 	private int[] mouseLog = new int[3];
 	
 	//Default constructor
@@ -79,6 +79,10 @@ public class InputManager {
 		//9 - W
 		if(input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_UP))
 			keyLog[9] = true;
+		
+		//9 - W
+		if(input.isKeyPressed(Input.KEY_I))
+			keyLog[10] = true;
 
 	}//end of updateKeyLog
 	
