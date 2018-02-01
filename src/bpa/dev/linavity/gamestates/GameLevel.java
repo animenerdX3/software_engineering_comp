@@ -14,10 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
-import bpa.dev.linavity.collectibles.GravPack;
-import bpa.dev.linavity.collectibles.HealthPack;
-import bpa.dev.linavity.collectibles.Item;
-import bpa.dev.linavity.collectibles.UseItem;
+import bpa.dev.linavity.collectibles.*;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
@@ -195,8 +192,13 @@ public class GameLevel extends BasicGameState{
 		
 		items.add(new GravPack(2150, 750, "gravitypack"));
 		items.add(new HealthPack(1950, 750, "healthpack"));
-		items.add(new HealthPack(1930, 750, "healthpack"));
+		items.add(new GravCapsule(1930, 750, "gravcapsule"));
 		items.add(new HealthPack(1910, 750, "healthpack"));
+		items.add(new HealthPack(1900, 750, "healthpack"));
+		items.add(new HealthPack(1870, 750, "healthpack"));
+		items.add(new HealthPack(1850, 750, "healthpack"));
+		items.add(new HealthPack(1840, 750, "healthpack"));
+		items.add(new HealthPack(1830, 750, "healthpack"));
 		
 		return items;
 	}//end of getMobs
@@ -886,14 +888,19 @@ public class GameLevel extends BasicGameState{
 			for(int x = 0; x < itemSlots[0].length; x++) {
 				if(MainMenu.checkBounds( slotX, slotX + itemSlots[i][x].getWidth() ,  slotY, slotY + itemSlots[i][x].getHeight(), xpos, ypos)){
 					if(input.isMousePressed(0)){
-						if(Main.util.getInventory().getItems().get(counter) instanceof HealthPack){
-							new UseItem("health");
-							Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(counter));
+						if(Main.util.getInventory().getItems().size() > 0){
+							if(Main.util.getInventory().getItems().get(counter) instanceof HealthPack){
+								new UseItem("health");
+								Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(counter));
+							} if(Main.util.getInventory().getItems().get(counter) instanceof GravCapsule){
+								new UseItem("gravcapsule");
+								Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(counter));
+							}
 						}
 					}
 					itemSlots[i][x] = new Image("res/gui/inventory/item_slot_hover.png");
 				}
-				counter = counter + 1;
+				counter = counter++;
 				slotX = slotX + 216;
 			}
 			slotX = 35;

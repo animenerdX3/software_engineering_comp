@@ -1,1 +1,1 @@
-org.newdawn.slick.SlickException: Failed to load sound: sfx/menu_select.wav
+java.io.FileNotFoundException: data\msic_paths.assets (The system cannot find the file specified)
