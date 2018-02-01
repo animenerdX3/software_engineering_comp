@@ -88,6 +88,7 @@ public class Utils {
 		this.setMessageHandler(new MessageHandler());
 		//Set timer to 0
 		this.levelTime = 0;
+		this.inventory = new Inventory();
 	}
 	
 	
