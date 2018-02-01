@@ -7,7 +7,7 @@ public class Inventory {
 	private ArrayList<Item>items;
 	
 	public Inventory() {
-		
+		this.items = new ArrayList<Item>();
 	}
 	
 	public Inventory(ArrayList<Item>items) {
@@ -20,6 +20,20 @@ public class Inventory {
 	
 	public void removeFromInventory(Item item) {
 		this.items.remove(item);
-	}	
+	}
+
+	/**
+	 * @return the items
+	 */
+	public ArrayList<Item> getItems() {
+		return items;
+	}
+
+	/**
+	 * @param items the items to set
+	 */
+	public void setItems(ArrayList<Item> items) {
+		this.items = items;
+	}
 	
 }//end of class

@@ -15,7 +15,9 @@ import org.newdawn.slick.state.StateBasedGame;
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
 import bpa.dev.linavity.collectibles.GravPack;
+import bpa.dev.linavity.collectibles.HealthPack;
 import bpa.dev.linavity.collectibles.Item;
+import bpa.dev.linavity.collectibles.UseItem;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
@@ -167,7 +169,7 @@ public class GameLevel extends BasicGameState{
 		float gravPower = loadFile.getGravPowerCheck();
 		boolean isFlipping = loadFile.getFlipping();
 		
-		for(int i = 0; i < classNames.length - 2; i++) {
+		for(int i = 0; i < classNames.length - 1; i++) {
 			if(classNames[i].equalsIgnoreCase("Player")) {
 				Main.util.setPlayer(new Player(xPos[i], yPos[i]));
 				mobs.add(Main.util.getPlayer());
@@ -192,6 +194,9 @@ public class GameLevel extends BasicGameState{
 		ArrayList <Item> items = new ArrayList<Item>();
 		
 		items.add(new GravPack(2150, 750, "gravitypack"));
+		items.add(new HealthPack(1950, 750, "healthpack"));
+		items.add(new HealthPack(1930, 750, "healthpack"));
+		items.add(new HealthPack(1910, 750, "healthpack"));
 		
 		return items;
 	}//end of getMobs
@@ -419,9 +424,15 @@ public class GameLevel extends BasicGameState{
 		g.drawImage(inventoryBG, 0, 0);
 		int slotX = 35;
 		int slotY = 248;
+		int counter = 0;
 		for(int i = 0; i < itemSlots.length; i++) {
 			for(int x = 0; x < itemSlots[0].length; x++) {
 				g.drawImage(itemSlots[i][x], slotX, slotY);
+				//Draw the thumbnails at the center of the item slot
+				if(Main.util.getInventory().getItems().size() != 0 && counter < Main.util.getInventory().getItems().size()){
+					g.drawImage(Main.util.getInventory().getItems().get(counter).getThumb(), slotX + ((itemSlots[i][x].getWidth() / 2) - (Main.util.getInventory().getItems().get(counter).getThumb().getWidth() / 2)), slotY + ((itemSlots[i][x].getHeight() / 2) - (Main.util.getInventory().getItems().get(counter).getThumb().getHeight() / 2)));
+					counter++;
+				}
 				slotX = slotX + 216;
 			}
 				slotX = 35;
@@ -660,6 +671,7 @@ public class GameLevel extends BasicGameState{
 	 * @throws SlickException 
 	 */
 	private void resetLevel(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		Main.appgc.setMouseGrabbed(false);
 		Main.util.getPlayer().setHealth(100);
 		Main.util.getPlayer().getGravPack().setGravpower(100);
 		Main.util.getMusic().stop();
@@ -869,14 +881,19 @@ public class GameLevel extends BasicGameState{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		int slotX = 35;
 		int slotY = 248;
+		int counter = 0;
 		for(int i = 0; i < itemSlots.length; i++) {
 			for(int x = 0; x < itemSlots[0].length; x++) {
 				if(MainMenu.checkBounds( slotX, slotX + itemSlots[i][x].getWidth() ,  slotY, slotY + itemSlots[i][x].getHeight(), xpos, ypos)){
 					if(input.isMousePressed(0)){
-						
+						if(Main.util.getInventory().getItems().get(counter) instanceof HealthPack){
+							new UseItem("health");
+							Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(counter));
+						}
 					}
 					itemSlots[i][x] = new Image("res/gui/inventory/item_slot_hover.png");
 				}
+				counter = counter + 1;
 				slotX = slotX + 216;
 			}
 			slotX = 35;
