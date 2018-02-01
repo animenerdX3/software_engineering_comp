@@ -134,8 +134,6 @@ public class GameLevel extends BasicGameState{
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
-		Main.util.setLevel(new Level(0, "startlevel"));
-		Main.util.setEvents(new Level(0, "startlevel_events"));	
 		
 	}//end of init
 
@@ -295,10 +293,10 @@ public class GameLevel extends BasicGameState{
 	 * @param sbg
 	 * @param g
 	 */
-	private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
+private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		
 		// Get a 2d array of tile objects that are contained within our camera's view
-		screenTiles = Main.util.getLevel().getScreenTiles(Main.util.getCam());
+		screenTiles = Main.util.getLevel().getScreenTiles(Main.util.getCam(), Main.util.getLevel().getMap());
 		
 		// Temp x and y of tile in relation to the camera
 		float tileX, tileY;
@@ -323,7 +321,7 @@ public class GameLevel extends BasicGameState{
 		// End of drawing screen tiles
 	
 		// Get a 2d array of tile objects that are contained within our camera's view
-		eventTiles = Main.util.getEvents().getScreenTiles(Main.util.getCam());
+		eventTiles = Main.util.getLevel().getScreenTiles(Main.util.getCam(), Main.util.getLevel().getEvents());
 		
 		// Temp x and y of tile in relation to the camera
 		float eventTileX, eventTileY;
@@ -348,6 +346,7 @@ public class GameLevel extends BasicGameState{
 		// End of drawing event tiles
 		
 	}//end of renderScreen
+
 
 	/**
 	 * @method renderMenu

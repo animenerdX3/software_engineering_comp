@@ -1,5 +1,6 @@
 package bpa.dev.linavity.utils;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Music;
@@ -28,10 +29,9 @@ public class Utils {
 	public final boolean debugMode = true;
 	
 	// Universal Game Objects
+	private Level level; // Level Object
 	private Player player; // Player Object
 	private MessageHandler messageHandler; // Message Handler Object
-	private Level level; // Level Object
-	private Level events;//Level Object For Events
 	private Gravity gravity; // Gravity Object
 	public Camera cam; // Camera Object
 	
@@ -88,6 +88,12 @@ public class Utils {
 		this.setMessageHandler(new MessageHandler());
 		//Set timer to 0
 		this.levelTime = 0;
+		// Initialize the level (Currently hard-coding the first level, but we can pass in an ID for whatever level the player is on)
+		try {
+			this.level = new Level(1); 
+		} catch (FileNotFoundException e) {
+			ErrorLog.logError(e);
+		}
 		this.inventory = new Inventory();
 	}
 	
@@ -199,14 +205,7 @@ public class Utils {
 	public Level getLevel() {
 		return level;
 	}
-	
-	/**
-	 * @return the event map
-	 */
-	public Level getEvents() {
-		return events;
-	}
-	
+
 	/**
 	 * 
 	 * @return if true, load the game in the init. if false, do not load the game in the init
@@ -327,14 +326,6 @@ public class Utils {
 	 */
 	public void setLevel(Level level) {
 		this.level = level;
-	}
-	
-	/**
-	 * changes the events map
-	 * @param events
-	 */
-	public void setEvents(Level events) {
-		this.events = events;
 	}
 	
 	/**
