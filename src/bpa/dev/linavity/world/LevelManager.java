@@ -8,6 +8,15 @@ import java.util.Scanner;
 
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.collectibles.GravCapsule;
+import bpa.dev.linavity.collectibles.GravPack;
+import bpa.dev.linavity.collectibles.HealthPack;
+import bpa.dev.linavity.collectibles.Item;
+import bpa.dev.linavity.entities.Mob;
+import bpa.dev.linavity.entities.Player;
+import bpa.dev.linavity.entities.enemies.Bomber;
+import bpa.dev.linavity.entities.enemies.Starter;
+import bpa.dev.linavity.entities.enemies.Tank;
 import bpa.dev.linavity.entities.tiles.Dynamic;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.entities.tiles.interactive.Door;
@@ -24,9 +33,14 @@ public class LevelManager {
 	File eventsFile;
 	File channelsFile;
 	File configFile;
-	File characterFile;
 	File mobsFile;
 	
+	/*
+	 * Dev Notes:
+	 * 0 - 100: Tiles
+	 * 101 - 200: Mobs
+	 * 201 - 300: Items 
+	 */
 	
 	/**
 	 * Create all level info based on a level ID
@@ -87,16 +101,61 @@ public class LevelManager {
 	public int[][] makeConfig() {
 		return null;
 	}
-	
-	public int[][] makeCharacter() {
-		return null;
-	}
 	 
-	public int[][] mobs() {
-		return null;
-	}
+	public ArrayList<Mob> makeMobs() throws FileNotFoundException, SlickException {
 	
+		// Create a 2d int array with the ID's of the mobs in the level
+		int[][] mobIDs = get2DIntArray(mapFile);
 	
+		// Create an array list of mobs
+		ArrayList<Mob> mobs = new ArrayList<Mob>();
+		
+		mobs.add(new Player(450, 1100));
+		
+		for(int i = 0; i < mobIDs.length; i++) {//Parse through tile ID 2D array
+			
+			for(int j = 0; j < mobIDs[i].length; j++) {//Parse through a single row
+					if(mobIDs[i][j] > 100){
+						if(mobIDs[i][j] == 101)
+							mobs.add(new Starter(j * 50, i *50));
+						else if(mobIDs[i][j] == 102)
+							mobs.add(new Tank(j * 50, i *50));
+						else if(mobIDs[i][j] == 103)
+							mobs.add(new Bomber(j * 50, i *50));
+					}
+				}
+				
+			}
+		
+		return mobs;
+	}//end of makeMobs
+	
+	public ArrayList<Item> makeItems() throws FileNotFoundException, SlickException {
+		
+		// Create a 2d int array with the ID's of the mobs in the level
+		int[][] itemsIDs = get2DIntArray(mapFile);
+	
+		// Create an array list of mobs
+		ArrayList<Item> items = new ArrayList<Item>();
+		
+		for(int i = 0; i < itemsIDs.length; i++) {//Parse through tile ID 2D array
+			
+			for(int j = 0; j < itemsIDs[i].length; j++) {//Parse through a single row
+					if(itemsIDs[i][j] > 200){
+						if(itemsIDs[i][j] == 201)
+							items.add(new GravPack((j * 50) + 15, i *50, "gravitypack"));
+						else if(itemsIDs[i][j] == 202)
+							items.add(new HealthPack((j * 50) + 15, i *50, "healthpack"));
+						else if(itemsIDs[i][j] == 203)
+							items.add(new GravCapsule((j * 50) + 15, i *50, "gravcapsule"));
+					}
+				}
+				
+			}
+		
+		return items;
+	}//end of makeItems
+		
 	// TILE MANAGEMENT
 	
 	public Point[] makePointArray(String line) {
@@ -151,7 +210,7 @@ public class LevelManager {
 				// Event Creation
 				if(creatorID == 1) {
 					// Dynamic Tiles
-					if(tileIDs[i][j] > 11) {
+					if(tileIDs[i][j] > 11 && tileIDs[i][j] < 101) {
 						if(tileIDs[i][j] == Tile.gravPadID) // Gravity Pad
 							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 40, 50, 10);
 						else if(tileIDs[i][j] == Tile.leverID) // Lever

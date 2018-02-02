@@ -138,19 +138,10 @@ public class GameLevel extends BasicGameState{
 	}//end of init
 
 	private ArrayList<Mob> getMobs() throws SlickException {
-		//Add mobs
-		ArrayList <Mob> mobs = new ArrayList<Mob>();
 		
-		Main.util.setPlayer(new Player(450,1100));
-		mobs.add(Main.util.getPlayer());
-		mobs.add(new Starter(500, 750));
-		mobs.add(new Tank(1100, 750));
-		mobs.add(new Tank(1200, 750));
-		mobs.add(new Bomber(600, 750));
-		mobs.add(new Bomber(660, 750));
-		mobs.add(new Bomber(720, 750));
+		Main.util.setPlayer((Player)Main.util.getLevel().getMobs().get(0));
 		
-		return mobs;
+		return Main.util.getLevel().getMobs();
 	}//end of getMobs
 	
 	private ArrayList<Mob> getMobs(LoadGame loadFile) throws SlickException {
@@ -185,21 +176,9 @@ public class GameLevel extends BasicGameState{
 	}//end of getMobs
 	
 	private ArrayList<Item> getItems() throws SlickException {
-		//Add mobs
-		ArrayList <Item> items = new ArrayList<Item>();
 		
-		items.add(new GravPack(2150, 750, "gravitypack"));
-		items.add(new HealthPack(1950, 750, "healthpack"));
-		items.add(new GravCapsule(1930, 750, "gravcapsule"));
-		items.add(new HealthPack(1910, 750, "healthpack"));
-		items.add(new HealthPack(1900, 750, "healthpack"));
-		items.add(new HealthPack(1870, 750, "healthpack"));
-		items.add(new HealthPack(1850, 750, "healthpack"));
-		items.add(new HealthPack(1840, 750, "healthpack"));
-		items.add(new HealthPack(1830, 750, "healthpack"));
-		
-		return items;
-	}//end of getMobs
+		return Main.util.getLevel().getItems();
+	}//end of getItems
 	
 	/**
 	 * Renders content to the game / screen

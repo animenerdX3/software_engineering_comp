@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.entities.Camera;
+import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.tiles.Dynamic;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.gamestates.MainMenu;
@@ -24,10 +26,10 @@ public class Level {
 	private ArrayList<Point[]> channels;
 	
 	private int[][] config;
-	
-	private int[][] character;
-	private int[][] mobs;
 
+	private ArrayList<Mob> mobs;
+	private ArrayList<Item> items;
+	
 	/**
 	 * Constructor: Creates a level for our gamestate
 	 * 
@@ -43,6 +45,8 @@ public class Level {
 		this.map = lm.makeMap();
 		this.events = lm.makeEvents();
 		this.channels = lm.makeChannels();
+		this.mobs = lm.makeMobs();
+		this.items = lm.makeItems();
 		
 		this.levelWidth = map[0].length * 50;
 		this.levelHeight = map.length * 50;
@@ -159,21 +163,19 @@ public class Level {
 
 
 	/**
-	 * @return the character
-	 */
-	public int[][] getCharacter() {
-		return character;
-	}
-
-
-
-	/**
 	 * @return the mobs
 	 */
-	public int[][] getMobs() {
+	public ArrayList<Mob> getMobs() {
 		return mobs;
 	}
 	
+	/**
+	 * @return the items
+	 */
+	public ArrayList<Item> getItems() {
+		return items;
+	}
+
 	public int getLevelWidth() {
 		return levelWidth;
 	}
@@ -222,22 +224,18 @@ public class Level {
 		this.config = config;
 	}
 
-
-
-	/**
-	 * @param character the character to set
-	 */
-	public void setCharacter(int[][] character) {
-		this.character = character;
-	}
-
-
-
 	/**
 	 * @param mobs the mobs to set
 	 */
-	public void setMobs(int[][] mobs) {
+	public void setMobs(ArrayList<Mob> mobs) {
 		this.mobs = mobs;
+	}
+	
+	/**
+	 * @param items the items to set
+	 */
+	public void setItems(ArrayList<Item> items) {
+		this.items = items;
 	}
 	
 	public void setId(int id) {
