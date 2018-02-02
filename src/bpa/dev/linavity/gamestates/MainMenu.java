@@ -15,6 +15,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
 import bpa.dev.linavity.utils.ErrorLog;
+import bpa.dev.linavity.utils.LogSystem;
 import bpa.dev.linavity.world.ParallaxMap;
 
 
@@ -67,12 +68,13 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		
 		//TODO Implement in StartLevel
 		//Text Field Data
 /*		name = new TextField(gc,gc.getDefaultFont(),100,100,300,20,this);
 		namevalue = "DefaultName";*/
-				
+		
+		LogSystem.addToLog("Initializing Main Menu...");
+		
 		// Initialize our image objects
 		bg = new ParallaxMap("res/titlescreen.png", 0, 0, 0, -3f, true);// Menu Background
 		title = new Image("res/title.png");
@@ -119,6 +121,9 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		//Start Music
 		Main.util.setMusic(Main.util.getMusicQueue(0));
 		Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
+		LogSystem.addToLog("Music Track 1 Playing");
+		
+		LogSystem.addToLog("Main Menu Initiation Succeeded.");
 	}//end of init
 
 	// Renders content to the game / screen
@@ -335,28 +340,39 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	}//end of checkMouseBounds
 	
 	private void StartGame(Input input, StateBasedGame sbg, int gameStateID) {
+		LogSystem.addToLog("Starting Game...");
 		input.clearKeyPressedRecord();
 		Main.appgc.setMouseGrabbed(true);
 		sbg.enterState(gameStateID);
+		LogSystem.addToLog("Entering Game State "+gameStateID+"...");
 		Main.util.getMusic().stop();
 		Main.util.setMusic(Main.util.getMusicQueue(1));
 		Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
+		LogSystem.addToLog("Music Track 2 Playing");
 	}
 	
 	private void LoadButton() {
+		LogSystem.addToLog("Load Button Pressed By User.");
 		isLoad = true;
 	}
 	
 	private void OpenSave(GameContainer gc, Input input, StateBasedGame sbg, int slot) throws SlickException{
+		LogSystem.addToLog("Opening Save...");
 		if(Main.util.getSlotOneData().getLoadFile() != null) {
 			isLoad = false;
 			
-			if(slot == 1)
+			if(slot == 1){
 				Main.util.setCurrentLoadData(Main.util.getSlotOneData());
-			else if(slot == 2)
+				LogSystem.addToLog("Opening Load Data 1...");
+			}
+			else if(slot == 2){
 				Main.util.setCurrentLoadData(Main.util.getSlotTwoData());
-			else if(slot == 3)
+				LogSystem.addToLog("Opening Load Data 2...");
+			}
+			else if(slot == 3){
 				Main.util.setCurrentLoadData(Main.util.getSlotThreeData());
+				LogSystem.addToLog("Opening Load Data 3...");
+			}
 			
 			Main.util.setLoadGame(true);
 			sbg.getState(Main.util.getCurrentLoadData().getGameStateFound()).init(gc, sbg);
@@ -365,10 +381,12 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	}//end of OpenSave
 
 	private void OptionButton() {
+		LogSystem.addToLog("Options Button Pressed By User.");
 		isOption = true;
 	}
 	
 	private void ExitButton() {
+		LogSystem.addToLog("Exiting Game...");
 		System.exit(0);
 	}
 
@@ -571,6 +589,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( (gc.getWidth()/2) - (back.getWidth()/2) , (gc.getWidth()/2) - (back.getWidth()/2) + back.getWidth() , 750 , 750 + back.getHeight())){
 			if(input.isMousePressed(0)){
+				LogSystem.addToLog("Back Button Pressed By User. Returning To Main Menu...");
 				isLoad = false;
 			}
 			back = new Image("res/gui/buttons/button_back_hover.png");
@@ -659,6 +678,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( (gc.getWidth()/2) - (back.getWidth()/2) , (gc.getWidth()/2) - (back.getWidth()/2) + back.getWidth() , 700 , 700 + back.getHeight())){
 			if(input.isMousePressed(0)){
+				LogSystem.addToLog("Back Button Pressed By User. Returning To Main Menu...");
 				isOption = false;
 			}
 			back = new Image("res/gui/buttons/button_back_hover.png");

@@ -4,8 +4,11 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.Log;
 
 import bpa.dev.linavity.utils.ErrorLog;
+import bpa.dev.linavity.utils.LogSystem;
+import bpa.dev.linavity.utils.RuntimeLog;
 import bpa.dev.linavity.utils.Utils;
 import bpa.dev.linavity.gamestates.*;
 
@@ -54,6 +57,8 @@ public class Main extends StateBasedGame{
 	 * set data and enter our first gamestate
 	 */
 	public void initStatesList(GameContainer gc) throws SlickException {
+		LogSystem.addToLog("Starting Program...");
+		RuntimeLog.startUpInfo();
 		//Set universal data
 		util = new Utils();
 		currentLevel = this;
@@ -76,6 +81,7 @@ public class Main extends StateBasedGame{
 			appgc.setIcons(icons);//Set icons
 			appgc.start();//Start the program
 		} catch (SlickException e) {
+			LogSystem.addToLog("ERROR FOUND! Terminating Program...");
 			ErrorLog.logError(e);//Write to errorlog file
 		}
 	}//end of main
