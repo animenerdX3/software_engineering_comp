@@ -21,12 +21,12 @@ public class Lever extends Dynamic {
 	@Override
 	public void onCollide(GameObject go) throws SlickException {
 
-		System.out.println("LEVER COLLIDE");
+		
 		
 		if(go instanceof Player){ // If the mob colliding with the lever was the player
-			System.out.println("INSTANCE OF PLAYER");
+			
 			if(Main.util.getKeyLogSpecificKey(8)){ // and the player hits e (interact)
-				System.out.println("E GETS PRESSED");
+				
 				if(this.toggle){ // If the lever was on
 					toggleOff();
 				}else{
@@ -41,13 +41,21 @@ public class Lever extends Dynamic {
 		this.toggle = !this.toggle;
 		System.out.println("ON");
 		
+		for(int i = 0; i < this.targetObjects.length; i++) {
+			Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(targetObjects[i]), this, Message.leverToggle, this.toggle));
+		}
 		
+			
 	}
 	
 	public void toggleOff() throws SlickException {
 		this.setTexture(new Image("res/tiles/static/Lever_Off.png"));
 		this.toggle = !this.toggle;
 		System.out.println("OFF");
+		
+		for(int i = 0; i < this.targetObjects.length; i++) {
+			Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(targetObjects[i]), this, Message.leverToggle, this.toggle));
+		}
 	}
 	
 }

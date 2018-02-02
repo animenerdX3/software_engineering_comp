@@ -27,19 +27,30 @@ public class Door extends Dynamic {
 	@Override
 	public void onMessage(Message message) throws SlickException {
 		
-	}
-	
-	public void toggleOn() throws SlickException {
-		this.setTexture(new Image("res/tiles/static/Lever_On.png"));
-		this.toggle = !this.toggle;
-		System.out.println("ON");
+		System.out.println("Door on Message");
+		
+		// Interaction with a lever
+		if(message.getType() == Message.leverToggle) {
+			if((boolean)message.getData()) { // If the lever is on...
+				openDoor();
+			}else{ // The lever is off...
+				closeDoor();
+			}
+		}
 		
 	}
 	
-	public void toggleOff() throws SlickException {
-		this.setTexture(new Image("res/tiles/static/Lever_Off.png"));
-		this.toggle = !this.toggle;
-		System.out.println("OFF");
+	public void openDoor() throws SlickException {
+		this.setTexture(new Image("res/tiles/static/Metal_Plate.png"));
+		this.setPassable(true);
+		System.out.println("Open Door");
+		
+	}
+	
+	public void closeDoor() throws SlickException {
+		this.setTexture(new Image("res/tiles/static/floor.png"));
+		this.setPassable(false);
+		System.out.println("Close Door");
 	}
 	
 }
