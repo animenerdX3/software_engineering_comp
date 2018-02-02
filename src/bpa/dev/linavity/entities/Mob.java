@@ -241,7 +241,7 @@ public abstract class Mob extends GameObject{
 						this.xMomentum = 0;
 					}
 					updateFuturePosition();
-					checkDynamicTiles(tile, i, j);
+					checkDynamicImpassableTiles(tile, i, j);
 				} 
 			}
 			
@@ -255,7 +255,7 @@ public abstract class Mob extends GameObject{
 						this.xMomentum = 0;
 					}
 					updateFuturePosition();
-					checkDynamicTiles(tile, i, j);
+					checkDynamicImpassableTiles(tile, i, j);
 				}
 			}
 
@@ -269,7 +269,7 @@ public abstract class Mob extends GameObject{
 						this.yMomentum = 0;
 					}
 					updateFuturePosition();
-					checkDynamicTiles(tile, i, j);
+					checkDynamicImpassableTiles(tile, i, j);
 				}
 			}
 
@@ -282,9 +282,11 @@ public abstract class Mob extends GameObject{
 					this.yMomentum = 0;
 					}
 					updateFuturePosition();
-					checkDynamicTiles(tile, i, j);
+					checkDynamicImpassableTiles(tile, i, j);
 				}
 			}
+			
+			checkDynamicPassableTiles(tile, i, j);
 	}//end of checkTileCollision
 	
 	/**
@@ -355,22 +357,29 @@ public abstract class Mob extends GameObject{
 	 * @param j
 	 * @throws SlickException 
 	 */
-	private void checkDynamicTiles(Tile tile, int i, int j) throws SlickException {
-		
-		// GravPad Recharging the player's gravPad
-		if(tile.getId() == tile.gravPadID && this.collideDown == true) {
-			Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.gravPadRecharge, 0.5f));
-		}
-		
-		if(tile.getId() == tile.warpHoleID) {
-			Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.endLevel, null));
-		}
+	private void checkDynamicPassableTiles(Tile tile, int i, int j) throws SlickException {
 		
 		// Lever getting activated / toggled
 		if(tile.getId() == tile.leverID) {
-			tile.onCollide(this);
+			Rectangle rect = Main.util.getPlayer().getBoundingBox();
+			if(rect.intersects(tile.getCollisionBox())) {
+				tile.onCollide(this);
+			}
 		}
-	}//end of checkDynamicTiles
+	}//end of checkDynamicPassableTiles
+	
+	private void checkDynamicImpassableTiles(Tile tile, int i, int j) throws SlickException {
+		
+		// GravPad Recharging the player's gravPad
+		if(tile.getId() == tile.gravPadID && this.collideDown == true) {
+				Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.gravPadRecharge, 0.5f));
+		}
+		
+		if(tile.getId() == tile.warpHoleID) {
+				Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.endLevel, null));
+		}
+
+	}//end of checkDynamicImpassableTiles
 	
 	// Check to see if the mob is on the right side of a tile
 	private boolean onRight(Tile tile) {

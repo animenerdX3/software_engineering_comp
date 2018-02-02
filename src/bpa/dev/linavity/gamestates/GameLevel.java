@@ -254,21 +254,19 @@ public class GameLevel extends BasicGameState{
 				g.drawRect(Main.util.getPlayer().getCurrentProjectile().getX() - Main.util.getCam().getX(), Main.util.getPlayer().getCurrentProjectile().getY() - Main.util.getCam().getY(), Main.util.getPlayer().getCurrentProjectile().getWidth(), Main.util.getPlayer().getCurrentProjectile().getHeight());
 		}
 		
-		if(Main.util.debugMode) {
-		
 		g.setColor(Color.orange);
 		
 		for(int i = 0; i < mobs.size(); i++) {
 
 		mobs.get(i).setBoundingBox(new Rectangle((int) (mobs.get(i).getX() - Main.util.getCam().getX()), (int) (mobs.get(i).getY() - Main.util.getCam().getY()), mobs.get(i).getWidth(), mobs.get(i).getHeight()));
-		g.drawRect((int) mobs.get(i).getBoundingBox().getX(), (int) mobs.get(i).getBoundingBox().getY(), (int) mobs.get(i).getBoundingBox().getWidth(), (int) mobs.get(i).getBoundingBox().getHeight());
+		if(Main.util.debugMode)
+			g.drawRect((int) mobs.get(i).getBoundingBox().getX(), (int) mobs.get(i).getBoundingBox().getY(), (int) mobs.get(i).getBoundingBox().getWidth(), (int) mobs.get(i).getBoundingBox().getHeight());
 			}
 		
 		for(int i = 0; i < items.size(); i++) {
 			items.get(i).setCollisionBox(new Rectangle((int) (items.get(i).getX() - Main.util.getCam().getX()), (int) (items.get(i).getY() - Main.util.getCam().getY()), (int)items.get(i).getWidth(), (int)items.get(i).getHeight()));
-			g.drawRect((int) items.get(i).getCollisionBox().getX(), (int) items.get(i).getCollisionBox().getY(), (int) items.get(i).getCollisionBox().getWidth(), (int) items.get(i).getCollisionBox().getHeight());
-		}
-		
+			if(Main.util.debugMode)
+				g.drawRect((int) items.get(i).getCollisionBox().getX(), (int) items.get(i).getCollisionBox().getY(), (int) items.get(i).getCollisionBox().getWidth(), (int) items.get(i).getCollisionBox().getHeight());
 		}
 		
 		health_gui.draw(0,0);
@@ -308,12 +306,13 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 					tileX = screenTiles[i][j].getX() - Main.util.getCam().getX(); // Get the tile's temp x location for the screen rendering
 					tileY = screenTiles[i][j].getY() - Main.util.getCam().getY(); // Get the tile's temp y location for the screen rendering
 					screenTiles[i][j].getTexture().draw(tileX, tileY); // Draw the tile
-					if(Main.util.debugMode) {
+
 						screenTiles[i][j].setCollisionBox(new Rectangle((int) tileX, (int) tileY, (int) screenTiles[i][j].getWidth(), (int) screenTiles[i][j].getHeight()));
 						if(!screenTiles[i][j].isPassable()) {
 							g.setColor(Color.white);
-							g.drawRect((int)screenTiles[i][j].getCollisionBox().getX(), (int) screenTiles[i][j].getCollisionBox().getY(), (int) screenTiles[i][j].getCollisionBox().getWidth(), (int)screenTiles[i][j].getCollisionBox().getHeight());
-						}
+							if(Main.util.debugMode)
+								g.drawRect((int)screenTiles[i][j].getCollisionBox().getX(), (int) screenTiles[i][j].getCollisionBox().getY(), (int) screenTiles[i][j].getCollisionBox().getWidth(), (int)screenTiles[i][j].getCollisionBox().getHeight());
+						
 					}
 				}
 			}
@@ -333,13 +332,12 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 					eventTileX = eventTiles[i][j].getX() - Main.util.getCam().getX(); // Get the tile's temp x location for the screen rendering
 					eventTileY = eventTiles[i][j].getY() - Main.util.getCam().getY(); // Get the tile's temp y location for the screen rendering
 					eventTiles[i][j].getTexture().draw(eventTileX, eventTileY); // Draw the tile
-					if(Main.util.debugMode) {
 						eventTiles[i][j].setCollisionBox(new Rectangle((int) eventTileX, (int) eventTileY, (int) eventTiles[i][j].getWidth(), (int) eventTiles[i][j].getHeight()));
 						if(!eventTiles[i][j].isPassable()) {
 							g.setColor(Color.white);
-							g.drawRect((int)eventTiles[i][j].getCollisionBox().getX(), (int) eventTiles[i][j].getCollisionBox().getY(), (int) eventTiles[i][j].getCollisionBox().getWidth(), (int)eventTiles[i][j].getCollisionBox().getHeight());
+							if(Main.util.debugMode)
+								g.drawRect((int)eventTiles[i][j].getCollisionBox().getX(), (int) eventTiles[i][j].getCollisionBox().getY(), (int) eventTiles[i][j].getCollisionBox().getWidth(), (int)eventTiles[i][j].getCollisionBox().getHeight());
 						}
-					}
 				}
 			}
 		}
