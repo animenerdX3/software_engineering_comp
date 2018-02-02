@@ -41,7 +41,7 @@ public class Door extends Dynamic {
 	}
 	
 	public void openDoor() throws SlickException {
-		this.setTexture(new Image("res/tiles/static/Metal_Plate.png"));
+		this.setTexture(new Image("res/tiles/blank.png"));
 		this.setPassable(true);
 		System.out.println("Open Door");
 		
