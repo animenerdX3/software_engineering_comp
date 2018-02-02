@@ -514,9 +514,6 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 	 * @throws SlickException 
 	 */
 	private void gameUpdates(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-		if(Main.util.getKeyLogSpecificKey(8)) {
-			System.out.println("Yo, e is actually printing");
-		}
 		
 		//Check for End of Level
 		endLevel(sbg);
@@ -536,12 +533,12 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		Main.util.getCam().outOfBoundsKill()
 		;		
 		// Open Pop-up menu
-		if(Main.util.getKeyLogSpecificKey(6)) {
+		if(!Main.util.getPlayer().isInventoryOpen() && Main.util.getKeyLogSpecificKey(6)) {
 			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
 			menuOpen = !menuOpen;
 		}
 		
-		if(Main.util.getKeyLogSpecificKey(10)) {
+		if(!menuOpen && Main.util.getKeyLogSpecificKey(10)) {
 			Main.appgc.setMouseGrabbed(Main.util.getPlayer().isInventoryOpen());
 			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
 			Main.util.getPlayer().setInventoryOpen(!Main.util.getPlayer().isInventoryOpen());
@@ -883,33 +880,83 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		
 		// Inventory Slots
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
-		int slotX = 35;
-		int slotY = 248;
-		int counter = 0;
-		for(int i = 0; i < itemSlots.length; i++) {
-			for(int x = 0; x < itemSlots[0].length; x++) {
-				if(MainMenu.checkBounds( slotX, slotX + itemSlots[i][x].getWidth() ,  slotY, slotY + itemSlots[i][x].getHeight(), xpos, ypos)){
+				//Slot 1
+				if(MainMenu.checkBounds(35, 35 + itemSlots[0][0].getWidth() , 248, 248 + itemSlots[0][0].getHeight(), xpos, ypos)){
 					if(input.isMousePressed(0)){
-						if(Main.util.getInventory().getItems().size() > 0){
-							if(Main.util.getInventory().getItems().get(counter) instanceof HealthPack){
-								new UseItem("health");
-								Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(counter));
-							} else if(Main.util.getInventory().getItems().get(counter) instanceof GravCapsule){
-								new UseItem("gravcapsule");
-								Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(counter));
-							}
+						useInventory(0);
 						}
+					itemSlots[0][0] = new Image("res/gui/inventory/item_slot_hover.png");
 					}
-					itemSlots[i][x] = new Image("res/gui/inventory/item_slot_hover.png");
-				}
-				counter = counter++;
-				slotX = slotX + 216;
-			}
-			slotX = 35;
-			slotY = slotY + 305;
-		}
+				
+				//Slot 2
+				if(MainMenu.checkBounds(251, 251 + itemSlots[0][1].getWidth() , 248, 248 + itemSlots[0][1].getHeight(), xpos, ypos)){
+					if(input.isMousePressed(0)){
+						useInventory(1);
+						}
+					itemSlots[0][1] = new Image("res/gui/inventory/item_slot_hover.png");
+					}
+				
+				//Slot 3
+				if(MainMenu.checkBounds(467, 467 + itemSlots[0][2].getWidth() , 248, 248 + itemSlots[0][2].getHeight(), xpos, ypos)){
+					if(input.isMousePressed(0)){
+						useInventory(2);
+						}
+					itemSlots[0][2] = new Image("res/gui/inventory/item_slot_hover.png");
+					}
+				
+				//Slot 4
+				if(MainMenu.checkBounds(683, 683 + itemSlots[0][3].getWidth() , 248, 248 + itemSlots[0][3].getHeight(), xpos, ypos)){
+					if(input.isMousePressed(0)){
+						useInventory(3);
+						}
+					itemSlots[0][3] = new Image("res/gui/inventory/item_slot_hover.png");
+					}
+				
+				//Slot 5
+				if(MainMenu.checkBounds(35, 35 + itemSlots[1][0].getWidth() , 553, 553 + itemSlots[1][0].getHeight(), xpos, ypos)){
+					if(input.isMousePressed(0)){
+						useInventory(4);
+						}
+					itemSlots[1][0] = new Image("res/gui/inventory/item_slot_hover.png");
+					}
+				
+				//Slot 6
+				if(MainMenu.checkBounds(251, 251 + itemSlots[1][1].getWidth() , 553, 553 + itemSlots[1][1].getHeight(), xpos, ypos)){
+					if(input.isMousePressed(0)){
+						useInventory(5);
+						}
+					itemSlots[1][1] = new Image("res/gui/inventory/item_slot_hover.png");
+					}
+				
+				//Slot 7
+				if(MainMenu.checkBounds(467, 467 + itemSlots[1][2].getWidth() , 553, 553 + itemSlots[1][2].getHeight(), xpos, ypos)){
+					if(input.isMousePressed(0)){
+						useInventory(6);
+						}
+					itemSlots[1][2] = new Image("res/gui/inventory/item_slot_hover.png");
+					}
+				
+				//Slot 8
+				if(MainMenu.checkBounds(683, 683 + itemSlots[1][3].getWidth() , 553, 553 + itemSlots[1][3].getHeight(), xpos, ypos)){
+					if(input.isMousePressed(0)){
+						useInventory(7);
+						}
+					itemSlots[1][3] = new Image("res/gui/inventory/item_slot_hover.png");
+					}
 		
 	}//end of checkInventoryMenu
+	
+	private void useInventory(int pos) {
+		if(pos < Main.util.getInventory().getItems().size()) {
+			if(Main.util.getInventory().getItems().get(pos) instanceof HealthPack){
+				new UseItem("health");
+				Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(pos));
+			} else if(Main.util.getInventory().getItems().get(pos) instanceof GravCapsule){
+				new UseItem("gravcapsule");
+				Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(pos));
+			}
+		}
+	}//end of useInventory
 	
 	public int getID() {
 		return GameLevel.id;
