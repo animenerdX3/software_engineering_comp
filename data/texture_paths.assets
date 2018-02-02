@@ -23,7 +23,7 @@ res/tiles/static/Lever_On.png,true
 res/tiles/static/Ladder_Top.png,true
 res/tiles/static/Ladder_Through.png,true
 res/tiles/static/Ladder_Bottom.png,true
-res/tiles/static/Doorway.png,true
+res/tiles/static/floor.png,false
 res/tiles/static/warning.png,true
 res/tiles/static/spikes_down.png,false
 res/tiles/static/spikes_left.png,false

@@ -1,16 +1,16 @@
 package bpa.dev.linavity.entities.tiles;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.newdawn.slick.SlickException;
 
 public class Dynamic extends Tile {
 
-	private int messageSendType;
+	private Point[] targetObjects;
 	
 	public Dynamic(int i, int j, int id, int mst, int xOffset, int yOffset, int width, int height) throws SlickException {
 		super(i, j, id);
-		this.setMessageSendType(mst);
 		this.width = width;
 		this.height = height;
 		this.x = this.x + xOffset;
@@ -20,19 +20,21 @@ public class Dynamic extends Tile {
 	// Getters
 	
 	/**
-	 * @return the messageSendType
+	 * @return the targetObjects
 	 */
-	public int getMessageSendType() {
-		return messageSendType;
-	}
+	@Override
+	public Point[] getTargetObjects() {
+		return targetObjects;
+	}	
 	
 	// Setters
 
 	/**
-	 * @param messageSendType the messageSendType to set
+	 * @param targetObjects the targetObjects to set
 	 */
-	public void setMessageSendType(int messageSendType) {
-		this.messageSendType = messageSendType;
+	@Override
+	public void setTargetObjects(Point[] targetObjects) {
+		this.targetObjects = targetObjects;
 	}
-
+	
 }

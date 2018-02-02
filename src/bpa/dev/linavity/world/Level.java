@@ -42,11 +42,35 @@ public class Level {
 		
 		this.map = lm.makeMap();
 		this.events = lm.makeEvents();
-		//this.channels = lm.makeChannels();
+		this.channels = lm.makeChannels();
 		
 		this.levelWidth = map[0].length * 50;
 		this.levelHeight = map.length * 50;
+		
+		// Assign the channels for our interconnected dynamic tiles
+		assignChannels();
 
+	}
+	
+	private void assignChannels() {
+		
+		for(int i = 0; i < channels.size(); i++) { // Run through the array list of Point arrays
+			
+			// Create a temporary Point array from the list of arrays
+			Point[] grabChannels = channels.get(i);  
+			
+			// Make another temp array to hold all of the points except for the first point, which indicates which dynamic tile we are assigning the rest of the poitns to
+			Point[] tempPointArray = new Point[grabChannels.length - 1];
+			
+			// Assign the points to the second temp point array
+			for(int j = 1; j < grabChannels.length; j++) {
+				tempPointArray[j-1] = grabChannels[j]; 
+			}
+			
+			this.getSingleEventTile(grabChannels[0]).setTargetObjects(tempPointArray);
+			
+		}
+		
 	}
 	
 	// Returns a 2d array of tiles that are within the boundaries of our camera object
@@ -85,6 +109,16 @@ public class Level {
 			
 			return screenTiles;
 		}
+		
+	// Retrieve a single tile from the map
+	public Tile getSingleMapTile(Point coords) {
+		return map[coords.x][coords.y];
+	}
+	
+	// Retrieve a single tile from the events
+	public Tile getSingleEventTile(Point coords) {
+		return events[coords.x][coords.y];
+	}
 	
 	// Getters
 	
@@ -217,18 +251,5 @@ public class Level {
 	public void setLevelHeight(int levelHeight) {
 		this.levelHeight = levelHeight;
 	}
-
-
-	// Old getter for a single tile
-
-//	public Tile getSingleTile(int i, int j) {
-//		return tiles[i][j];
-//	}
-//	
-//	public Tile getSingleTile(Point coords) {
-//		return tiles[coords.x][coords.y];
-//	}
-	
-	
 	
 }//end of class

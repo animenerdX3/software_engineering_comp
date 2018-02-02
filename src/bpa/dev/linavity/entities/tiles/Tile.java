@@ -1,5 +1,6 @@
 package bpa.dev.linavity.entities.tiles;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -65,7 +66,14 @@ public class Tile extends GameObject implements Shape {
 		this.collisionBox = new Rectangle((int) (this.x + this.xOffset), (int) (this.y+this.yOffset), (int) this.width, (int) this.height);
 	}
 	
-
+	// Getters
+	
+	/**
+	 * @return the targetObjects
+	 */
+	public Point[] getTargetObjects() {
+		return null;
+	}	
 
 	/**
 	 * @return the passable
@@ -104,9 +112,15 @@ public class Tile extends GameObject implements Shape {
 		return collisionBox;
 	}
 	
-	/* SETTERS */
 	
+	// Setters
 
+	/**
+	 * @param targetObjects the targetObjects to set
+	 */
+	public void setTargetObjects(Point[] targetObjects) {
+	}
+	
 	/**
 	 * @param passable the passable to set
 	 */

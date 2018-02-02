@@ -97,12 +97,15 @@ public class LevelManager {
 	
 	public Point[] makePointArray(String line) {
 		
+		int pointArrayCounter = 0;
+		
 		String[] tempStringArray = line.split(",");
 		
 		Point[] tempPointArray = new Point[tempStringArray.length / 2];
 		
-		for(int i = 0; i < tempPointArray.length; i += 2) {
-			tempPointArray[i] = new Point(Integer.parseInt(tempStringArray[i]), Integer.parseInt(tempStringArray[i+1])); 
+		for(int i = 0; i < tempStringArray.length; i += 2) {
+			tempPointArray[pointArrayCounter] = new Point(Integer.parseInt(tempStringArray[i]), Integer.parseInt(tempStringArray[i+1])); 
+			pointArrayCounter++;
 		}
 		
 		return tempPointArray;
