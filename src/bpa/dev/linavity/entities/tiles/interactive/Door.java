@@ -41,14 +41,14 @@ public class Door extends Dynamic {
 	}
 	
 	public void openDoor() throws SlickException {
-		this.setTexture(new Image("res/tiles/blank.png"));
+		this.setTexture(new Image("res/tiles/dynamic/door_open.png"));
 		this.setPassable(true);
 		System.out.println("Open Door");
 		
 	}
 	
 	public void closeDoor() throws SlickException {
-		this.setTexture(new Image("res/tiles/static/floor.png"));
+		this.setTexture(new Image("res/tiles/dynamic/door_closed.png"));
 		this.setPassable(false);
 		System.out.println("Close Door");
 	}

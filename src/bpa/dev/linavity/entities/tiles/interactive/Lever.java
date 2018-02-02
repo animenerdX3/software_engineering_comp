@@ -37,7 +37,7 @@ public class Lever extends Dynamic {
 	}
 	
 	public void toggleOn() throws SlickException {
-		this.setTexture(new Image("res/tiles/static/Lever_On.png"));
+		this.setTexture(new Image("res/tiles/dynamic/Lever_On.png"));
 		this.toggle = !this.toggle;
 		System.out.println("ON");
 		
@@ -49,7 +49,7 @@ public class Lever extends Dynamic {
 	}
 	
 	public void toggleOff() throws SlickException {
-		this.setTexture(new Image("res/tiles/static/Lever_Off.png"));
+		this.setTexture(new Image("res/tiles/dynamic/Lever_Off.png"));
 		this.toggle = !this.toggle;
 		System.out.println("OFF");
 		

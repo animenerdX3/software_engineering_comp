@@ -21,10 +21,6 @@ public class Tile extends GameObject implements Shape {
 	public final static int leverID = 20;
 	public final static int doorID = 30;
 	
-	
-	// Special Tile ID's
-	public final static int defaultTileTexture = 1; 
-	
 	// Tile ID
 	private int id;
 	

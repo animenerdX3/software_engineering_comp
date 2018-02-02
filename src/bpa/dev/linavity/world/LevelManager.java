@@ -136,8 +136,16 @@ public class LevelManager {
 					// Static Tiles
 					if(tileIDs[i][j] < 12) 
 						tiles[i][j] = new Tile(i, j, tileIDs[i][j]); // Create a static tile, texture and passability based on ID
-					else
-						tiles[i][j] = new Tile(i, j, Tile.defaultTileTexture); // Create a defualt tile where any dynamic tile will be placed
+					else{
+						// Create a default tile where any dynamic tile will be placed
+						if(tiles[i-1][j].isPassable())
+							tiles[i][j] = new Tile(i, j, tiles[i-1][j].getId());
+						else if(tiles[i][j-1].isPassable())
+							tiles[i][j] = new Tile(i, j, tiles[i][j-1].getId());
+						else if(tiles[i][j+1].isPassable())
+							tiles[i][j] = new Tile(i, j, tiles[i][j+1].getId());	
+					}
+						
 				}
 				
 				// Event Creation
@@ -152,6 +160,8 @@ public class LevelManager {
 							tiles[i][j] = new Door(i, j, tileIDs[i][j], 0, 0, 50, 50);
 						else // Default Dynamic Tile
 							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 50, 50);
+					}else{
+						tiles[i][j] = new Tile(i, j, 0); // Create a default tile where any dynamic tile will be placed
 					}
 				}
 				
