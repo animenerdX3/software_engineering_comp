@@ -2,6 +2,8 @@ package bpa.dev.linavity.events;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.SlickException;
+
 public class MessageHandler {
 	
 	// An array list (queue) of messages to be handled by the game
@@ -18,7 +20,7 @@ public class MessageHandler {
 	}
 	
 	// Runs through the array list of events and dispatches them to the proper recipients
-	public void dispatchMessages(){
+	public void dispatchMessages() throws SlickException{
 		
 		for(int i = 0; i < messageQueue.size(); i++){
 			

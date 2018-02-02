@@ -1,6 +1,7 @@
 package bpa.dev.linavity.collectibles;
 
 import java.awt.Rectangle;
+import java.util.Random;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
@@ -26,7 +27,7 @@ public class Item {
 		this.height = 40;
 		this.collisionBox = new Rectangle((int)x,(int)y,(int)width,(int)height);
 		this.itemSheet = new SpriteSheet("res/items/gravitypack/gravitypack_animation.png",(int)this.width,(int)this.height); // declare a SpriteSheet and load it into java with its dimensions
-	    this.itemAni = new Animation(this.itemSheet, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.itemAni = new Animation(this.itemSheet, new Random().nextInt(20) + 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
 	    this.thumb = new Image("res/items/gravitypack/gravitypack_thumb.png");
 	    this.isCollected = false;
 	    this.isActive = true;
@@ -39,7 +40,7 @@ public class Item {
 		this.height = 40;
 		this.collisionBox = new Rectangle((int)x,(int)y,(int)width,(int)height);
 	    this.itemSheet = new SpriteSheet("res/items/"+itemImage+"/"+itemImage+"_animation.png",(int)this.width, (int)this.height); // declare a SpriteSheet and load it into java with its dimensions
-	    this.itemAni = new Animation(this.itemSheet, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.itemAni = new Animation(this.itemSheet, new Random().nextInt(20) + 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
 	    this.thumb = new Image("res/items/"+itemImage+"/"+itemImage+"_thumb.png");
 	    this.isCollected = false;
 	    this.isActive = true;
@@ -52,7 +53,7 @@ public class Item {
 		this.height = height;
 		this.collisionBox = new Rectangle((int)x,(int)y,(int)width,(int)height);
 	    this.itemSheet = new SpriteSheet("res/items/"+itemImage+"/"+itemImage+"_animation.png",(int)this.width, (int)this.height); // declare a SpriteSheet and load it into java with its dimensions
-	    this.itemAni = new Animation(this.itemSheet, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
+	    this.itemAni = new Animation(this.itemSheet, new Random().nextInt(20) + 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
 	    this.thumb = new Image("res/items/"+itemImage+"/"+itemImage+"_thumb.png");
 	    this.isCollected = false;
 	    this.isActive = true;

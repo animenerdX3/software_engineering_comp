@@ -85,10 +85,6 @@ public class Player extends Mob {
 			this.jumps = 0;
 			gravPack.setGravpower(gravPack.getGravpower() + (float) message.getData());
 		}
-		if(message.getType() == Message.leverToggle){	
-			
-			
-		}
 		
 		if(message.getType() == Message.endLevel) {
 			this.readyForNextLevel = true;

@@ -1,5 +1,7 @@
 package bpa.dev.linavity;
 
+import org.newdawn.slick.SlickException;
+
 import bpa.dev.linavity.events.Message;
 
 /**
@@ -15,7 +17,7 @@ public class GameObject {
 	}
 	
 	//Default onMessage method
-	public void onMessage(Message message){
+	public void onMessage(Message message) throws SlickException{
 		
 	}
 	

@@ -11,36 +11,28 @@ import bpa.dev.linavity.entities.tiles.Dynamic;
 import bpa.dev.linavity.events.Message;
 import bpa.dev.linavity.gamestates.GameLevel;
 
-public class Lever extends Dynamic {
+public class Door extends Dynamic {
 	
 	
-	public Lever(int i, int j, int id, int xOffset, int yOffset, int width, int height) throws SlickException {
+	public Door(int i, int j, int id, int xOffset, int yOffset, int width, int height) throws SlickException {
 		super(i, j, id, xOffset, yOffset, width, height);
 	}
 	
 	@Override
 	public void onCollide(GameObject go) throws SlickException {
 
-		System.out.println("LEVER COLLIDE");
 		
-		if(go instanceof Player){ // If the mob colliding with the lever was the player
-			System.out.println("INSTANCE OF PLAYER");
-			if(Main.util.getKeyLogSpecificKey(8)){ // and the player hits e (interact)
-				System.out.println("E GETS PRESSED");
-				if(this.toggle){ // If the lever was on
-					toggleOff();
-				}else{
-					toggleOn();
-				}
-			}
-		}
+	}
+	
+	@Override
+	public void onMessage(Message message) throws SlickException {
+		
 	}
 	
 	public void toggleOn() throws SlickException {
 		this.setTexture(new Image("res/tiles/static/Lever_On.png"));
 		this.toggle = !this.toggle;
 		System.out.println("ON");
-		
 		
 	}
 	

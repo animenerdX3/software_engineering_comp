@@ -25,7 +25,7 @@ public class Dynamic extends Tile {
 		this.toggle = false;
 	}
 	
-	public void onMessage(Message message){
+	public void onMessage(Message message) throws SlickException{
 		// Event Handling
 	}
 	
