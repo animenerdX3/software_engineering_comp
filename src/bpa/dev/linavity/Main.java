@@ -12,7 +12,7 @@ import bpa.dev.linavity.gamestates.*;
 /**
  *  Linavity
  * @author Peter Gomes, Yannick Almeida, Ethan Guillotte, Chris Furtado
- * @version 1.03
+ * @version 1.055
  */
 
 /* Task List
@@ -22,7 +22,7 @@ import bpa.dev.linavity.gamestates.*;
 public class Main extends StateBasedGame{
 	
 	//Game Version
-	public static final double version = 1.05;
+	public static final double version = 1.055;
 	
 	// Game State Identifiers
 	public static final int mainmenu = 0;
