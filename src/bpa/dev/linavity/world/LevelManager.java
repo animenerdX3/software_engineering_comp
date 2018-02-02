@@ -16,6 +16,8 @@ import bpa.dev.linavity.utils.ErrorLog;
 
 public class LevelManager {
 	
+	private final static int map = 0;
+	private final static int events = 1;
 	
 	// File Instance Variables
 	File mapFile;
@@ -34,11 +36,11 @@ public class LevelManager {
 		
 		// FILE CREATION
 		mapFile = getFile("data/levels/" + id + "/" + id + ".map");
-		eventsFile = getFile("data/levels/" + id + "/" + id + ".events");
+		// eventsFile = getFile("data/levels/" + id + "/" + id + ".events");
 		channelsFile = getFile("data/levels/" + id + "/" + id + ".channels");
-		configFile = getFile("data/levels/" + id + "/" + id + ".levelConfig");
-		characterFile = getFile("data/levels/" + id + "/" + id + ".character");
-		mobsFile = getFile("data/levels/" + id + "/" + id + ".mobs");
+		// configFile = getFile("data/levels/" + id + "/" + id + ".levelConfig");
+		// characterFile = getFile("data/levels/" + id + "/" + id + ".character");
+		// mobsFile = getFile("data/levels/" + id + "/" + id + ".mobs");
 		// END OF FILE CREATION
 		
 	}//end of LevelManager
@@ -48,7 +50,7 @@ public class LevelManager {
 	public Tile[][] makeMap() throws SlickException {
 		
 		try {
-			return createTileArray(get2DIntArray(mapFile));
+			return createTileArray(get2DIntArray(mapFile), 0);
 		} catch (FileNotFoundException e) {
 			ErrorLog.logError(e);
 			return null;
@@ -60,7 +62,7 @@ public class LevelManager {
 	public Tile[][] makeEvents() throws SlickException {
 		
 		try {
-			return createTileArray(get2DIntArray(eventsFile));
+			return createTileArray(get2DIntArray(mapFile), 1);
 		} catch (FileNotFoundException e) {
 			ErrorLog.logError(e);
 			return null;
@@ -121,7 +123,7 @@ public class LevelManager {
 	 * @return tiles	a 2D array of tile objects for the level
 	 * 
 	 */
-	private Tile[][] createTileArray(int[][] tileIDs) throws SlickException {
+	private Tile[][] createTileArray(int[][] tileIDs, int creatorID) throws SlickException {
 		
 		Tile[][] tiles = new Tile[tileIDs.length][tileIDs[0].length]; //Create a 2D array with the same size as the tileIDs array
 		
@@ -129,18 +131,28 @@ public class LevelManager {
 			
 			for(int j = 0; j < tileIDs[i].length; j++) {//Parse through a single row
 				
-				// Depending on the tile ID's determine the type of tile that is being generated
-				if(tileIDs[i][j] > 4){
-					if(tileIDs[i][j] == 5)
-						tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 40, 50, 10);
-					else if(tileIDs[i][j] == 20)
-						tiles[i][j] = new Lever(i, j, tileIDs[i][j], 0, 0,50, 50);
-					else if(tileIDs[i][j] == 25)
-						tiles[i][j] = new Door(i, j, tileIDs[i][j], 0, 0,50, 50);
+				// Map Creation
+				if(creatorID == 0) {
+					// Static Tiles
+					if(tileIDs[i][j] < 12) 
+						tiles[i][j] = new Tile(i, j, tileIDs[i][j]); // Create a static tile, texture and passability based on ID
 					else
-						tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 50, 50);
-				}else{
-					tiles[i][j] = new Tile(i, j, tileIDs[i][j]);//Create a tile based on the id
+						tiles[i][j] = new Tile(i, j, Tile.defaultTileTexture); // Create a defualt tile where any dynamic tile will be placed
+				}
+				
+				// Event Creation
+				if(creatorID == 1) {
+					// Dynamic Tiles
+					if(tileIDs[i][j] > 11) {
+						if(tileIDs[i][j] == Tile.gravPadID) // Gravity Pad
+							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 40, 50, 10);
+						else if(tileIDs[i][j] == Tile.leverID) // Lever
+							tiles[i][j] = new Lever(i, j, tileIDs[i][j], 0, 0, 50, 50);
+						else if(tileIDs[i][j] == Tile.doorID) // Door
+							tiles[i][j] = new Door(i, j, tileIDs[i][j], 0, 0, 50, 50);
+						else // Default Dynamic Tile
+							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 50, 50);
+					}
 				}
 				
 			}

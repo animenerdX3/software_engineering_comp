@@ -16,9 +16,14 @@ import bpa.dev.linavity.GameObject;
 public class Tile extends GameObject implements Shape {
 
 	// Final Ints for dynamic tile ID's
-	public final static int gravPadID = 5;
-	public final static int warpHoleID = 12;
+	public final static int gravPadID = 12;
+	public final static int warpHoleID = 19;
 	public final static int leverID = 20;
+	public final static int doorID = 30;
+	
+	
+	// Special Tile ID's
+	public final static int defaultTileTexture = 1; 
 	
 	// Tile ID
 	private int id;
