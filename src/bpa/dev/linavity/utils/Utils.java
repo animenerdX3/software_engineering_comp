@@ -70,6 +70,7 @@ public class Utils {
 	
 	// Default Constructor
 	public Utils() throws SlickException{
+		LogSystem.addToLog("Debug Mode: "+this.debugMode);
 		//Set Load Slots
 		this.slotOneData = new LoadGame(1);
 		this.slotTwoData = new LoadGame(2);

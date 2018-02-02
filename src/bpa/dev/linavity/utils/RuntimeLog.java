@@ -22,6 +22,7 @@ public class RuntimeLog {
 		LogSystem.addToLog("Current Operating System: "+System.getProperty("os.name"));
 		LogSystem.addToLog("System Display Resolution: "+gd.getDisplayMode().getWidth()+" x "+gd.getDisplayMode().getHeight());
 		LogSystem.addToLog("Window Size: "+Main.WIDTH+" x "+Main.HEIGHT);
+		LogSystem.addToLog("FPS: "+Main.FPS);
 		
 	}//end of startUpInfo
 	
