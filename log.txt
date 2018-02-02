@@ -1,6 +1,6 @@
 Starting Program...
-02/02/2018 14:26:34
-Current Operating System: Windows 7
+02/02/2018 15:36:42
+Current Operating System: Windows 10
 System Display Resolution: 1920 x 1080
 Window Size: 900 x 900
 FPS: 60

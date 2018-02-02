@@ -22,27 +22,29 @@ public class ParallaxMap {
 	}
 
 	public void moveBackground() {
-		//Check for sides of the image
-		if((this.x <= 0 || x >= this.backgroundLayer.getWidth())) {
-			//Check to see if the player is moving left
-			if(Main.util.getPlayer().isMovingLeft()) {
+			//If not moving, just let it scroll
+			if (this.autoScroll) {
 				this.x = x + Xspeed;
 				this.y = y + Yspeed;
+				if(this.x + this.Xspeed >= 0)
+					this.Xspeed = -this.Xspeed;
+				else if(this.x + this.Xspeed <= -(this.backgroundLayer.getWidth()- 900))
+					this.Xspeed = -this.Xspeed;
 			}
-			//Check to see if the player is moving right
-			else if(Main.util.getPlayer().isMovingRight()) {
-				this.x = x - Xspeed;
-				this.y = y - Yspeed;
-			}
-			//If not moving, just let it scroll
-			else if (this.autoScroll) {
-				this.x = x + (Xspeed/2);
-				this.y = y + (Yspeed/2);
+			else {
+				if(Main.util.getPlayer().isMovingLeft()) {
+					this.x = x + Xspeed;
+					this.y = y + Yspeed;
+				}
+				//Check to see if the player is moving right
+				else if(Main.util.getPlayer().isMovingRight()) {
+					this.x = x - Xspeed;
+					this.y = y - Yspeed;
+				}
 			}
 			if(this.y < -(this.backgroundLayer.getHeight() - 900)){
 				this.y = this.y - this.y;
 			}
-		}
 	}
 	
 	/* GETTERS */
