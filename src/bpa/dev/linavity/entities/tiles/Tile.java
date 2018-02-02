@@ -20,6 +20,7 @@ public class Tile extends GameObject implements Shape {
 	public final static int warpHoleID = 19;
 	public final static int leverID = 20;
 	public final static int doorID = 30;
+	public final static int spikesID = 26;
 	
 	// Tile ID
 	private int id;
@@ -38,7 +39,7 @@ public class Tile extends GameObject implements Shape {
 	boolean toggle = false;
 
 	// the image of our tile
-	private Image texture = null;
+	protected Image texture = null;
 	
 	// Possible paths for our image files
 	TileManager all_tiles = new TileManager("texture_paths");
