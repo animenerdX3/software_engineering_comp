@@ -119,7 +119,7 @@ public abstract class Mob extends GameObject{
 	/*
 	 * Make updates to the mob's stats, position, and collision detection
 	 */
-	public void updateMob(int delta) {
+	public void updateMob(int delta) throws SlickException {
 		
 		// Update the future position of the mob, to help with collision detection
 		updateFuturePosition();
@@ -153,8 +153,9 @@ public abstract class Mob extends GameObject{
 	/**
 	 * default update method, for use in the child classes
 	 * @param delta
+	 * @throws SlickException 
 	 */
-	public void update(int delta) {
+	public void update(int delta) throws SlickException {
 		
 	}//end of update
 	
@@ -202,8 +203,9 @@ public abstract class Mob extends GameObject{
 	 * check if the mob collides with an object
 	 * @param level
 	 * @param cam
+	 * @throws SlickException 
 	 */
-	public void checkMobCollisions(Tile[][] screenTiles, Camera cam) {
+	public void checkMobCollisions(Tile[][] screenTiles, Camera cam) throws SlickException {
 		
 		//Reset our collision variables
 		this.collideLeft = false;
@@ -225,8 +227,9 @@ public abstract class Mob extends GameObject{
 	 * @param tile
 	 * @param i tile row in the level
 	 * @param j tile column in the level
+	 * @throws SlickException 
 	 */
-	private void checkTileCollision(Tile tile, int i, int j) {
+	private void checkTileCollision(Tile tile, int i, int j) throws SlickException {
 					
 			//Moving Left - Check Collision
 			if(onRight(tile)) { //seeing if i am directly to the right of the tile we collided into
@@ -350,8 +353,9 @@ public abstract class Mob extends GameObject{
 	 * @param tile
 	 * @param i
 	 * @param j
+	 * @throws SlickException 
 	 */
-	private void checkDynamicTiles(Tile tile, int i, int j) {
+	private void checkDynamicTiles(Tile tile, int i, int j) throws SlickException {
 		
 		// GravPad Recharging the player's gravPad
 		if(tile.getId() == tile.gravPadID && this.collideDown == true) {
@@ -364,7 +368,7 @@ public abstract class Mob extends GameObject{
 		
 		// Lever getting activated / toggled
 		if(tile.getId() == tile.leverID) {
-			Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.leverToggle, 0));
+			tile.onCollide(this);
 		}
 	}//end of checkDynamicTiles
 	

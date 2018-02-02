@@ -50,7 +50,7 @@ public class Utils {
 	private Sound [] sfx;
 	
 	//Handler for Levers
-	public Lever testLever = new Lever();
+	//public Lever testLever = new Lever();
 	
 	//Loading Objects
 	private LoadGame slotOneData;

@@ -5,16 +5,32 @@ import java.awt.Rectangle;
 
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.GameObject;
+import bpa.dev.linavity.events.Message;
+
 public class Dynamic extends Tile {
 
-	private Point[] targetObjects;
+	// An array of points, indicating which objects this one will interact with.
+	protected Point[] targetObjects;
 	
-	public Dynamic(int i, int j, int id, int mst, int xOffset, int yOffset, int width, int height) throws SlickException {
+	// A toggle boolean used for different tiles that toggle
+	protected boolean toggle;
+	
+	public Dynamic(int i, int j, int id, int xOffset, int yOffset, int width, int height) throws SlickException {
 		super(i, j, id);
 		this.width = width;
 		this.height = height;
 		this.x = this.x + xOffset;
 		this.y = this.y + yOffset;
+		this.toggle = false;
+	}
+	
+	public void onMessage(Message message){
+		// Event Handling
+	}
+	
+	public void onCollide(GameObject go) throws SlickException {
+		// Special Collision functions
 	}
 
 	// Getters

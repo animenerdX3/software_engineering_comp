@@ -66,6 +66,10 @@ public class Tile extends GameObject implements Shape {
 		this.collisionBox = new Rectangle((int) (this.x + this.xOffset), (int) (this.y+this.yOffset), (int) this.width, (int) this.height);
 	}
 	
+	public void onCollide(GameObject go) throws SlickException {
+		// Special Collision functions
+	}
+	
 	// Getters
 	
 	/**

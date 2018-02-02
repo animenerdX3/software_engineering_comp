@@ -280,9 +280,10 @@ public class Starter extends Mob{
 	/**
 	 * Enemy movement AI
 	 * @param delta
+	 * @throws SlickException 
 	 */
 	@Override
-	public void update(int delta) {
+	public void update(int delta) throws SlickException {
 		
 		if(Main.util.getPlayer().getCurrentProjectile() != null)
 			collideProjectile();

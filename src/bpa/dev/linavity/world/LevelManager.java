@@ -10,6 +10,7 @@ import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.entities.tiles.Dynamic;
 import bpa.dev.linavity.entities.tiles.Tile;
+import bpa.dev.linavity.entities.tiles.interactive.Lever;
 import bpa.dev.linavity.utils.ErrorLog;
 
 public class LevelManager {
@@ -130,9 +131,11 @@ public class LevelManager {
 				// Depending on the tile ID's determine the type of tile that is being generated
 				if(tileIDs[i][j] > 4){
 					if(tileIDs[i][j] == 5)
-						tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 40, 50, 10);
+						tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 40, 50, 10);
+					else if(tileIDs[i][j] == 20)
+						tiles[i][j] = new Lever(i, j, tileIDs[i][j], 0, 0,50, 50);
 					else
-						tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 0, 50, 50);
+						tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 50, 50);
 				}else{
 					tiles[i][j] = new Tile(i, j, tileIDs[i][j]);//Create a tile based on the id
 				}

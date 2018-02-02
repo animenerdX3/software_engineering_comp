@@ -87,25 +87,6 @@ public class Player extends Mob {
 		}
 		if(message.getType() == Message.leverToggle){	
 			
-			Main.util.testLever.setID((int) message.getData());
-			Main.util.testLever.setToggle(!Main.util.testLever.getToggle());
-			Main.util.testLever.callFunction();
-			if(Main.util.testLever.getToggle()) {
-				try {
-					Tile change = (Tile) message.getFrom();
-					change.setTexture(new Image("res/tiles/static/Lever_On.png"));
-				} catch (SlickException e) {
-					e.printStackTrace();
-				}
-			}
-			else {
-				try {
-					Tile change = (Tile) message.getFrom();
-					change.setTexture(new Image("res/tiles/static/Lever_Off.png"));
-				} catch (SlickException e) {
-					e.printStackTrace();
-				}
-			}
 			
 		}
 		
@@ -302,9 +283,10 @@ public class Player extends Mob {
 	
 	/**
 	 * update the player's functions
+	 * @throws SlickException 
 	 */
 	@Override
-	public void update(int delta) {
+	public void update(int delta) throws SlickException {
 		
 		/*
 		 *MOVEMENT

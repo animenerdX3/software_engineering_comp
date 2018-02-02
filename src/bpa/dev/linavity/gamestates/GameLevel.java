@@ -513,8 +513,12 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 	 * @param gc
 	 * @param sbg
 	 * @param delta
+	 * @throws SlickException 
 	 */
-	private void gameUpdates(GameContainer gc, StateBasedGame sbg, int delta) {
+	private void gameUpdates(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		if(Main.util.getKeyLogSpecificKey(8)) {
+			System.out.println("Yo, e is actually printing");
+		}
 		
 		//Check for End of Level
 		endLevel(sbg);
@@ -576,8 +580,9 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 	/**
 	 * Perform all updates to the player object
 	 * @param delta
+	 * @throws SlickException 
 	 */
-	private void updateMobs(int delta){
+	private void updateMobs(int delta) throws SlickException{
 		// Update the mob's position
 		for(int i = 0; i < mobs.size(); i++)
 			mobs.get(i).update(delta);

@@ -284,9 +284,10 @@ public class Bomber extends Mob{
 	/**
 	 * update the bomber's functions
 	 * @param delta
+	 * @throws SlickException 
 	 */
 	@Override
-	public void update(int delta) {
+	public void update(int delta) throws SlickException {
 
 		
 		if(Main.util.getPlayer().getCurrentProjectile() != null)
