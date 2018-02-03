@@ -11,6 +11,7 @@ import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.gamestates.MainMenu;
+import bpa.dev.linavity.utils.LogSystem;
 
 public class Level {
 	
@@ -42,11 +43,23 @@ public class Level {
 		
 		this.lm = new LevelManager(id);
 		
+		LogSystem.addToLog("Making the Map...");
 		this.map = lm.makeMap();
+		LogSystem.addToLog("Map Created Successfully.");
+		LogSystem.addToLog("Making the Events...");
 		this.events = lm.makeEvents();
+		LogSystem.addToLog("Events Created Successfully.");
+		LogSystem.addToLog("Making the Channels...");
 		this.channels = lm.makeChannels();
+		LogSystem.addToLog("Channels Created Successfully.");
+		LogSystem.addToLog("Making the Mobs...");
 		this.mobs = lm.makeMobs();
+		LogSystem.addToLog("Mobs Created Successfully.");
+		LogSystem.addToLog("Making the Items...");
 		this.items = lm.makeItems();
+		LogSystem.addToLog("Items Created Successfully.");
+		LogSystem.addToLog("Level Created Successfully.");
+		LogSystem.addToLog("");
 		
 		this.levelWidth = map[0].length * 50;
 		this.levelHeight = map.length * 50;

@@ -1,6 +1,7 @@
 package bpa.dev.linavity.gamestates;
 
 import java.awt.Rectangle;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -14,7 +15,10 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
-import bpa.dev.linavity.collectibles.*;
+import bpa.dev.linavity.collectibles.GravCapsule;
+import bpa.dev.linavity.collectibles.HealthPack;
+import bpa.dev.linavity.collectibles.Item;
+import bpa.dev.linavity.collectibles.UseItem;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
@@ -88,6 +92,7 @@ public class GameLevel extends BasicGameState{
 		LogSystem.addToLog("Initializing GameLevel...");
 		
 		if(Main.util.getLoadGame()) {
+			LogSystem.addToLog("Loading Game...");
 			Main.util.getCam().setX(Main.util.getCurrentLoadData().getCamX());
 			Main.util.getCam().setY(Main.util.getCurrentLoadData().getCamY());
 			Main.util.setLevelTime(Main.util.getCurrentLoadData().getLevelTime());
@@ -102,6 +107,11 @@ public class GameLevel extends BasicGameState{
 		}
 		else {
 			LogSystem.addToLog("Starting a New Game...");
+			try {
+				Main.util.setLevel(new Level(1));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 			Main.util.setLevelTime(0);
 			LogSystem.addToLog("Creating Mobs...");
 			mobs = getMobs();
@@ -149,6 +159,7 @@ public class GameLevel extends BasicGameState{
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
 		
 		LogSystem.addToLog("GameLevel initialized successfully.");
+		LogSystem.addToLog("");
 		
 	}//end of init
 
@@ -759,6 +770,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if(MainMenu.checkBounds( (gc.getWidth()/2) - (returnMenu.getWidth()/2) , (gc.getWidth()/2) - (returnMenu.getWidth()/2) + returnMenu.getWidth() , 565 , 565 + returnMenu.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Returning to Main Menu...");
+				LogSystem.addToLog("");
 				input.clearKeyPressedRecord();
 				Main.util.getMusic().stop();
 				Main.util.setMusic(Main.util.getMusicQueue(0));

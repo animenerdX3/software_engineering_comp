@@ -14,7 +14,6 @@ import bpa.dev.linavity.collectibles.Inventory;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
-import bpa.dev.linavity.entities.tiles.interactive.Lever;
 import bpa.dev.linavity.events.MessageHandler;
 import bpa.dev.linavity.physics.Gravity;
 import bpa.dev.linavity.world.Level;
@@ -71,6 +70,7 @@ public class Utils {
 	// Default Constructor
 	public Utils() throws SlickException{
 		LogSystem.addToLog("Debug Mode: "+this.debugMode);
+		LogSystem.addToLog("");
 		//Set Load Slots
 		this.slotOneData = new LoadGame(1);
 		this.slotTwoData = new LoadGame(2);

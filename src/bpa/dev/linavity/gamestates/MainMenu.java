@@ -124,6 +124,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		LogSystem.addToLog("Music Track 1 Playing");
 		
 		LogSystem.addToLog("Main Menu Initiation Succeeded.");
+		LogSystem.addToLog("");
 	}//end of init
 
 	// Renders content to the game / screen
@@ -340,7 +341,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	}//end of checkMouseBounds
 	
 	private void StartGame(Input input, StateBasedGame sbg, int gameStateID) {
-		LogSystem.addToLog("Starting Game...");
+		LogSystem.addToLog("Entering Game...");
 		input.clearKeyPressedRecord();
 		Main.appgc.setMouseGrabbed(true);
 		sbg.enterState(gameStateID);
