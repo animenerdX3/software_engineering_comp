@@ -14,8 +14,8 @@ public class Item {
 
 	protected float x, y, width, height;
 	protected Rectangle collisionBox;
-	private SpriteSheet itemSheet;
-	private Animation itemAni;
+	protected SpriteSheet itemSheet;
+	protected Animation itemAni;
 	private Image thumb;
 	protected boolean isCollected;
 	protected boolean isActive;

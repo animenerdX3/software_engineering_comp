@@ -9,7 +9,6 @@ import org.newdawn.slick.SlickException;
 import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Mob;
-import bpa.dev.linavity.entities.tiles.Dynamic;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.gamestates.MainMenu;
 
@@ -29,6 +28,7 @@ public class Level {
 
 	private ArrayList<Mob> mobs;
 	private ArrayList<Item> items;
+	private LevelManager lm;
 	
 	/**
 	 * Constructor: Creates a level for our gamestate
@@ -40,7 +40,7 @@ public class Level {
 	 */
 	public Level(int id) throws SlickException, FileNotFoundException{
 		
-		LevelManager lm = new LevelManager(id);
+		this.lm = new LevelManager(id);
 		
 		this.map = lm.makeMap();
 		this.events = lm.makeEvents();
@@ -188,6 +188,10 @@ public class Level {
 		return id;
 	}
 	
+	public LevelManager getLm() {
+		return lm;
+	}
+	
 	// Setters
 
 	/**
@@ -248,6 +252,10 @@ public class Level {
 
 	public void setLevelHeight(int levelHeight) {
 		this.levelHeight = levelHeight;
+	}
+	
+	public void setLm(LevelManager lm) {
+		this.lm = lm;
 	}
 	
 }//end of class

@@ -145,7 +145,7 @@ public class LevelManager {
 			for(int j = 0; j < itemsIDs[i].length; j++) {//Parse through a single row
 					if(itemsIDs[i][j] > 200){
 						if(itemsIDs[i][j] == 201)
-							items.add(new GravPack((j * 50) + 15, i *50, "gravitypack"));
+							items.add(new GravPack((j * 50) + 15, i *50 - 40, 40, 80, "gravitypack"));
 						else if(itemsIDs[i][j] == 202)
 							items.add(new HealthPack((j * 50) + 15, i *50, "healthpack"));
 						else if(itemsIDs[i][j] == 203)
