@@ -23,6 +23,7 @@ public class Player extends Mob {
 	private boolean readyForNextLevel;
 	private boolean toggleDirection = false;
 	private boolean inventoryOpen;
+	private int coolDown;
 	
 	private GravityPack gravPack;
 	
@@ -305,7 +306,7 @@ public class Player extends Mob {
 		
 		updateMomentums();
 		
-		shootProjectile();
+		shootProjectile(delta);
 		
 		super.updateMob(delta);
 	
@@ -354,9 +355,11 @@ public class Player extends Mob {
 	/**
 	 * handles all projectile shooting functions
 	 */
-	public void shootProjectile() {
+	public void shootProjectile(int delta) {
+		this.coolDown = this.coolDown + delta;
 		//Projectile Functions
-		if(Main.util.getKeyLogSpecificKey(7) && !this.inventoryOpen) {
+		if(Main.util.getKeyLogSpecificKey(7) && !this.inventoryOpen && this.coolDown > 500) {
+			this.coolDown = 0;
 			if(!projectileExists) {//If projectile does not exist
 				projectileExists = true;				
 				try {

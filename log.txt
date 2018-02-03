@@ -1,5 +1,5 @@
 Starting Program...
-02/03/2018 02:15:13
+02/03/2018 12:44:47
 Current Operating System: Windows 10
 System Display Resolution: 1920 x 1080
 Window Size: 900 x 900
