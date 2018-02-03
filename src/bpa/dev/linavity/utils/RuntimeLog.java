@@ -23,6 +23,7 @@ public class RuntimeLog {
 		LogSystem.addToLog("System Display Resolution: "+gd.getDisplayMode().getWidth()+" x "+gd.getDisplayMode().getHeight());
 		LogSystem.addToLog("Window Size: "+Main.WIDTH+" x "+Main.HEIGHT);
 		LogSystem.addToLog("FPS: "+Main.FPS);
+		LogSystem.addToLog("Version: "+Main.version);
 		
 	}//end of startUpInfo
 	

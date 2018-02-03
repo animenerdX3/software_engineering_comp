@@ -10,6 +10,7 @@ res/tiles/static/grass_base.png,false
 res/tiles/static/grass_top.png,false
 res/tiles/static/sky.png,true
 res/tiles/static/steel_bricks.png,true
+res/tiles/blank.png,true
 res/tiles/dynamic/antigravity/antigravity_off.png,false
 res/tiles/dynamic/antigravity/antigravity_on.png,false
 res/tiles/dynamic/antigravity/antigravity_on_light.png,true

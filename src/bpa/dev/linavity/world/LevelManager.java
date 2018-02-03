@@ -20,6 +20,7 @@ import bpa.dev.linavity.entities.enemies.Tank;
 import bpa.dev.linavity.entities.tiles.Dynamic;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.entities.tiles.interactive.Door;
+import bpa.dev.linavity.entities.tiles.interactive.EventTile;
 import bpa.dev.linavity.entities.tiles.interactive.Lever;
 import bpa.dev.linavity.entities.tiles.interactive.Spikes;
 import bpa.dev.linavity.utils.ErrorLog;
@@ -212,7 +213,9 @@ public class LevelManager {
 				if(creatorID == 1) {
 					// Dynamic Tiles
 					if(tileIDs[i][j] > 11 && tileIDs[i][j] < 101) {
-						if(tileIDs[i][j] == Tile.gravPadID) // Gravity Pad
+						if(tileIDs[i][j] == Tile.eventTileID) // Gravity Pad
+							tiles[i][j] = new EventTile(i, j, tileIDs[i][j], 0, 0, 50, 50);
+						else if(tileIDs[i][j] == Tile.gravPadID) // Gravity Pad
 							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 40, 50, 10);
 						else if(tileIDs[i][j] == Tile.leverID) // Lever
 							tiles[i][j] = new Lever(i, j, tileIDs[i][j], 0, 0, 50, 50);
