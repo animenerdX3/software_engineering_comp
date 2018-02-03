@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import bpa.dev.linavity.Main;
+import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.entities.*;
 
 public class SaveGame {
@@ -18,15 +19,17 @@ public class SaveGame {
 	private String levelTimer;
 	private int saveSlot;
 	private ArrayList<Mob> mobPositions;
+	private ArrayList<Item> itemPositions;
 	private File saveFile;
 	private boolean canOverWrite;
 	
-	public SaveGame(ArrayList<Mob> mobPositions, int gameStateID, float camX, float camY, int saveSlot, int levelTimer) {
+	public SaveGame(ArrayList<Mob> mobPositions, ArrayList<Item> itemPositions, int gameStateID, float camX, float camY, int saveSlot, int levelTimer) {
 		this.gameStateID = ""+gameStateID;
 		this.camX = ""+camX;
 		this.camY = ""+camY;
 		this.levelTimer = ""+levelTimer;
 		this.mobPositions = mobPositions;
+		this.itemPositions = itemPositions;
 		this.saveSlot = saveSlot;
 		this.saveFile = new File("saves/linavitySave_"+this.saveSlot+".data");
 		this.canOverWrite = true;
@@ -56,7 +59,7 @@ public class SaveGame {
 				saveFile.createNewFile();
 				fw = new FileWriter(this.saveFile.getAbsoluteFile(), true);
 				bw = new BufferedWriter(fw);
-				saveMobs(bw);
+				saveData(bw);
 			}
 			
 		} catch (IOException e) {
@@ -98,12 +101,18 @@ public class SaveGame {
        
 	}//end of overWriteSave
 	
-	public void saveMobs(BufferedWriter bw) throws IOException {
-		for(int i = -1; i < mobPositions.size(); i++) {
+	public void saveData(BufferedWriter bw) throws IOException {
+		for(int i = -1; i < mobPositions.size() + itemPositions.size() + 2; i++) {
 			if(i == -1)
 				bw.write(this.gameStateID+","+this.camX+","+this.camY+","+this.levelTimer);
+			else if(i == 0)
+				bw.write(""+mobPositions.size());
+			else if(i <= mobPositions.size())
+				bw.write(this.mobPositions.get(i - 1).toString());
+			else if(i == mobPositions.size() + 1)
+				bw.write(""+itemPositions.size());
 			else
-				bw.write(this.mobPositions.get(i).toString());
+				bw.write(this.itemPositions.get(i - mobPositions.size() - 2).toString());
 			bw.newLine();
 		}
 	}//end of saveMobs

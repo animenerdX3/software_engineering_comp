@@ -16,6 +16,7 @@ public class Item {
 	protected Rectangle collisionBox;
 	protected SpriteSheet itemSheet;
 	protected Animation itemAni;
+	private String itemImage;
 	private Image thumb;
 	protected boolean isCollected;
 	protected boolean isActive;
@@ -25,10 +26,11 @@ public class Item {
 		this.y = y;
 		this.width = 20;
 		this.height = 40;
+		this.itemImage = "gravitypack";
 		this.collisionBox = new Rectangle((int)x,(int)y,(int)width,(int)height);
-		this.itemSheet = new SpriteSheet("res/items/gravitypack/gravitypack_animation.png",(int)this.width,(int)this.height); // declare a SpriteSheet and load it into java with its dimensions
+	    this.itemSheet = new SpriteSheet("res/items/"+itemImage+"/"+itemImage+"_animation.png",(int)this.width, (int)this.height); // declare a SpriteSheet and load it into java with its dimensions
 	    this.itemAni = new Animation(this.itemSheet, new Random().nextInt(20) + 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
-	    this.thumb = new Image("res/items/gravitypack/gravitypack_thumb.png");
+	    this.thumb = new Image("res/items/"+itemImage+"/"+itemImage+"_thumb.png");
 	    this.isCollected = false;
 	    this.isActive = true;
 	}
@@ -38,6 +40,7 @@ public class Item {
 		this.y = y;
 		this.width = 20;
 		this.height = 40;
+		this.itemImage = itemImage;
 		this.collisionBox = new Rectangle((int)x,(int)y,(int)width,(int)height);
 	    this.itemSheet = new SpriteSheet("res/items/"+itemImage+"/"+itemImage+"_animation.png",(int)this.width, (int)this.height); // declare a SpriteSheet and load it into java with its dimensions
 	    this.itemAni = new Animation(this.itemSheet, new Random().nextInt(20) + 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
@@ -51,6 +54,7 @@ public class Item {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.itemImage = itemImage;
 		this.collisionBox = new Rectangle((int)x,(int)y,(int)width,(int)height);
 	    this.itemSheet = new SpriteSheet("res/items/"+itemImage+"/"+itemImage+"_animation.png",(int)this.width, (int)this.height); // declare a SpriteSheet and load it into java with its dimensions
 	    this.itemAni = new Animation(this.itemSheet, new Random().nextInt(20) + 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
@@ -229,6 +233,10 @@ public class Item {
 	 */
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+	
+	public String toString() {
+		return this.x+","+this.y+","+this.width+","+this.height+","+this.itemImage;
 	}
 	
 }//end of class

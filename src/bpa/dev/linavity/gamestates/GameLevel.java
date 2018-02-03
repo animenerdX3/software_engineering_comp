@@ -16,6 +16,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
 import bpa.dev.linavity.collectibles.GravCapsule;
+import bpa.dev.linavity.collectibles.GravPack;
 import bpa.dev.linavity.collectibles.HealthPack;
 import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.collectibles.UseItem;
@@ -100,7 +101,7 @@ public class GameLevel extends BasicGameState{
 			mobs = getMobs(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Mobs Created.");
 			LogSystem.addToLog("Creating Items...");
-			items = getItems();
+			items = getItems(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Items Created.");
 			Main.util.setLoadGame(false);
 			LogSystem.addToLog("Level Loaded Successfully.");
@@ -175,13 +176,14 @@ public class GameLevel extends BasicGameState{
 		ArrayList <Mob> mobs = new ArrayList<Mob>();
 		
 		String[] classNames = loadFile.getClassNames();
+		int mobSize = loadFile.getMobSize();
 		float[] xPos = loadFile.getXPos();
 		float[] yPos = loadFile.getYPos();
 		double[] healthStats = loadFile.getHealthStats();
 		float gravPower = loadFile.getGravPowerCheck();
 		boolean isFlipping = loadFile.getFlipping();
 		
-		for(int i = 0; i < classNames.length - 1; i++) {
+		for(int i = 0; i < mobSize; i++) {
 			if(classNames[i].equalsIgnoreCase("Player")) {
 				Main.util.setPlayer(new Player(xPos[i], yPos[i]));
 				mobs.add(Main.util.getPlayer());
@@ -204,6 +206,31 @@ public class GameLevel extends BasicGameState{
 	private ArrayList<Item> getItems() throws SlickException {
 		return Main.util.getLevel().getItems();
 	}//end of getItems
+	
+	private ArrayList<Item> getItems(LoadGame loadFile) throws SlickException {
+		//Add mobs
+		ArrayList <Item> items = new ArrayList<Item>();
+		
+		int itemsSize = loadFile.getItemSize();
+		int mobSize = loadFile.getMobSize();
+		float[] xPos = loadFile.getXPos();
+		float[] yPos = loadFile.getYPos();
+		float[] width = loadFile.getWidth();
+		float[] height = loadFile.getHeight();
+		String []itemImage = loadFile.getItemImage();
+		
+		for(int i = 0; i < itemsSize; i++) {
+			if(itemImage[i].equalsIgnoreCase("gravitypack")) 
+				items.add(new GravPack(xPos[i + mobSize ], yPos[i + mobSize ], width[i], height[i], itemImage[i]));
+			else if(itemImage[i].equalsIgnoreCase("healthpack"))
+				items.add(new HealthPack(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
+			else if(itemImage[i].equalsIgnoreCase("gravcapsule"))
+				items.add(new GravCapsule(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
+		}
+		
+		return items;
+	}//end of getItems
+	
 	
 	/**
 	 * Renders content to the game / screen
@@ -820,7 +847,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if(MainMenu.checkBounds( 100 , 100 + slotOne.getWidth() , 150, 150 + slotOne.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot One...");
-				SaveGame saveProgress = new SaveGame(mobs, GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 1, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items, GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 1, Main.util.getLevelTime());
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}
@@ -835,7 +862,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if(MainMenu.checkBounds( 100 , 100 + slotTwo.getWidth() , 350, 350 + slotTwo.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot Two...");
-				SaveGame saveProgress = new SaveGame(mobs, GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 2, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items, GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 2, Main.util.getLevelTime());
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}
@@ -850,7 +877,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if(MainMenu.checkBounds( 100 , 100 + slotThree.getWidth() , 550, 550 + slotThree.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot Three...");
-				SaveGame saveProgress = new SaveGame(mobs, GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 3, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items, GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 3, Main.util.getLevelTime());
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}
