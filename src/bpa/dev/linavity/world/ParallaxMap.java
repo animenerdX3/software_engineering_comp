@@ -29,7 +29,7 @@ public class ParallaxMap {
 				if(this.x + this.Xspeed >= 0)
 					this.Xspeed = -this.Xspeed;
 				else if(this.x + this.Xspeed <= -(this.backgroundLayer.getWidth()- 900))
-					this.Xspeed = -this.Xspeed;
+					this.x = 0;
 			}
 			else {
 				if(Main.util.getPlayer().isMovingLeft()) {
