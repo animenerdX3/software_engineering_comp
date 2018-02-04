@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.Main;
 import bpa.dev.linavity.collectibles.GravCapsule;
 import bpa.dev.linavity.collectibles.GravPack;
 import bpa.dev.linavity.collectibles.HealthPack;
@@ -222,7 +223,7 @@ public class LevelManager {
 						else if(tileIDs[i][j] == Tile.doorID) // Door
 							tiles[i][j] = new Door(i, j, tileIDs[i][j], 0, 0, 50, 50);
 						else if(tileIDs[i][j] == Tile.spikesID) // Spike
-							tiles[i][j] = new Spikes(i, j, tileIDs[i][j], 0, 0, 50, 50, tiles[i-1][j], tiles[i][j-1], tiles[i][j+1]);
+							tiles[i][j] = new Spikes(i, j, tileIDs[i][j], 0, 0, 50, 50, new Tile(0,0,tileIDs[i-1][j]), new Tile(0,0,tileIDs[i+1][j]), new Tile(0,0,tileIDs[i][j-1]), new Tile(0,0,tileIDs[i][j+1]));
 						else // Default Dynamic Tile
 							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 50, 50);
 					}else{
