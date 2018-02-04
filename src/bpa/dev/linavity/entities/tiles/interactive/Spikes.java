@@ -16,16 +16,19 @@ public class Spikes extends Dynamic {
 	
 	private final static int damage = 100;
 	
-	public Spikes(int i, int j, int id, int xOffset, int yOffset, int width, int height, Tile tileUp, Tile tileLeft, Tile tileRight) throws SlickException {
+	public Spikes(int i, int j, int id, int xOffset, int yOffset, int width, int height, Tile tileUp, Tile tileDown, Tile tileLeft, Tile tileRight) throws SlickException {
 		super(i, j, id, xOffset, yOffset, width, height);
-/*		if(tileUp.isPassable()){
-		if(!tileLeft.isPassable())
-			this.texture = new Image("res/tiles/dynamic/spikes_right.png");
-		else if(!tileRight.isPassable())
-			this.texture = new Image("res/tiles/dynamic/spikes_left.png");
-		}
-		else
-			this.texture = new Image("res/tiles/dynamic/spikes_up.png");*/
+		
+		if(tileUp.isPassable() || tileUp.getId() == Tile.spikesID)
+			if(!tileDown.isPassable() && tileDown.getId() != Tile.spikesID)
+				this.texture = new Image("res/tiles/dynamic/spikes_up.png");
+			else if(!tileLeft.isPassable() && tileLeft.getId() != Tile.spikesID)
+				this.texture = new Image("res/tiles/dynamic/spikes_left.png");
+			else
+				this.texture = new Image("res/tiles/dynamic/spikes_right.png");
+			
+		
+		
 	}
 	
 	@Override
