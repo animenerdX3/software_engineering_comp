@@ -13,7 +13,7 @@ public class LoadGame {
 	
 	private int classNameCounter, Xcounter, Ycounter, healthCounter, widthCounter, heightCounter, itemImageCounter;
 	
-	private int findGameState;
+	private int findLevel;
 	private float camX, camY;
 	private int levelTime;
 	
@@ -94,7 +94,7 @@ public class LoadGame {
 		for(int i = 0; i < loadData.length; i++){
 			String [] properties = loadData[i].split(",");//Split our row into pieces
 			if (i == 0) {
-				findGameState = Integer.parseInt(properties[0]);//Set game state
+				findLevel = Integer.parseInt(properties[0]);//Set game state
 				camX = Float.parseFloat(properties[1]);
 				camY = Float.parseFloat(properties[2]);
 				levelTime = Integer.parseInt(properties[3]);
@@ -169,8 +169,8 @@ public class LoadGame {
 	
 	/* GETTERS */
 	
-	public int getGameStateFound() {
-		return findGameState;
+	public int getLevelFound() {
+		return findLevel;
 	}
 	
 	public int getMobSize() {

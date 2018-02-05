@@ -69,8 +69,12 @@ public class Player extends Mob {
 	    this.standStillRightFlippedAni = new Animation(this.standStillRightFlipped, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
 	    this.currentImage = this.standStillRightAni;
 	    this.currentStillImage = this.standStillRightAni;
+
+	    if(Main.util.levelNum != 1)
+	    	this.canUseGravpack = true;
+	    else
+	    	this.canUseGravpack = false;
 	    
-	    this.canUseGravpack = false;
 	    this.inventoryOpen = false;
 	}
 	

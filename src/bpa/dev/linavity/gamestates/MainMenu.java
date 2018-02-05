@@ -253,7 +253,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		if(Main.util.getSlotOneData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot1.png"), 100, 150);
-				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 150+75);
+				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 150+75);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -264,7 +264,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		if(Main.util.getSlotTwoData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot2.png"), 100, 350);
-				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 350+75);
+				g.drawString("Level "+Main.util.getSlotTwoData().getLevelFound(), 135, 350+75);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -275,7 +275,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		if(Main.util.getSlotThreeData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot3.png"), 100, 550);
-				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 550+75);
+				g.drawString("Level "+Main.util.getSlotThreeData().getLevelFound(), 135, 550+75);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -340,12 +340,12 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 			currentSelection = -1;
 	}//end of checkMouseBounds
 	
-	private void StartGame(Input input, StateBasedGame sbg, int gameStateID) {
+	private void StartGame(Input input, StateBasedGame sbg, int levelID) {
 		LogSystem.addToLog("Entering Game...");
 		input.clearKeyPressedRecord();
 		Main.appgc.setMouseGrabbed(true);
-		sbg.enterState(gameStateID);
-		LogSystem.addToLog("Entering Game State "+gameStateID+"...");
+		sbg.enterState(Main.startlevel);
+		LogSystem.addToLog("Entering Level "+levelID+"...");
 		Main.util.getMusic().stop();
 		Main.util.setMusic(Main.util.getMusicQueue(1));
 		Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
@@ -376,8 +376,9 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 			}
 			
 			Main.util.setLoadGame(true);
-			sbg.getState(Main.util.getCurrentLoadData().getGameStateFound()).init(gc, sbg);
-			StartGame(input, sbg, Main.util.getCurrentLoadData().getGameStateFound());
+			Main.util.levelNum = Main.util.getCurrentLoadData().getLevelFound();
+			sbg.getState(Main.startlevel).init(gc, sbg);
+			StartGame(input, sbg, Main.util.getCurrentLoadData().getLevelFound());
 		}
 	}//end of OpenSave
 

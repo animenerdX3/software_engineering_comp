@@ -8,6 +8,7 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
+import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.assets.MusicManager;
 import bpa.dev.linavity.assets.SoundManager;
@@ -70,8 +71,10 @@ public class Utils {
 	
 	public GameContainer gc;
 	
+	public int levelNum;
+	
 	// Default Constructor
-	public Utils() throws SlickException{
+	public Utils(int levelID) throws SlickException{
 		LogSystem.addToLog("Debug Mode: "+this.debugMode);
 		LogSystem.addToLog("");
 		//Set Load Slots
@@ -79,9 +82,9 @@ public class Utils {
 		this.slotTwoData = new LoadGame(2);
 		this.slotThreeData = new LoadGame(3);
 		//Create default player position
-		this.player = new Player(450,1100);
+		this.levelNum = levelID;
 		//Create universal camera object
-	    this.cam = new Camera(this.getPlayer().getX(), this.getPlayer().getY());
+	    this.cam = new Camera(0, 0);
 	    //Create music queue
 		this.musicQueue = musicManager.getMusicQueue();
 		//Create sound effect array
@@ -92,12 +95,6 @@ public class Utils {
 		this.setMessageHandler(new MessageHandler());
 		//Set timer to 0
 		this.levelTime = 0;
-		// Initialize the level (Currently hard-coding the first level, but we can pass in an ID for whatever level the player is on)
-		try {
-			this.level = new Level(1); 
-		} catch (FileNotFoundException e) {
-			ErrorLog.logError(e);
-		}
 		this.inventory = new Inventory();
 	}
 	

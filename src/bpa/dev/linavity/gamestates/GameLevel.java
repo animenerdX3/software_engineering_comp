@@ -94,7 +94,13 @@ public class GameLevel extends BasicGameState{
 		Main.util.gc = gc;
 		
 		if(Main.util.getLoadGame()) {
+			try {
+				Main.util.setLevel(new Level(Main.util.getCurrentLoadData().getLevelFound()));
+			} catch (FileNotFoundException ex) {
+				ErrorLog.displayError(ex);
+			}
 			LogSystem.addToLog("Loading Game...");
+			System.out.println(Main.util.getCurrentLoadData().getLevelFound());
 			Main.util.getInventory().setItems(new ArrayList<Item>());
 			Main.util.getCam().setX(Main.util.getCurrentLoadData().getCamX());
 			Main.util.getCam().setY(Main.util.getCurrentLoadData().getCamY());
@@ -110,11 +116,10 @@ public class GameLevel extends BasicGameState{
 		}
 		else {
 			LogSystem.addToLog("Starting a New Game...");
-			Main.util.getInventory().setItems(new ArrayList<Item>());
 			try {
-				Main.util.setLevel(new Level(1));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				Main.util.setLevel(new Level(Main.util.levelNum));
+			} catch (FileNotFoundException ex) {
+				ErrorLog.displayError(ex);
 			}
 			Main.util.setLevelTime(0);
 			LogSystem.addToLog("Creating Mobs...");
@@ -437,7 +442,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if(Main.util.getSlotOneData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot1.png"), 100, 150);
-				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 150+75);
+				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 150+75);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -448,7 +453,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if(Main.util.getSlotTwoData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot2.png"), 100, 350);
-				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 350+75);
+				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 350+75);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -459,7 +464,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if(Main.util.getSlotThreeData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot3.png"), 100, 550);
-				g.drawString("Level "+Main.util.getSlotOneData().getGameStateFound(), 135, 550+75);
+				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 550+75);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -567,7 +572,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 	private void gameUpdates(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		
 		//Check for End of Level
-		endLevel(sbg);
+		endLevel(gc, sbg);
 		
 		//Check to see if player is dying
 		alertPlayer(15);
@@ -602,13 +607,24 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 	 * Founds out when the gamestate should change
 	 * @param gc
 	 */
-	private void endLevel(StateBasedGame sbg) {
+	private void endLevel(GameContainer gc, StateBasedGame sbg) {
 		if(Main.util.getPlayer().isReadyForNextLevel()) {
 			LogSystem.addToLog("Level Ended.");
-			sbg.enterState(getID() + 1);
+			Main.util.levelNum++;
+			newLevel(gc, sbg);
 		}
 	}//end of endLevel
 
+	private void newLevel(GameContainer gc, StateBasedGame sbg){
+		
+		try {
+			init(gc, sbg);
+		} catch (SlickException e) {
+			ErrorLog.displayError(e);
+		}
+		
+	}//end of newLevel
+	
 	private void alertPlayer(double alertHealth) {
 		if(Main.util.getPlayer().getHealth() <= alertHealth && Main.util.getPlayer().getHealth() != 0 && !alertPlayer) {
 			alertPlayer = true;
@@ -867,7 +883,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if(MainMenu.checkBounds( 100 , 100 + slotOne.getWidth() , 150, 150 + slotOne.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot One...");
-				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 1, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 1, Main.util.getLevelTime());
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}
@@ -882,7 +898,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if(MainMenu.checkBounds( 100 , 100 + slotTwo.getWidth() , 350, 350 + slotTwo.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot Two...");
-				SaveGame saveProgress = new SaveGame(mobs, items,Main.util.getInventory().getItems(), GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 2, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items,Main.util.getInventory().getItems(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 2, Main.util.getLevelTime());
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}
@@ -897,7 +913,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if(MainMenu.checkBounds( 100 , 100 + slotThree.getWidth() , 550, 550 + slotThree.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot Three...");
-				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), GameLevel.id, Main.util.getCam().getX(), Main.util.getCam().getY(), 3, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 3, Main.util.getLevelTime());
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}

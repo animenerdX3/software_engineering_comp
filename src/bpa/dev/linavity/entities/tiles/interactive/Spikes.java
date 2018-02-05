@@ -32,8 +32,6 @@ public class Spikes extends Dynamic {
 	@Override
 	public void onCollide(GameObject go) throws SlickException {
 		
-		System.out.println("This shizzle is running my nizzle");
-		
 		Main.util.getMessageHandler().addMessage(new Message(go, this, Message.damage, -this.damage));
 		
 	}

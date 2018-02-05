@@ -60,7 +60,8 @@ public class Main extends StateBasedGame{
 		LogSystem.addToLog("Starting Program...");
 		RuntimeLog.startUpInfo();
 		//Set universal data
-		util = new Utils();
+		util = new Utils(1);
+		LogSystem.addToLog("Utility Class Created.");
 		currentLevel = this;
 		appgc.setShowFPS(util.debugMode);//Show FPS Counter
 		

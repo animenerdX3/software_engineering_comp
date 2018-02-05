@@ -32,6 +32,8 @@ public class LevelManager {
 	private final static int map = 0;
 	private final static int events = 1;
 	
+	private Point playerStartingPosition = new Point(0,0);
+	
 	// File Instance Variables
 	File mapFile;
 	File eventsFile;
@@ -114,7 +116,8 @@ public class LevelManager {
 		// Create an array list of mobs
 		ArrayList<Mob> mobs = new ArrayList<Mob>();
 		
-		mobs.add(new Player(450, 1100));
+		
+		mobs.add(new Player((float)this.playerStartingPosition.getX(), (float)this.playerStartingPosition.getY()));
 		
 		for(int i = 0; i < mobIDs.length; i++) {//Parse through tile ID 2D array
 			
@@ -193,6 +196,11 @@ public class LevelManager {
 		for(int i = 0; i < tileIDs.length; i++) {//Parse through tile ID 2D array
 			
 			for(int j = 0; j < tileIDs[i].length; j++) {//Parse through a single row
+				
+				// Check for Player placement
+				if(tileIDs[i][j] == 999){
+					this.playerStartingPosition = new Point(j*50, i*50);
+				}
 				
 				// Map Creation
 				if(creatorID == 0) {
