@@ -13,6 +13,7 @@ import bpa.dev.linavity.collectibles.GravCapsule;
 import bpa.dev.linavity.collectibles.GravPack;
 import bpa.dev.linavity.collectibles.HealthPack;
 import bpa.dev.linavity.collectibles.Item;
+import bpa.dev.linavity.collectibles.KeyCard;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
@@ -155,6 +156,8 @@ public class LevelManager {
 							items.add(new HealthPack((j * 50) + 15, i *50, "healthpack"));
 						else if(itemsIDs[i][j] == 203)
 							items.add(new GravCapsule((j * 50) + 15, i *50, "gravcapsule"));
+						else if(itemsIDs[i][j] == 204)
+							items.add(new KeyCard((j*50) + 15, i*50, "keycard"));
 					}
 				}
 				
@@ -233,9 +236,11 @@ public class LevelManager {
 							tiles[i][j] = new Door(i, j, tileIDs[i][j], 0, 0, 50, 50);
 						else if(tileIDs[i][j] == Tile.spikesID) // Spike
 							tiles[i][j] = new Spikes(i, j, tileIDs[i][j], 0, 0, 50, 50, new Tile(0,0,tileIDs[i-1][j]), new Tile(0,0,tileIDs[i+1][j]), new Tile(0,0,tileIDs[i][j-1]), new Tile(0,0,tileIDs[i][j+1]));
-						else if(tileIDs[i][j] == Tile.ladderTopID || tileIDs[i][j] == Tile.ladderMiddleID || tileIDs[i][j] == Tile.ladderBottomID) // Spike
+						else if(tileIDs[i][j] == Tile.ladderTopID || tileIDs[i][j] == Tile.ladderMiddleID || tileIDs[i][j] == Tile.ladderBottomID) // Ladder
 							tiles[i][j] = new Ladder(i, j, tileIDs[i][j], 0, 0, 50, 50);
-						else if(tileIDs[i][j] == Tile.platformID)
+						else if(tileIDs[i][j] == Tile.eventTileID) // Event 
+							tiles[i][j] = new EventTile(i, j, tileIDs[i][j], 0, 0, 50, 50);
+						else if(tileIDs[i][j] == Tile.platformID) // Platforms
 							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 16, 50, 17);
 						else// Default Dynamic Tile
 							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 50, 50);
