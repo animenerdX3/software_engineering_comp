@@ -91,6 +91,7 @@ public class GameLevel extends BasicGameState{
 			throws SlickException {
 		
 		LogSystem.addToLog("Initializing GameLevel...");
+		Main.util.gc = gc;
 		
 		if(Main.util.getLoadGame()) {
 			LogSystem.addToLog("Loading Game...");
@@ -221,24 +222,29 @@ public class GameLevel extends BasicGameState{
 		float[] height = loadFile.getHeight();
 		String []itemImage = loadFile.getItemImage();
 		
+		boolean setGrav= true;
+		
 		for(int i = 0; i < itemImage.length; i++) {
 			if(i < itemsSize) {
-				if(itemImage[i].equalsIgnoreCase("gravitypack")) 
+				if(itemImage[i].equalsIgnoreCase("gravitypack")) {
+					setGrav = false;
 					items.add(new GravPack(xPos[i + mobSize ], yPos[i + mobSize ], width[i], height[i], itemImage[i]));
+				}
 				else if(itemImage[i].equalsIgnoreCase("healthpack"))
 					items.add(new HealthPack(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 				else if(itemImage[i].equalsIgnoreCase("gravcapsule"))
 					items.add(new GravCapsule(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 			}
 			else if(itemImage[i] != null){
-				if(itemImage[i].equalsIgnoreCase("gravitypack")) 
-					Main.util.getInventory().addToInventory(new GravPack(xPos[i + mobSize ], yPos[i + mobSize ], width[i], height[i], itemImage[i]));
-				else if(itemImage[i].equalsIgnoreCase("healthpack"))
+				if(itemImage[i].equalsIgnoreCase("healthpack"))
 					Main.util.getInventory().addToInventory(new HealthPack(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 				else if(itemImage[i].equalsIgnoreCase("gravcapsule"))
 					Main.util.getInventory().addToInventory(new GravCapsule(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 			}
 		}
+		
+		if(setGrav)
+			Main.util.getPlayer().setCanUseGravpack(true);
 		
 		return items;
 	}//end of getItems
@@ -315,8 +321,10 @@ public class GameLevel extends BasicGameState{
 		health_gui.draw(0,0);
 		health_bar.draw(25,850,(float) (25+(Main.util.getPlayer().getHealth() * 2.7)),850+27,0,0,(float) (Main.util.getPlayer().getHealth() * 2.7),27);
 		
-		grav_gui.draw(0,0);
-		grav_bar.draw(318,850,(float) (318+(Main.util.getPlayer().getGravPack().getGravpower() * 2.7)),850+27,0,0,(float) (Main.util.getPlayer().getGravPack().getGravpower() * 2.7),27);
+		if(Main.util.getPlayer().canUseGravpack()) {
+			grav_gui.draw(0,0);
+			grav_bar.draw(318,850,(float) (318+(Main.util.getPlayer().getGravPack().getGravpower() * 2.7)),850+27,0,0,(float) (Main.util.getPlayer().getGravPack().getGravpower() * 2.7),27);
+		}
 		
 		//Draw menu, if open
 		if(!menuOpen && !saveOpen && Main.util.getPlayer().isInventoryOpen())

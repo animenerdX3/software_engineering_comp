@@ -20,6 +20,9 @@ public class Tile extends GameObject implements Shape {
 	public final static int gravPadID = 13;
 	public final static int warpHoleID = 20;
 	public final static int leverID = 21;
+	public final static int ladderTopID = 23;
+	public final static int ladderMiddleID = 24;
+	public final static int ladderBottomID = 25;
 	public final static int spikesID = 27;
 	public final static int doorID = 31;
 	

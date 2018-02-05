@@ -22,6 +22,7 @@ import bpa.dev.linavity.entities.tiles.Dynamic;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.entities.tiles.interactive.Door;
 import bpa.dev.linavity.entities.tiles.interactive.EventTile;
+import bpa.dev.linavity.entities.tiles.interactive.Ladder;
 import bpa.dev.linavity.entities.tiles.interactive.Lever;
 import bpa.dev.linavity.entities.tiles.interactive.Spikes;
 import bpa.dev.linavity.utils.ErrorLog;
@@ -224,6 +225,8 @@ public class LevelManager {
 							tiles[i][j] = new Door(i, j, tileIDs[i][j], 0, 0, 50, 50);
 						else if(tileIDs[i][j] == Tile.spikesID) // Spike
 							tiles[i][j] = new Spikes(i, j, tileIDs[i][j], 0, 0, 50, 50, new Tile(0,0,tileIDs[i-1][j]), new Tile(0,0,tileIDs[i+1][j]), new Tile(0,0,tileIDs[i][j-1]), new Tile(0,0,tileIDs[i][j+1]));
+						else if(tileIDs[i][j] == Tile.ladderTopID || tileIDs[i][j] == Tile.ladderMiddleID || tileIDs[i][j] == Tile.ladderBottomID) // Spike
+							tiles[i][j] = new Ladder(i, j, tileIDs[i][j], 0, 0, 50, 50);
 						else // Default Dynamic Tile
 							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 50, 50);
 					}else{

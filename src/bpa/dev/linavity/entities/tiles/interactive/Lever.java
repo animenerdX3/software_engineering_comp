@@ -58,4 +58,4 @@ public class Lever extends Dynamic {
 		}
 	}
 	
-}
+}//end of class

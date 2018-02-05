@@ -3,6 +3,7 @@ package bpa.dev.linavity.utils;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -66,6 +67,8 @@ public class Utils {
 	
 	//The inventory system
 	private Inventory inventory;
+	
+	public GameContainer gc;
 	
 	// Default Constructor
 	public Utils() throws SlickException{

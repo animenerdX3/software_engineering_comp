@@ -2,6 +2,8 @@ package bpa.dev.linavity.collectibles;
 
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.Main;
+
 public class GravPack extends Item{
 	
 	public GravPack(float x, float y) throws SlickException {
@@ -23,6 +25,7 @@ public class GravPack extends Item{
 	}//end of update
 	
 	public void onCollision() {
+		Main.util.getPlayer().setCanUseGravpack(true);
 		this.isActive = false;//Destroy the item
 	}//end of onCollision
 

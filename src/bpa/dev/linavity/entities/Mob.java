@@ -366,6 +366,15 @@ public abstract class Mob extends GameObject{
 				tile.onCollide(this);
 			}
 		}
+		
+		// Ladder being used
+		if(tile.getId() == tile.ladderTopID || tile.getId() == tile.ladderMiddleID || tile.getId() == tile.ladderBottomID) {
+			Rectangle rect = Main.util.getPlayer().getBoundingBox();
+			if(rect.intersects(tile.getCollisionBox())) {
+				tile.onCollide(this);
+			}
+		}
+		
 	}//end of checkDynamicPassableTiles
 	
 	private void checkDynamicImpassableTiles(Tile tile, int i, int j) throws SlickException {

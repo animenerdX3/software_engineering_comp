@@ -24,6 +24,7 @@ public class Player extends Mob {
 	private boolean toggleDirection = false;
 	private boolean inventoryOpen;
 	private int coolDown;
+	private boolean canUseGravpack;
 	
 	private GravityPack gravPack;
 	
@@ -69,6 +70,7 @@ public class Player extends Mob {
 	    this.currentImage = this.standStillRightAni;
 	    this.currentStillImage = this.standStillRightAni;
 	    
+	    this.canUseGravpack = false;
 	    this.inventoryOpen = false;
 	}
 	
@@ -209,7 +211,7 @@ public class Player extends Mob {
 	private float yMovement() {
 		
 		// Gravity Pack Control
-		if(this.gravPack.isCanFlip()) { // If the player's gravity pack is currently able to fight gravity
+		if(this.gravPack.isCanFlip() && this.canUseGravpack) { // If the player's gravity pack is currently able to fight gravity
 			if(isUsingGravPack() && !this.inventoryOpen) { // And the player is trying to use their gravity pack
 				this.isFlipping = !this.isFlipping;
 			}
@@ -481,6 +483,14 @@ public class Player extends Mob {
 		return inventoryOpen;
 	}
 	
+	/**
+	 * 
+	 * @return if true, the player can use their gravpack. if falase, the player cannot
+	 */
+	public boolean canUseGravpack() {
+		return canUseGravpack;
+	}
+	
 	/* SETTERS */
 
 	/**
@@ -529,6 +539,14 @@ public class Player extends Mob {
 	 */
 	public void setInventoryOpen(boolean inventoryOpen) {
 		this.inventoryOpen = inventoryOpen;
+	}
+	
+	/**
+	 * changes the player's can use gravpack boolean
+	 * @param canUseGravpack
+	 */
+	public void setCanUseGravpack(boolean canUseGravpack) {
+		this.canUseGravpack = canUseGravpack;
 	}
 	
 	/**
