@@ -359,7 +359,15 @@ public abstract class Mob extends GameObject{
 	private void checkDynamicPassableTiles(Tile tile, int i, int j) throws SlickException {
 		
 		// Lever getting activated / toggled
-		if(tile.getId() == tile.leverID) {
+		if(tile.getId() == Tile.leverID) {
+			Rectangle rect = Main.util.getPlayer().getBoundingBox();
+			if(rect.intersects(tile.getCollisionBox())) {
+				tile.onCollide(this);
+			}
+		}
+		
+		// Event Tile getting activated / toggled
+		if(tile.getId() == Tile.eventTileID) {
 			Rectangle rect = Main.util.getPlayer().getBoundingBox();
 			if(rect.intersects(tile.getCollisionBox())) {
 				tile.onCollide(this);
@@ -367,7 +375,7 @@ public abstract class Mob extends GameObject{
 		}
 		
 		// Ladder being used
-		if(tile.getId() == tile.ladderTopID || tile.getId() == tile.ladderMiddleID || tile.getId() == tile.ladderBottomID) {
+		if(tile.getId() == Tile.ladderTopID || tile.getId() == Tile.ladderMiddleID || tile.getId() == Tile.ladderBottomID) {
 			Rectangle rect = Main.util.getPlayer().getBoundingBox();
 			if(rect.intersects(tile.getCollisionBox())) {
 				tile.onCollide(this);
@@ -379,15 +387,15 @@ public abstract class Mob extends GameObject{
 	private void checkDynamicImpassableTiles(Tile tile, int i, int j) throws SlickException {
 		
 		// GravPad Recharging the player's gravPad
-		if(tile.getId() == tile.gravPadID && this.collideDown == true) {
+		if(tile.getId() == Tile.gravPadID && this.collideDown == true) {
 				Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.gravPadRecharge, 0.5f));
 		}
 		
-		if(tile.getId() == tile.spikesID) {
+		if(tile.getId() == Tile.spikesID) {
 			tile.onCollide(this);
 		}
 		
-		if(tile.getId() == tile.warpHoleID) {
+		if(tile.getId() == Tile.warpHoleID) {
 				Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.endLevel, null));
 		}
 
