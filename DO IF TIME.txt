@@ -8,3 +8,5 @@ Do If Time List:
    - Easy: Nothing is changed
    - Intermediate: Enemy Stats Are Multiplied By 1.5. More Enemies and Gravpack Depletes Faster Than Easy. After death, return to start of level instead of checkpoints.
    - Hardcore: Enemy Stats Are Doubled. More Enemies and Gravpack Depletes Faster Than Intermediate. On death, delete save.
+   
+6. Check out why textures get weird line only when you jump.

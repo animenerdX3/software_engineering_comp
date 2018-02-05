@@ -205,7 +205,7 @@ public class LevelManager {
 				// Map Creation
 				if(creatorID == 0) {
 					// Static Tiles
-					if(tileIDs[i][j] < 12) 
+					if(tileIDs[i][j] < 11) 
 						tiles[i][j] = new Tile(i, j, tileIDs[i][j]); // Create a static tile, texture and passability based on ID
 					else{
 						// Create a default tile where any dynamic tile will be placed
@@ -222,7 +222,7 @@ public class LevelManager {
 				// Event Creation
 				if(creatorID == 1) {
 					// Dynamic Tiles
-					if(tileIDs[i][j] > 11 && tileIDs[i][j] < 101) {
+					if(tileIDs[i][j] > 10 && tileIDs[i][j] < 101) {
 						if(tileIDs[i][j] == Tile.eventTileID) // Gravity Pad
 							tiles[i][j] = new EventTile(i, j, tileIDs[i][j], 0, 0, 50, 50);
 						else if(tileIDs[i][j] == Tile.gravPadID) // Gravity Pad
@@ -235,7 +235,9 @@ public class LevelManager {
 							tiles[i][j] = new Spikes(i, j, tileIDs[i][j], 0, 0, 50, 50, new Tile(0,0,tileIDs[i-1][j]), new Tile(0,0,tileIDs[i+1][j]), new Tile(0,0,tileIDs[i][j-1]), new Tile(0,0,tileIDs[i][j+1]));
 						else if(tileIDs[i][j] == Tile.ladderTopID || tileIDs[i][j] == Tile.ladderMiddleID || tileIDs[i][j] == Tile.ladderBottomID) // Spike
 							tiles[i][j] = new Ladder(i, j, tileIDs[i][j], 0, 0, 50, 50);
-						else // Default Dynamic Tile
+						else if(tileIDs[i][j] == Tile.platformID)
+							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 16, 50, 17);
+						else// Default Dynamic Tile
 							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 0, 50, 50);
 					}else{
 						tiles[i][j] = new Tile(i, j, 0); // Create a default tile where any dynamic tile will be placed

@@ -16,15 +16,16 @@ import bpa.dev.linavity.GameObject;
 public class Tile extends GameObject implements Shape {
 
 	// Final Ints for dynamic tile ID's
-	public final static int eventTileID = 12;
-	public final static int gravPadID = 13;
-	public final static int warpHoleID = 20;
-	public final static int leverID = 21;
-	public final static int ladderTopID = 23;
-	public final static int ladderMiddleID = 24;
-	public final static int ladderBottomID = 25;
-	public final static int spikesID = 27;
-	public final static int doorID = 31;
+	public final static int platformID = 11;
+	public final static int eventTileID = 15;
+	public final static int gravPadID = 16;
+	public final static int warpHoleID = 23;
+	public final static int leverID = 24;
+	public final static int ladderTopID = 26;
+	public final static int ladderMiddleID = 27;
+	public final static int ladderBottomID = 28;
+	public final static int spikesID = 30;
+	public final static int doorID = 34;
 	
 	// Tile ID
 	private int id;

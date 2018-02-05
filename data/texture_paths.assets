@@ -4,12 +4,15 @@ res/tiles/static/floor.png,false
 res/tiles/static/floor_rust1.png,false
 res/tiles/static/floor_rust2.png,false
 res/tiles/static/glass.png,true
-res/tiles/static/Platform_Tile.png,false
 res/tiles/static/Vent.png,true
 res/tiles/static/grass_base.png,false
 res/tiles/static/grass_top.png,false
 res/tiles/static/sky.png,true
 res/tiles/static/steel_bricks.png,true
+res/tiles/static/Platform_Tile.png,false
+res/tiles/static/bed_1.png,false
+res/tiles/static/bed_2.png,false
+res/tiles/static/chair.png,false
 res/tiles/blank.png,true
 res/tiles/dynamic/antigravity/antigravity_off.png,false
 res/tiles/dynamic/antigravity/antigravity_on.png,false
