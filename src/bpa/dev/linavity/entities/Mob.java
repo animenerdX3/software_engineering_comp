@@ -203,6 +203,7 @@ public abstract class Mob extends GameObject{
 	 */
 	private void updateMobStats(int delta) {
 		this.accessDelta = delta;
+		Main.util.delta = delta;
 	}//end of updateMobStats
 	
 	/**

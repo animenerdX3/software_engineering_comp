@@ -20,6 +20,7 @@ import bpa.dev.linavity.collectibles.GravPack;
 import bpa.dev.linavity.collectibles.HealthPack;
 import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.collectibles.UseItem;
+import bpa.dev.linavity.cutscenes.Script;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
@@ -58,9 +59,15 @@ public class GameLevel extends BasicGameState{
 	//Inventory Menu
 	private Image inventoryBG;
 	private Image [][] itemSlots;
-	
+
 	//Parallax Backgrounds for Our Level
 	private ParallaxMap bg;
+
+	//Cutscene Images
+	private Image topLetterbox;
+	private Image bottomLetterbox;
+	private Image darkerScreen;
+	private Image dialogBox;
 	
 	// ID of the gamestate
 	public static int id = 1;
@@ -162,6 +169,12 @@ public class GameLevel extends BasicGameState{
 				itemSlots[i][x] = new Image("res/gui/inventory/item_slot.png");
 		
 		bg = new ParallaxMap("res/bg.jpg", 0, 0, -0.5f, 0,  true);
+		
+		topLetterbox = new Image("res/gui/cutscenes/letterbox_top.png");
+		bottomLetterbox = new Image("res/gui/cutscenes/letterbox_bottom.png");
+		darkerScreen = new Image("res/gui/cutscenes/screen_darken.png");
+		dialogBox = new Image("res/gui/cutscenes/dialogbox.png");
+		
 		health_gui = new Image("res/gui/stats/health_bar.png");
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
@@ -339,6 +352,8 @@ public class GameLevel extends BasicGameState{
 		else if(saveOpen && !menuOpen && !Main.util.getPlayer().isInventoryOpen()) 
 			renderSaveMenu(gc, g);
 		
+		renderCutscene(gc, g);
+		
 	}//end of render
 
 	/**
@@ -494,6 +509,25 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 				slotY = slotY + 305;
 		}
 	}//end of renderInventoryMenu
+	
+	private void renderCutscene(GameContainer gc, Graphics g){
+		
+		if(Main.util.isCutsceneActive()){
+			g.drawImage(darkerScreen, 0, 0);
+			g.drawImage(topLetterbox, 0, Main.util.startLetterTop);
+			g.drawImage(bottomLetterbox, 0, Main.util.startLetterBottom);
+			g.drawImage(dialogBox, 0, Main.util.startLetterBottom);
+			if(Main.util.startLetterTop <= 0 && Main.util.startLetterBottom >= 0){
+				Main.util.startLetterTop = Main.util.startLetterTop + 4;
+				Main.util.startLetterBottom = Main.util.startLetterBottom - 4;
+			}
+			checkCutscenes(g);
+		}else{
+			Main.util.startLetterTop = -150;
+			Main.util.startLetterBottom = 150;
+		}
+		
+	}//end of renderCutscene
 	
 	/**
 	 * Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
@@ -751,6 +785,14 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		sbg.getState(GameLevel.id).init(gc, sbg);
 		sbg.enterState(Main.gameover);
 	}//end of resetLevel
+	
+	
+	public void checkCutscenes(Graphics g){
+		if(Main.util.isCutsceneActive()){
+			Script script = new Script(g, 1, 2);
+			script.startCutscene();
+		}
+	}//end of checkCutscenes
 	
 	/**
 	 * @method checkMenu

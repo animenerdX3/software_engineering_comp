@@ -13,6 +13,7 @@ import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.assets.MusicManager;
 import bpa.dev.linavity.assets.SoundManager;
 import bpa.dev.linavity.collectibles.Inventory;
+import bpa.dev.linavity.cutscenes.CutsceneManager;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
@@ -49,9 +50,16 @@ public class Utils {
 	//Sound Effect Objects
 	SoundManager sfxFiles = new SoundManager("data/sound_paths.assets");
 	private Sound [] sfx;
+
+	//Cutscene Objects
+	CutsceneManager cutscenes = new CutsceneManager("dialogue");
+	private boolean cutsceneActive;
 	
-	//Handler for Levers
-	//public Lever testLever = new Lever();
+	//Counters for each cutscene
+	public int countDialog;
+	public int idCounter;
+	public int startLetterTop = -150;
+	public int startLetterBottom = 150;
 	
 	//Loading Objects
 	private LoadGame slotOneData;
@@ -70,6 +78,9 @@ public class Utils {
 	private Inventory inventory;
 	
 	public GameContainer gc;
+	public int delta;
+	
+	private int textSpeed;
 	
 	public int levelNum;
 	
@@ -96,6 +107,8 @@ public class Utils {
 		//Set timer to 0
 		this.levelTime = 0;
 		this.inventory = new Inventory();
+		this.cutsceneActive = false;
+		this.textSpeed = 500;
 	}
 	
 	
@@ -271,6 +284,26 @@ public class Utils {
 		return inventory;
 	}
 	
+	/**
+	 * 
+	 * @return the cutscene manager
+	 */
+	public CutsceneManager getCutscenes() {
+		return cutscenes;
+	}
+	
+	/**
+	 * 
+	 * @return if true, a cutscene is active. if false, the cutscene is not active
+	 */
+	public boolean isCutsceneActive() {
+		return cutsceneActive;
+	}
+	
+	public int getTextSpeed(){
+		return textSpeed;
+	}
+	
 	/* SETTERS */
 
 	/**
@@ -411,6 +444,22 @@ public class Utils {
 	 */
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
+	}
+	
+	/**
+	 * changes the cutscene manager
+	 * @param cutscenes
+	 */
+	public void setCutscenes(CutsceneManager cutscenes) {
+		this.cutscenes = cutscenes;
+	}
+
+	/**
+	 * changes the cutscene active boolean
+	 * @param cutsceneActive
+	 */
+	public void setCutsceneActive(boolean cutsceneActive) {
+		this.cutsceneActive = cutsceneActive;
 	}
 	
 }//end of class
