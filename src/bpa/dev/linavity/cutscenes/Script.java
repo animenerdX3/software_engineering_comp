@@ -14,8 +14,8 @@ public class Script {
 	private int timer;
 	
 	public Script(Graphics g, int id, int sceneLength){
-		this.id = id;
 		this.g = g;
+		this.id = id;
 		this.counter = 0;
 		this.timer = 0;
 		this.sceneLength = sceneLength;
@@ -29,7 +29,6 @@ public class Script {
 		
 		if(this.id == 1){
 			displayName(names);
-			displayText(dialog);
 		}
 		
 	}//end of startCutscene
@@ -37,7 +36,7 @@ public class Script {
 	public void displayName(String[] names){
 			g.setColor(Color.white);
 			g.drawString(names[counter], 74, 662 + Main.util.startLetterBottom);
-		
+			
 	}
 	
 	public void displayText(String [] dialog){
@@ -45,21 +44,22 @@ public class Script {
 		int yPosition = 732 + Main.util.startLetterBottom;
 			g.setColor(Color.white);
 			char [] splitDialog = dialog[counter].toCharArray();
-			for(int x = 0; x < splitDialog.length; x++){
-				this.timer = this.timer + Main.util.delta;
-				if(this.timer >= Main.util.getTextSpeed()){
-					System.out.println(splitDialog[x]);
-					g.drawString(""+splitDialog[x], xPosition, yPosition);
-					xPosition = xPosition + 10;
-					this.timer = 0;
-				}
-			}
-	}
+					g.drawString(""+splitDialog[counter], xPosition, yPosition);
+						xPosition = xPosition + 10;
+		}
 	
 	//END OF SCRIPT
 	
 	public int getID(){
 		return id;
+	}
+	
+	public int getCounter(){
+		return counter;
+	}
+	
+	public void setCounter(int counter){
+		this.counter = counter;
 	}
 	
 }//end of class

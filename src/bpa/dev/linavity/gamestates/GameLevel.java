@@ -791,6 +791,10 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		if(Main.util.isCutsceneActive()){
 			Script script = new Script(g, 1, 2);
 			script.startCutscene();
+			if(Main.util.getKeyLogSpecificKey(7)){
+				System.out.println("DAB");
+				script.setCounter(script.getCounter() + 1);
+			}
 		}
 	}//end of checkCutscenes
 	
