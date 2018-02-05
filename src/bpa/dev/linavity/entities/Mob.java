@@ -124,6 +124,12 @@ public abstract class Mob extends GameObject{
 		// Update the future position of the mob, to help with collision detection
 		updateFuturePosition();
 		
+		//Reset our collision variables
+		this.collideLeft = false;
+		this.collideRight = false;
+		this.collideUp = false;
+		this.collideDown = false;
+		
 		// Check for collisions with tiles
 		checkMobCollisions(Main.util.getLevel().getScreenTiles(new Camera(this.x, this.y, this.collisionRadius), Main.util.getLevel().getEvents()), new Camera(this.x, this.y, this.collisionRadius));
 		checkMobCollisions(Main.util.getLevel().getScreenTiles(new Camera(this.x, this.y, this.collisionRadius), Main.util.getLevel().getMap()), new Camera(this.x, this.y, this.collisionRadius));
@@ -206,13 +212,6 @@ public abstract class Mob extends GameObject{
 	 * @throws SlickException 
 	 */
 	public void checkMobCollisions(Tile[][] screenTiles, Camera cam) throws SlickException {
-		
-		//Reset our collision variables
-		this.collideLeft = false;
-		this.collideRight = false;
-		this.collideUp = false;
-		this.collideDown = false;
-		
 		//Check for through our level map
 		for(int r = 0; r < screenTiles.length; r++) { // Run through each row
 			for(int c = 0; c < screenTiles[0].length; c++) // Run through each column
@@ -382,6 +381,10 @@ public abstract class Mob extends GameObject{
 		// GravPad Recharging the player's gravPad
 		if(tile.getId() == tile.gravPadID && this.collideDown == true) {
 				Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.gravPadRecharge, 0.5f));
+		}
+		
+		if(tile.getId() == tile.spikesID) {
+			tile.onCollide(this);
 		}
 		
 		if(tile.getId() == tile.warpHoleID) {

@@ -89,6 +89,10 @@ public class Player extends Mob {
 			gravPack.setGravpower(gravPack.getGravpower() + (float) message.getData());
 		}
 		
+		if(message.getType() == Message.damage){
+			this.health += (double)message.getData();
+		}
+		
 		if(message.getType() == Message.endLevel) {
 			this.readyForNextLevel = true;
 		}

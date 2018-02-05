@@ -30,7 +30,6 @@ public class Dynamic extends Tile {
 	}
 	
 	public void onCollide(GameObject go) throws SlickException {
-		// Special Collision functions
 	}
 
 	// Getters

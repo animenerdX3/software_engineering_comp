@@ -14,7 +14,7 @@ import bpa.dev.linavity.gamestates.GameLevel;
 
 public class Spikes extends Dynamic {
 	
-	private final static int damage = 100;
+	private final static double damage = 100;
 	
 	public Spikes(int i, int j, int id, int xOffset, int yOffset, int width, int height, Tile tileUp, Tile tileDown, Tile tileLeft, Tile tileRight) throws SlickException {
 		super(i, j, id, xOffset, yOffset, width, height);
@@ -26,15 +26,15 @@ public class Spikes extends Dynamic {
 				this.texture = new Image("res/tiles/dynamic/spikes_left.png");
 			else
 				this.texture = new Image("res/tiles/dynamic/spikes_right.png");
-			
-		
 		
 	}
 	
 	@Override
 	public void onCollide(GameObject go) throws SlickException {
-
-		//Main.util.getMessageHandler().addMessage(new Message(go, this, ));
+		
+		System.out.println("This shizzle is running my nizzle");
+		
+		Main.util.getMessageHandler().addMessage(new Message(go, this, Message.damage, -this.damage));
 		
 	}
 	

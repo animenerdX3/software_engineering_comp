@@ -8,6 +8,7 @@ public class Message {
 	public final static int gravPadRecharge = 0;
 	public final static int leverToggle = 1;
 	public final static int endLevel = 2;
+	public final static int damage = 3;
 
 	// The contents of our event messages
 	private GameObject to;
