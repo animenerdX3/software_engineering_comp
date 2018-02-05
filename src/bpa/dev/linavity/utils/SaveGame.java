@@ -20,16 +20,18 @@ public class SaveGame {
 	private int saveSlot;
 	private ArrayList<Mob> mobPositions;
 	private ArrayList<Item> itemPositions;
+	private ArrayList<Item> inventory;
 	private File saveFile;
 	private boolean canOverWrite;
 	
-	public SaveGame(ArrayList<Mob> mobPositions, ArrayList<Item> itemPositions, int gameStateID, float camX, float camY, int saveSlot, int levelTimer) {
+	public SaveGame(ArrayList<Mob> mobPositions, ArrayList<Item> itemPositions, ArrayList<Item>inventory, int gameStateID, float camX, float camY, int saveSlot, int levelTimer) {
 		this.gameStateID = ""+gameStateID;
 		this.camX = ""+camX;
 		this.camY = ""+camY;
 		this.levelTimer = ""+levelTimer;
 		this.mobPositions = mobPositions;
 		this.itemPositions = itemPositions;
+		this.inventory = inventory;
 		this.saveSlot = saveSlot;
 		this.saveFile = new File("saves/linavitySave_"+this.saveSlot+".data");
 		this.canOverWrite = true;
@@ -102,17 +104,20 @@ public class SaveGame {
 	}//end of overWriteSave
 	
 	public void saveData(BufferedWriter bw) throws IOException {
-		for(int i = -1; i < mobPositions.size() + itemPositions.size() + 2; i++) {
+		for(int i = -1; i < mobPositions.size() + itemPositions.size() + inventory.size() + 2; i++) {
 			if(i == -1)
 				bw.write(this.gameStateID+","+this.camX+","+this.camY+","+this.levelTimer);
 			else if(i == 0)
 				bw.write(""+mobPositions.size());
-			else if(i <= mobPositions.size())
+			else if(i <= mobPositions.size() && i < mobPositions.size() + 1)
 				bw.write(this.mobPositions.get(i - 1).toString());
 			else if(i == mobPositions.size() + 1)
 				bw.write(""+itemPositions.size());
-			else
+			else if(i <  mobPositions.size() + itemPositions.size() + 2)
 				bw.write(this.itemPositions.get(i - mobPositions.size() - 2).toString());
+			else 
+				if(inventory.size() != 0)
+				bw.write(this.inventory.get(i - (mobPositions.size() + itemPositions.size()) - 2).toString());
 			bw.newLine();
 		}
 	}//end of saveMobs

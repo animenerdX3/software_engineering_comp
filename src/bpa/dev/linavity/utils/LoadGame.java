@@ -114,14 +114,13 @@ public class LoadGame {
 			else if(i == mobSize + 2)
 				this.itemsSize = Integer.parseInt(properties[0]);
 			
-			else if(i > mobSize + 2 && i < mobSize + itemsSize + 3) {
+			else {
 				addToX(properties[0]);//Add to x position information
 				addToY(properties[1]);//Add to y position information
 				addToWidth(properties[2]);//Add to width data
 				addToHeight(properties[3]);//Add to height data
 				addToItemImage(properties[4]);//Add to item image data
 			}
-			
 		}
 	}//end of splitPaths
 	
