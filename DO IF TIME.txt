@@ -10,3 +10,5 @@ Do If Time List:
    - Hardcore: Enemy Stats Are Doubled. More Enemies and Gravpack Depletes Faster Than Intermediate. On death, delete save.
    
 6. Check out why textures get weird line only when you jump.
+7. Grav Pack extra depletes only when on the ground.
+8. Escape closes inventory
