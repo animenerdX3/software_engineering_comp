@@ -658,6 +658,7 @@ public class GameLevel extends BasicGameState{
 	 */
 	private void endLevel(GameContainer gc, StateBasedGame sbg) {
 		if(Main.util.getPlayer().isReadyForNextLevel()) {
+			Main.util.getPs().setFirstWrite(true);
 			LogSystem.addToLog("Level Ended.");
 			Main.util.levelNum++;
 			newLevel(gc, sbg);
