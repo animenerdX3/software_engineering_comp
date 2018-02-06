@@ -14,7 +14,7 @@ import bpa.dev.linavity.Main;
 public class PlayerStats {
 	
 	private static boolean firstWrite = true;
-	
+
 	private static File character; //Text file
 	
 	/**
@@ -68,6 +68,24 @@ public class PlayerStats {
 		String[] tempArray = tempString.split(",");//Split the row into columns
 		
 		return tempArray;
+	}
+	
+	/*GETTERS*/
+	
+	/**
+	 * @return the firstWrite
+	 */
+	public static boolean isFirstWrite() {
+		return firstWrite;
+	}
+	
+	/*SETTERS*/
+	
+	/**
+	 * @param firstWrite the firstWrite to set
+	 */
+	public static void setFirstWrite(boolean firstWrite) {
+		PlayerStats.firstWrite = firstWrite;
 	}
 	
 
