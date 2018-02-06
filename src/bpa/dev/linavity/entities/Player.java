@@ -221,6 +221,7 @@ public class Player extends Mob {
 		// Gravity Pack Control
 		if(this.gravPack.isCanFlip() && this.canUseGravpack) { // If the player's gravity pack is currently able to fight gravity
 			if(isUsingGravPack() && !this.inventoryOpen) { // And the player is trying to use their gravity pack
+				this.gravPack.setGravpower(this.gravPack.getGravpower() - 5);
 				this.isFlipping = !this.isFlipping;
 			}
 		}else{

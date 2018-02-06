@@ -30,6 +30,7 @@ import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.utils.ErrorLog;
 import bpa.dev.linavity.utils.LoadGame;
 import bpa.dev.linavity.utils.LogSystem;
+import bpa.dev.linavity.utils.PlayerStats;
 import bpa.dev.linavity.utils.SaveGame;
 import bpa.dev.linavity.world.Level;
 import bpa.dev.linavity.world.ParallaxMap;
@@ -107,7 +108,8 @@ public class GameLevel extends BasicGameState{
 				ErrorLog.displayError(ex);
 			}
 			LogSystem.addToLog("Loading Game...");
-			System.out.println(Main.util.getCurrentLoadData().getLevelFound());
+			System.out.println("WE ARE LOADING LEVEL "+Main.util.getCurrentLoadData().getLevelFound());
+			Main.util.levelNum = Main.util.getCurrentLoadData().getLevelFound();
 			Main.util.getInventory().setItems(new ArrayList<Item>());
 			Main.util.getCam().setX(Main.util.getCurrentLoadData().getCamX());
 			Main.util.getCam().setY(Main.util.getCurrentLoadData().getCamY());
@@ -115,6 +117,7 @@ public class GameLevel extends BasicGameState{
 			LogSystem.addToLog("Creating Mobs...");
 			mobs = getMobs(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Mobs Created.");
+			Main.util.getPs().addToPlayerStats("" + Main.util.getPlayer().getHealth() + "," + Main.util.getPlayer().getGravPack().getGravpower());
 			LogSystem.addToLog("Creating Items...");
 			items = getItems(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Items Created.");
@@ -123,6 +126,7 @@ public class GameLevel extends BasicGameState{
 		}
 		else {
 			LogSystem.addToLog("Starting a New Game...");
+			System.out.println("WE ARE STARTING OR RETRYING LEVEL "+Main.util.levelNum);
 			try {
 				Main.util.setLevel(new Level(Main.util.levelNum));
 			} catch (FileNotFoundException ex) {
@@ -135,6 +139,17 @@ public class GameLevel extends BasicGameState{
 			LogSystem.addToLog("Creating Items...");
 			items = getItems();
 			LogSystem.addToLog("Items Created.");
+			
+			String[] playerStats;
+			try {
+				playerStats = Main.util.getPs().readPlayerStats();
+				Main.util.getPlayer().setHealth(Double.parseDouble(playerStats[0]));
+				Main.util.getPlayer().getGravPack().setGravpower(Float.parseFloat(playerStats[1]));
+			} catch (FileNotFoundException e) {
+				ErrorLog.displayError(e);
+			}
+			
+			
 		}
 		
 		Main.util.setLevelMobs(mobs);
@@ -362,7 +377,7 @@ public class GameLevel extends BasicGameState{
 	 * @param sbg
 	 * @param g
 	 */
-private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
+	private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		
 		// Get a 2d array of tile objects that are contained within our camera's view
 		screenTiles = Main.util.getLevel().getScreenTiles(Main.util.getCam(), Main.util.getLevel().getMap());
@@ -651,6 +666,9 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 
 	private void newLevel(GameContainer gc, StateBasedGame sbg){
 		
+		PlayerStats ps = new PlayerStats();
+		ps.addToPlayerStats("" + Main.util.getPlayer().getHealth() + ", " + Main.util.getPlayer().getGravPack().getGravpower());
+		
 		try {
 			init(gc, sbg);
 		} catch (SlickException e) {
@@ -852,8 +870,6 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 				LogSystem.addToLog("Resetting Level...");
 				input.clearKeyPressedRecord();
 				menuOpen = false;
-				Main.util.getPlayer().setHealth(100);
-				Main.util.getPlayer().getGravPack().setGravpower(100);
 				Main.util.getMusic().stop();
 				sbg.getState(GameLevel.id).init(gc, sbg);
 				Main.util.setMusic(Main.util.getMusicQueue(1));

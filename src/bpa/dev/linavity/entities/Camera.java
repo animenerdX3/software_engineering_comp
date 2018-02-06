@@ -35,7 +35,7 @@ public class Camera {
 	 */
 	public void updateCameraPos(float x, float y){
 		//If the player's x is greater than 425 (our X buffer) and less than the width - 425 (our X buffer), update our camera's X position
-		if(Main.util.getPlayer().getX() <= Main.util.getLevel().getLevelWidth() - 425 && Main.util.getPlayer().getX() >= 425)
+		if(Main.util.getPlayer().getX() <= Main.util.getLevel().getLevelWidth() - 200 && Main.util.getPlayer().getX() >= 200)
 			this.x = x - 425;
 		
 		//If the player's y is greater than 600 and less than the height - 99 (our Y buffer), update our camera's Y position
