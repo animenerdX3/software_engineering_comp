@@ -40,7 +40,6 @@ public class Lever extends Dynamic {
 		this.setTexture(new Image("res/tiles/dynamic/Lever_On.png"));
 		this.toggle = !this.toggle;
 		System.out.println("ON");
-		//Main.util.setCutsceneActive(true);
 		for(int i = 0; i < this.targetObjects.length; i++) {
 			Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(targetObjects[i]), this, Message.leverToggle, this.toggle));
 		}
@@ -51,8 +50,6 @@ public class Lever extends Dynamic {
 	public void toggleOff() throws SlickException {
 		this.setTexture(new Image("res/tiles/dynamic/Lever_Off.png"));
 		this.toggle = !this.toggle;
-		System.out.println("OFF");
-	//	Main.util.setCutsceneActive(false);
 		for(int i = 0; i < this.targetObjects.length; i++) {
 			Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(targetObjects[i]), this, Message.leverToggle, this.toggle));
 		}

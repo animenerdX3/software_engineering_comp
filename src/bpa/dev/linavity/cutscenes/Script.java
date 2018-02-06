@@ -9,57 +9,104 @@ public class Script {
 
 	private Graphics g;
 	private int id;
-	private int counter;
 	private int sceneLength;
 	private int timer;
+	private String [] dialog;
+	private String [] names;
 	
 	public Script(Graphics g, int id, int sceneLength){
 		this.g = g;
 		this.id = id;
-		this.counter = 0;
 		this.timer = 0;
 		this.sceneLength = sceneLength;
+		this.dialog = Main.util.getCutscenes().getDialogue();
+		this.names = Main.util.getCutscenes().getNames();
 	}
 	
 	//START OF SCRIPT
 	
-	public void startCutscene(){
-		String [] dialog = Main.util.getCutscenes().getDialogue();
-		String [] names = Main.util.getCutscenes().getNames();
-		
-		if(this.id == 1){
-			displayName(names);
-		}
-		
-	}//end of startCutscene
-	
 	public void displayName(String[] names){
 			g.setColor(Color.white);
-			g.drawString(names[counter], 74, 662 + Main.util.startLetterBottom);
-			
+			g.drawString(names[Main.util.countDialog], 74, 662 + Main.util.startLetterBottom);
 	}
 	
 	public void displayText(String [] dialog){
 		int xPosition = 74;
 		int yPosition = 732 + Main.util.startLetterBottom;
 			g.setColor(Color.white);
-			char [] splitDialog = dialog[counter].toCharArray();
-					g.drawString(""+splitDialog[counter], xPosition, yPosition);
-						xPosition = xPosition + 10;
+			char [] splitDialog = dialog[Main.util.countDialog].toCharArray();
+			for(int i = 0; i < splitDialog.length; i++){
+				g.drawString(""+splitDialog[i], xPosition, yPosition);
+				xPosition = xPosition + 10;
+			}
 		}
 	
 	//END OF SCRIPT
+	
+	public void getEvents(){
+		if(Main.util.countDialog == 1){
+			Main.util.getPlayer().setXMomentum(50);
+		}
+	}
 	
 	public int getID(){
 		return id;
 	}
 	
-	public int getCounter(){
-		return counter;
+	/**
+	 * @return the sceneLength
+	 */
+	public int getSceneLength() {
+		return sceneLength;
 	}
-	
-	public void setCounter(int counter){
-		this.counter = counter;
+
+	/**
+	 * @return the timer
+	 */
+	public int getTimer() {
+		return timer;
+	}
+
+	/**
+	 * @return the dialog
+	 */
+	public String[] getDialog() {
+		return dialog;
+	}
+
+	/**
+	 * @return the names
+	 */
+	public String[] getNames() {
+		return names;
+	}
+
+	/**
+	 * @param dialog the dialog to set
+	 */
+	public void setDialog(String[] dialog) {
+		this.dialog = dialog;
+	}
+
+	/**
+	 * @param names the names to set
+	 */
+	public void setNames(String[] names) {
+		this.names = names;
+	}
+
+	/**
+	 * @param sceneLength the sceneLength to set
+	 */
+	public void setSceneLength(int sceneLength) {
+		this.sceneLength = sceneLength;
+	}
+
+	/**
+	 * @param timer the timer to set
+	 */
+	public void setTimer(int timer) {
+		this.timer = timer;
 	}
 	
 }//end of class

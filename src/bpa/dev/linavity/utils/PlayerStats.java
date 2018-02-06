@@ -13,7 +13,7 @@ import bpa.dev.linavity.Main;
 
 public class PlayerStats {
 	
-	private static boolean firstWrite = true;
+	private boolean firstWrite = true;
 
 	private static File character; //Text file
 	
@@ -21,7 +21,7 @@ public class PlayerStats {
 	 * Writes all runtime settings to a file and also any all movements and events happening in the game
 	 * @param e Error thrown
 	 */
-	public static void addToPlayerStats(String content){
+	public void addToPlayerStats(String content){
 		
 		character = new File("data/levels/" + (Main.util.levelNum) + "/" + (Main.util.levelNum) + ".character");
 		
@@ -30,10 +30,10 @@ public class PlayerStats {
 		try {
 			if(!character.exists()) // If the file does not exist, create it
 				character.createNewFile();
-			else if(firstWrite){
+			else if(this.firstWrite){
 				character.delete();
 				character.createNewFile();
-				firstWrite = false;
+				this.firstWrite = false;
 			}
 			
 			fw = new FileWriter(character.getAbsoluteFile(), true);
@@ -75,7 +75,7 @@ public class PlayerStats {
 	/**
 	 * @return the firstWrite
 	 */
-	public static boolean isFirstWrite() {
+	public boolean isFirstWrite() {
 		return firstWrite;
 	}
 	
@@ -84,8 +84,8 @@ public class PlayerStats {
 	/**
 	 * @param firstWrite the firstWrite to set
 	 */
-	public static void setFirstWrite(boolean firstWrite) {
-		PlayerStats.firstWrite = firstWrite;
+	public void setFirstWrite(boolean firstWrite) {
+		this.firstWrite = firstWrite;
 	}
 	
 

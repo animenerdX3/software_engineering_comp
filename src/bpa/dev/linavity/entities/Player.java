@@ -313,11 +313,13 @@ public class Player extends Mob {
 		
 		this.gravPack.gravPowerCheck();
 		
-		checkAnimation();
+		if(!Main.util.isCutsceneActive())
+			checkAnimation();
 		
 		updateMomentums();
 		
-		shootProjectile(delta);
+		if(!Main.util.isCutsceneActive())
+			shootProjectile(delta);
 		
 		super.updateMob(delta);
 	

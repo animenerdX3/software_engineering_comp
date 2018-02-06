@@ -19,6 +19,7 @@ import bpa.dev.linavity.collectibles.GravCapsule;
 import bpa.dev.linavity.collectibles.GravPack;
 import bpa.dev.linavity.collectibles.HealthPack;
 import bpa.dev.linavity.collectibles.Item;
+import bpa.dev.linavity.collectibles.KeyCard;
 import bpa.dev.linavity.collectibles.UseItem;
 import bpa.dev.linavity.cutscenes.Script;
 import bpa.dev.linavity.entities.Mob;
@@ -69,6 +70,9 @@ public class GameLevel extends BasicGameState{
 	private Image bottomLetterbox;
 	private Image darkerScreen;
 	private Image dialogBox;
+	
+	private int cutsceneID;
+	private int cutsceneLength;
 	
 	// ID of the gamestate
 	public static int id = 1;
@@ -189,6 +193,8 @@ public class GameLevel extends BasicGameState{
 		bottomLetterbox = new Image("res/gui/cutscenes/letterbox_bottom.png");
 		darkerScreen = new Image("res/gui/cutscenes/screen_darken.png");
 		dialogBox = new Image("res/gui/cutscenes/dialogbox.png");
+		cutsceneID = 1;
+		cutsceneLength = 2;
 		
 		health_gui = new Image("res/gui/stats/health_bar.png");
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
@@ -267,12 +273,17 @@ public class GameLevel extends BasicGameState{
 					items.add(new HealthPack(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 				else if(itemImage[i].equalsIgnoreCase("gravcapsule"))
 					items.add(new GravCapsule(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
+				else if(itemImage[i].equalsIgnoreCase("keycard"))
+					items.add(new KeyCard(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 			}
 			else if(itemImage[i] != null){
+				System.out.println(itemImage[i]);
 				if(itemImage[i].equalsIgnoreCase("healthpack"))
 					Main.util.getInventory().addToInventory(new HealthPack(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 				else if(itemImage[i].equalsIgnoreCase("gravcapsule"))
 					Main.util.getInventory().addToInventory(new GravCapsule(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
+				else if(itemImage[i].equalsIgnoreCase("keycard"))
+					Main.util.getInventory().addToInventory(new KeyCard(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 			}
 		}
 		
@@ -553,13 +564,15 @@ public class GameLevel extends BasicGameState{
 		// If the game is not paused
 		if(!menuOpen && !saveOpen){
 			
-			if(Main.util.getPlayer().isInventoryOpen())
-				checkInventoryMenu(gc);
+			if(!Main.util.isCutsceneActive())
+				if(Main.util.getPlayer().isInventoryOpen())
+					checkInventoryMenu(gc);
 			
-			updateTimer(delta);
+			if(!Main.util.isCutsceneActive())
+				updateTimer(delta);
 			
 			// Make all keyboard-based updates
-			input(gc);
+				input(gc);
 			
 			// Make all game information updates
 			gameUpdates(gc, sbg, delta);
@@ -669,6 +682,7 @@ public class GameLevel extends BasicGameState{
 		
 		PlayerStats ps = new PlayerStats();
 		ps.addToPlayerStats("" + Main.util.getPlayer().getHealth() + ", " + Main.util.getPlayer().getGravPack().getGravpower());
+		ps.setFirstWrite(true);
 		
 		try {
 			init(gc, sbg);
@@ -703,8 +717,9 @@ public class GameLevel extends BasicGameState{
 	 */
 	private void updateMobs(int delta) throws SlickException{
 		// Update the mob's position
-		for(int i = 0; i < mobs.size(); i++)
+		for(int i = 0; i < mobs.size(); i++){
 			mobs.get(i).update(delta);
+		}
 		
 	}//end of updateMobs
 	
@@ -808,12 +823,16 @@ public class GameLevel extends BasicGameState{
 	
 	public void checkCutscenes(Graphics g){
 		if(Main.util.isCutsceneActive()){
-			Script script = new Script(g, 1, 2);
-			script.startCutscene();
-			if(Main.util.getKeyLogSpecificKey(7)){
-				System.out.println("DAB");
-				script.setCounter(script.getCounter() + 1);
+			Script script = new Script(g, cutsceneID, cutsceneLength);
+			if(Main.util.countDialog < script.getSceneLength()){
+				script.displayName(script.getNames());
+				script.displayText(script.getDialog());
+				script.getEvents();
+				if(Main.util.getKeyLogSpecificKey(7))
+					Main.util.countDialog = Main.util.countDialog + 1;
 			}
+			else
+				Main.util.setCutsceneActive(false);
 		}
 	}//end of checkCutscenes
 	

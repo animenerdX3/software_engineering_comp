@@ -56,7 +56,7 @@ public class Utils {
 	private boolean cutsceneActive;
 	
 	//Counters for each cutscene
-	public int countDialog;
+	public int countDialog = 0;
 	public int idCounter;
 	public int startLetterTop = -150;
 	public int startLetterBottom = 150;

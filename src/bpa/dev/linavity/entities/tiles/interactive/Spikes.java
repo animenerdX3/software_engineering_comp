@@ -14,7 +14,7 @@ import bpa.dev.linavity.gamestates.GameLevel;
 
 public class Spikes extends Dynamic {
 	
-	private final static double damage = 100;
+	private final static double damage = 5;
 	
 	public Spikes(int i, int j, int id, int xOffset, int yOffset, int width, int height, Tile tileUp, Tile tileDown, Tile tileLeft, Tile tileRight) throws SlickException {
 		super(i, j, id, xOffset, yOffset, width, height);
