@@ -1,5 +1,6 @@
 package bpa.dev.linavity.gamestates;
 
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -95,6 +97,9 @@ public class GameLevel extends BasicGameState{
 	private Tile[][] eventTiles;
 	
 	private boolean alertPlayer;
+	
+	private Font font;
+	private TrueTypeFont ttf;
 	
 	/**
 	 * This runs as soon as we compile the program
@@ -209,6 +214,9 @@ public class GameLevel extends BasicGameState{
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
+		
+		font = new Font("Verdana", Font.BOLD, 22);
+		ttf = new TrueTypeFont(font, true);
 		
 		LogSystem.addToLog("GameLevel initialized successfully.");
 		LogSystem.addToLog("");
@@ -345,9 +353,7 @@ public class GameLevel extends BasicGameState{
 				items.remove(i);
 		}
 		
-		g.setColor(Color.red);
-		g.drawString("Timer: "+Main.util.getLevelTime() / 1000, 800,50);
-		g.setColor(Color.white);
+		ttf.drawString(770,50, "Timer: "+Main.util.getLevelTime() / 1000, Color.red);
 		
 		g.drawImage(coins[0], 750, 10);
 		g.drawImage(coins[1], 800, 10);
@@ -558,8 +564,8 @@ public class GameLevel extends BasicGameState{
 			g.drawImage(cutsceneGUI[2], 0, Main.util.startBottom);
 			g.drawImage(cutsceneGUI[3], 0, Main.util.startBottom);
 			if(Main.util.startTop <= 0 && Main.util.startBottom >= 0){
-				Main.util.startTop = Main.util.startTop + 4;
-				Main.util.startBottom = Main.util.startBottom - 4;
+				Main.util.startTop = Main.util.startTop + 8;
+				Main.util.startBottom = Main.util.startBottom - 8;
 			}
 			checkCutscenes(g);
 		}else{
