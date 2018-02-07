@@ -45,7 +45,7 @@ public class Tank extends Mob{
 		this.maxJumps = 0;
 		this.walkSpeed = 0.0313f;
 		this.runSpeed = 0.0625f;
-		this.health = 50;
+		this.health = 60;
 		this.damage = 0.5;
 		this.canJump = false;
 		this.isDetected = false;

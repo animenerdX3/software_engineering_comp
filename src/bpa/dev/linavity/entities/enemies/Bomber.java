@@ -45,7 +45,7 @@ public class Bomber extends Mob{
 		this.maxJumps = 0;
 		this.walkSpeed = 0.0625f;
 		this.runSpeed = 0.125f;
-		this.health = 100;
+		this.health = 40;
 		this.damage = 0.25;
 		this.canJump = false;
 		this.isDetected = false;
