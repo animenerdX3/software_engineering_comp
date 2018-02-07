@@ -195,7 +195,7 @@ public class GameLevel extends BasicGameState{
 		cutsceneGUI[2] = new Image("res/gui/cutscenes/letterbox_bottom.png");
 		cutsceneGUI[3] = new Image("res/gui/cutscenes/dialogbox.png");
 		cutsceneID = 1;
-		cutsceneLength = 2;
+		cutsceneLength = 9;
 		
 		coins = new Image[3];
 		coins[0] = new Image("res/items/coin_b/coin_b_thumb_empty.png");
@@ -383,6 +383,8 @@ public class GameLevel extends BasicGameState{
 			grav_bar.draw(318,850,(float) (318+(Main.util.getPlayer().getGravPack().getGravpower() * 2.7)),850+27,0,0,(float) (Main.util.getPlayer().getGravPack().getGravpower() * 2.7),27);
 		}
 		
+		renderCutscene(gc, g);
+		
 		//Draw menu, if open
 		if(!menuOpen && !saveOpen && Main.util.getPlayer().isInventoryOpen())
 			renderInventoryMenu(gc, g);
@@ -391,7 +393,6 @@ public class GameLevel extends BasicGameState{
 		else if(saveOpen && !menuOpen && !Main.util.getPlayer().isInventoryOpen()) 
 			renderSaveMenu(gc, g);
 		
-		renderCutscene(gc, g);
 		
 	}//end of render
 
@@ -677,7 +678,7 @@ public class GameLevel extends BasicGameState{
 			LogSystem.addToLog("Menu Open: "+menuOpen);
 		}
 		
-		if(!menuOpen && Main.util.getKeyLogSpecificKey(10)) {
+		if(!menuOpen && (Main.util.getKeyLogSpecificKey(10) || Main.util.getKeyLogSpecificKey(6))) {
 			Main.appgc.setMouseGrabbed(Main.util.getPlayer().isInventoryOpen());
 			Main.util.getSFX(0).play(1f, Main.util.getSoundManager().getVolume());
 			Main.util.getPlayer().setInventoryOpen(!Main.util.getPlayer().isInventoryOpen());

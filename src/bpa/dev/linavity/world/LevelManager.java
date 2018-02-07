@@ -239,7 +239,7 @@ public class LevelManager {
 						else if(tileIDs[i][j] == Tile.leverID) // Lever
 							tiles[i][j] = new Lever(i, j, tileIDs[i][j], 0, 0, 50, 50);
 						else if(tileIDs[i][j] == Tile.doorID) // Door
-							tiles[i][j] = new Door(i, j, tileIDs[i][j], 0, 0, 50, 50);
+							tiles[i][j] = new Door(i, j, tileIDs[i][j], 0, 0, 50, 50, new Tile(0,0,tileIDs[i-1][j]), new Tile(0,0,tileIDs[i+1][j]), new Tile(0,0,tileIDs[i][j-1]), new Tile(0,0,tileIDs[i][j+1]));
 						else if(tileIDs[i][j] == Tile.spikesID) // Spike
 							tiles[i][j] = new Spikes(i, j, tileIDs[i][j], 0, 0, 50, 50, new Tile(0,0,tileIDs[i-1][j]), new Tile(0,0,tileIDs[i+1][j]), new Tile(0,0,tileIDs[i][j-1]), new Tile(0,0,tileIDs[i][j+1]));
 						else if(tileIDs[i][j] == Tile.ladderTopID || tileIDs[i][j] == Tile.ladderMiddleID || tileIDs[i][j] == Tile.ladderBottomID) // Ladder

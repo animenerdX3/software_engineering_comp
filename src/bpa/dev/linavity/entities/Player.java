@@ -144,7 +144,7 @@ public class Player extends Mob {
 	 */
 	private float xMovement() {
 
-		if(movingLeftOrRight() && !this.inventoryOpen) {
+		if(movingLeftOrRight() && !this.inventoryOpen && !Main.util.isCutsceneActive()) {
 			if(isRunning()) {
 				return runningX();
 			}else{
@@ -221,7 +221,7 @@ public class Player extends Mob {
 		
 		// Gravity Pack Control
 		if(this.gravPack.isCanFlip() && this.canUseGravpack) { // If the player's gravity pack is currently able to fight gravity
-			if(isUsingGravPack() && !this.inventoryOpen) { // And the player is trying to use their gravity pack
+			if(isUsingGravPack() && !this.inventoryOpen && !Main.util.isCutsceneActive()) { // And the player is trying to use their gravity pack
 				this.gravPack.setGravpower(this.gravPack.getGravpower() - 5);
 				this.isFlipping = !this.isFlipping;
 			}
@@ -254,9 +254,7 @@ public class Player extends Mob {
 			//If they are jumping
 			if(!Main.util.isCutsceneActive())
 				jumping();
-			if(this.playerJump && !this.inventoryOpen) {
-				if(Main.util.isCutsceneActive())
-					Main.util.cutsceneVars.setMakePlayerJump(false);
+			if(this.playerJump && !this.inventoryOpen && !Main.util.isCutsceneActive()) {
 				this.jumps++;
 				this.jumpMomentum = jumpPower;
 			}
@@ -336,7 +334,7 @@ public class Player extends Mob {
 	public void checkAnimation() {
 		
 		  //If Moving Left Upside Down
-	      if (Main.util.getKeyLogSpecificKey(1) && !this.inventoryOpen) {
+	      if (Main.util.getKeyLogSpecificKey(1) && !this.inventoryOpen && !Main.util.isCutsceneActive()) {
 	    	  toggleDirection = true;
 	    	  if(isFlipping())
 	    		  setCurrentImage(getMoveLeftFlippedAni());
@@ -345,7 +343,7 @@ public class Player extends Mob {
 	        }
 	      
 	      //If Moving Right Upside Down
-	      else if (Main.util.getKeyLogSpecificKey(3) && !this.inventoryOpen) {
+	      else if (Main.util.getKeyLogSpecificKey(3) && !this.inventoryOpen && !Main.util.isCutsceneActive()) {
 	    	  toggleDirection = false;
 	    	  if(Main.util.getPlayer().isFlipping())
 	    		  setCurrentImage(getMoveRightFlippedAni()); 

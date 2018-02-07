@@ -45,7 +45,7 @@ public class Script {
 	
 	public void getEvents(){
 		if(Main.util.countDialog == 1){
-			Main.util.getPlayer().setPlayerJump(Main.util.cutsceneVars.isMakePlayerJump());
+			//EVENTS GO HERE
 		}
 	}
 	

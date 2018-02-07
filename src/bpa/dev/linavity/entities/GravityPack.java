@@ -12,13 +12,13 @@ public class GravityPack{
 	private boolean canFlip;
 	
 	public GravityPack() throws SlickException {
-		this.depletionRate = 0.0f;
+		this.depletionRate = 0.3f;
 		this.gravpower = 0;
 		this.canFlip = false;
 	}
 	
 	public GravityPack(float gravpower) throws SlickException {
-		this.depletionRate = 0.0f;
+		this.depletionRate = 0.3f;
 		this.gravpower = gravpower;
 		this.canFlip = true;
 	}

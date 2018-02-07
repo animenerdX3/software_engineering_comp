@@ -9,20 +9,28 @@ import bpa.dev.linavity.collectibles.KeyCard;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.tiles.Dynamic;
+import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.events.Message;
 import bpa.dev.linavity.gamestates.GameLevel;
 
 public class Door extends Dynamic {
 	
+	private boolean typeDoor;
 	
-	public Door(int i, int j, int id, int xOffset, int yOffset, int width, int height) throws SlickException {
+	public Door(int i, int j, int id, int xOffset, int yOffset, int width, int height, Tile tileUp, Tile tileDown, Tile tileLeft, Tile tileRight) throws SlickException {
 		super(i, j, id, xOffset, yOffset, width, height);
+		
+		typeDoor = true;
+		
+		if(tileUp.isPassable() && !tileLeft.isPassable())
+			typeDoor = false;
+		
+		if(!typeDoor)
+			this.texture = new Image("res/tiles/dynamic/trapdoor_closed.png");
 	}
 	
 	@Override
 	public void onCollide(GameObject go) throws SlickException {
-
-		System.out.println("Yo this door is being collided!");
 		
 		if(go instanceof Player && !this.toggle){
 			for(int i = 0; i < Main.util.getInventory().getItems().size(); i++)
@@ -51,7 +59,12 @@ public class Door extends Dynamic {
 	}
 	
 	public void openDoor() throws SlickException {
-		this.setTexture(new Image("res/tiles/dynamic/door_open.png"));
+		
+		if(typeDoor)
+			this.setTexture(new Image("res/tiles/dynamic/door_open.png"));
+		else
+			this.setTexture(new Image("res/tiles/dynamic/trapdoor_open.png"));
+		
 		this.setPassable(true);
 		this.toggle = true;
 		System.out.println("Open Door");
@@ -59,7 +72,12 @@ public class Door extends Dynamic {
 	}
 	
 	public void closeDoor() throws SlickException {
-		this.setTexture(new Image("res/tiles/dynamic/door_closed.png"));
+		
+		if(typeDoor)
+			this.setTexture(new Image("res/tiles/dynamic/door_closed.png"));
+		else
+			this.setTexture(new Image("res/tiles/dynamic/trapdoor_closed.png"));
+		
 		this.setPassable(false);
 		this.toggle = false;
 		System.out.println("Close Door");

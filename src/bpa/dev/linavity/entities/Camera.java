@@ -39,8 +39,12 @@ public class Camera {
 			this.x = x - 425;
 		
 		//If the player's y is greater than 600 and less than the height - 99 (our Y buffer), update our camera's Y position
-		if(Main.util.getPlayer().getY() <= Main.util.getLevel().getLevelHeight() - 99 && Main.util.getPlayer().getY() >= 600)
-			this.y = y - 720;
+		if((Main.util.getPlayer().getY() <= Main.util.getLevel().getLevelHeight() - 99 && Main.util.getPlayer().getY() >= 600)){
+			if(Main.util.isCutsceneActive())
+				this.y = y - 520;
+			else
+				this.y = y - 720;
+		}
 	}//end of updateCameraPos
 	
 	/**

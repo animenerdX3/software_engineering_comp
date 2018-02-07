@@ -9,6 +9,7 @@ public class Message {
 	public final static int leverToggle = 1;
 	public final static int endLevel = 2;
 	public final static int damage = 3;
+	public final static int activateNPC = 4;
 
 	// The contents of our event messages
 	private GameObject to;
