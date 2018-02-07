@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.Main;
 import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Mob;
@@ -110,7 +111,17 @@ public class Level {
 					tileX = tiles[i][j].getX() - cam.getX();
 					tileY = tiles[i][j].getY() - cam.getY();
 					if(MainMenu.checkBounds(-cam.getBuffer(), 900, -cam.getBuffer(), 900, tileX, tileY)) {
+						
+
+						try{
 						screenTiles[screenI][screenJ] = tiles[i][j];
+						}
+						catch(ArrayIndexOutOfBoundsException io){
+							System.out.println("------------------------------");
+							io.printStackTrace();
+							
+						}
+						
 						if(screenJ < 18)
 							screenJ++;
 						isALine = true;
@@ -118,7 +129,7 @@ public class Level {
 					
 				}
 				screenJ = 0;
-				if(isALine) {
+				if(isALine && screenI < 18) {
 					screenI++;
 					isALine = false;
 				}
