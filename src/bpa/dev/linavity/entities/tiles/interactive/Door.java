@@ -33,10 +33,11 @@ public class Door extends Dynamic {
 	public void onCollide(GameObject go) throws SlickException {
 		
 		if(go instanceof Player && !this.toggle){
-			for(int i = 0; i < Main.util.getInventory().getItems().size(); i++)
-			if(Main.util.getInventory().getItems().get(i) instanceof KeyCard){
-				openDoor();
-				Main.util.getInventory().getItems().remove(i);
+			for(int i = 0; i < Main.util.getInventory().getItems().size(); i++){
+				if(Main.util.getInventory().getItems().get(i) instanceof KeyCard){
+					openDoor();
+					Main.util.getInventory().getItems().remove(i);
+				}
 			}
 		}
 		

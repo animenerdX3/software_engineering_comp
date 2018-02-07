@@ -18,9 +18,6 @@ import bpa.dev.linavity.gamestates.*;
  * @version 1.055
  */
 
-/* Task List
- //TODO Let's Make Maps >///3///<
- */
 
 public class Main extends StateBasedGame{
 	
