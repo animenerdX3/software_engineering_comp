@@ -5,6 +5,7 @@ import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.GameObject;
 import bpa.dev.linavity.Main;
+import bpa.dev.linavity.collectibles.KeyCard;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.tiles.Dynamic;
@@ -21,6 +22,15 @@ public class Door extends Dynamic {
 	@Override
 	public void onCollide(GameObject go) throws SlickException {
 
+		System.out.println("Yo this door is being collided!");
+		
+		if(go instanceof Player && !this.toggle){
+			for(int i = 0; i < Main.util.getInventory().getItems().size(); i++)
+			if(Main.util.getInventory().getItems().get(i) instanceof KeyCard){
+				openDoor();
+				Main.util.getInventory().getItems().remove(i);
+			}
+		}
 		
 	}
 	
@@ -43,6 +53,7 @@ public class Door extends Dynamic {
 	public void openDoor() throws SlickException {
 		this.setTexture(new Image("res/tiles/dynamic/door_open.png"));
 		this.setPassable(true);
+		this.toggle = true;
 		System.out.println("Open Door");
 		
 	}
@@ -50,6 +61,7 @@ public class Door extends Dynamic {
 	public void closeDoor() throws SlickException {
 		this.setTexture(new Image("res/tiles/dynamic/door_closed.png"));
 		this.setPassable(false);
+		this.toggle = false;
 		System.out.println("Close Door");
 	}
 	

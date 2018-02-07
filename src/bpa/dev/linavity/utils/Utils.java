@@ -56,7 +56,7 @@ public class Utils {
 	private boolean cutsceneActive;
 	
 	//Counters for each cutscene
-	public int countDialog;
+	public int countDialog = 0;
 	public int idCounter;
 	public int startLetterTop = -150;
 	public int startLetterBottom = 150;
@@ -67,6 +67,8 @@ public class Utils {
 	private LoadGame slotThreeData;
 	private LoadGame currentLoadData;
 	public boolean loadGame = false;
+	
+	private PlayerStats ps;
 	
 	//The mobs in the current level
 	private ArrayList<Mob> levelMobs;
@@ -83,7 +85,7 @@ public class Utils {
 	private int textSpeed;
 	
 	public int levelNum;
-	
+
 	// Default Constructor
 	public Utils(int levelID) throws SlickException{
 		LogSystem.addToLog("Debug Mode: "+this.debugMode);
@@ -109,10 +111,18 @@ public class Utils {
 		this.inventory = new Inventory();
 		this.cutsceneActive = false;
 		this.textSpeed = 500;
+		this.ps = new PlayerStats();
 	}
 	
 	
 	/* GETTERS */
+	
+	/**
+	 * @return the ps
+	 */
+	public PlayerStats getPs() {
+		return ps;
+	}
 	
 	/**
 	 * 
@@ -305,6 +315,13 @@ public class Utils {
 	}
 	
 	/* SETTERS */
+	
+	/**
+	 * @param ps the ps to set
+	 */
+	public void setPs(PlayerStats ps) {
+		this.ps = ps;
+	}
 
 	/**
 	 * changes player object

@@ -396,6 +396,10 @@ public abstract class Mob extends GameObject{
 			tile.onCollide(this);
 		}
 		
+		if(tile.getId() == Tile.doorID) {
+			tile.onCollide(this);
+		}
+		
 		if(tile.getId() == Tile.warpHoleID) {
 				Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.endLevel, null));
 		}

@@ -19,6 +19,7 @@ import bpa.dev.linavity.collectibles.GravCapsule;
 import bpa.dev.linavity.collectibles.GravPack;
 import bpa.dev.linavity.collectibles.HealthPack;
 import bpa.dev.linavity.collectibles.Item;
+import bpa.dev.linavity.collectibles.KeyCard;
 import bpa.dev.linavity.collectibles.UseItem;
 import bpa.dev.linavity.cutscenes.Script;
 import bpa.dev.linavity.entities.Mob;
@@ -30,6 +31,7 @@ import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.utils.ErrorLog;
 import bpa.dev.linavity.utils.LoadGame;
 import bpa.dev.linavity.utils.LogSystem;
+import bpa.dev.linavity.utils.PlayerStats;
 import bpa.dev.linavity.utils.SaveGame;
 import bpa.dev.linavity.world.Level;
 import bpa.dev.linavity.world.ParallaxMap;
@@ -69,6 +71,9 @@ public class GameLevel extends BasicGameState{
 	private Image darkerScreen;
 	private Image dialogBox;
 	
+	private int cutsceneID;
+	private int cutsceneLength;
+	
 	// ID of the gamestate
 	public static int id = 1;
 	
@@ -107,7 +112,8 @@ public class GameLevel extends BasicGameState{
 				ErrorLog.displayError(ex);
 			}
 			LogSystem.addToLog("Loading Game...");
-			System.out.println(Main.util.getCurrentLoadData().getLevelFound());
+			System.out.println("WE ARE LOADING LEVEL "+Main.util.getCurrentLoadData().getLevelFound());
+			Main.util.levelNum = Main.util.getCurrentLoadData().getLevelFound();
 			Main.util.getInventory().setItems(new ArrayList<Item>());
 			Main.util.getCam().setX(Main.util.getCurrentLoadData().getCamX());
 			Main.util.getCam().setY(Main.util.getCurrentLoadData().getCamY());
@@ -115,6 +121,7 @@ public class GameLevel extends BasicGameState{
 			LogSystem.addToLog("Creating Mobs...");
 			mobs = getMobs(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Mobs Created.");
+			Main.util.getPs().addToPlayerStats("" + Main.util.getPlayer().getHealth() + "," + Main.util.getPlayer().getGravPack().getGravpower());
 			LogSystem.addToLog("Creating Items...");
 			items = getItems(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Items Created.");
@@ -123,6 +130,7 @@ public class GameLevel extends BasicGameState{
 		}
 		else {
 			LogSystem.addToLog("Starting a New Game...");
+			System.out.println("WE ARE STARTING OR RETRYING LEVEL "+Main.util.levelNum);
 			try {
 				Main.util.setLevel(new Level(Main.util.levelNum));
 			} catch (FileNotFoundException ex) {
@@ -135,6 +143,17 @@ public class GameLevel extends BasicGameState{
 			LogSystem.addToLog("Creating Items...");
 			items = getItems();
 			LogSystem.addToLog("Items Created.");
+			
+			String[] playerStats;
+			try {
+				playerStats = Main.util.getPs().readPlayerStats();
+				Main.util.getPlayer().setHealth(Double.parseDouble(playerStats[0]));
+				Main.util.getPlayer().getGravPack().setGravpower(Float.parseFloat(playerStats[1]));
+			} catch (FileNotFoundException e) {
+				ErrorLog.displayError(e);
+			}
+			
+			
 		}
 		
 		Main.util.setLevelMobs(mobs);
@@ -174,6 +193,8 @@ public class GameLevel extends BasicGameState{
 		bottomLetterbox = new Image("res/gui/cutscenes/letterbox_bottom.png");
 		darkerScreen = new Image("res/gui/cutscenes/screen_darken.png");
 		dialogBox = new Image("res/gui/cutscenes/dialogbox.png");
+		cutsceneID = 1;
+		cutsceneLength = 2;
 		
 		health_gui = new Image("res/gui/stats/health_bar.png");
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
@@ -252,12 +273,17 @@ public class GameLevel extends BasicGameState{
 					items.add(new HealthPack(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 				else if(itemImage[i].equalsIgnoreCase("gravcapsule"))
 					items.add(new GravCapsule(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
+				else if(itemImage[i].equalsIgnoreCase("keycard"))
+					items.add(new KeyCard(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 			}
 			else if(itemImage[i] != null){
+				System.out.println(itemImage[i]);
 				if(itemImage[i].equalsIgnoreCase("healthpack"))
 					Main.util.getInventory().addToInventory(new HealthPack(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 				else if(itemImage[i].equalsIgnoreCase("gravcapsule"))
 					Main.util.getInventory().addToInventory(new GravCapsule(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
+				else if(itemImage[i].equalsIgnoreCase("keycard"))
+					Main.util.getInventory().addToInventory(new KeyCard(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 			}
 		}
 		
@@ -362,7 +388,7 @@ public class GameLevel extends BasicGameState{
 	 * @param sbg
 	 * @param g
 	 */
-private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
+	private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		
 		// Get a 2d array of tile objects that are contained within our camera's view
 		screenTiles = Main.util.getLevel().getScreenTiles(Main.util.getCam(), Main.util.getLevel().getMap());
@@ -538,13 +564,15 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		// If the game is not paused
 		if(!menuOpen && !saveOpen){
 			
-			if(Main.util.getPlayer().isInventoryOpen())
-				checkInventoryMenu(gc);
+			if(!Main.util.isCutsceneActive())
+				if(Main.util.getPlayer().isInventoryOpen())
+					checkInventoryMenu(gc);
 			
-			updateTimer(delta);
+			if(!Main.util.isCutsceneActive())
+				updateTimer(delta);
 			
 			// Make all keyboard-based updates
-			input(gc);
+				input(gc);
 			
 			// Make all game information updates
 			gameUpdates(gc, sbg, delta);
@@ -643,6 +671,7 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 	 */
 	private void endLevel(GameContainer gc, StateBasedGame sbg) {
 		if(Main.util.getPlayer().isReadyForNextLevel()) {
+			Main.util.getPs().setFirstWrite(true);
 			LogSystem.addToLog("Level Ended.");
 			Main.util.levelNum++;
 			newLevel(gc, sbg);
@@ -650,6 +679,10 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 	}//end of endLevel
 
 	private void newLevel(GameContainer gc, StateBasedGame sbg){
+		
+		PlayerStats ps = new PlayerStats();
+		ps.addToPlayerStats("" + Main.util.getPlayer().getHealth() + ", " + Main.util.getPlayer().getGravPack().getGravpower());
+		ps.setFirstWrite(true);
 		
 		try {
 			init(gc, sbg);
@@ -684,8 +717,9 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 	 */
 	private void updateMobs(int delta) throws SlickException{
 		// Update the mob's position
-		for(int i = 0; i < mobs.size(); i++)
+		for(int i = 0; i < mobs.size(); i++){
 			mobs.get(i).update(delta);
+		}
 		
 	}//end of updateMobs
 	
@@ -789,12 +823,16 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 	
 	public void checkCutscenes(Graphics g){
 		if(Main.util.isCutsceneActive()){
-			Script script = new Script(g, 1, 2);
-			script.startCutscene();
-			if(Main.util.getKeyLogSpecificKey(7)){
-				System.out.println("DAB");
-				script.setCounter(script.getCounter() + 1);
+			Script script = new Script(g, cutsceneID, cutsceneLength);
+			if(Main.util.countDialog < script.getSceneLength()){
+				script.displayName(script.getNames());
+				script.displayText(script.getDialog());
+				script.getEvents();
+				if(Main.util.getKeyLogSpecificKey(7))
+					Main.util.countDialog = Main.util.countDialog + 1;
 			}
+			else
+				Main.util.setCutsceneActive(false);
 		}
 	}//end of checkCutscenes
 	
@@ -852,8 +890,6 @@ private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 				LogSystem.addToLog("Resetting Level...");
 				input.clearKeyPressedRecord();
 				menuOpen = false;
-				Main.util.getPlayer().setHealth(100);
-				Main.util.getPlayer().getGravPack().setGravpower(100);
 				Main.util.getMusic().stop();
 				sbg.getState(GameLevel.id).init(gc, sbg);
 				Main.util.setMusic(Main.util.getMusicQueue(1));

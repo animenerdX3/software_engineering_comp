@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 import org.newdawn.slick.SlickException;
 
-import bpa.dev.linavity.Main;
+import bpa.dev.linavity.collectibles.Coin;
 import bpa.dev.linavity.collectibles.GravCapsule;
 import bpa.dev.linavity.collectibles.GravPack;
 import bpa.dev.linavity.collectibles.HealthPack;
@@ -158,6 +158,12 @@ public class LevelManager {
 							items.add(new GravCapsule((j * 50) + 15, i *50, "gravcapsule"));
 						else if(itemsIDs[i][j] == 204)
 							items.add(new KeyCard((j*50) + 15, i*50, "keycard"));
+						else if(itemsIDs[i][j] == 205)
+							items.add(new Coin((j * 50) + 15, i *50 - 40, 40, 80, "coin_b"));
+						else if(itemsIDs[i][j] == 206)
+							items.add(new Coin((j * 50) + 15, i *50 - 40, 40, 80, "coin_p"));
+						else if(itemsIDs[i][j] == 207)
+							items.add(new Coin((j * 50) + 15, i *50 - 40, 40, 80, "coin_a"));
 					}
 				}
 				

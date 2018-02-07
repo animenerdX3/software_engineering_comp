@@ -1,5 +1,7 @@
 package bpa.dev.linavity.gamestates;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -14,6 +16,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
+import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.utils.ErrorLog;
 import bpa.dev.linavity.utils.LogSystem;
 import bpa.dev.linavity.world.ParallaxMap;
@@ -341,6 +344,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	}//end of checkMouseBounds
 	
 	private void StartGame(Input input, StateBasedGame sbg, int levelID) {
+		LogSystem.addToLog("Resetting Level Number...");
 		LogSystem.addToLog("Entering Game...");
 		input.clearKeyPressedRecord();
 		Main.appgc.setMouseGrabbed(true);
@@ -415,6 +419,8 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
 		if(checkBounds( (gc.getWidth()/2) - (play.getWidth()/2) , (gc.getWidth()/2) - (play.getWidth()/2) + play.getWidth() , 350 , 350 + play.getHeight())) {
 			if(input.isMousePressed(0)) {
+				Main.util.levelNum = 1;
+				Main.util.getInventory().setItems(new ArrayList<Item>());
 				input.clearKeyPressedRecord();
 				Main.util.setLoadGame(false);
 				sbg.getState(Main.startlevel).init(gc, sbg);
