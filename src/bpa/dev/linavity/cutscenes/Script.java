@@ -1,7 +1,10 @@
 package bpa.dev.linavity.cutscenes;
 
+import java.awt.Font;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.TrueTypeFont;
 
 import bpa.dev.linavity.Main;
 
@@ -13,6 +16,8 @@ public class Script {
 	private int timer;
 	private String [] dialog;
 	private String [] names;
+	private Font font = new Font("OCR A Extended", Font.ITALIC, 24);
+	private TrueTypeFont ttf = new TrueTypeFont(font, true);
 	
 	public Script(Graphics g, int id, int sceneLength){
 		this.g = g;
@@ -26,18 +31,24 @@ public class Script {
 	//START OF SCRIPT
 	
 	public void displayName(String[] names){
-			g.setColor(Color.white);
-			g.drawString(names[Main.util.countDialog], 74, 662 + Main.util.startBottom);
+		ttf.drawString(74, 662 + Main.util.startBottom, names[Main.util.countDialog], Color.white);
+			//g.drawString(names[Main.util.countDialog], 74, 662 + Main.util.startBottom);
 	}
 	
 	public void displayText(String [] dialog){
 		int xPosition = 74;
 		int yPosition = 732 + Main.util.startBottom;
-			g.setColor(Color.white);
+		int textCounter = 0;
 			char [] splitDialog = dialog[Main.util.countDialog].toCharArray();
 			for(int i = 0; i < splitDialog.length; i++){
-				g.drawString(""+splitDialog[i], xPosition, yPosition);
-				xPosition = xPosition + 10;
+				ttf.drawString(xPosition, yPosition,""+splitDialog[i], Color.white);
+				xPosition = xPosition + 15;
+				textCounter++;
+				if(textCounter > 35 && splitDialog[i] == 32){
+					yPosition = yPosition + 40;
+					xPosition = 74;
+					textCounter = 0;
+				}
 			}
 		}
 	
