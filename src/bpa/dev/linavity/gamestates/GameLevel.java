@@ -704,6 +704,10 @@ public class GameLevel extends BasicGameState{
 		PlayerStats ps = new PlayerStats();
 		ps.addToPlayerStats("" + Main.util.getPlayer().getHealth() + ", " + Main.util.getPlayer().getGravPack().getGravpower());
 		ps.setFirstWrite(true);
+
+		Main.util.getLevel().setScore(Main.util.getLevel().getScore() + calculateScoring());
+		
+		System.out.println("YOUR SCORE FOR THIS LEVEL WAS: " + Main.util.getLevel().getScore());
 		
 		try {
 			init(gc, sbg);
@@ -712,6 +716,33 @@ public class GameLevel extends BasicGameState{
 		}
 		
 	}//end of newLevel
+	
+	private int calculateScoring(){
+		
+		int score = 500;
+		
+		int coinsCollected = 0;		
+		
+		if(Main.util.coinAGrabbed)
+			coinsCollected++;
+		if(Main.util.coinBGrabbed)
+			coinsCollected++;
+		if(Main.util.coinPGrabbed)
+			coinsCollected++;
+		
+		if(coinsCollected == 1)
+			score += 250;
+		else if(coinsCollected == 2)
+			score += 500;
+		else if(coinsCollected == 3)
+			score += 1000;
+		
+		score -= (Main.util.getLevelTime()/1000);
+		
+		score += (Main.util.getPlayer().getHealth() + Main.util.getPlayer().getGravPack().getGravpower());
+		
+		return score;
+	}
 	
 	private void alertPlayer(double alertHealth) {
 		if(Main.util.getPlayer().getHealth() <= alertHealth && Main.util.getPlayer().getHealth() != 0 && !alertPlayer) {
@@ -815,6 +846,7 @@ public class GameLevel extends BasicGameState{
 
 		for(int i = 0; i < mobs.size(); i++){
 			if(mobs.get(i).getHealth() <= 0){
+				Main.util.getLevel().setScore(enemyScoreCalculator(mobs.get(i))); // Update the player's score for the level based on the mobs that he kills
 				mobs.get(i).setIsAlive(false);
 				if(i == 0)
 					try {
@@ -825,6 +857,17 @@ public class GameLevel extends BasicGameState{
 			}
 		}
 	}//end of checkMobStatus
+	
+	
+	// Takes in a mob that the player has killed and returns a score based on the type of enemy
+	private int enemyScoreCalculator(Mob mob){
+		if(mob instanceof Starter)
+			return Main.util.getLevel().getScore() + 50;
+		else if(mob instanceof Tank || mob instanceof Bomber)
+			return Main.util.getLevel().getScore() + 100;
+		else
+			return 0;
+	}
 	
 	/**
 	 * Resets the level when the player dies

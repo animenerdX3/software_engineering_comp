@@ -20,6 +20,9 @@ public class Level {
 	private int id;
 	private int levelWidth, levelHeight;
 	
+	// Score for the level
+	private int score;
+	
 	// Level Data
 	private Tile[][] map;
 	private Tile[][] events;
@@ -41,6 +44,8 @@ public class Level {
 	 * 
 	 */
 	public Level(int id) throws SlickException, FileNotFoundException{
+		
+		this.setScore(0);
 		
 		this.lm = new LevelManager(id);
 		
@@ -151,6 +156,13 @@ public class Level {
 	// Getters
 	
 	/**
+	 * @return the score
+	 */
+	public int getScore() {
+		return score;
+	}
+
+	/**
 	 * @return the map
 	 */
 	public Tile[][] getMap() {
@@ -219,13 +231,18 @@ public class Level {
 	// Setters
 
 	/**
+	 * @param score the score to set
+	 */
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
+	/**
 	 * @param map the map to set
 	 */
 	public void setMap(Tile[][] map) {
 		this.map = map;
 	}
-
-
 
 	/**
 	 * @param events the events to set
@@ -234,16 +251,12 @@ public class Level {
 		this.events = events;
 	}
 
-
-
 	/**
 	 * @param channels the channels to set
 	 */
 	public void setChannels(ArrayList<Point[]> channels) {
 		this.channels = channels;
 	}
-
-
 
 	/**
 	 * @param config the config to set
