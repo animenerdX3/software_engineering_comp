@@ -25,6 +25,7 @@ public class Player extends Mob {
 	private boolean inventoryOpen;
 	private int coolDown;
 	private boolean canUseGravpack;
+	private boolean playerJump;
 	
 	private GravityPack gravPack;
 	
@@ -251,7 +252,11 @@ public class Player extends Mob {
 		//If their maximum jumps have not been reached
 		if(!maxJumps()) {
 			//If they are jumping
-			if(jumping() && !this.inventoryOpen) {
+			if(!Main.util.isCutsceneActive())
+				jumping();
+			if(this.playerJump && !this.inventoryOpen) {
+				if(Main.util.isCutsceneActive())
+					Main.util.cutsceneVars.setMakePlayerJump(false);
 				this.jumps++;
 				this.jumpMomentum = jumpPower;
 			}
@@ -284,8 +289,8 @@ public class Player extends Mob {
 	}
 	
 	// Determines if the player is running
-	private boolean jumping() {
-		return Main.util.getKeyLogSpecificKey(0);
+	public void jumping() {
+		this.playerJump = Main.util.getKeyLogSpecificKey(0);
 	}
 	
 	
@@ -502,6 +507,14 @@ public class Player extends Mob {
 		return canUseGravpack;
 	}
 	
+	/**
+	 * 
+	 * @return if true, the player jumps. if false, the player does not jump
+	 */
+	public boolean isPlayerJump() {
+		return playerJump;
+	}
+	
 	/* SETTERS */
 
 	/**
@@ -558,6 +571,14 @@ public class Player extends Mob {
 	 */
 	public void setCanUseGravpack(boolean canUseGravpack) {
 		this.canUseGravpack = canUseGravpack;
+	}
+	
+	/**
+	 * changes the player's jump boolean
+	 * @param playerJump
+	 */
+	public void setPlayerJump(boolean playerJump) {
+		this.playerJump = playerJump;
 	}
 	
 	/**

@@ -1,6 +1,5 @@
 package bpa.dev.linavity.utils;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import org.newdawn.slick.GameContainer;
@@ -8,11 +7,11 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
-import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.assets.MusicManager;
 import bpa.dev.linavity.assets.SoundManager;
 import bpa.dev.linavity.collectibles.Inventory;
+import bpa.dev.linavity.cutscenes.CutsceneAccessor;
 import bpa.dev.linavity.cutscenes.CutsceneManager;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Mob;
@@ -54,12 +53,13 @@ public class Utils {
 	//Cutscene Objects
 	CutsceneManager cutscenes = new CutsceneManager("dialogue");
 	private boolean cutsceneActive;
+	public CutsceneAccessor cutsceneVars = new CutsceneAccessor();
 	
 	//Counters for each cutscene
 	public int countDialog = 0;
 	public int idCounter;
-	public int startLetterTop = -150;
-	public int startLetterBottom = 150;
+	public int startTop = -150;
+	public int startBottom = 150;
 	
 	//Loading Objects
 	private LoadGame slotOneData;
@@ -82,9 +82,12 @@ public class Utils {
 	public GameContainer gc;
 	public int delta;
 	
-	private int textSpeed;
-	
 	public int levelNum;
+	
+	//Coins
+	public boolean coinBGrabbed;
+	public boolean coinPGrabbed;
+	public boolean coinAGrabbed;
 
 	// Default Constructor
 	public Utils(int levelID) throws SlickException{
@@ -110,8 +113,11 @@ public class Utils {
 		this.levelTime = 0;
 		this.inventory = new Inventory();
 		this.cutsceneActive = false;
-		this.textSpeed = 500;
 		this.ps = new PlayerStats();
+		
+		this.coinBGrabbed = false;
+		this.coinPGrabbed = false;
+		this.coinAGrabbed = false;
 	}
 	
 	
@@ -308,10 +314,6 @@ public class Utils {
 	 */
 	public boolean isCutsceneActive() {
 		return cutsceneActive;
-	}
-	
-	public int getTextSpeed(){
-		return textSpeed;
 	}
 	
 	/* SETTERS */

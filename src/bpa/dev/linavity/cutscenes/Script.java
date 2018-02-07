@@ -27,12 +27,12 @@ public class Script {
 	
 	public void displayName(String[] names){
 			g.setColor(Color.white);
-			g.drawString(names[Main.util.countDialog], 74, 662 + Main.util.startLetterBottom);
+			g.drawString(names[Main.util.countDialog], 74, 662 + Main.util.startBottom);
 	}
 	
 	public void displayText(String [] dialog){
 		int xPosition = 74;
-		int yPosition = 732 + Main.util.startLetterBottom;
+		int yPosition = 732 + Main.util.startBottom;
 			g.setColor(Color.white);
 			char [] splitDialog = dialog[Main.util.countDialog].toCharArray();
 			for(int i = 0; i < splitDialog.length; i++){
@@ -45,7 +45,7 @@ public class Script {
 	
 	public void getEvents(){
 		if(Main.util.countDialog == 1){
-			Main.util.getPlayer().setXMomentum(50);
+			Main.util.getPlayer().setPlayerJump(Main.util.cutsceneVars.isMakePlayerJump());
 		}
 	}
 	

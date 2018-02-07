@@ -66,10 +66,10 @@ public class GameLevel extends BasicGameState{
 	private ParallaxMap bg;
 
 	//Cutscene Images
-	private Image topLetterbox;
-	private Image bottomLetterbox;
-	private Image darkerScreen;
-	private Image dialogBox;
+	private Image [] cutsceneGUI;
+	
+	//Coins
+	private Image [] coins;
 	
 	private int cutsceneID;
 	private int cutsceneLength;
@@ -189,12 +189,21 @@ public class GameLevel extends BasicGameState{
 		
 		bg = new ParallaxMap("res/bg.jpg", 0, 0, -0.5f, 0,  true);
 		
-		topLetterbox = new Image("res/gui/cutscenes/letterbox_top.png");
-		bottomLetterbox = new Image("res/gui/cutscenes/letterbox_bottom.png");
-		darkerScreen = new Image("res/gui/cutscenes/screen_darken.png");
-		dialogBox = new Image("res/gui/cutscenes/dialogbox.png");
+		cutsceneGUI = new Image[4];
+		cutsceneGUI[0] = new Image("res/gui/cutscenes/screen_darken.png");
+		cutsceneGUI[1] = new Image("res/gui/cutscenes/letterbox_top.png"); 
+		cutsceneGUI[2] = new Image("res/gui/cutscenes/letterbox_bottom.png");
+		cutsceneGUI[3] = new Image("res/gui/cutscenes/dialogbox.png");
 		cutsceneID = 1;
 		cutsceneLength = 2;
+		
+		coins = new Image[3];
+		coins[0] = new Image("res/items/coin_b/coin_b_thumb_empty.png");
+		coins[1] = new Image("res/items/coin_p/coin_p_thumb_empty.png");
+		coins[2] = new Image("res/items/coin_a/coin_a_thumb_empty.png");
+		Main.util.coinBGrabbed = false;
+		Main.util.coinPGrabbed = false;
+		Main.util.coinAGrabbed = false;
 		
 		health_gui = new Image("res/gui/stats/health_bar.png");
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
@@ -339,6 +348,10 @@ public class GameLevel extends BasicGameState{
 		g.setColor(Color.red);
 		g.drawString("Timer: "+Main.util.getLevelTime() / 1000, 800,50);
 		g.setColor(Color.white);
+		
+		g.drawImage(coins[0], 750, 10);
+		g.drawImage(coins[1], 800, 10);
+		g.drawImage(coins[2], 850, 10);
 		
 		//If a projectile exists, then draw it on the screen
 		if(Main.util.getPlayer().isProjectileExists()) {
@@ -539,18 +552,18 @@ public class GameLevel extends BasicGameState{
 	private void renderCutscene(GameContainer gc, Graphics g){
 		
 		if(Main.util.isCutsceneActive()){
-			g.drawImage(darkerScreen, 0, 0);
-			g.drawImage(topLetterbox, 0, Main.util.startLetterTop);
-			g.drawImage(bottomLetterbox, 0, Main.util.startLetterBottom);
-			g.drawImage(dialogBox, 0, Main.util.startLetterBottom);
-			if(Main.util.startLetterTop <= 0 && Main.util.startLetterBottom >= 0){
-				Main.util.startLetterTop = Main.util.startLetterTop + 4;
-				Main.util.startLetterBottom = Main.util.startLetterBottom - 4;
+			g.drawImage(cutsceneGUI[0], 0, 0);
+			g.drawImage(cutsceneGUI[1], 0, Main.util.startTop);
+			g.drawImage(cutsceneGUI[2], 0, Main.util.startBottom);
+			g.drawImage(cutsceneGUI[3], 0, Main.util.startBottom);
+			if(Main.util.startTop <= 0 && Main.util.startBottom >= 0){
+				Main.util.startTop = Main.util.startTop + 4;
+				Main.util.startBottom = Main.util.startBottom - 4;
 			}
 			checkCutscenes(g);
 		}else{
-			Main.util.startLetterTop = -150;
-			Main.util.startLetterBottom = 150;
+			Main.util.startTop = -150;
+			Main.util.startBottom = 150;
 		}
 		
 	}//end of renderCutscene
@@ -584,6 +597,13 @@ public class GameLevel extends BasicGameState{
 			Main.util.getMessageHandler().dispatchMessages();
 			
 			bg.moveBackground();
+			
+			if(Main.util.coinBGrabbed)
+				coins[0] = new Image("res/items/coin_b/coin_b_thumb.png");
+			if(Main.util.coinPGrabbed)
+				coins[1] = new Image("res/items/coin_p/coin_p_thumb.png");
+			if(Main.util.coinAGrabbed)
+				coins[2] = new Image("res/items/coin_a/coin_a_thumb.png");
 			
 		}
 		else if(menuOpen && !saveOpen) {

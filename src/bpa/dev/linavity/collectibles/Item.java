@@ -76,9 +76,7 @@ public class Item {
 		this.isCollected = false;
 		
 		//If the player is in the range of the item
-		if(Main.util.getPlayer().getX() >= this.x && Main.util.getPlayer().getX() <= (this.x + this.width))
-			if(Main.util.getPlayer().getY() >= this.y) 
-				if(Main.util.getPlayer().getY() <= this.y + this.height)
+		if(this.collisionBox.intersects(Main.util.getPlayer().getBoundingBox()))
 					this.isCollected = true;//The item is collected
 		
 	}//end of checkItemCollision
@@ -159,6 +157,14 @@ public class Item {
 	 */
 	public boolean isActive() {
 		return isActive;
+	}
+	
+	/**
+	 * 
+	 * @return the current item image
+	 */
+	public String getItemImage() {
+		return itemImage;
 	}
 	
 	/* SETTERS */

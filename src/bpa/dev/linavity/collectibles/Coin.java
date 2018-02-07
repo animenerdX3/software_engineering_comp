@@ -25,6 +25,12 @@ public class Coin extends Item{
 	}//end of update
 	
 	public void onCollision() {
+		if(this.getItemImage().equalsIgnoreCase("coin_b"))
+			Main.util.coinBGrabbed = true;
+		else if(this.getItemImage().equalsIgnoreCase("coin_p"))
+			Main.util.coinPGrabbed = true;
+		else if(this.getItemImage().equalsIgnoreCase("coin_a"))
+			Main.util.coinAGrabbed = true;
 		this.isActive = false;//Destroy the item
 	}//end of onCollision
 
