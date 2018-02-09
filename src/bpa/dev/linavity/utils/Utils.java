@@ -27,7 +27,7 @@ public class Utils {
 	 */
 	
 	//Debug Mode
-	public final boolean debugMode = false;
+	public final boolean debugMode = true;
 	
 	// Universal Game Objects
 	private Level level; // Level Object

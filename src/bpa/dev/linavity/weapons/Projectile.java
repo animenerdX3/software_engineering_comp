@@ -6,6 +6,9 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.Main;
+import bpa.dev.linavity.entities.Camera;
+import bpa.dev.linavity.entities.tiles.Tile;
+import bpa.dev.linavity.utils.ErrorLog;
 
 public class Projectile {
 
@@ -22,6 +25,8 @@ public class Projectile {
 	private boolean shotLeft, shotRight;
 	
 	private Rectangle collisionBox = new Rectangle();
+	private boolean isCollide;
+	private int collisionRadius;
 	
 	//Starting projectile
 	public Projectile(boolean left, boolean right) throws SlickException {
@@ -35,6 +40,8 @@ public class Projectile {
 		this.shotLeft = left;
 		this.shotRight = right;
 		this.collisionBox = new Rectangle((int)x, (int)y, width, height);
+		this.isCollide = false;
+		this.collisionRadius = 10;
 	}
 	
 	//Non-Default Projectile
@@ -45,7 +52,8 @@ public class Projectile {
 		this.x = Main.util.getPlayer().getX();
 		this.y = Main.util.getPlayer().getY();
 		this.shotLeft = left;
-		this.shotRight = right;
+		this.isCollide = false;
+		this.collisionRadius = 10;
 	}
 	
 	//Move Projectile Across the Screen
@@ -55,9 +63,40 @@ public class Projectile {
 		
 		else if(this.shotRight)
 			this.x = this.x + this.speed;
+		try {
+			onCollision(Main.util.getLevel().getScreenTiles(new Camera(this.x, this.y, this.collisionRadius), Main.util.getLevel().getMap()), new Camera(this.x, this.y, this.collisionRadius));
+		} catch (SlickException e) {
+			ErrorLog.displayError(e);
+		}
 		
 	}
 	
+	/**
+	 * check if the projectile collides with an object
+	 * @param level
+	 * @param cam
+	 * @throws SlickException 
+	 */
+	private void onCollision(Tile[][] screenTiles, Camera cam) throws SlickException {
+		//Check for through our level map
+		for(int r = 0; r < screenTiles.length; r++) { // Run through each row
+			for(int c = 0; c < screenTiles[0].length; c++) // Run through each column
+				if(screenTiles[r][c] != null)  // If the tile exists
+						checkTileCollision(screenTiles[r][c]); // Is the mob colliding with this tile?
+		}
+
+	}//end of onCollision
+	
+	private void checkTileCollision(Tile tile) {
+		if(!tile.isPassable()) {
+			if(this.x + this.speed >= tile.getX() && this.x + this.speed <= tile.getX() + tile.getWidth()) {
+				if(this.y >= tile.getY() && this.y <= tile.getY() + tile.getHeight()) {
+					this.isCollide = true;
+				}
+			}
+		}
+	}//end of checkTileCollision
+
 	/* GETTERS */
 	
 	public Image getProjectileImage() {
@@ -100,8 +139,12 @@ public class Projectile {
 		return collisionBox;
 	}
 	
-	/* SETTERS */
+	public boolean isCollide() {
+		return isCollide;
+	}
 	
+	/* SETTERS */
+
 	public void setProjectileImage(Image projectileImage) {
 		this.projectileImage = projectileImage;
 	}
@@ -133,4 +176,9 @@ public class Projectile {
 	public void setCollisionBox(Rectangle collisionBox) {
 		this.collisionBox = collisionBox;
 	}
+
+	public void setCollide(boolean isCollide) {
+		this.isCollide = isCollide;
+	}
+	
 }//end of class

@@ -396,7 +396,7 @@ public class Player extends Mob {
 		}
 		if(projectileExists) {//If projectile exists, update the position
 			currentProjectile.updatePos();
-			if(currentProjectile.getX() > Main.util.getPlayer().getX() + 500 || currentProjectile.getX() < Main.util.getPlayer().getX() - 500) {//If projectile is 500 pixels away from player
+			if(currentProjectile.getX() > Main.util.getPlayer().getX() + 500 || currentProjectile.getX() < Main.util.getPlayer().getX() - 500 || currentProjectile.isCollide()) {//If projectile is 500 pixels away from player
 				currentProjectile = null;//Destroy object
 				projectileExists = false;//Projectile does not exist
 			}

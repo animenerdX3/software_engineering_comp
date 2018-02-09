@@ -332,8 +332,11 @@ public class GameLevel extends BasicGameState{
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 190); // Draw our mouse position for debugging purposes.
 			g.drawString("Can Jump: "+Main.util.getPlayer().canJump(), 10, 230); 
 			if(Main.util.getPlayer().getCurrentProjectile() != null) {
-				g.drawString("Shot Left: "+Main.util.getPlayer().getCurrentProjectile().isShotLeft(), 10, 250); 
-				g.drawString("Shot Right: "+Main.util.getPlayer().getCurrentProjectile().isShotRight(), 10, 270); 
+				g.drawString("X: "+Main.util.getPlayer().getCurrentProjectile().getX(), 10, 250);
+				g.drawString("Y: "+Main.util.getPlayer().getCurrentProjectile().getY(), 10, 270);
+				g.drawString("Shot Left: "+Main.util.getPlayer().getCurrentProjectile().isShotLeft(), 10, 290); 
+				g.drawString("Shot Right: "+Main.util.getPlayer().getCurrentProjectile().isShotRight(), 10, 310);
+				g.drawString("Collided: "+Main.util.getPlayer().getCurrentProjectile().isCollide(), 10, 330); 
 			}
 		}
 		
@@ -362,6 +365,7 @@ public class GameLevel extends BasicGameState{
 		//If a projectile exists, then draw it on the screen
 		if(Main.util.getPlayer().isProjectileExists()) {
 			Main.util.getPlayer().getCurrentProjectile().getProjectileImage().draw(Main.util.getPlayer().getCurrentProjectile().getX() - Main.util.getCam().getX(), Main.util.getPlayer().getCurrentProjectile().getY() - Main.util.getCam().getY());
+			Main.util.getPlayer().getCurrentProjectile().setCollisionBox(new Rectangle((int) (Main.util.getPlayer().getCurrentProjectile().getX() - Main.util.getCam().getX()), (int) (Main.util.getPlayer().getCurrentProjectile().getY() - Main.util.getCam().getY()), (int) Main.util.getPlayer().getCurrentProjectile().getWidth(), (int) Main.util.getPlayer().getCurrentProjectile().getHeight()));
 			if(Main.util.debugMode)
 				g.drawRect(Main.util.getPlayer().getCurrentProjectile().getX() - Main.util.getCam().getX(), Main.util.getPlayer().getCurrentProjectile().getY() - Main.util.getCam().getY(), Main.util.getPlayer().getCurrentProjectile().getWidth(), Main.util.getPlayer().getCurrentProjectile().getHeight());
 		}
