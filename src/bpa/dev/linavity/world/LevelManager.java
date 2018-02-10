@@ -30,7 +30,9 @@ import bpa.dev.linavity.utils.ErrorLog;
 
 public class LevelManager {
 	
+	@SuppressWarnings("unused")
 	private final static int map = 0;
+	@SuppressWarnings("unused")
 	private final static int events = 1;
 	
 	private Point playerStartingPosition = new Point(0,0);

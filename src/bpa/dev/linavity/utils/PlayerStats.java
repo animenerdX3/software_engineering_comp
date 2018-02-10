@@ -7,8 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-import javax.swing.JOptionPane;
-
 import bpa.dev.linavity.Main;
 
 public class PlayerStats {
@@ -66,6 +64,8 @@ public class PlayerStats {
 		String tempString = scan.nextLine();
 		
 		String[] tempArray = tempString.split(",");//Split the row into columns
+		
+		scan.close();
 		
 		return tempArray;
 	}

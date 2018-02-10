@@ -8,16 +8,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.gui.AbstractComponent;
-import org.newdawn.slick.gui.ComponentListener;
-import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.assets.ExtraMouseFunctions;
 import bpa.dev.linavity.collectibles.Item;
-import bpa.dev.linavity.utils.ErrorLog;
 import bpa.dev.linavity.utils.LogSystem;
 import bpa.dev.linavity.world.ParallaxMap;
 

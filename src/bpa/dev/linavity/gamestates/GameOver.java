@@ -26,8 +26,6 @@ public class GameOver extends BasicGameState{
 	private Image bg = null;
 	private Image back = null;
 	
-	private boolean isOption = false;
-	
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {

@@ -6,10 +6,8 @@ import org.newdawn.slick.SlickException;
 import bpa.dev.linavity.GameObject;
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.Player;
-import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.tiles.Dynamic;
 import bpa.dev.linavity.events.Message;
-import bpa.dev.linavity.gamestates.GameLevel;
 
 public class Lever extends Dynamic {
 	

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.SlickException;
 
-import bpa.dev.linavity.Main;
 import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Mob;

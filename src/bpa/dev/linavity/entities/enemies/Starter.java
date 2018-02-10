@@ -1,7 +1,5 @@
 package bpa.dev.linavity.entities.enemies;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Random;
 
 import org.newdawn.slick.Animation;

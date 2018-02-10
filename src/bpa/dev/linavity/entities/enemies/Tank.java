@@ -3,7 +3,6 @@ package bpa.dev.linavity.entities.enemies;
 import java.util.Random;
 
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 

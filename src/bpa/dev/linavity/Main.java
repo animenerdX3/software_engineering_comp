@@ -4,7 +4,6 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.Log;
 
 import bpa.dev.linavity.utils.ErrorLog;
 import bpa.dev.linavity.utils.LogSystem;

@@ -1,7 +1,6 @@
 package bpa.dev.linavity.entities.tiles;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 
 import org.newdawn.slick.SlickException;
 

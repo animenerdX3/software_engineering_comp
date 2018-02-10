@@ -3,7 +3,6 @@ package bpa.dev.linavity.entities;
 import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.Main;
-import bpa.dev.linavity.utils.Utils;
 
 public class GravityPack{
 

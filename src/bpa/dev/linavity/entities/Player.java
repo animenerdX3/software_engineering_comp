@@ -3,18 +3,15 @@ package bpa.dev.linavity.entities;
 import java.awt.Rectangle;
 
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import bpa.dev.linavity.Main;
-import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.events.Message;
 import bpa.dev.linavity.weapons.Projectile;
 
 public class Player extends Mob {
 	
-	private final float rotateSpeed = 9; // the speed at which our player will rotate when gravity is flipped
 	private boolean isFlipping; // Is the player rotating
 	int flipDuration;
 	int jumps;

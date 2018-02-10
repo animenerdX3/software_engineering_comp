@@ -5,16 +5,13 @@ import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.GameObject;
 import bpa.dev.linavity.Main;
-import bpa.dev.linavity.entities.Player;
-import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.tiles.Dynamic;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.events.Message;
-import bpa.dev.linavity.gamestates.GameLevel;
 
 public class Spikes extends Dynamic {
 	
-	private final static double damage = 5;
+	private final double damage = 5;
 	
 	public Spikes(int i, int j, int id, int xOffset, int yOffset, int width, int height, Tile tileUp, Tile tileDown, Tile tileLeft, Tile tileRight) throws SlickException {
 		super(i, j, id, xOffset, yOffset, width, height);

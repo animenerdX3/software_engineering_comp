@@ -10,6 +10,7 @@ import bpa.dev.linavity.Main;
 
 public class Script {
 
+	@SuppressWarnings("unused")
 	private Graphics g;
 	private int id;
 	private int sceneLength;

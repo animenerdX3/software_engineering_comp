@@ -3,15 +3,12 @@ package bpa.dev.linavity.entities;
 import java.awt.Rectangle;
 
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import bpa.dev.linavity.Main;
-import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.entities.tiles.interactive.EventTile;
 import bpa.dev.linavity.events.Message;
-import bpa.dev.linavity.weapons.Projectile;
 
 public class NPC extends Mob {
 	
@@ -28,7 +25,7 @@ public class NPC extends Mob {
 		this.mobName = "abric";
 		this.width = 48;
 		this.height = 48;
-		this.gravPack = new GravityPack(100);
+		this.setGravPack(new GravityPack(100));
 		this.maxJumps = 0;
 		this.walkSpeed = 0.125f;
 		this.runSpeed = 0.25f;
@@ -209,6 +206,17 @@ public class NPC extends Mob {
 		
 	
 	}//end of checkAnimation
+
+	/* GETTERS */
+	
+	public GravityPack getGravPack() {
+		return gravPack;
+	}
+
+	/* SETTERS */
+	public void setGravPack(GravityPack gravPack) {
+		this.gravPack = gravPack;
+	}
 	
 
 	

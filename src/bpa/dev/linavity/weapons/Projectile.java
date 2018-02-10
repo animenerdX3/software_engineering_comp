@@ -41,7 +41,7 @@ public class Projectile {
 		this.shotRight = right;
 		this.collisionBox = new Rectangle((int)x, (int)y, width, height);
 		this.isCollide = false;
-		this.collisionRadius = 10;
+		this.collisionRadius = 100;
 	}
 	
 	//Non-Default Projectile
@@ -53,7 +53,7 @@ public class Projectile {
 		this.y = Main.util.getPlayer().getY();
 		this.shotLeft = left;
 		this.isCollide = false;
-		this.collisionRadius = 10;
+		this.collisionRadius = 100;
 	}
 	
 	//Move Projectile Across the Screen
@@ -64,6 +64,7 @@ public class Projectile {
 		else if(this.shotRight)
 			this.x = this.x + this.speed;
 		try {
+			onCollision(Main.util.getLevel().getScreenTiles(new Camera(this.x, this.y, this.collisionRadius), Main.util.getLevel().getEvents()), new Camera(this.x, this.y, this.collisionRadius));
 			onCollision(Main.util.getLevel().getScreenTiles(new Camera(this.x, this.y, this.collisionRadius), Main.util.getLevel().getMap()), new Camera(this.x, this.y, this.collisionRadius));
 		} catch (SlickException e) {
 			ErrorLog.displayError(e);
@@ -88,7 +89,7 @@ public class Projectile {
 	}//end of onCollision
 	
 	private void checkTileCollision(Tile tile) {
-		if(!tile.isPassable()) {
+		if(!tile.isPassable() && tile.getId() != Tile.gravPadID) {
 			if(this.x + this.speed >= tile.getX() && this.x + this.speed <= tile.getX() + tile.getWidth()) {
 				if(this.y >= tile.getY() && this.y <= tile.getY() + tile.getHeight()) {
 					this.isCollide = true;
