@@ -7,10 +7,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
 
 import bpa.dev.linavity.Main;
+import bpa.dev.linavity.entities.Abric;
 
 public class Script {
 
-	@SuppressWarnings("unused")
 	private Graphics g;
 	private int id;
 	private int sceneLength;
@@ -55,10 +55,18 @@ public class Script {
 	
 	//END OF SCRIPT
 	
-	public void getEvents(){
+	public void drawSprites(){
 		if(Main.util.countDialog == 1){
-			//EVENTS GO HERE
+			g.drawImage(Main.util.cutsceneVars.getPlayerSprites()[0], 0, 50);
 		}
+	}
+	
+	public void getEvents() {
+		if(Main.util.countDialog == 6 || Main.util.countDialog == 7) {
+			Main.util.cutsceneVars.setAbricDirection(false);
+			Main.util.cutsceneVars.setMoveAbric(true);
+		}
+		
 	}
 	
 	public int getID(){

@@ -15,6 +15,7 @@ import bpa.dev.linavity.collectibles.HealthPack;
 import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.collectibles.KeyCard;
 import bpa.dev.linavity.entities.Mob;
+import bpa.dev.linavity.entities.Abric;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
 import bpa.dev.linavity.entities.enemies.Starter;
@@ -132,6 +133,8 @@ public class LevelManager {
 							mobs.add(new Tank(j * 50, i *50));
 						else if(mobIDs[i][j] == 103)
 							mobs.add(new Bomber(j * 50, i *50));
+						else if(mobIDs[i][j] == 104)
+							mobs.add(new Abric(j * 50, i *50));
 					}
 				}
 				

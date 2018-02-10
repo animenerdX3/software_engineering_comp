@@ -11,6 +11,7 @@ import bpa.dev.linavity.assets.InputManager;
 import bpa.dev.linavity.assets.MusicManager;
 import bpa.dev.linavity.assets.SoundManager;
 import bpa.dev.linavity.collectibles.Inventory;
+import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.cutscenes.CutsceneAccessor;
 import bpa.dev.linavity.cutscenes.CutsceneManager;
 import bpa.dev.linavity.entities.Camera;
@@ -27,7 +28,7 @@ public class Utils {
 	 */
 	
 	//Debug Mode
-	public final boolean debugMode = true;
+	public final boolean debugMode = false;
 	
 	// Universal Game Objects
 	private Level level; // Level Object
@@ -72,6 +73,7 @@ public class Utils {
 	
 	//The mobs in the current level
 	private ArrayList<Mob> levelMobs;
+	private ArrayList<Item> levelItems;
 	
 	//The current level's timer
 	private int levelTime;
@@ -316,8 +318,16 @@ public class Utils {
 		return cutsceneActive;
 	}
 	
-	/* SETTERS */
+	/**
+	 * 
+	 * @return the level's items
+	 */
+	public ArrayList<Item> getLevelItems() {
+		return levelItems;
+	}
 	
+	/* SETTERS */
+
 	/**
 	 * @param ps the ps to set
 	 */
@@ -479,6 +489,14 @@ public class Utils {
 	 */
 	public void setCutsceneActive(boolean cutsceneActive) {
 		this.cutsceneActive = cutsceneActive;
+	}
+	
+	/**
+	 * changes the level items
+	 * @param levelItems
+	 */
+	public void setLevelItems(ArrayList<Item> levelItems) {
+		this.levelItems = levelItems;
 	}
 	
 }//end of class

@@ -7,8 +7,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 import bpa.dev.linavity.Main;
+import bpa.dev.linavity.collectibles.Landmine;
 import bpa.dev.linavity.entities.GravityPack;
 import bpa.dev.linavity.entities.Mob;
+import bpa.dev.linavity.utils.ErrorLog;
 
 public class Bomber extends Mob{
 
@@ -25,6 +27,8 @@ public class Bomber extends Mob{
 	float moving = ran.nextInt(6) + direction;
 	//The counter for movement
 	float counter = 0;
+	
+	float chanceToPlace = ran.nextFloat();
 	
 	boolean autoDirectionLeft;
 	
@@ -45,7 +49,7 @@ public class Bomber extends Mob{
 		this.walkSpeed = 0.0625f;
 		this.runSpeed = 0.125f;
 		this.health = 40;
-		this.damage = 0.25;
+		this.damage = 30;
 		this.canJump = false;
 		this.isDetected = false;
 		
@@ -242,6 +246,17 @@ public class Bomber extends Mob{
 			this.isDetected = false;
 	}//end of detectPlayer
 	
+	private void placeBomb() {
+		if(chanceToPlace < 0.003f && this.isCd()) {
+			try {
+				Main.util.getLevelItems().add(new Landmine(this.x, this.y + 42, 20, 8, "landmine"));
+			} catch (SlickException e) {
+				ErrorLog.displayError(e);
+			}
+		}
+		chanceToPlace = ran.nextFloat();
+	}
+	
 	/*
 	 * Return how the enemy is moving up or down
 	 */
@@ -297,6 +312,9 @@ public class Bomber extends Mob{
 		if(this.collidePlayer)
 			dealDamage();
 		
+		if(this.isDetected)
+			placeBomb();
+		
 		super.updateMob(delta);
 		
 	}//end of moveEnemy
@@ -309,6 +327,8 @@ public class Bomber extends Mob{
 		System.out.println("Damage Taken");
 		Main.util.getPlayer().setHealth(Main.util.getPlayer().getHealth() - getDamage());
 		System.out.println("HEALTH: "+ Main.util.getPlayer().getHealth());
+		Main.util.getSFX(4).play(1f, Main.util.getSoundManager().getVolume());
+		this.isAlive = false;
 		
 	}//end of dealDamage
 	

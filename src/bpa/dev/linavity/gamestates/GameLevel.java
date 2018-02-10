@@ -24,6 +24,7 @@ import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.collectibles.KeyCard;
 import bpa.dev.linavity.collectibles.UseItem;
 import bpa.dev.linavity.cutscenes.Script;
+import bpa.dev.linavity.entities.Abric;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
@@ -162,6 +163,7 @@ public class GameLevel extends BasicGameState{
 		}
 		
 		Main.util.setLevelMobs(mobs);
+		Main.util.setLevelItems(items);
 		
 		pause_menu_ui = new Image("res/gui/pausemenu.png");
 		resume = new Image("res/gui/buttons/button_resume.png");
@@ -562,16 +564,20 @@ public class GameLevel extends BasicGameState{
 	
 	private void renderCutscene(GameContainer gc, Graphics g){
 		
+		Script script;
+		
 		if(Main.util.isCutsceneActive()){
+			script = new Script(g, cutsceneID, cutsceneLength);
 			g.drawImage(cutsceneGUI[0], 0, 0);
 			g.drawImage(cutsceneGUI[1], 0, Main.util.startTop);
+			script.drawSprites();
 			g.drawImage(cutsceneGUI[2], 0, Main.util.startBottom);
 			g.drawImage(cutsceneGUI[3], 0, Main.util.startBottom);
 			if(Main.util.startTop <= 0 && Main.util.startBottom >= 0){
 				Main.util.startTop = Main.util.startTop + 8;
 				Main.util.startBottom = Main.util.startBottom - 8;
 			}
-			checkCutscenes(g);
+			checkCutscenes(script, g);
 		}else{
 			Main.util.startTop = -150;
 			Main.util.startBottom = 150;
@@ -638,7 +644,8 @@ public class GameLevel extends BasicGameState{
 	}//end of update
 	
 	private void updateTimer(int delta) {
-		Main.util.setLevelTime((Main.util.getLevelTime() + delta));
+		if(!Main.util.isCutsceneActive())
+			Main.util.setLevelTime((Main.util.getLevelTime() + delta));
 	}//end of updateTimer
 	
 	/**
@@ -895,18 +902,22 @@ public class GameLevel extends BasicGameState{
 	}//end of resetLevel
 	
 	
-	public void checkCutscenes(Graphics g){
+	public void checkCutscenes(Script script, Graphics g){
 		if(Main.util.isCutsceneActive()){
-			Script script = new Script(g, cutsceneID, cutsceneLength);
 			if(Main.util.countDialog < script.getSceneLength()){
 				script.displayName(script.getNames());
 				script.displayText(script.getDialog());
-				script.getEvents();
 				if(Main.util.getKeyLogSpecificKey(7))
 					Main.util.countDialog = Main.util.countDialog + 1;
+				script.getEvents();
 			}
-			else
+			else {
 				Main.util.setCutsceneActive(false);
+				for(int i = 0; i < mobs.size(); i++) {
+					if(mobs.get(i) instanceof Abric)
+						mobs.get(i).setIsAlive(false);
+				}
+			}
 		}
 	}//end of checkCutscenes
 	
