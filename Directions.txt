@@ -1,0 +1,8 @@
+Step To Export This Fokin Game:
+
+Export >Runnable Jar File > Save Script
+Edit Build File: duplicate="preserve" @ jar destfile
+
+Copy lib, natives and resources to folder
+make bat file
+Fokin hell man that took forever @w@
