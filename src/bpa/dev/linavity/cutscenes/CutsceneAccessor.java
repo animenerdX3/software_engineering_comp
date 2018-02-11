@@ -11,6 +11,8 @@ public class CutsceneAccessor {
 	private Image [] playerSprites;
 	private boolean moveAbric;
 	private boolean abricDirection;
+	private int ID;
+	private int length;
 	
 	public CutsceneAccessor() {
 		this.makePlayerJump = true;
@@ -22,6 +24,8 @@ public class CutsceneAccessor {
 		}
 		this.moveAbric = false;
 		this.abricDirection = true;
+		this.ID = 1;
+		this.length = 9;
 	}
 	
 	/* GETTERS */
@@ -41,6 +45,14 @@ public class CutsceneAccessor {
 		return abricDirection;
 	}
 
+	public int getID() {
+		return ID;
+	}
+	
+	public int getLength() {
+		return length;
+	}
+
 	/* SETTERS */
 	public void setMakePlayerJump(boolean makePlayerJump) {
 		this.makePlayerJump = makePlayerJump;
@@ -56,6 +68,14 @@ public class CutsceneAccessor {
 
 	public void setAbricDirection(boolean abricDirection) {
 		this.abricDirection = abricDirection;
+	}
+	
+	public void setID(int id) {
+		this.ID = id;
+	}
+	
+	public void setLength(int length) {
+		this.length = length;
 	}
 	
 }//end of class

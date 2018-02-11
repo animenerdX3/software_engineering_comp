@@ -24,6 +24,7 @@ import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.collectibles.KeyCard;
 import bpa.dev.linavity.collectibles.UseItem;
 import bpa.dev.linavity.cutscenes.Script;
+import bpa.dev.linavity.cutscenes.Tutorial;
 import bpa.dev.linavity.entities.Abric;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
@@ -74,9 +75,6 @@ public class GameLevel extends BasicGameState{
 	//Coins
 	private Image [] coins;
 	
-	private int cutsceneID;
-	private int cutsceneLength;
-	
 	// ID of the gamestate
 	public static int id = 1;
 	
@@ -93,6 +91,8 @@ public class GameLevel extends BasicGameState{
 	//List of all items
 	public static ArrayList <Item> items = new ArrayList<Item>();
 	
+	public static Tutorial tutorialScene = new Tutorial();
+	
 	//Tiles for our level
 	private Tile[][] screenTiles;
 	private Tile[][] eventTiles;
@@ -101,6 +101,9 @@ public class GameLevel extends BasicGameState{
 	
 	private Font font;
 	private TrueTypeFont ttf;
+	
+	//Tutorial Images
+	private Image[] tutorialGUI;
 	
 	/**
 	 * This runs as soon as we compile the program
@@ -201,8 +204,6 @@ public class GameLevel extends BasicGameState{
 		cutsceneGUI[1] = new Image("res/gui/cutscenes/letterbox_top.png"); 
 		cutsceneGUI[2] = new Image("res/gui/cutscenes/letterbox_bottom.png");
 		cutsceneGUI[3] = new Image("res/gui/cutscenes/dialogbox.png");
-		cutsceneID = 1;
-		cutsceneLength = 9;
 		
 		coins = new Image[3];
 		coins[0] = new Image("res/items/coin_b/coin_b_thumb_empty.png");
@@ -219,6 +220,20 @@ public class GameLevel extends BasicGameState{
 		
 		font = new Font("Verdana", Font.BOLD, 22);
 		ttf = new TrueTypeFont(font, true);
+		
+		tutorialGUI = new Image[9];
+		tutorialGUI[0] = new Image("res/gui/tutorial/left_right.png");
+		tutorialGUI[1] = new Image("res/gui/tutorial/interact.png");
+		tutorialGUI[2] = new Image("res/gui/tutorial/jump.png");
+		tutorialGUI[3] = new Image("res/gui/tutorial/ladders.png");
+		tutorialGUI[4] = new Image("res/gui/tutorial/pause.png");
+		tutorialGUI[5] = new Image("res/gui/tutorial/gravitypack.png");
+		tutorialGUI[6] = new Image("res/gui/tutorial/shoot.png");
+		tutorialGUI[7] = new Image("res/gui/tutorial/inventory.png");
+		tutorialGUI[8] = new Image("res/gui/tutorial/useitems.png");
+		
+		tutorialScene.setTutorial(tutorialGUI[0]);
+		tutorialScene.setActive(true);
 		
 		LogSystem.addToLog("GameLevel initialized successfully.");
 		LogSystem.addToLog("");
@@ -397,6 +412,8 @@ public class GameLevel extends BasicGameState{
 		
 		renderCutscene(gc, g);
 		
+		tutorialScene.update(g, Main.util.delta);
+		
 		//Draw menu, if open
 		if(!menuOpen && !saveOpen && Main.util.getPlayer().isInventoryOpen())
 			renderInventoryMenu(gc, g);
@@ -567,7 +584,7 @@ public class GameLevel extends BasicGameState{
 		Script script;
 		
 		if(Main.util.isCutsceneActive()){
-			script = new Script(g, cutsceneID, cutsceneLength);
+			script = new Script(g, Main.util.cutsceneVars.getID(), Main.util.cutsceneVars.getLength());
 			g.drawImage(cutsceneGUI[0], 0, 0);
 			g.drawImage(cutsceneGUI[1], 0, Main.util.startTop);
 			script.drawSprites();
