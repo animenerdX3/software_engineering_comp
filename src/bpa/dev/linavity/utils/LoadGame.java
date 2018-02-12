@@ -95,7 +95,7 @@ public class LoadGame {
 		for(int i = 0; i < loadData.length; i++){
 			String [] properties = loadData[i].split(",");//Split our row into pieces
 			if (i == 0) {
-				playerName = properties[0];
+				playerName = ""+properties[0];
 				findLevel = Integer.parseInt(properties[1]);//Set game state
 				camX = Float.parseFloat(properties[2]);
 				camY = Float.parseFloat(properties[3]);
