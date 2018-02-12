@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import org.newdawn.slick.SlickException;
 
+import bpa.dev.linavity.Main;
 import bpa.dev.linavity.collectibles.Coin;
 import bpa.dev.linavity.collectibles.GravCapsule;
 import bpa.dev.linavity.collectibles.GravPack;
@@ -237,20 +238,24 @@ public class LevelManager {
 				if(creatorID == 1) {
 					// Dynamic Tiles
 					if(tileIDs[i][j] > 10 && tileIDs[i][j] < 101) {
-						if(tileIDs[i][j] == Tile.eventTileID) // Gravity Pad
+						if(tileIDs[i][j] == Tile.eventTileID) { // Gravity Pad
 							tiles[i][j] = new EventTile(i, j, tileIDs[i][j], 0, 0, 50, 50);
+							Main.util.levelEvents.addLevelEvent(i, j, "event", false);
+						}
 						else if(tileIDs[i][j] == Tile.gravPadID) // Gravity Pad
 							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 40, 50, 10);
-						else if(tileIDs[i][j] == Tile.leverID) // Lever
+						else if(tileIDs[i][j] == Tile.leverID) { // Lever
 							tiles[i][j] = new Lever(i, j, tileIDs[i][j], 0, 0, 50, 50);
-						else if(tileIDs[i][j] == Tile.doorID) // Door
+							Main.util.levelEvents.addLevelEvent(i, j, "lever", false);
+						}
+						else if(tileIDs[i][j] == Tile.doorID) { // Door
 							tiles[i][j] = new Door(i, j, tileIDs[i][j], 0, 0, 50, 50, new Tile(0,0,tileIDs[i-1][j]), new Tile(0,0,tileIDs[i+1][j]), new Tile(0,0,tileIDs[i][j-1]), new Tile(0,0,tileIDs[i][j+1]));
+							Main.util.levelEvents.addLevelEvent(i, j, "door", false);
+						}
 						else if(tileIDs[i][j] == Tile.spikesID) // Spike
 							tiles[i][j] = new Spikes(i, j, tileIDs[i][j], 0, 0, 50, 50, new Tile(0,0,tileIDs[i-1][j]), new Tile(0,0,tileIDs[i+1][j]), new Tile(0,0,tileIDs[i][j-1]), new Tile(0,0,tileIDs[i][j+1]));
 						else if(tileIDs[i][j] == Tile.ladderTopID || tileIDs[i][j] == Tile.ladderMiddleID || tileIDs[i][j] == Tile.ladderBottomID) // Ladder
 							tiles[i][j] = new Ladder(i, j, tileIDs[i][j], 0, 0, 50, 50);
-						else if(tileIDs[i][j] == Tile.eventTileID) // Event 
-							tiles[i][j] = new EventTile(i, j, tileIDs[i][j], 0, 0, 50, 50);
 						else if(tileIDs[i][j] == Tile.platformID) // Platforms
 							tiles[i][j] = new Dynamic(i, j, tileIDs[i][j], 0, 16, 50, 17);
 						else// Default Dynamic Tile

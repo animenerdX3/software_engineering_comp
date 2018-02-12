@@ -17,6 +17,7 @@ import bpa.dev.linavity.cutscenes.CutsceneManager;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
+import bpa.dev.linavity.events.EventAccessor;
 import bpa.dev.linavity.events.MessageHandler;
 import bpa.dev.linavity.physics.Gravity;
 import bpa.dev.linavity.world.Level;
@@ -57,6 +58,9 @@ public class Utils {
 	CutsceneManager cutscenes = new CutsceneManager("dialogue");
 	private boolean cutsceneActive;
 	public CutsceneAccessor cutsceneVars = new CutsceneAccessor();
+	
+	//Event Objects
+	public EventAccessor levelEvents = new EventAccessor();
 	
 	//Counters for each cutscene
 	public int countDialog = 0;

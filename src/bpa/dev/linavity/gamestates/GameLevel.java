@@ -154,15 +154,7 @@ public class GameLevel extends BasicGameState{
 			items = getItems();
 			LogSystem.addToLog("Items Created.");
 			
-			String[] playerStats;
-			try {
-				playerStats = Main.util.getPs().readPlayerStats();
-				Main.util.getPlayer().setHealth(Double.parseDouble(playerStats[0]));
-				Main.util.getPlayer().getGravPack().setGravpower(Float.parseFloat(playerStats[1]));
-			} catch (FileNotFoundException e) {
-				ErrorLog.displayError(e);
-			}
-			
+			playerStats();
 			
 		}
 		
@@ -241,6 +233,43 @@ public class GameLevel extends BasicGameState{
 		
 	}//end of init
 
+	private void playerStats() {
+		
+		Main.util.getInventory().setItems(new ArrayList<Item>());
+		
+		ArrayList<String> stats = new ArrayList<String>();
+		try {
+			stats = Main.util.getPs().readPlayerStats();
+		} catch (FileNotFoundException e) {
+			ErrorLog.displayError(e);
+		}
+		
+		for(int i = 0; i < stats.size(); i++) {
+			if(i == 0) {
+				String [] playerStats = stats.get(i).split(",");
+				Main.util.getPlayer().setHealth(Double.parseDouble(playerStats[0]));
+				Main.util.getPlayer().getGravPack().setGravpower(Float.parseFloat(playerStats[1]));
+			}
+			else if(stats.size() > 1) {
+					try {
+						
+						if(stats.get(i).equalsIgnoreCase("gravcapsule"))
+						Main.util.getInventory().addToInventory(new GravCapsule(0, 0, "gravcapsule"));
+						
+						else if(stats.get(i).equalsIgnoreCase("healthpack"))
+							Main.util.getInventory().addToInventory(new HealthPack(0, 0, "healthpack"));
+						
+						else if(stats.get(i).equalsIgnoreCase("keycard"))
+							Main.util.getInventory().addToInventory(new KeyCard(0, 0, "keycard"));
+						
+					} catch (SlickException e) {
+						ErrorLog.displayError(e);
+					}
+			}
+				
+		}
+	}
+	
 	private ArrayList<Mob> getMobs() throws SlickException {
 		
 		Main.util.setPlayer((Player)Main.util.getLevel().getMobs().get(0));
@@ -741,6 +770,8 @@ public class GameLevel extends BasicGameState{
 		
 		PlayerStats ps = new PlayerStats();
 		ps.addToPlayerStats("" + Main.util.getPlayer().getHealth() + ", " + Main.util.getPlayer().getGravPack().getGravpower());
+		for(int i = 0; i < Main.util.getInventory().getItems().size(); i++)
+			ps.addToPlayerStats(Main.util.getInventory().getItems().get(i).getItemImage());
 		ps.setFirstWrite(true);
 
 		Main.util.getLevel().setScore(Main.util.getLevel().getScore() + calculateScoring());

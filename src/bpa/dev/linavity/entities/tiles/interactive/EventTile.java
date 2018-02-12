@@ -18,7 +18,8 @@ public class EventTile extends Dynamic{
 	public void onCollide(GameObject go) throws SlickException {
 		if(go instanceof Player && !this.toggle){
 			Main.util.setCutsceneActive(true);
-			this.toggle = !this.toggle;
+			this.toggle = true;
+			Main.util.levelEvents.changeEvent((int) super.y / 50, (int) super.x / 50, true);
 		}
 	}
 	

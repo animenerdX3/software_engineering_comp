@@ -7,10 +7,10 @@ import bpa.dev.linavity.GameObject;
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.tiles.Dynamic;
+import bpa.dev.linavity.events.EventData;
 import bpa.dev.linavity.events.Message;
 
 public class Lever extends Dynamic {
-	
 	
 	public Lever(int i, int j, int id, int xOffset, int yOffset, int width, int height) throws SlickException {
 		super(i, j, id, xOffset, yOffset, width, height);
@@ -18,8 +18,6 @@ public class Lever extends Dynamic {
 	
 	@Override
 	public void onCollide(GameObject go) throws SlickException {
-
-		
 		
 		if(go instanceof Player){ // If the mob colliding with the lever was the player
 			
@@ -40,9 +38,8 @@ public class Lever extends Dynamic {
 		System.out.println("ON");
 		for(int i = 0; i < this.targetObjects.length; i++) {
 			Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(targetObjects[i]), this, Message.leverToggle, this.toggle));
-		}
-		
-			
+		};
+		Main.util.levelEvents.changeEvent((int) super.y / 50, (int) super.x / 50, true);
 	}
 	
 	public void toggleOff() throws SlickException {
@@ -51,6 +48,7 @@ public class Lever extends Dynamic {
 		for(int i = 0; i < this.targetObjects.length; i++) {
 			Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(targetObjects[i]), this, Message.leverToggle, this.toggle));
 		}
+		Main.util.levelEvents.changeEvent((int) super.y / 50, (int) super.x / 50, false);
 	}
 	
 }//end of class

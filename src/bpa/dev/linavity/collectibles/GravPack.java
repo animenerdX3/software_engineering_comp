@@ -26,6 +26,7 @@ public class GravPack extends Item{
 	
 	public void onCollision() {
 		Main.util.getPlayer().setCanUseGravpack(true);
+		Main.util.getSFX(6).play(1f, Main.util.getSoundManager().getVolume());
 		this.isActive = false;//Destroy the item
 	}//end of onCollision
 

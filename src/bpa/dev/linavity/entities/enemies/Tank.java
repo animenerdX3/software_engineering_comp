@@ -319,6 +319,7 @@ public class Tank extends Mob{
 				if(Main.util.getPlayer().getCurrentProjectile().getY() <= getY() + getHeight()){
 					System.out.println("ENEMY HIT");
 					setHealth(getHealth() - Main.util.getPlayer().getCurrentProjectile().getDamage());
+					Main.util.getSFX(5).play(1f, Main.util.getSoundManager().getVolume());
 					System.out.println("ENEMY HEALTH: "+getHealth());
 					Main.util.getPlayer().setCurrentProjectile(null);
 					Main.util.getPlayer().setProjectileExists(false);

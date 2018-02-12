@@ -219,7 +219,10 @@ public class Player extends Mob {
 		// Gravity Pack Control
 		if(this.gravPack.isCanFlip() && this.canUseGravpack) { // If the player's gravity pack is currently able to fight gravity
 			if(isUsingGravPack() && !this.inventoryOpen && !Main.util.isCutsceneActive()) { // And the player is trying to use their gravity pack
-				this.gravPack.setGravpower(this.gravPack.getGravpower() - 5);
+				if(!this.isFlipping) {
+					this.gravPack.setGravpower(this.gravPack.getGravpower() - 5);
+					Main.util.getSFX(7).play(1f, Main.util.getSoundManager().getVolume());
+				}
 				this.isFlipping = !this.isFlipping;
 			}
 		}else{

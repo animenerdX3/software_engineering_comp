@@ -3,3 +3,7 @@ sfx/laser.wav
 sfx/heartbeat.wav
 sfx/explosion_landmine.wav
 sfx/explosion_bomber.wav
+sfx/enemy_hit.wav
+sfx/gravpack_pickup.wav
+sfx/gravpack_turn_on.wav
+sfx/keycard_use.wav

@@ -11,4 +11,3 @@ Do If Time List:
    
 6. Check out why textures get weird line only when you jump.
 7. Grav Pack extra depletes only when on the ground.
-8. Escape closes inventory

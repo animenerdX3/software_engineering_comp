@@ -33,6 +33,7 @@ public class Door extends Dynamic {
 		if(go instanceof Player && !this.toggle){
 			for(int i = 0; i < Main.util.getInventory().getItems().size(); i++){
 				if(Main.util.getInventory().getItems().get(i) instanceof KeyCard){
+					Main.util.getSFX(8).play(1f, Main.util.getSoundManager().getVolume());
 					openDoor();
 					Main.util.getInventory().getItems().remove(i);
 				}
@@ -67,7 +68,7 @@ public class Door extends Dynamic {
 		this.setPassable(true);
 		this.toggle = true;
 		System.out.println("Open Door");
-		
+		Main.util.levelEvents.changeEvent((int) super.y / 50, (int) super.x / 50, true);
 	}
 	
 	public void closeDoor() throws SlickException {
@@ -80,6 +81,7 @@ public class Door extends Dynamic {
 		this.setPassable(false);
 		this.toggle = false;
 		System.out.println("Close Door");
+		Main.util.levelEvents.changeEvent((int) super.y / 50, (int) super.x / 50, false);
 	}
 	
 }
