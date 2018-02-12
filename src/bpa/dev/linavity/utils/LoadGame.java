@@ -11,6 +11,7 @@ public class LoadGame {
 	
 	//Data loaded
 	
+	private String playerName;
 	private int classNameCounter, Xcounter, Ycounter, healthCounter, widthCounter, heightCounter, itemImageCounter;
 	
 	private int findLevel;
@@ -94,10 +95,11 @@ public class LoadGame {
 		for(int i = 0; i < loadData.length; i++){
 			String [] properties = loadData[i].split(",");//Split our row into pieces
 			if (i == 0) {
-				findLevel = Integer.parseInt(properties[0]);//Set game state
-				camX = Float.parseFloat(properties[1]);
-				camY = Float.parseFloat(properties[2]);
-				levelTime = Integer.parseInt(properties[3]);
+				playerName = properties[0];
+				findLevel = Integer.parseInt(properties[1]);//Set game state
+				camX = Float.parseFloat(properties[2]);
+				camY = Float.parseFloat(properties[3]);
+				levelTime = Integer.parseInt(properties[4]);
 			}
 			else if(i == 1)
 				this.mobSize = Integer.parseInt(properties[0]);
@@ -168,6 +170,10 @@ public class LoadGame {
 	}
 	
 	/* GETTERS */
+	
+	public String getPlayerName() {
+		return playerName;
+	}
 	
 	public int getLevelFound() {
 		return findLevel;

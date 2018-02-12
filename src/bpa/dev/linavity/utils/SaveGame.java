@@ -106,7 +106,7 @@ public class SaveGame {
 	public void saveData(BufferedWriter bw) throws IOException {
 		for(int i = -1; i < mobPositions.size() + itemPositions.size() + inventory.size() + 2; i++) {
 			if(i == -1)
-				bw.write(this.gameStateID+","+this.camX+","+this.camY+","+this.levelTimer);
+				bw.write(Main.util.getPlayerName()+","+this.gameStateID+","+this.camX+","+this.camY+","+this.levelTimer);
 			else if(i == 0)
 				bw.write(""+mobPositions.size());
 			else if(i <= mobPositions.size() && i < mobPositions.size() + 1)

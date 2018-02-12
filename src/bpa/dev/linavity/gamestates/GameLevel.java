@@ -115,6 +115,7 @@ public class GameLevel extends BasicGameState{
 		Main.util.gc = gc;
 		
 		if(Main.util.getLoadGame()) {
+			Main.util.setPlayerName(Main.util.getCurrentLoadData().getPlayerName());
 			try {
 				Main.util.setLevel(new Level(Main.util.getCurrentLoadData().getLevelFound()));
 			} catch (FileNotFoundException ex) {
@@ -526,7 +527,8 @@ public class GameLevel extends BasicGameState{
 		if(Main.util.getSlotOneData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot1.png"), 100, 150);
-				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 150+75);
+				g.drawString(Main.util.getSlotOneData().getPlayerName(), 135, 225);
+				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 245);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -537,7 +539,8 @@ public class GameLevel extends BasicGameState{
 		if(Main.util.getSlotTwoData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot2.png"), 100, 350);
-				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 350+75);
+				g.drawString(Main.util.getSlotTwoData().getPlayerName(), 135, 425);
+				g.drawString("Level "+Main.util.getSlotTwoData().getLevelFound(), 135, 445);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -548,7 +551,8 @@ public class GameLevel extends BasicGameState{
 		if(Main.util.getSlotThreeData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot3.png"), 100, 550);
-				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 550+75);
+				g.drawString(Main.util.getSlotThreeData().getPlayerName(), 135, 625);
+				g.drawString("Level "+Main.util.getSlotThreeData().getLevelFound(), 135, 645);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}

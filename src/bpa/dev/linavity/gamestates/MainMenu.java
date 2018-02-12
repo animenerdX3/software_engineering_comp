@@ -1,5 +1,6 @@
 package bpa.dev.linavity.gamestates;
 
+import java.awt.Font;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -8,6 +9,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.gui.AbstractComponent;
+import org.newdawn.slick.gui.ComponentListener;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -18,7 +23,7 @@ import bpa.dev.linavity.utils.LogSystem;
 import bpa.dev.linavity.world.ParallaxMap;
 
 
-public class MainMenu extends BasicGameState /*implements ComponentListener*/{
+public class MainMenu extends BasicGameState implements ComponentListener{
 	
 	// Gamestate ID (0) <-- Main Menu
 	public static int id = 0;
@@ -28,8 +33,8 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	public int xpos, ypos;
 	
 	//TextField
-/*	private TextField name;
-	private String namevalue;*/
+	private TextField name;
+	private String namevalue;
 		
 	//Title Screen Images
 	private ParallaxMap bg;
@@ -59,18 +64,28 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	private Image back = null;
 	
 	//Menu Controllers
+	private boolean readyToPlay = false;
+	private boolean newGame = false;
 	private boolean isLoad = false;
 	private boolean isOption = false;
 	private int menuSize;
 	private int currentSelection;
 	
+	//Fonts
+	private Font font;
+	private TrueTypeFont ttf;
+	Color background;
+	
 	// This runs as soon as we compile the program.
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		//TODO Implement in StartLevel
 		//Text Field Data
-/*		name = new TextField(gc,gc.getDefaultFont(),100,100,300,20,this);
-		namevalue = "DefaultName";*/
+		font = new Font("OCR A Extended", Font.ITALIC, 50);
+		ttf = new TrueTypeFont(font, true);
+		name = new TextField(gc, ttf, gc.getWidth() / 2 - 300, gc.getHeight() / 2, 600, 60, this);
+		name.setMaxLength(10);
+		namevalue = "Calvin";
+		background = new Color(119, 228, 239);
 		
 		LogSystem.addToLog("Initializing Main Menu...");
 		
@@ -130,11 +145,6 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		
-/*		if(namevalue.equalsIgnoreCase("DefaultName"))
-			name.render(gc, g);
-		
-		gc.getDefaultFont().drawString(100, 300, "Stored Name: "+namevalue);*/
-		
 		// DRAW OUR MENU UI //
 		
 		g.setColor(Color.white);
@@ -142,32 +152,43 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		// Background Image
 		bg.getBackgroundLayer().draw(bg.getX(), bg.getY());
 		
-		if(!isLoad)
+		if(!isLoad && !newGame)
 			g.drawImage(title, 0, 0);
 		
 		if(Main.util.debugMode)
 			g.drawString("XPOS: " + xpos + " | YPOS: " + ypos, 10, 30); // Draw our mouse position for debugging purposes. 
 		
 		// Button Rendering
-		if(!isOption && !isLoad){ 
+		if(!isOption && !isLoad && !newGame){ 
 			renderMainMenuScreenMain(gc, g); // If the option menu has not been selected, render the main section of the menu
-		}else if (isOption && !isLoad){ 
+		}else if (isOption && !isLoad && !newGame){ 
 			renderMainMenuScreenOptions(gc, g); // If the option menu is selected, render the options section of the menu
-		}else if(!isOption && isLoad) {
+		}else if(!isOption && isLoad && !newGame) {
 			renderMainMenuScreenLoad(gc, g); // If the option menu is selected, render the options section of the menu
+		}else if(newGame) {
+			renderMainMenuScreenNewGame(gc, g);
 		}
 		
 		// END OUR MENU UI //
 
 	}//end of render
 
-/*	public void componentActivated(AbstractComponent source) { 
+	public void componentActivated(AbstractComponent source) { 
+		System.out.println("BURGER KING FOOT LETTUCE");
 		  if (source == name) { 
-		   namevalue = name.getText(); 
+			  if(name.getText().isEmpty())
+				  Main.util.setPlayerName(namevalue);
+			  else {
+				  namevalue = name.getText();
+				  Main.util.setPlayerName(namevalue);
+			  }
+			  readyToPlay = true;
 		  } 
-		 
+		  
+		  System.out.println(namevalue);
+		  System.out.println(readyToPlay);
 	}//end of componentActivated 
-*/	
+
 	// Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
@@ -189,19 +210,20 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		
 		// Check User Input //
 		
-		if(!isOption && !isLoad){
-			mainButtonAction(gc, sbg, input); // If the option menu has not been selected, check for the main section's buttons
+		if(!isOption && !isLoad && !newGame){
+			mainButtonAction(gc, input); // If the option menu has not been selected, check for the main section's buttons
 			cycleSelection(input);//Check for key input
 			checkMouseBounds();//Check to see if the mouse is moving
 		}
-		else if(isOption && !isLoad) {
-			optionButtonAction(gc, sbg, input); // If the option menu is selected, check for the option section's buttons
+		else if(isOption && !isLoad && !newGame) {
+			optionButtonAction(gc, input); // If the option menu is selected, check for the option section's buttons
 		}
-		else if(!isOption && isLoad) {
+		else if(!isOption && isLoad && !newGame) {
 			loadButtonAction(gc, sbg, input); // If the load menu is selected, check for the load section's buttons
 			cycleSelection(input);//Check for key input
 			checkMouseBounds();//Check to see if the mouse is moving
-		}
+		}else if(newGame)
+			newGameAction(gc, sbg, input);
 		
 	}//end of update
 
@@ -252,7 +274,8 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		if(Main.util.getSlotOneData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot1.png"), 100, 150);
-				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 150+75);
+				g.drawString(Main.util.getSlotOneData().getPlayerName(), 135, 225);
+				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 245);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -263,7 +286,8 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		if(Main.util.getSlotTwoData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot2.png"), 100, 350);
-				g.drawString("Level "+Main.util.getSlotTwoData().getLevelFound(), 135, 350+75);
+				g.drawString(Main.util.getSlotTwoData().getPlayerName(), 135, 425);
+				g.drawString("Level "+Main.util.getSlotTwoData().getLevelFound(), 135, 445);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -274,7 +298,8 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		if(Main.util.getSlotThreeData().getLoadFile() != null) {
 			try {
 				g.drawImage(new Image("res/gui/slot3.png"), 100, 550);
-				g.drawString("Level "+Main.util.getSlotThreeData().getLevelFound(), 135, 550+75);
+				g.drawString(Main.util.getSlotThreeData().getPlayerName(), 135, 625);
+				g.drawString("Level "+Main.util.getSlotThreeData().getLevelFound(), 135, 645);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -313,6 +338,26 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		// Back Button
 		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 700); // Setting the x value as half of the game container and adjusting for the width of the button
 	}
+	
+	/**
+	 * @method renderMainMenuScreenNewGame
+	 * @description draws the images needed for the main screen options of the new game
+	 * 
+	 * @param
+	 * GameContainer gc, Graphics g
+	 * 
+	 * @return
+	 * 	void:
+	 */
+	public void renderMainMenuScreenNewGame(GameContainer gc, Graphics g){
+		name.render(gc, g);
+		name.setBackgroundColor(background);
+		name.setBorderColor(Color.white);
+		name.setFocus(true);
+		g.setFont(ttf);
+		g.drawString("Please Enter Your Name", gc.getWidth() / 2 - 325, gc.getHeight() / 2 - 100);
+		g.setFont(gc.getDefaultFont());
+	}
 
 	private void cycleSelection(Input input) {
 		if(input.isKeyPressed(Input.KEY_S) || input.isKeyPressed(Input.KEY_DOWN)) {
@@ -338,6 +383,10 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		if(checkLeftPixels || checkRightPixels && checkTopPixels || checkBottomPixels)
 			currentSelection = -1;
 	}//end of checkMouseBounds
+	
+	private void NewGame() {
+		newGame = true;
+	}
 	
 	private void StartGame(Input input, StateBasedGame sbg, int levelID) {
 		LogSystem.addToLog("Resetting Level Number...");
@@ -403,7 +452,31 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	 * 	void:
 	 * @throws SlickException 
 	 */
-	public void mainButtonAction(GameContainer gc, StateBasedGame sbg, Input input) 
+	public void newGameAction(GameContainer gc, StateBasedGame sbg, Input input) 
+			throws SlickException{
+		
+		if(readyToPlay) {
+			readyToPlay = false;
+			newGame = false;
+			name.deactivate();
+			sbg.getState(Main.startlevel).init(gc, sbg);
+			StartGame(input, sbg, Main.startlevel);
+		}
+		
+	}//end of newGameAction
+	
+	/**
+	 * @method mainButtonAction
+	 * @description checks the button detection and handles the according events in the main section of our main menu
+	 * 
+	 * @param
+	 * GameContainer gc
+	 * 
+	 * @return
+	 * 	void:
+	 * @throws SlickException 
+	 */
+	public void mainButtonAction(GameContainer gc, Input input) 
 			throws SlickException{
 		
 		play = new Image("res/gui/buttons/button_new.png");
@@ -419,8 +492,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 				Main.util.getInventory().setItems(new ArrayList<Item>());
 				input.clearKeyPressedRecord();
 				Main.util.setLoadGame(false);
-				sbg.getState(Main.startlevel).init(gc, sbg);
-				StartGame(input, sbg, Main.startlevel);
+				NewGame();
 			}
 	
 			play = new Image("res/gui/buttons/button_new_hover.png");
@@ -428,8 +500,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 		else if(currentSelection == 0) {
 			if(input.isKeyPressed(Input.KEY_ENTER)){
 				Main.util.setLoadGame(false);
-				sbg.getState(Main.startlevel).init(gc, sbg);
-				StartGame(input, sbg, Main.startlevel);
+				NewGame();
 			}
 			play = new Image("res/gui/buttons/button_new_hover.png");
 		}
@@ -620,7 +691,7 @@ public class MainMenu extends BasicGameState /*implements ComponentListener*/{
 	 * 	void:
 	 * @throws SlickException 
 	 */
-	public void optionButtonAction(GameContainer gc, StateBasedGame sbg, Input input) 
+	public void optionButtonAction(GameContainer gc, Input input) 
 			throws SlickException{
 		
 		plusMusic = new Image("res/gui/buttons/button_plus.png"); // Plus Button	

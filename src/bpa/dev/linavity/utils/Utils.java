@@ -30,6 +30,8 @@ public class Utils {
 	//Debug Mode
 	public final boolean debugMode = false;
 	
+	private String playerName;
+	
 	// Universal Game Objects
 	private Level level; // Level Object
 	private Player player; // Player Object
@@ -326,6 +328,14 @@ public class Utils {
 		return levelItems;
 	}
 	
+	/**
+	 * 
+	 * @return the player's name
+	 */
+	public String getPlayerName() {
+		return playerName;
+	}
+	
 	/* SETTERS */
 
 	/**
@@ -497,6 +507,14 @@ public class Utils {
 	 */
 	public void setLevelItems(ArrayList<Item> levelItems) {
 		this.levelItems = levelItems;
+	}
+	
+	/**
+	 * changes the player's name
+	 * @param playerName
+	 */
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
 	}
 	
 }//end of class

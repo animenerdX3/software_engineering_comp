@@ -32,8 +32,12 @@ public class Script {
 	//START OF SCRIPT
 	
 	public void displayName(String[] names){
-		ttf.drawString(74, 662 + Main.util.startBottom, names[Main.util.countDialog], Color.white);
-			//g.drawString(names[Main.util.countDialog], 74, 662 + Main.util.startBottom);
+		String name = names[Main.util.countDialog];
+		
+		if(names[Main.util.countDialog].equals("Playername"))
+			name = Main.util.getPlayerName();
+		
+		ttf.drawString(74, 662 + Main.util.startBottom, name, Color.white);
 	}
 	
 	public void displayText(String [] dialog){
