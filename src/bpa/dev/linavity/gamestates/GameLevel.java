@@ -33,6 +33,10 @@ import bpa.dev.linavity.entities.enemies.Bomber;
 import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.enemies.Tank;
 import bpa.dev.linavity.entities.tiles.Tile;
+import bpa.dev.linavity.entities.tiles.interactive.Door;
+import bpa.dev.linavity.entities.tiles.interactive.EventTile;
+import bpa.dev.linavity.entities.tiles.interactive.Lever;
+import bpa.dev.linavity.events.EventData;
 import bpa.dev.linavity.events.Message;
 import bpa.dev.linavity.utils.ErrorLog;
 import bpa.dev.linavity.utils.LoadGame;
@@ -116,6 +120,20 @@ public class GameLevel extends BasicGameState{
 		LogSystem.addToLog("Initializing GameLevel...");
 		Main.util.gc = gc;
 		
+		Main.util.levelEvents.setEvents(new ArrayList<EventData>());
+		
+		//Set tutorial functions
+		tutorialGUI = new Image[9];
+		tutorialGUI[0] = new Image("res/gui/tutorial/left_right.png");
+		tutorialGUI[1] = new Image("res/gui/tutorial/interact.png");
+		tutorialGUI[2] = new Image("res/gui/tutorial/jump.png");
+		tutorialGUI[3] = new Image("res/gui/tutorial/ladders.png");
+		tutorialGUI[4] = new Image("res/gui/tutorial/pause.png");
+		tutorialGUI[5] = new Image("res/gui/tutorial/gravitypack.png");
+		tutorialGUI[6] = new Image("res/gui/tutorial/shoot.png");
+		tutorialGUI[7] = new Image("res/gui/tutorial/inventory.png");
+		tutorialGUI[8] = new Image("res/gui/tutorial/useitems.png");
+		
 		if(Main.util.getLoadGame()) {
 			Main.util.setPlayerName(Main.util.getCurrentLoadData().getPlayerName());
 			try {
@@ -136,6 +154,8 @@ public class GameLevel extends BasicGameState{
 			LogSystem.addToLog("Creating Items...");
 			items = getItems(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Items Created.");
+			setEvents(Main.util.getCurrentLoadData());
+			Main.util.cutsceneVars.setID(Main.util.getCurrentLoadData().getEventID());
 			Main.util.setLoadGame(false);
 			LogSystem.addToLog("Level Loaded Successfully.");
 		}
@@ -153,6 +173,10 @@ public class GameLevel extends BasicGameState{
 			LogSystem.addToLog("Creating Items...");
 			items = getItems();
 			LogSystem.addToLog("Items Created.");
+			
+			if(Main.util.levelNum == 1)
+				tutorialScene.setTutorial(tutorialGUI[0]);
+				tutorialScene.setActive(true);
 			
 			playerStats();
 			
@@ -213,21 +237,6 @@ public class GameLevel extends BasicGameState{
 		
 		font = new Font("Verdana", Font.BOLD, 22);
 		ttf = new TrueTypeFont(font, true);
-		
-		tutorialGUI = new Image[9];
-		tutorialGUI[0] = new Image("res/gui/tutorial/left_right.png");
-		tutorialGUI[1] = new Image("res/gui/tutorial/interact.png");
-		tutorialGUI[2] = new Image("res/gui/tutorial/jump.png");
-		tutorialGUI[3] = new Image("res/gui/tutorial/ladders.png");
-		tutorialGUI[4] = new Image("res/gui/tutorial/pause.png");
-		tutorialGUI[5] = new Image("res/gui/tutorial/gravitypack.png");
-		tutorialGUI[6] = new Image("res/gui/tutorial/shoot.png");
-		tutorialGUI[7] = new Image("res/gui/tutorial/inventory.png");
-		tutorialGUI[8] = new Image("res/gui/tutorial/useitems.png");
-		
-		if(Main.util.levelNum == 1)
-			tutorialScene.setTutorial(tutorialGUI[0]);
-			tutorialScene.setActive(true);
 		
 		LogSystem.addToLog("GameLevel initialized successfully.");
 		LogSystem.addToLog("");
@@ -358,6 +367,28 @@ public class GameLevel extends BasicGameState{
 		return items;
 	}//end of getItems
 	
+	public void setEvents(LoadGame loadFile) {
+		
+		int events = loadFile.getEventSize();
+		int [] row = loadFile.getRow();
+		int [] col = loadFile.getCol();
+		String [] name = loadFile.getName();
+		Object [] data = loadFile.getData();
+		
+		for(int i = 0; i < events; i++) {
+			if(name[i].equalsIgnoreCase("door")) {
+				Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(row[i], col[i])), null, Message.autoOpenDoor, Boolean.parseBoolean(""+data[i])));
+			}
+			if(name[i].equalsIgnoreCase("event")) {
+				EventTile event = (EventTile) Main.util.getLevel().getSingleEventTile(new Point(row[i], col[i]));
+				event.setToggle(Boolean.parseBoolean(""+data[i]));
+			}
+			if(name[i].equalsIgnoreCase("lever")) {
+				Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(row[i], col[i])), null, Message.leverToggle, Boolean.parseBoolean(""+data[i])));
+			}
+		}
+		
+	}//end of setEvents
 	
 	/**
 	 * Renders content to the game / screen
@@ -642,9 +673,6 @@ public class GameLevel extends BasicGameState{
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
-				
-		for(int i = 0; i < Main.util.levelEvents.getEvents().size(); i++)
-			System.out.println(Main.util.levelEvents.getEvents().get(i).toString());
 		
 		// If the game is not paused
 		if(!menuOpen && !saveOpen){
@@ -975,7 +1003,7 @@ public class GameLevel extends BasicGameState{
 						mobs.get(i).setIsAlive(false);
 				}
 				if(script.getID() == 0) {
-					Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(21, 8)), null, Message.leverToggle, true));
+					Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(21, 8)), null, Message.autoOpenDoor, true));
 				}
 				Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getID() + 1);
 			}
@@ -1111,7 +1139,7 @@ public class GameLevel extends BasicGameState{
 		if(MainMenu.checkBounds( 100 , 100 + slotOne.getWidth() , 150, 150 + slotOne.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot One...");
-				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 1, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelEvents.getEvents(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 1, Main.util.getLevelTime());
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}
@@ -1126,7 +1154,7 @@ public class GameLevel extends BasicGameState{
 		if(MainMenu.checkBounds( 100 , 100 + slotTwo.getWidth() , 350, 350 + slotTwo.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot Two...");
-				SaveGame saveProgress = new SaveGame(mobs, items,Main.util.getInventory().getItems(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 2, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelEvents.getEvents(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 2, Main.util.getLevelTime());
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}
@@ -1141,7 +1169,7 @@ public class GameLevel extends BasicGameState{
 		if(MainMenu.checkBounds( 100 , 100 + slotThree.getWidth() , 550, 550 + slotThree.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot Three...");
-				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 3, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelEvents.getEvents(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 3, Main.util.getLevelTime());
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}

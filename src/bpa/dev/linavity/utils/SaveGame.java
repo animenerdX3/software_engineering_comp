@@ -10,7 +10,8 @@ import javax.swing.JOptionPane;
 
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.collectibles.Item;
-import bpa.dev.linavity.entities.*;
+import bpa.dev.linavity.entities.Mob;
+import bpa.dev.linavity.events.EventData;
 
 public class SaveGame {
 
@@ -23,8 +24,9 @@ public class SaveGame {
 	private ArrayList<Item> inventory;
 	private File saveFile;
 	private boolean canOverWrite;
+	private ArrayList<EventData> events;
 	
-	public SaveGame(ArrayList<Mob> mobPositions, ArrayList<Item> itemPositions, ArrayList<Item>inventory, int gameStateID, float camX, float camY, int saveSlot, int levelTimer) {
+	public SaveGame(ArrayList<Mob> mobPositions, ArrayList<Item> itemPositions, ArrayList<Item>inventory, ArrayList<EventData>events, int gameStateID, float camX, float camY, int saveSlot, int levelTimer) {
 		this.gameStateID = ""+gameStateID;
 		this.camX = ""+camX;
 		this.camY = ""+camY;
@@ -32,6 +34,7 @@ public class SaveGame {
 		this.mobPositions = mobPositions;
 		this.itemPositions = itemPositions;
 		this.inventory = inventory;
+		this.events = events;
 		this.saveSlot = saveSlot;
 		this.saveFile = new File("saves/linavitySave_"+this.saveSlot+".data");
 		this.canOverWrite = true;
@@ -104,20 +107,32 @@ public class SaveGame {
 	}//end of overWriteSave
 	
 	public void saveData(BufferedWriter bw) throws IOException {
-		for(int i = -1; i < mobPositions.size() + itemPositions.size() + inventory.size() + 2; i++) {
-			if(i == -1)
+		int mobNum = mobPositions.size();
+		int itemNum = itemPositions.size();
+		int inventoryNum = inventory.size();
+		int eventNum = events.size();
+		
+		for(int i = 0; i < mobNum + itemNum + inventoryNum + eventNum + 6; i++) {
+			if(i == 0)
 				bw.write(Main.util.getPlayerName()+","+this.gameStateID+","+this.camX+","+this.camY+","+this.levelTimer);
-			else if(i == 0)
-				bw.write(""+mobPositions.size());
-			else if(i <= mobPositions.size() && i < mobPositions.size() + 1)
-				bw.write(this.mobPositions.get(i - 1).toString());
-			else if(i == mobPositions.size() + 1)
-				bw.write(""+itemPositions.size());
-			else if(i <  mobPositions.size() + itemPositions.size() + 2)
-				bw.write(this.itemPositions.get(i - mobPositions.size() - 2).toString());
-			else 
-				if(inventory.size() != 0)
-				bw.write(this.inventory.get(i - (mobPositions.size() + itemPositions.size()) - 2).toString());
+			else if(i == 1)
+				bw.write(""+mobNum);
+			else if(i <= mobNum + 1)
+				bw.write(this.mobPositions.get(i - 2).toString());
+			else if(i == mobNum +  2)
+				bw.write(""+itemNum);
+			else if(i <=  mobNum + itemNum + 2)
+				bw.write(this.itemPositions.get(i - mobNum - 3).toString());
+			else if(i == mobNum + itemNum + 3)
+				bw.write(""+inventoryNum);
+			else if(i <= mobNum + itemNum + inventoryNum + 3)
+				bw.write(this.inventory.get(i -(mobNum + itemNum) - 4).toString());
+			else if(i == mobNum + itemNum + inventoryNum + 4)
+				bw.write(""+eventNum);
+			else if (i < mobNum + itemNum + inventoryNum + eventNum + 5)
+				bw.write(this.events.get(i - (mobNum + itemNum + inventoryNum) - 5).toString());
+			else
+				bw.write(""+Main.util.cutsceneVars.getID());
 			bw.newLine();
 		}
 	}//end of saveMobs

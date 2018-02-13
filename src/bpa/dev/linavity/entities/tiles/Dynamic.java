@@ -50,5 +50,13 @@ public class Dynamic extends Tile {
 	public void setTargetObjects(Point[] targetObjects) {
 		this.targetObjects = targetObjects;
 	}
+
+	public boolean isToggle() {
+		return toggle;
+	}
+
+	public void setToggle(boolean toggle) {
+		this.toggle = toggle;
+	}
 	
-}
+}//end of class
