@@ -97,6 +97,7 @@ public class Player extends Mob {
 		
 		if(message.getType() == Message.endLevel) {
 			this.readyForNextLevel = true;
+			Main.util.getSFX(16).play(1f, Main.util.getSoundManager().getVolume());
 		}
 		
 	}

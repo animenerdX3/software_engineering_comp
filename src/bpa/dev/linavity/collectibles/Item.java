@@ -76,8 +76,14 @@ public class Item {
 		this.isCollected = false;
 		
 		//If the player is in the range of the item
-		if(this.collisionBox.intersects(Main.util.getPlayer().getBoundingBox()))
+		if(this.collisionBox.intersects(Main.util.getPlayer().getBoundingBox())) {
 					this.isCollected = true;//The item is collected
+					if(this instanceof GravPack)
+						Main.util.getSFX(6).play(1f, Main.util.getSoundManager().getVolume());
+					else
+						Main.util.getSFX(12).play(1f, Main.util.getSoundManager().getVolume());
+
+		}
 		
 	}//end of checkItemCollision
 	

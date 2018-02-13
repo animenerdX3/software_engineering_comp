@@ -174,8 +174,8 @@ public class MainMenu extends BasicGameState implements ComponentListener{
 	}//end of render
 
 	public void componentActivated(AbstractComponent source) { 
-		System.out.println("BURGER KING FOOT LETTUCE");
-		  if (source == name) { 
+
+		if (source == name) { 
 			  if(name.getText().isEmpty())
 				  Main.util.setPlayerName(namevalue);
 			  else {
@@ -185,8 +185,6 @@ public class MainMenu extends BasicGameState implements ComponentListener{
 			  readyToPlay = true;
 		  } 
 		  
-		  System.out.println(namevalue);
-		  System.out.println(readyToPlay);
 	}//end of componentActivated 
 
 	// Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)

@@ -39,6 +39,7 @@ public class Lever extends Dynamic {
 		for(int i = 0; i < this.targetObjects.length; i++) {
 			Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(targetObjects[i]), this, Message.leverToggle, this.toggle));
 		};
+		Main.util.getSFX(13).play(1f, Main.util.getSoundManager().getVolume());
 		Main.util.levelEvents.changeEvent((int) super.y / 50, (int) super.x / 50, true);
 	}
 	
@@ -48,6 +49,7 @@ public class Lever extends Dynamic {
 		for(int i = 0; i < this.targetObjects.length; i++) {
 			Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(targetObjects[i]), this, Message.leverToggle, this.toggle));
 		}
+		Main.util.getSFX(14).play(1f, Main.util.getSoundManager().getVolume());
 		Main.util.levelEvents.changeEvent((int) super.y / 50, (int) super.x / 50, false);
 	}
 	

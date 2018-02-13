@@ -7,7 +7,6 @@ import bpa.dev.linavity.utils.ErrorLog;
 
 public class CutsceneAccessor {
 
-	private boolean makePlayerJump;
 	private Image [] playerSprites;
 	private boolean moveAbric;
 	private boolean abricDirection;
@@ -15,7 +14,6 @@ public class CutsceneAccessor {
 	private int length;
 	
 	public CutsceneAccessor() {
-		this.makePlayerJump = true;
 		this.playerSprites = new Image[1];
 		try {
 			this.playerSprites[0] = new Image("res/sprites/player/calvin_0.png");
@@ -24,14 +22,11 @@ public class CutsceneAccessor {
 		}
 		this.moveAbric = false;
 		this.abricDirection = true;
-		this.ID = 1;
+		this.ID = 0;
 		this.length = 9;
 	}
 	
 	/* GETTERS */
-	public boolean isMakePlayerJump() {
-		return makePlayerJump;
-	}
 	
 	public Image[] getPlayerSprites() {
 		return playerSprites;
@@ -54,9 +49,6 @@ public class CutsceneAccessor {
 	}
 
 	/* SETTERS */
-	public void setMakePlayerJump(boolean makePlayerJump) {
-		this.makePlayerJump = makePlayerJump;
-	}
 	
 	public void setPlayerSprites(Image[] playerSprites) {
 		this.playerSprites = playerSprites;

@@ -3,6 +3,7 @@ package bpa.dev.linavity.collectibles;
 import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.Main;
+import bpa.dev.linavity.gamestates.GameLevel;
 
 public class GravPack extends Item{
 	
@@ -26,8 +27,10 @@ public class GravPack extends Item{
 	
 	public void onCollision() {
 		Main.util.getPlayer().setCanUseGravpack(true);
-		Main.util.getSFX(6).play(1f, Main.util.getSoundManager().getVolume());
 		this.isActive = false;//Destroy the item
+		GameLevel.tutorialScene.setTutorial(GameLevel.tutorialGUI[5]);
+		GameLevel.tutorialScene.setActive(true);
+		GameLevel.tutorialScene.setTimer(0);
 	}//end of onCollision
 
 }//end of class

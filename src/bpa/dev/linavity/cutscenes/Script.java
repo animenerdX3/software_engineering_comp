@@ -7,7 +7,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
 
 import bpa.dev.linavity.Main;
-import bpa.dev.linavity.entities.Abric;
 
 public class Script {
 
@@ -70,7 +69,6 @@ public class Script {
 			Main.util.cutsceneVars.setAbricDirection(false);
 			Main.util.cutsceneVars.setMoveAbric(true);
 		}
-		
 	}
 	
 	public int getID(){

@@ -35,12 +35,20 @@ public class Tutorial {
 		return isActive;
 	}
 
+	public int getTimer() {
+		return timer;
+	}
+
 	public void setTutorial(Image tutorial) {
 		this.tutorial = tutorial;
 	}
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+	
+	public void setTimer(int timer) {
+		this.timer = timer;
 	}
 	
 }//end of class

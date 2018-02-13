@@ -1,6 +1,7 @@
 package bpa.dev.linavity.gamestates;
 
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import bpa.dev.linavity.entities.enemies.Bomber;
 import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.enemies.Tank;
 import bpa.dev.linavity.entities.tiles.Tile;
+import bpa.dev.linavity.events.Message;
 import bpa.dev.linavity.utils.ErrorLog;
 import bpa.dev.linavity.utils.LoadGame;
 import bpa.dev.linavity.utils.LogSystem;
@@ -103,7 +105,7 @@ public class GameLevel extends BasicGameState{
 	private TrueTypeFont ttf;
 	
 	//Tutorial Images
-	private Image[] tutorialGUI;
+	public static Image[] tutorialGUI;
 	
 	/**
 	 * This runs as soon as we compile the program
@@ -122,7 +124,6 @@ public class GameLevel extends BasicGameState{
 				ErrorLog.displayError(ex);
 			}
 			LogSystem.addToLog("Loading Game...");
-			System.out.println("WE ARE LOADING LEVEL "+Main.util.getCurrentLoadData().getLevelFound());
 			Main.util.levelNum = Main.util.getCurrentLoadData().getLevelFound();
 			Main.util.getInventory().setItems(new ArrayList<Item>());
 			Main.util.getCam().setX(Main.util.getCurrentLoadData().getCamX());
@@ -140,7 +141,6 @@ public class GameLevel extends BasicGameState{
 		}
 		else {
 			LogSystem.addToLog("Starting a New Game...");
-			System.out.println("WE ARE STARTING OR RETRYING LEVEL "+Main.util.levelNum);
 			try {
 				Main.util.setLevel(new Level(Main.util.levelNum));
 			} catch (FileNotFoundException ex) {
@@ -225,8 +225,9 @@ public class GameLevel extends BasicGameState{
 		tutorialGUI[7] = new Image("res/gui/tutorial/inventory.png");
 		tutorialGUI[8] = new Image("res/gui/tutorial/useitems.png");
 		
-		tutorialScene.setTutorial(tutorialGUI[0]);
-		tutorialScene.setActive(true);
+		if(Main.util.levelNum == 1)
+			tutorialScene.setTutorial(tutorialGUI[0]);
+			tutorialScene.setActive(true);
 		
 		LogSystem.addToLog("GameLevel initialized successfully.");
 		LogSystem.addToLog("");
@@ -617,6 +618,7 @@ public class GameLevel extends BasicGameState{
 		Script script;
 		
 		if(Main.util.isCutsceneActive()){
+			tutorialScene.setActive(false);
 			script = new Script(g, Main.util.cutsceneVars.getID(), Main.util.cutsceneVars.getLength());
 			g.drawImage(cutsceneGUI[0], 0, 0);
 			g.drawImage(cutsceneGUI[1], 0, Main.util.startTop);
@@ -640,6 +642,9 @@ public class GameLevel extends BasicGameState{
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
+				
+		for(int i = 0; i < Main.util.levelEvents.getEvents().size(); i++)
+			System.out.println(Main.util.levelEvents.getEvents().get(i).toString());
 		
 		// If the game is not paused
 		if(!menuOpen && !saveOpen){
@@ -969,6 +974,10 @@ public class GameLevel extends BasicGameState{
 					if(mobs.get(i) instanceof Abric)
 						mobs.get(i).setIsAlive(false);
 				}
+				if(script.getID() == 0) {
+					Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(21, 8)), null, Message.leverToggle, true));
+				}
+				Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getID() + 1);
 			}
 		}
 	}//end of checkCutscenes

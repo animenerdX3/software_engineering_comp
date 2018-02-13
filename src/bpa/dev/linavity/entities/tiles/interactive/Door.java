@@ -48,7 +48,7 @@ public class Door extends Dynamic {
 		System.out.println("Door on Message");
 		
 		// Interaction with a lever
-		if(message.getType() == Message.leverToggle) {
+		if(message.getType() == Message.leverToggle || message.getType() == Message.autoOpenDoor) {
 			if((boolean)message.getData()) { // If the lever is on...
 				openDoor();
 			}else{ // The lever is off...
@@ -68,6 +68,7 @@ public class Door extends Dynamic {
 		this.setPassable(true);
 		this.toggle = true;
 		System.out.println("Open Door");
+		Main.util.getSFX(15).play(1f, Main.util.getSoundManager().getVolume());
 		Main.util.levelEvents.changeEvent((int) super.y / 50, (int) super.x / 50, true);
 	}
 	

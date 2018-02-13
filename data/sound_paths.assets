@@ -7,3 +7,11 @@ sfx/enemy_hit.wav
 sfx/gravpack_pickup.wav
 sfx/gravpack_turn_on.wav
 sfx/keycard_use.wav
+sfx/use_health.wav
+sfx/use_gravcapsule.wav
+sfx/coin_collected.wav
+sfx/item_collected.wav
+sfx/lever_open.wav
+sfx/lever_close.wav
+sfx/door_open.wav
+sfx/warphole.wav

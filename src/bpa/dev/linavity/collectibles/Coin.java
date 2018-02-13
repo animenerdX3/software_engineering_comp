@@ -32,6 +32,7 @@ public class Coin extends Item{
 		else if(this.getItemImage().equalsIgnoreCase("coin_a"))
 			Main.util.coinAGrabbed = true;
 		this.isActive = false;//Destroy the item
+		Main.util.getSFX(11).play(1f, Main.util.getSoundManager().getVolume());
 	}//end of onCollision
 
 }//end of class
