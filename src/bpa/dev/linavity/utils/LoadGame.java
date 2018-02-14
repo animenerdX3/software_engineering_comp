@@ -40,6 +40,9 @@ public class LoadGame {
 	private Object [] data;
 	private int eventID;
 	
+	//Death Count
+	private int deathCount;
+	
 	public LoadGame(int saveSlot) {
 		this.saveSlot = saveSlot;
 		this.loadFile = new File("saves/linavitySave_"+this.saveSlot+".data");
@@ -113,6 +116,7 @@ public class LoadGame {
 				camX = Float.parseFloat(properties[2]);
 				camY = Float.parseFloat(properties[3]);
 				levelTime = Integer.parseInt(properties[4]);
+				deathCount = Integer.parseInt(properties[5]);
 			}
 			
 			else if(i == 1)
@@ -322,6 +326,10 @@ public class LoadGame {
 
 	public int getEventID() {
 		return eventID;
+	}
+	
+	public int getDeathCount() {
+		return deathCount;
 	}
 	
 }//end of class

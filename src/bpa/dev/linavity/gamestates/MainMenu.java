@@ -440,8 +440,8 @@ public class MainMenu extends BasicGameState implements ComponentListener{
 	}
 
 	/**
-	 * @method mainButtonAction
-	 * @description checks the button detection and handles the according events in the main section of our main menu
+	 * @method newGameAction
+	 * @description checks the new game section of the main menu GUI
 	 * 
 	 * @param
 	 * GameContainer gc
@@ -452,6 +452,9 @@ public class MainMenu extends BasicGameState implements ComponentListener{
 	 */
 	public void newGameAction(GameContainer gc, StateBasedGame sbg, Input input) 
 			throws SlickException{
+		
+		if(input.isKeyPressed(Input.KEY_ESCAPE))
+			newGame = false;
 		
 		if(readyToPlay) {
 			readyToPlay = false;

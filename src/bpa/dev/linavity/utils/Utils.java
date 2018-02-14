@@ -97,6 +97,8 @@ public class Utils {
 	public boolean coinPGrabbed;
 	public boolean coinAGrabbed;
 
+	public int deathCount;
+	
 	// Default Constructor
 	public Utils(int levelID) throws SlickException{
 		LogSystem.addToLog("Debug Mode: "+this.debugMode);

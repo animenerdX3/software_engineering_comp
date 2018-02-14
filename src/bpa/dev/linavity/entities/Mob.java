@@ -387,8 +387,11 @@ public abstract class Mob extends GameObject{
 	private void checkDynamicImpassableTiles(Tile tile, int i, int j) throws SlickException {
 		
 		// GravPad Recharging the player's gravPad
-		if(tile.getId() == Tile.gravPadID && this.collideDown == true) {
-				Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.gravPadRecharge, 0.5f));
+		if(tile.getId() == Tile.gravPadID) {
+				if(this.collideDown)
+					Main.util.getMessageHandler().addMessage(new Message(this, tile, Message.gravPadRecharge, 0.5f));
+				else
+					this.yMomentum = -20;
 		}
 		
 		if(tile.getId() == Tile.spikesID) {

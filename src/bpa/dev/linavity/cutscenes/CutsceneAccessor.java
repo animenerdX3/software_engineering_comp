@@ -11,6 +11,7 @@ public class CutsceneAccessor {
 	private boolean moveAbric;
 	private boolean abricDirection;
 	private int ID;
+	private int levelStartID;
 	private int length;
 	
 	public CutsceneAccessor() {
@@ -23,6 +24,7 @@ public class CutsceneAccessor {
 		this.moveAbric = false;
 		this.abricDirection = true;
 		this.ID = 0;
+		this.levelStartID = 0;
 		this.length = 9;
 	}
 	
@@ -48,8 +50,12 @@ public class CutsceneAccessor {
 		return length;
 	}
 
-	/* SETTERS */
+	public int getLevelStartID() {
+		return levelStartID;
+	}
 	
+	/* SETTERS */
+
 	public void setPlayerSprites(Image[] playerSprites) {
 		this.playerSprites = playerSprites;
 	}
@@ -68,6 +74,10 @@ public class CutsceneAccessor {
 	
 	public void setLength(int length) {
 		this.length = length;
+	}
+	
+	public void setLevelStartID(int levelStartID) {
+		this.levelStartID = levelStartID;
 	}
 	
 }//end of class

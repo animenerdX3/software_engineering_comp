@@ -33,6 +33,7 @@ public class Level {
 	private ArrayList<Mob> mobs;
 	private ArrayList<Item> items;
 	private LevelManager lm;
+	private double startTime;
 	
 	/**
 	 * Constructor: Creates a level for our gamestate
@@ -49,11 +50,15 @@ public class Level {
 		this.lm = new LevelManager(id);
 		
 		LogSystem.addToLog("Making the Map...");
+		startTime = System.nanoTime();
 		this.map = lm.makeMap();
 		LogSystem.addToLog("Map Created Successfully.");
+		LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
 		LogSystem.addToLog("Making the Events...");
+		startTime = System.nanoTime();
 		this.events = lm.makeEvents();
 		LogSystem.addToLog("Events Created Successfully.");
+		LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
 		LogSystem.addToLog("Making the Channels...");
 		this.channels = lm.makeChannels();
 		LogSystem.addToLog("Channels Created Successfully.");

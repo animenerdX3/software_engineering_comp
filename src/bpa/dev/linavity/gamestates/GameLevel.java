@@ -111,6 +111,8 @@ public class GameLevel extends BasicGameState{
 	//Tutorial Images
 	public static Image[] tutorialGUI;
 	
+	private double startTime;
+	
 	/**
 	 * This runs as soon as we compile the program
 	 */
@@ -147,13 +149,18 @@ public class GameLevel extends BasicGameState{
 			Main.util.getCam().setX(Main.util.getCurrentLoadData().getCamX());
 			Main.util.getCam().setY(Main.util.getCurrentLoadData().getCamY());
 			Main.util.setLevelTime(Main.util.getCurrentLoadData().getLevelTime());
+			Main.util.deathCount = Main.util.getCurrentLoadData().getDeathCount();
 			LogSystem.addToLog("Creating Mobs...");
+			startTime = System.nanoTime();
 			mobs = getMobs(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Mobs Created.");
+			LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
 			Main.util.getPs().addToPlayerStats("" + Main.util.getPlayer().getHealth() + "," + Main.util.getPlayer().getGravPack().getGravpower());
+			startTime = System.nanoTime();
 			LogSystem.addToLog("Creating Items...");
 			items = getItems(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Items Created.");
+			LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
 			setEvents(Main.util.getCurrentLoadData());
 			Main.util.cutsceneVars.setID(Main.util.getCurrentLoadData().getEventID());
 			Main.util.setLoadGame(false);
@@ -166,20 +173,28 @@ public class GameLevel extends BasicGameState{
 			} catch (FileNotFoundException ex) {
 				ErrorLog.displayError(ex);
 			}
+			
 			Main.util.setLevelTime(0);
 			LogSystem.addToLog("Creating Mobs...");
+			startTime = System.nanoTime();
 			mobs = getMobs();
 			LogSystem.addToLog("Mobs Created.");
+			LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
 			LogSystem.addToLog("Creating Items...");
+			startTime = System.nanoTime();
 			items = getItems();
 			LogSystem.addToLog("Items Created.");
+			LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
+
 			
-			if(Main.util.levelNum == 1)
+			if(Main.util.levelNum == 1) {
 				tutorialScene.setTutorial(tutorialGUI[0]);
 				tutorialScene.setActive(true);
+			}	
 			
 			playerStats();
 			
+			Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getLevelStartID());
 		}
 		
 		Main.util.setLevelMobs(mobs);
@@ -436,6 +451,7 @@ public class GameLevel extends BasicGameState{
 		}
 		
 		ttf.drawString(770,50, "Timer: "+Main.util.getLevelTime() / 1000, Color.red);
+		ttf.drawString(20,20, "Deaths: "+Main.util.deathCount, Color.red);
 		
 		g.drawImage(coins[0], 750, 10);
 		g.drawImage(coins[1], 800, 10);
@@ -474,7 +490,8 @@ public class GameLevel extends BasicGameState{
 		
 		renderCutscene(gc, g);
 		
-		tutorialScene.update(g, Main.util.delta);
+		if(!menuOpen && !saveOpen && !Main.util.getPlayer().isInventoryOpen())
+			tutorialScene.update(g, Main.util.delta);
 		
 		//Draw menu, if open
 		if(!menuOpen && !saveOpen && Main.util.getPlayer().isInventoryOpen())
@@ -650,6 +667,7 @@ public class GameLevel extends BasicGameState{
 		
 		if(Main.util.isCutsceneActive()){
 			tutorialScene.setActive(false);
+			stopPlayerAnimation();
 			script = new Script(g, Main.util.cutsceneVars.getID(), Main.util.cutsceneVars.getLength());
 			g.drawImage(cutsceneGUI[0], 0, 0);
 			g.drawImage(cutsceneGUI[1], 0, Main.util.startTop);
@@ -944,6 +962,14 @@ public class GameLevel extends BasicGameState{
 		
 	}//end of stopAnimation
 	
+	private void startPlayerAnimation() {
+		Main.util.getPlayer().getCurrentImage().start();
+	}
+	
+	private void stopPlayerAnimation() {
+		Main.util.getPlayer().getCurrentImage().stop();
+	}
+	
 	private void checkMobStatus(GameContainer gc, StateBasedGame sbg){
 
 		for(int i = 0; i < mobs.size(); i++){
@@ -982,6 +1008,7 @@ public class GameLevel extends BasicGameState{
 		Main.util.getPlayer().setHealth(100);
 		Main.util.getPlayer().getGravPack().setGravpower(100);
 		Main.util.getMusic().stop();
+		Main.util.deathCount++;
 		sbg.getState(GameLevel.id).init(gc, sbg);
 		sbg.enterState(Main.gameover);
 	}//end of resetLevel
@@ -1006,6 +1033,7 @@ public class GameLevel extends BasicGameState{
 					Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(21, 8)), null, Message.autoOpenDoor, true));
 				}
 				Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getID() + 1);
+				startPlayerAnimation();
 			}
 		}
 	}//end of checkCutscenes

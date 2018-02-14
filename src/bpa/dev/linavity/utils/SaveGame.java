@@ -114,7 +114,7 @@ public class SaveGame {
 		
 		for(int i = 0; i < mobNum + itemNum + inventoryNum + eventNum + 6; i++) {
 			if(i == 0)
-				bw.write(Main.util.getPlayerName()+","+this.gameStateID+","+this.camX+","+this.camY+","+this.levelTimer);
+				bw.write(Main.util.getPlayerName()+","+this.gameStateID+","+this.camX+","+this.camY+","+this.levelTimer+","+Main.util.deathCount);
 			else if(i == 1)
 				bw.write(""+mobNum);
 			else if(i <= mobNum + 1)
