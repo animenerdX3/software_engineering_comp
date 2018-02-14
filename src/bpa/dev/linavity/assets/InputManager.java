@@ -57,11 +57,11 @@ public class InputManager {
 			keyLog[3] = true;
 		
 		//4 - Left Shift
-		if(input.isKeyDown(Input.KEY_LSHIFT))
+		if(input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT))
 			keyLog[4] = true;
 		
-		//5 - Left Control
-		if(input.isKeyPressed(Input.KEY_LCONTROL))
+		//5 - Left 
+		if(input.isKeyPressed(Input.KEY_LCONTROL) || input.isKeyPressed(Input.KEY_RCONTROL))
 			keyLog[5] = true;
 		
 		//6 - Escape
