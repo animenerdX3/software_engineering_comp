@@ -45,6 +45,8 @@ public class Level {
 	 */
 	public Level(int id) throws SlickException, FileNotFoundException{
 		
+		double levelTime = System.nanoTime();
+		
 		this.setScore(0);
 		
 		this.lm = new LevelManager(id);
@@ -53,22 +55,29 @@ public class Level {
 		startTime = System.nanoTime();
 		this.map = lm.makeMap();
 		LogSystem.addToLog("Map Created Successfully.");
-		LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
+		LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 		LogSystem.addToLog("Making the Events...");
 		startTime = System.nanoTime();
 		this.events = lm.makeEvents();
 		LogSystem.addToLog("Events Created Successfully.");
-		LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
+		LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 		LogSystem.addToLog("Making the Channels...");
+		startTime = System.nanoTime();
 		this.channels = lm.makeChannels();
 		LogSystem.addToLog("Channels Created Successfully.");
+		LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 		LogSystem.addToLog("Making the Mobs...");
+		startTime = System.nanoTime();
 		this.mobs = lm.makeMobs();
 		LogSystem.addToLog("Mobs Created Successfully.");
+		LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 		LogSystem.addToLog("Making the Items...");
+		startTime = System.nanoTime();
 		this.items = lm.makeItems();
 		LogSystem.addToLog("Items Created Successfully.");
+		LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 		LogSystem.addToLog("Level Created Successfully.");
+		LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - levelTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 		LogSystem.addToLog("");
 		
 		this.levelWidth = map[0].length * 50;

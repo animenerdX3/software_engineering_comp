@@ -15,6 +15,7 @@ import bpa.dev.linavity.collectibles.GravPack;
 import bpa.dev.linavity.collectibles.HealthPack;
 import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.collectibles.KeyCard;
+import bpa.dev.linavity.collectibles.Weapon;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Abric;
 import bpa.dev.linavity.entities.Player;
@@ -170,6 +171,8 @@ public class LevelManager {
 							items.add(new Coin((j * 50) + 15, i *50 - 40, 40, 80, "coin_p"));
 						else if(itemsIDs[i][j] == 207)
 							items.add(new Coin((j * 50) + 15, i *50 - 40, 40, 80, "coin_a"));
+						else if(itemsIDs[i][j] == 208)
+							items.add(new Weapon((j*50) + 15, i*50, "weapon"));
 					}
 				}
 				

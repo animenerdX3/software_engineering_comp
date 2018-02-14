@@ -18,10 +18,11 @@ public class Player extends Mob {
 	private boolean projectileExists = false;
 	private Projectile currentProjectile;
 	private boolean readyForNextLevel;
+	private boolean canSwitchLevels;
 	private boolean toggleDirection = false;
 	private boolean inventoryOpen;
 	private int coolDown;
-	private boolean canUseGravpack;
+	private boolean canUseGravpack, canUseWeapon;
 	private boolean playerJump;
 	
 	private GravityPack gravPack;
@@ -48,6 +49,7 @@ public class Player extends Mob {
 		this.boundingBox = new Rectangle((int) this.x, (int) this.y, (int) this.width, (int) this.height);
 		this.isFlipping = false;
 		this.readyForNextLevel = false;
+		this.canSwitchLevels = false;
 		
 		this.moveLeft = new SpriteSheet("res/sprites/"+this.mobName+"/"+this.mobName+"_left_ani.png",50,50); // declare a SpriteSheet and load it into java with its dimensions
 	    this.moveLeftAni = new Animation(this.moveLeft, 450); // declare a Animation, loading the SpriteSheet and inputing the Animation Speed
@@ -73,6 +75,11 @@ public class Player extends Mob {
 	    else
 	    	this.canUseGravpack = false;
 	    
+	    if(Main.util.levelNum > 2)
+	    	this.canUseWeapon = true;
+	    else
+	    	this.canUseWeapon = false;
+	    
 	    this.inventoryOpen = false;
 	}
 	
@@ -96,8 +103,10 @@ public class Player extends Mob {
 		}
 		
 		if(message.getType() == Message.endLevel) {
-			this.readyForNextLevel = true;
-			Main.util.getSFX(16).play(1f, Main.util.getSoundManager().getVolume());
+			if(this.readyForNextLevel) {
+				this.canSwitchLevels = true;
+				Main.util.getSFX(16).play(1f, Main.util.getSoundManager().getVolume());
+			}
 		}
 		
 	}
@@ -323,11 +332,34 @@ public class Player extends Mob {
 		updateMomentums();
 		
 		if(!Main.util.isCutsceneActive())
-			shootProjectile(delta);
+			if(this.canUseWeapon)
+				shootProjectile(delta);
+		
+		determineEndLevel();
 		
 		super.updateMob(delta);
 	
 	}//end of update
+	
+	/**
+	 * Determine if the player can end the level
+	 */
+	public void determineEndLevel() {
+		if(Main.util.levelNum == 1) {
+			if(this.canUseGravpack)
+				this.readyForNextLevel = true;
+			else
+				this.readyForNextLevel = false;
+		}
+		else if(Main.util.levelNum == 2) {
+			if(this.canUseWeapon)
+				this.readyForNextLevel = true;
+			else
+				this.readyForNextLevel = false;
+		}
+		else
+			this.readyForNextLevel = true;
+	}//end of determineEndLevel
 	
 	/**
 	 * Checks the player's animation
@@ -500,10 +532,18 @@ public class Player extends Mob {
 	
 	/**
 	 * 
-	 * @return if true, the player can use their gravpack. if falase, the player cannot
+	 * @return if true, the player can use their gravpack. if false, the player cannot
 	 */
 	public boolean canUseGravpack() {
 		return canUseGravpack;
+	}
+	
+	/**
+	 * 
+	 * @return if true, the player can use their weapon. If false, the player cannot
+	 */
+	public boolean canUseWeapon() {
+		return canUseWeapon;
 	}
 	
 	/**
@@ -513,7 +553,15 @@ public class Player extends Mob {
 	public boolean isPlayerJump() {
 		return playerJump;
 	}
-	
+
+	/**
+	 * 
+	 * @return if true, the player switches levels. if false, the player cant
+	 */
+	public boolean isCanSwitchLevels() {
+		return canSwitchLevels;
+	}
+
 	/* SETTERS */
 
 	/**
@@ -573,11 +621,27 @@ public class Player extends Mob {
 	}
 	
 	/**
+	 * changes the player's can use weapon boolean
+	 * @param canUseWeapon
+	 */
+	public void setCanUseWeapon(boolean canUseWeapon) {
+		this.canUseWeapon = canUseWeapon;
+	}
+	
+	/**
 	 * changes the player's jump boolean
 	 * @param playerJump
 	 */
 	public void setPlayerJump(boolean playerJump) {
 		this.playerJump = playerJump;
+	}
+	
+	/**
+	 * changes the player's switch level boolean
+	 * @param canSwitchLevels
+	 */
+	public void setCanSwitchLevels(boolean canSwitchLevels) {
+		this.canSwitchLevels = canSwitchLevels;
 	}
 	
 	/**

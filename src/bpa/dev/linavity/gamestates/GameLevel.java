@@ -24,6 +24,7 @@ import bpa.dev.linavity.collectibles.HealthPack;
 import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.collectibles.KeyCard;
 import bpa.dev.linavity.collectibles.UseItem;
+import bpa.dev.linavity.collectibles.Weapon;
 import bpa.dev.linavity.cutscenes.Script;
 import bpa.dev.linavity.cutscenes.Tutorial;
 import bpa.dev.linavity.entities.Abric;
@@ -33,9 +34,7 @@ import bpa.dev.linavity.entities.enemies.Bomber;
 import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.enemies.Tank;
 import bpa.dev.linavity.entities.tiles.Tile;
-import bpa.dev.linavity.entities.tiles.interactive.Door;
 import bpa.dev.linavity.entities.tiles.interactive.EventTile;
-import bpa.dev.linavity.entities.tiles.interactive.Lever;
 import bpa.dev.linavity.events.EventData;
 import bpa.dev.linavity.events.Message;
 import bpa.dev.linavity.utils.ErrorLog;
@@ -119,6 +118,8 @@ public class GameLevel extends BasicGameState{
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		
+		double initTime = System.nanoTime();
+		
 		LogSystem.addToLog("Initializing GameLevel...");
 		Main.util.gc = gc;
 		
@@ -139,6 +140,7 @@ public class GameLevel extends BasicGameState{
 		if(Main.util.getLoadGame()) {
 			Main.util.setPlayerName(Main.util.getCurrentLoadData().getPlayerName());
 			try {
+				LogSystem.addToLog("Reading In Level...");
 				Main.util.setLevel(new Level(Main.util.getCurrentLoadData().getLevelFound()));
 			} catch (FileNotFoundException ex) {
 				ErrorLog.displayError(ex);
@@ -154,13 +156,13 @@ public class GameLevel extends BasicGameState{
 			startTime = System.nanoTime();
 			mobs = getMobs(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Mobs Created.");
-			LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
-			Main.util.getPs().addToPlayerStats("" + Main.util.getPlayer().getHealth() + "," + Main.util.getPlayer().getGravPack().getGravpower());
+			LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
+			Main.util.getPs().addToPlayerStats("" + Main.util.getPlayer().getHealth() + "," + Main.util.getPlayer().getGravPack().getGravpower(), true);
 			startTime = System.nanoTime();
 			LogSystem.addToLog("Creating Items...");
 			items = getItems(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Items Created.");
-			LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
+			LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 			setEvents(Main.util.getCurrentLoadData());
 			Main.util.cutsceneVars.setID(Main.util.getCurrentLoadData().getEventID());
 			Main.util.setLoadGame(false);
@@ -169,6 +171,7 @@ public class GameLevel extends BasicGameState{
 		else {
 			LogSystem.addToLog("Starting a New Game...");
 			try {
+				LogSystem.addToLog("Reading In Level...");
 				Main.util.setLevel(new Level(Main.util.levelNum));
 			} catch (FileNotFoundException ex) {
 				ErrorLog.displayError(ex);
@@ -179,13 +182,12 @@ public class GameLevel extends BasicGameState{
 			startTime = System.nanoTime();
 			mobs = getMobs();
 			LogSystem.addToLog("Mobs Created.");
-			LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
+			LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 			LogSystem.addToLog("Creating Items...");
 			startTime = System.nanoTime();
 			items = getItems();
 			LogSystem.addToLog("Items Created.");
-			LogSystem.addToLog("Running code took "+((System.nanoTime() - startTime) / 1000000)+" s");
-
+			LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 			
 			if(Main.util.levelNum == 1) {
 				tutorialScene.setTutorial(tutorialGUI[0]);
@@ -254,6 +256,7 @@ public class GameLevel extends BasicGameState{
 		ttf = new TrueTypeFont(font, true);
 		
 		LogSystem.addToLog("GameLevel initialized successfully.");
+		LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - initTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 		LogSystem.addToLog("");
 		
 	}//end of init
@@ -351,12 +354,17 @@ public class GameLevel extends BasicGameState{
 		String []itemImage = loadFile.getItemImage();
 		
 		boolean setGrav= true;
+		boolean setWeapon = true;
 		
 		for(int i = 0; i < itemImage.length; i++) {
 			if(i < itemsSize) {
 				if(itemImage[i].equalsIgnoreCase("gravitypack")) {
 					setGrav = false;
-					items.add(new GravPack(xPos[i + mobSize ], yPos[i + mobSize ], width[i], height[i], itemImage[i]));
+					items.add(new GravPack(xPos[i + mobSize ], yPos[i + mobSize], width[i], height[i], itemImage[i]));
+				}
+				else if(itemImage[i].equalsIgnoreCase("weapon")) {
+					setWeapon = false;
+					items.add(new Weapon(xPos[i + mobSize ], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 				}
 				else if(itemImage[i].equalsIgnoreCase("healthpack"))
 					items.add(new HealthPack(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
@@ -376,8 +384,8 @@ public class GameLevel extends BasicGameState{
 			}
 		}
 		
-		if(setGrav)
-			Main.util.getPlayer().setCanUseGravpack(true);
+			Main.util.getPlayer().setCanUseGravpack(setGrav);
+			Main.util.getPlayer().setCanUseWeapon(setWeapon);
 		
 		return items;
 	}//end of getItems
@@ -550,6 +558,17 @@ public class GameLevel extends BasicGameState{
 				if(eventTiles[i][j] != null) {
 					eventTileX = eventTiles[i][j].getX() - Main.util.getCam().getX(); // Get the tile's temp x location for the screen rendering
 					eventTileY = eventTiles[i][j].getY() - Main.util.getCam().getY(); // Get the tile's temp y location for the screen rendering
+					if(eventTiles[i][j].getId() == Tile.warpHoleID) {
+						try {
+							if(Main.util.getPlayer().isReadyForNextLevel()) {
+								eventTiles[i][j].setTexture(new Image("res/tiles/dynamic/warphole/warphole.png"));
+							}
+							else
+								eventTiles[i][j].setTexture(new Image("res/tiles/blank.png"));
+						} catch (SlickException e) {
+							ErrorLog.displayError(e);
+						}
+					}
 					eventTiles[i][j].getTexture().draw(eventTileX, eventTileY); // Draw the tile
 						eventTiles[i][j].setCollisionBox(new Rectangle((int) eventTileX, (int) eventTileY, (int) eventTiles[i][j].getWidth(), (int) eventTiles[i][j].getHeight()));
 						if(!eventTiles[i][j].isPassable()) {
@@ -809,8 +828,7 @@ public class GameLevel extends BasicGameState{
 	 * @param gc
 	 */
 	private void endLevel(GameContainer gc, StateBasedGame sbg) {
-		if(Main.util.getPlayer().isReadyForNextLevel()) {
-			Main.util.getPs().setFirstWrite(true);
+		if(Main.util.getPlayer().isCanSwitchLevels()) {
 			LogSystem.addToLog("Level Ended.");
 			Main.util.levelNum++;
 			newLevel(gc, sbg);
@@ -820,10 +838,9 @@ public class GameLevel extends BasicGameState{
 	private void newLevel(GameContainer gc, StateBasedGame sbg){
 		
 		PlayerStats ps = new PlayerStats();
-		ps.addToPlayerStats("" + Main.util.getPlayer().getHealth() + ", " + Main.util.getPlayer().getGravPack().getGravpower());
+		ps.addToPlayerStats("" + Main.util.getPlayer().getHealth() + ", " + Main.util.getPlayer().getGravPack().getGravpower(), true);
 		for(int i = 0; i < Main.util.getInventory().getItems().size(); i++)
-			ps.addToPlayerStats(Main.util.getInventory().getItems().get(i).getItemImage());
-		ps.setFirstWrite(true);
+			ps.addToPlayerStats(Main.util.getInventory().getItems().get(i).getItemImage(), false);
 
 		Main.util.getLevel().setScore(Main.util.getLevel().getScore() + calculateScoring());
 		
