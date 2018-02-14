@@ -384,6 +384,8 @@ public class MainMenu extends BasicGameState implements ComponentListener{
 	
 	private void NewGame() {
 		newGame = true;
+		Main.util.countDialog = 0;
+		Main.util.deathCount = 0;
 	}
 	
 	private void StartGame(Input input, StateBasedGame sbg, int levelID) {

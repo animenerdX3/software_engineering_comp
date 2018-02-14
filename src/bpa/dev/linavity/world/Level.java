@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 import bpa.dev.linavity.collectibles.Item;
 import bpa.dev.linavity.entities.Camera;
 import bpa.dev.linavity.entities.Mob;
+import bpa.dev.linavity.entities.tiles.Dynamic;
 import bpa.dev.linavity.entities.tiles.Tile;
 import bpa.dev.linavity.gamestates.MainMenu;
 import bpa.dev.linavity.utils.LogSystem;
@@ -27,6 +28,7 @@ public class Level {
 	private Tile[][] events;
 	
 	private ArrayList<Point[]> channels;
+	private ArrayList<String[]> eventConnections;
 	
 	private int[][] config;
 
@@ -66,6 +68,11 @@ public class Level {
 		this.channels = lm.makeChannels();
 		LogSystem.addToLog("Channels Created Successfully.");
 		LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
+		startTime = System.nanoTime();
+		LogSystem.addToLog("Making Event Connections...");
+		this.eventConnections = lm.makeEventConnections();
+		LogSystem.addToLog("Event Connections Created Successfully.");
+		LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 		LogSystem.addToLog("Making the Mobs...");
 		startTime = System.nanoTime();
 		this.mobs = lm.makeMobs();
@@ -85,7 +92,8 @@ public class Level {
 		
 		// Assign the channels for our interconnected dynamic tiles
 		assignChannels();
-
+		//Assign the event ids for our event system
+		assignEventIDs();
 	}
 	
 	private void assignChannels() {
@@ -108,6 +116,24 @@ public class Level {
 		}
 		
 	}
+	
+	private void assignEventIDs() {
+		
+		for(int i = 0; i < eventConnections.size(); i++) { // Run through the array list of String arrays
+			
+			// Create a temporary Point array from the list of arrays
+			String[] grabEvents = eventConnections.get(i);  
+			
+			int row = Integer.parseInt(grabEvents[0]);
+			int col = Integer.parseInt(grabEvents[1]);
+			int id = Integer.parseInt(grabEvents[2]);
+			Point connect = new Point(row, col);
+			
+			Dynamic event = (Dynamic) this.getSingleEventTile(connect);
+			event.setEventID(id);
+			
+		}
+	}//end of assignEvents
 	
 	// Returns a 2d array of tiles that are within the boundaries of our camera object
 		public Tile[][] getScreenTiles(Camera cam, Tile[][] tiles) {

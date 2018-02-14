@@ -17,7 +17,7 @@ public class Tutorial {
 	public void update(Graphics g, int delta) {
 		if(isActive) {
 			g.drawImage(tutorial, 0, 0);
-			if(this.timer < 5000) {
+			if(this.timer < 3000) {
 				this.timer = this.timer + delta;
 			}
 			else {

@@ -114,6 +114,15 @@ public class GameLevel extends BasicGameState{
 	
 	/**
 	 * This runs as soon as we compile the program
+	 */	/**
+	 * @method init
+	 * @description Initialization
+	 * 
+	 * @param
+	 * GameContainer gc, StateBasedGame sbg
+	 * 
+	 * @return
+	 * 	void:
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
@@ -137,7 +146,9 @@ public class GameLevel extends BasicGameState{
 		tutorialGUI[7] = new Image("res/gui/tutorial/inventory.png");
 		tutorialGUI[8] = new Image("res/gui/tutorial/useitems.png");
 		
+		//Gets load game functions
 		if(Main.util.getLoadGame()) {
+			//Player sets name here
 			Main.util.setPlayerName(Main.util.getCurrentLoadData().getPlayerName());
 			try {
 				LogSystem.addToLog("Reading In Level...");
@@ -145,12 +156,15 @@ public class GameLevel extends BasicGameState{
 			} catch (FileNotFoundException ex) {
 				ErrorLog.displayError(ex);
 			}
+			//Loading text for log
 			LogSystem.addToLog("Loading Game...");
 			Main.util.levelNum = Main.util.getCurrentLoadData().getLevelFound();
 			Main.util.getInventory().setItems(new ArrayList<Item>());
 			Main.util.getCam().setX(Main.util.getCurrentLoadData().getCamX());
 			Main.util.getCam().setY(Main.util.getCurrentLoadData().getCamY());
+			//Level Timer
 			Main.util.setLevelTime(Main.util.getCurrentLoadData().getLevelTime());
+			//Death Counter
 			Main.util.deathCount = Main.util.getCurrentLoadData().getDeathCount();
 			LogSystem.addToLog("Creating Mobs...");
 			startTime = System.nanoTime();
@@ -193,15 +207,21 @@ public class GameLevel extends BasicGameState{
 				tutorialScene.setTutorial(tutorialGUI[0]);
 				tutorialScene.setActive(true);
 			}	
+			if(Main.util.levelNum == 2) {
+				tutorialScene.setTutorial(tutorialGUI[4]);
+				tutorialScene.setActive(true);
+			}	
 			
 			playerStats();
 			
 			Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getLevelStartID());
 		}
 		
+		//Sets Mobs and Items
 		Main.util.setLevelMobs(mobs);
 		Main.util.setLevelItems(items);
 		
+		//Button Images for menus
 		pause_menu_ui = new Image("res/gui/pausemenu.png");
 		resume = new Image("res/gui/buttons/button_resume.png");
 		retry = new Image("res/gui/buttons/button_retry.png");
@@ -231,14 +251,17 @@ public class GameLevel extends BasicGameState{
 			for(int x = 0; x < itemSlots[0].length; x++)
 				itemSlots[i][x] = new Image("res/gui/inventory/item_slot.png");
 		
+		//Parallax Mapping System
 		bg = new ParallaxMap("res/bg.jpg", 0, 0, -0.5f, 0,  true);
 		
+		//Cutscene array
 		cutsceneGUI = new Image[4];
 		cutsceneGUI[0] = new Image("res/gui/cutscenes/screen_darken.png");
 		cutsceneGUI[1] = new Image("res/gui/cutscenes/letterbox_top.png"); 
 		cutsceneGUI[2] = new Image("res/gui/cutscenes/letterbox_bottom.png");
 		cutsceneGUI[3] = new Image("res/gui/cutscenes/dialogbox.png");
 		
+		//Coin Animation Array
 		coins = new Image[3];
 		coins[0] = new Image("res/items/coin_b/coin_b_thumb_empty.png");
 		coins[1] = new Image("res/items/coin_p/coin_p_thumb_empty.png");
@@ -247,20 +270,34 @@ public class GameLevel extends BasicGameState{
 		Main.util.coinPGrabbed = false;
 		Main.util.coinAGrabbed = false;
 		
+		//Status Bars
 		health_gui = new Image("res/gui/stats/health_bar.png");
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
 		
+		//Fonts for text
 		font = new Font("Verdana", Font.BOLD, 22);
 		ttf = new TrueTypeFont(font, true);
 		
+		//Log shows how long it took the GameLevel to initialize
 		LogSystem.addToLog("GameLevel initialized successfully.");
 		LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - initTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 		LogSystem.addToLog("");
 		
 	}//end of init
 
+	//Player Stats Array
+	/**
+	 * @method playerStats
+	 * @description Loads stats of the Player
+	 * 
+	 * @param
+	 * null
+	 * 
+	 * @return
+	 * void
+	 */
 	private void playerStats() {
 		
 		Main.util.getInventory().setItems(new ArrayList<Item>());
@@ -389,7 +426,18 @@ public class GameLevel extends BasicGameState{
 		
 		return items;
 	}//end of getItems
-	
+
+	//start of setEvents
+	/**
+	 * @method setEvents
+	 * @description Sets Events
+	 * 
+	 * @param
+	 * LoadGame loadFile
+	 * 
+	 * @return
+	 * void
+	 */
 	public void setEvents(LoadGame loadFile) {
 		
 		int events = loadFile.getEventSize();
@@ -410,12 +458,21 @@ public class GameLevel extends BasicGameState{
 				Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(row[i], col[i])), null, Message.leverToggle, Boolean.parseBoolean(""+data[i])));
 			}
 		}
-		
 	}//end of setEvents
 	
 	/**
 	 * Renders content to the game / screen
 	 * Note: Positioning of objects matter: Draw backgrounds first, foregrounds last
+	 */
+	/**
+	 * @method render
+	 * @description Renders everything within the app
+	 * 
+	 * @param
+	 * GameContainer gc, StateBasedGame sbg, Graphics g
+	 * 
+	 * @return
+	 * void
 	 */
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
@@ -458,9 +515,11 @@ public class GameLevel extends BasicGameState{
 				items.remove(i);
 		}
 		
+		//Draws Timer and Death counters on screen for player to see
 		ttf.drawString(770,50, "Timer: "+Main.util.getLevelTime() / 1000, Color.red);
 		ttf.drawString(20,20, "Deaths: "+Main.util.deathCount, Color.red);
 		
+		//Draws coins to screen
 		g.drawImage(coins[0], 750, 10);
 		g.drawImage(coins[1], 800, 10);
 		g.drawImage(coins[2], 850, 10);
@@ -517,6 +576,16 @@ public class GameLevel extends BasicGameState{
 	 * @param gc
 	 * @param sbg
 	 * @param g
+	 */
+	/**
+	 * @method renderScreen
+	 * @description Renders the the users screen
+	 * 
+	 * @param
+	 * GameContainer gc, StateBasedGame sbg, Graphics g
+	 * 
+	 * @return
+	 * void
 	 */
 	private void renderScreen(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		
@@ -659,6 +728,16 @@ public class GameLevel extends BasicGameState{
 		g.drawImage(back, (gc.getWidth()/2) - (back.getWidth()/2), 750); // Setting the x value as half of the game container and adjusting for the width of the button
 	}	
 	
+	/**
+	 * @method renderInventoryMenu
+	 * @description Draws Inventory Menu to screen
+	 * 
+	 * @param
+	 * GameContainer gc, Graphics g
+	 * 
+	 * @return
+	 * 	void
+	 */
 	private void renderInventoryMenu(GameContainer gc, Graphics g) {
 		//Background Image
 		g.drawImage(inventoryBG, 0, 0);
@@ -679,7 +758,17 @@ public class GameLevel extends BasicGameState{
 				slotY = slotY + 305;
 		}
 	}//end of renderInventoryMenu
-	
+	//start of renderCutscene
+	/**
+	 * @method renderCutscene
+	 * @description draws the cutscene
+	 * 
+	 * @param
+	 * GameContainer gc, Graphics g
+	 * 
+	 * @return
+	 * 	void
+	 */
 	private void renderCutscene(GameContainer gc, Graphics g){
 		
 		Script script;
@@ -707,6 +796,16 @@ public class GameLevel extends BasicGameState{
 	
 	/**
 	 * Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
+	 */
+	/**
+	 * @method update
+	 * @description Constant loop, very fast,loops based on a delta
+	 * 
+	 * @param
+	 * GameContainer gc, Graphics g
+	 * 
+	 * @return
+	 * 	void:
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
@@ -853,7 +952,7 @@ public class GameLevel extends BasicGameState{
 		}
 		
 	}//end of newLevel
-	
+	//start of calculateScoring
 	private int calculateScoring(){
 		
 		int score = 500;
@@ -880,7 +979,8 @@ public class GameLevel extends BasicGameState{
 		
 		return score;
 	}
-	
+	//end of calculateScoring
+	//start of alertPlayer
 	private void alertPlayer(double alertHealth) {
 		if(Main.util.getPlayer().getHealth() <= alertHealth && Main.util.getPlayer().getHealth() != 0 && !alertPlayer) {
 			alertPlayer = true;
@@ -892,13 +992,14 @@ public class GameLevel extends BasicGameState{
 			alertPlayer = false;
 		}
 	}
-	
+	//end of alertPlayer
+	//start of playDeathSound
 	private void playDeathSound() {
 		LogSystem.addToLog("Player Has Low Health.");
 		Main.util.getMusic().pause();
 		Main.util.getSFX(2).loop(1f, Main.util.getSoundManager().getVolume());
 	}
-	
+	//end of playDeathSound
 	/**
 	 * Perform all updates to the player object
 	 * @param delta

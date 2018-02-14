@@ -62,7 +62,7 @@ public class LevelManager {
 		
 		// FILE CREATION
 		mapFile = getFile("data/levels/" + id + "/" + id + ".map");
-		// eventsFile = getFile("data/levels/" + id + "/" + id + ".events");
+		eventsFile = getFile("data/levels/" + id + "/" + id + ".events");
 		channelsFile = getFile("data/levels/" + id + "/" + id + ".channels");
 		// configFile = getFile("data/levels/" + id + "/" + id + ".levelConfig");
 		// characterFile = getFile("data/levels/" + id + "/" + id + ".character");
@@ -108,6 +108,20 @@ public class LevelManager {
 		}
 		
 		return channels;
+	}
+	
+	// Gives the level its channels
+	public ArrayList<String[]> makeEventConnections() throws SlickException, FileNotFoundException {
+
+		ArrayList<String[]> eventConnections = new ArrayList<String[]>();
+		
+		String[] connections = getStringArray(eventsFile);
+		
+		for(int i = 0; i < connections.length; i++) {
+			eventConnections.add(makeConnectionsArray(connections[i]));
+		}
+		
+		return eventConnections;
 	}
 	
 	public int[][] makeConfig() {
@@ -199,6 +213,14 @@ public class LevelManager {
 		return tempPointArray;
 		
 	}
+	
+	public String[] makeConnectionsArray(String line) {
+		
+		String[] tempStringArray = line.split(",");
+		
+		return tempStringArray;
+		
+	}//end of makeConnectionsArray
 	
 	/**
 	 * Converts the 2D array of ids to an array of tile objects
