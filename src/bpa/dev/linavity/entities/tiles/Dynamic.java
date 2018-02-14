@@ -11,6 +11,7 @@ public class Dynamic extends Tile {
 
 	// An array of points, indicating which objects this one will interact with.
 	protected Point[] targetObjects;
+	protected int eventID;
 	
 	// A toggle boolean used for different tiles that toggle
 	protected boolean toggle;
@@ -41,6 +42,10 @@ public class Dynamic extends Tile {
 		return targetObjects;
 	}	
 	
+	public int getEventID() {
+		return eventID;
+	}
+	
 	// Setters
 
 	/**
@@ -57,6 +62,10 @@ public class Dynamic extends Tile {
 
 	public void setToggle(boolean toggle) {
 		this.toggle = toggle;
+	}
+	
+	public void setEventID(int eventID) {
+		this.eventID = eventID;
 	}
 	
 }//end of class

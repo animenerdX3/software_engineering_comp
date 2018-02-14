@@ -28,7 +28,7 @@ public class Tile extends GameObject implements Shape {
 	public final static int doorID = 34;
 	
 	// Tile ID
-	private int id;
+	protected int id;
 	
 	// X and Y position of the tile in the level (not relative position)
 	protected float x, y;

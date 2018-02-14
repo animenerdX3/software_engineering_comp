@@ -68,7 +68,11 @@ public class Script {
 		if(Main.util.countDialog == 6 || Main.util.countDialog == 7) {
 			Main.util.cutsceneVars.setAbricDirection(false);
 			Main.util.cutsceneVars.setMoveAbric(true);
+		}else {
+			Main.util.cutsceneVars.setAbricDirection(true);
+			Main.util.cutsceneVars.setMoveAbric(false);
 		}
+			
 	}
 	
 	public int getID(){
