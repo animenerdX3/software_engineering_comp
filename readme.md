@@ -29,7 +29,5 @@ PETER
 - Enemy AI
 ETHAN
 - Events
-CHRIS
-- Error Logs
 YANNICK
 - Mob Animation
