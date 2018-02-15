@@ -1,193 +1,5 @@
-<<<<<<< HEAD
 Starting Program...
-02/14/2018 15:39:36
-Current Operating System: Windows 7
-System Display Resolution: 1920 x 1080
-Window Size: 900 x 900
-FPS: 60
-Version: 1.055
-Debug Mode: false
-
-Utility Class Created.
-Initializing Main Menu...
-Music Track 1 Playing
-Main Menu Initiation Succeeded.
-
-Initializing GameLevel...
-Starting a New Game...
-Reading In Level...
-Making the Map...
-Map Created Successfully.
-Running code took 0.271 s
-Making the Events...
-Events Created Successfully.
-Running code took 0.264 s
-Making the Channels...
-Channels Created Successfully.
-Running code took 0.0 s
-Making the Mobs...
-Mobs Created Successfully.
-Running code took 0.013 s
-Making the Items...
-Items Created Successfully.
-Running code took 0.012 s
-Level Created Successfully.
-Running code took 0.565 s
-
-Creating Mobs...
-Mobs Created.
-Running code took 0.0 s
-Creating Items...
-Items Created.
-Running code took 0.0 s
-GameLevel initialized successfully.
-Running code took 1.402 s
-
-Load Button Pressed By User.
-Opening Save...
-Opening Load Data 2...
-Initializing GameLevel...
-Reading In Level...
-Making the Map...
-Map Created Successfully.
-Running code took 0.163 s
-Making the Events...
-Events Created Successfully.
-Running code took 0.097 s
-Making the Channels...
-Channels Created Successfully.
-Running code took 0.001 s
-Making the Mobs...
-Mobs Created Successfully.
-Running code took 0.011 s
-Making the Items...
-Items Created Successfully.
-Running code took 0.002 s
-Level Created Successfully.
-Running code took 0.277 s
-
-Loading Game...
-Creating Mobs...
-Mobs Created.
-Running code took 0.002 s
-Creating Items...
-Items Created.
-Running code took 0.002 s
-Level Loaded Successfully.
-GameLevel initialized successfully.
-Running code took 0.331 s
-
-Resetting Level Number...
-Entering Game...
-Entering Level 3...
-Music Track 2 Playing
-Inventory Open: true
-Inventory Open: false
-Menu Open: true
-Resuming Level.
-Level Ended.
-Initializing GameLevel...
-Starting a New Game...
-Reading In Level...
-Making the Map...
-Map Created Successfully.
-Running code took 0.092 s
-Making the Events...
-Events Created Successfully.
-Running code took 0.103 s
-Making the Channels...
-Channels Created Successfully.
-Running code took 0.001 s
-Making the Mobs...
-Mobs Created Successfully.
-Running code took 0.002 s
-Making the Items...
-Items Created Successfully.
-Running code took 0.002 s
-Level Created Successfully.
-Running code took 0.205 s
-
-Creating Mobs...
-Mobs Created.
-Running code took 0.0 s
-Creating Items...
-Items Created.
-Running code took 0.0 s
-GameLevel initialized successfully.
-Running code took 0.258 s
-
-Level Ended.
-Initializing GameLevel...
-Starting a New Game...
-Reading In Level...
-Making the Map...
-Map Created Successfully.
-Running code took 0.151 s
-Making the Events...
-Events Created Successfully.
-Running code took 0.157 s
-Making the Channels...
-Channels Created Successfully.
-Running code took 0.001 s
-Making the Mobs...
-Mobs Created Successfully.
-Running code took 0.329 s
-Making the Items...
-Items Created Successfully.
-Running code took 0.002 s
-Level Created Successfully.
-Running code took 0.643 s
-
-Creating Mobs...
-Mobs Created.
-Running code took 0.0 s
-Creating Items...
-Items Created.
-Running code took 0.0 s
-GameLevel initialized successfully.
-Running code took 0.697 s
-
-Inventory Open: true
-Inventory Open: false
-Player Has Low Health.
-Resetting Level...
-Initializing GameLevel...
-Starting a New Game...
-Reading In Level...
-Making the Map...
-Map Created Successfully.
-Running code took 0.151 s
-Making the Events...
-Events Created Successfully.
-Running code took 0.151 s
-Making the Channels...
-Channels Created Successfully.
-Running code took 0.001 s
-Making the Mobs...
-Mobs Created Successfully.
-Running code took 0.001 s
-Making the Items...
-Items Created Successfully.
-Running code took 0.001 s
-Level Created Successfully.
-Running code took 0.309 s
-
-Creating Mobs...
-Mobs Created.
-Running code took 0.0 s
-Creating Items...
-Items Created.
-Running code took 0.0 s
-GameLevel initialized successfully.
-Running code took 0.36 s
-
-Menu Open: true
-Returning to Main Menu...
-
-Exiting Game...
-=======
-Starting Program...
-02/14/2018 14:27:44
+02/15/2018 04:30:55
 Current Operating System: Windows 10
 System Display Resolution: 1920 x 1080
 Window Size: 900 x 900
@@ -205,66 +17,66 @@ Starting a New Game...
 Reading In Level...
 Making the Map...
 Map Created Successfully.
-Running code took 0.325 s
+Running code took 0.263 s
 Making the Events...
 Events Created Successfully.
-Running code took 0.283 s
+Running code took 0.237 s
 Making the Channels...
 Channels Created Successfully.
-Running code took 0.001 s
+Running code took 0.012 s
 Making Event Connections...
 Event Connections Created Successfully.
-Running code took 0.001 s
+Running code took 0.024 s
 Making the Mobs...
 Mobs Created Successfully.
-Running code took 0.02 s
+Running code took 0.024 s
 Making the Items...
 Items Created Successfully.
-Running code took 0.014 s
+Running code took 0.011 s
 Level Created Successfully.
-Running code took 0.647 s
+Running code took 0.727 s
 
 Creating Mobs...
 Mobs Created.
-Running code took 0.0 s
+Running code took 0.003 s
 Creating Items...
 Items Created.
-Running code took 0.0 s
+Running code took 0.003 s
 GameLevel initialized successfully.
-Running code took 1.346 s
+Running code took 1.436 s
 
 Initializing GameLevel...
 Starting a New Game...
 Reading In Level...
 Making the Map...
 Map Created Successfully.
-Running code took 0.219 s
+Running code took 0.179 s
 Making the Events...
 Events Created Successfully.
-Running code took 0.208 s
+Running code took 0.199 s
 Making the Channels...
 Channels Created Successfully.
-Running code took 0.0 s
+Running code took 0.003 s
 Making Event Connections...
 Event Connections Created Successfully.
-Running code took 0.001 s
+Running code took 0.012 s
 Making the Mobs...
 Mobs Created Successfully.
-Running code took 0.002 s
+Running code took 0.006 s
 Making the Items...
 Items Created Successfully.
-Running code took 0.001 s
+Running code took 0.006 s
 Level Created Successfully.
-Running code took 0.435 s
+Running code took 0.51 s
 
 Creating Mobs...
 Mobs Created.
-Running code took 0.0 s
+Running code took 0.007 s
 Creating Items...
 Items Created.
-Running code took 0.0 s
+Running code took 0.008 s
 GameLevel initialized successfully.
-Running code took 0.485 s
+Running code took 0.684 s
 
 Resetting Level Number...
 Entering Game...
@@ -276,36 +88,188 @@ Starting a New Game...
 Reading In Level...
 Making the Map...
 Map Created Successfully.
-Running code took 0.252 s
+Running code took 0.261 s
 Making the Events...
 Events Created Successfully.
-Running code took 0.234 s
+Running code took 0.199 s
 Making the Channels...
 Channels Created Successfully.
-Running code took 0.0 s
+Running code took 0.006 s
 Making Event Connections...
 Event Connections Created Successfully.
-Running code took 0.001 s
+Running code took 0.007 s
 Making the Mobs...
 Mobs Created Successfully.
-Running code took 0.018 s
+Running code took 0.015 s
+Making the Items...
+Items Created Successfully.
+Running code took 0.044 s
+Level Created Successfully.
+Running code took 0.575 s
+
+Creating Mobs...
+Mobs Created.
+Running code took 0.003 s
+Creating Items...
+Items Created.
+Running code took 0.003 s
+GameLevel initialized successfully.
+Running code took 0.659 s
+
+Level Ended.
+Initializing GameLevel...
+Starting a New Game...
+Reading In Level...
+Making the Map...
+Map Created Successfully.
+Running code took 0.171 s
+Making the Events...
+Events Created Successfully.
+Running code took 0.115 s
+Making the Channels...
+Channels Created Successfully.
+Running code took 0.003 s
+Making Event Connections...
+Event Connections Created Successfully.
+Running code took 0.006 s
+Making the Mobs...
+Mobs Created Successfully.
+Running code took 0.04 s
+Making the Items...
+Items Created Successfully.
+Running code took 0.016 s
+Level Created Successfully.
+Running code took 0.429 s
+
+Creating Mobs...
+Mobs Created.
+Running code took 0.006 s
+Creating Items...
+Items Created.
+Running code took 0.013 s
+GameLevel initialized successfully.
+Running code took 0.645 s
+
+Inventory Open: true
+Inventory Open: false
+Inventory Open: true
+Inventory Open: false
+Level Ended.
+Initializing GameLevel...
+Starting a New Game...
+Reading In Level...
+Making the Map...
+Map Created Successfully.
+Running code took 0.169 s
+Making the Events...
+Events Created Successfully.
+Running code took 0.137 s
+Making the Channels...
+Channels Created Successfully.
+Running code took 0.014 s
+Making Event Connections...
+Event Connections Created Successfully.
+Running code took 0.052 s
+Making the Mobs...
+Mobs Created Successfully.
+Running code took 0.01 s
 Making the Items...
 Items Created Successfully.
 Running code took 0.009 s
 Level Created Successfully.
-Running code took 0.517 s
+Running code took 0.529 s
 
 Creating Mobs...
 Mobs Created.
-Running code took 0.0 s
+Running code took 0.005 s
 Creating Items...
 Items Created.
-Running code took 0.0 s
+Running code took 0.004 s
 GameLevel initialized successfully.
-Running code took 0.568 s
+Running code took 0.651 s
 
+Level Ended.
+Initializing GameLevel...
+Starting a New Game...
+Reading In Level...
+Making the Map...
+Map Created Successfully.
+Running code took 0.221 s
+Making the Events...
+Events Created Successfully.
+Running code took 0.191 s
+Making the Channels...
+Channels Created Successfully.
+Running code took 0.003 s
+Making Event Connections...
+Event Connections Created Successfully.
+Running code took 0.005 s
+Making the Mobs...
+Mobs Created Successfully.
+Running code took 0.05 s
+Making the Items...
+Items Created Successfully.
+Running code took 0.009 s
+Level Created Successfully.
+Running code took 0.53 s
+
+Creating Mobs...
+Mobs Created.
+Running code took 0.004 s
+Creating Items...
+Items Created.
+Running code took 0.003 s
+GameLevel initialized successfully.
+Running code took 0.632 s
+
+Inventory Open: true
+Inventory Open: false
 Menu Open: true
-Returning to Main Menu...
+Resuming Level.
+Inventory Open: true
+Inventory Open: false
+Inventory Open: true
+Inventory Open: false
+Inventory Open: true
+Inventory Open: false
+Inventory Open: true
+Inventory Open: false
+Level Ended.
+Initializing GameLevel...
+Starting a New Game...
+Reading In Level...
+Making the Map...
+Map Created Successfully.
+Running code took 0.106 s
+Making the Events...
+Events Created Successfully.
+Running code took 0.091 s
+Making the Channels...
+Channels Created Successfully.
+Running code took 0.002 s
+Making Event Connections...
+Event Connections Created Successfully.
+Running code took 0.005 s
+Making the Mobs...
+Mobs Created Successfully.
+Running code took 0.004 s
+Making the Items...
+Items Created Successfully.
+Running code took 0.007 s
+Level Created Successfully.
+Running code took 0.26 s
 
-Exiting Game...
->>>>>>> branch 'master' of https://github.com/animenerdX3/software_engineering_comp.git
+Creating Mobs...
+Mobs Created.
+Running code took 0.007 s
+Creating Items...
+Items Created.
+Running code took 0.006 s
+GameLevel initialized successfully.
+Running code took 0.401 s
+
+Level Ended.
+Initializing GameLevel...
+Starting a New Game...
+Reading In Level...
+Making the Map...

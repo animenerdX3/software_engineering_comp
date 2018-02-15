@@ -15,9 +15,10 @@ public class CutsceneAccessor {
 	private int length;
 	
 	public CutsceneAccessor() {
-		this.playerSprites = new Image[1];
+		this.playerSprites = new Image[2];
 		try {
 			this.playerSprites[0] = new Image("res/sprites/player/calvin_0.png");
+			this.playerSprites[1] = new Image("res/sprites/player/calvin_1.png");
 		} catch (SlickException e) {
 			ErrorLog.displayError(e);
 		}

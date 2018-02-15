@@ -62,6 +62,10 @@ public class Script {
 		if(Main.util.countDialog == 1){
 			g.drawImage(Main.util.cutsceneVars.getPlayerSprites()[0], 0, 50);
 		}
+		
+		if(Main.util.countDialog == 4){
+			g.drawImage(Main.util.cutsceneVars.getPlayerSprites()[1], 0, 50);
+		}
 	}
 	
 	public void getEvents() {
