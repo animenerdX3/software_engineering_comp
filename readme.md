@@ -2,7 +2,7 @@
 
 ### How To Install
 1. Download the .zip file from the "Installer" folder.
-2. Unzip the file.
+2. Unzip the folder.
 3. Launch Linavity_Installer.exe to install the game.
 4. Launch "Linavity.exe"
 5. Important Note: If your game is not allowing you to make a save file, run "Linavity.exe" as an administrator.
