@@ -16,7 +16,7 @@ Data holds level data
 Saves holds game saves
 Lib holds Slick2D Libraries
 
-###How To Install
+### How To Install
 1. Grab the .zip file from the "Installer" folder.
 2. Unzip the file.
 3. Launch Linavity_Installer.exe to install the game.
