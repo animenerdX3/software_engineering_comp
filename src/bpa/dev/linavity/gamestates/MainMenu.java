@@ -352,6 +352,7 @@ public class MainMenu extends BasicGameState implements ComponentListener{
 		name.setBackgroundColor(background);
 		name.setBorderColor(Color.white);
 		name.setFocus(true);
+		name.setTextColor(Color.black);
 		g.setFont(ttf);
 		g.drawString("Please Enter Your Name", gc.getWidth() / 2 - 325, gc.getHeight() / 2 - 100);
 		g.setFont(gc.getDefaultFont());

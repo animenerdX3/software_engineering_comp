@@ -203,19 +203,13 @@ public class GameLevel extends BasicGameState{
 			LogSystem.addToLog("Items Created.");
 			LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 			
-			if(Main.util.levelNum == 1) {
-				tutorialScene.setTutorial(tutorialGUI[0]);
-				tutorialScene.setActive(true);
-			}	
-			if(Main.util.levelNum == 2) {
-				tutorialScene.setTutorial(tutorialGUI[4]);
-				tutorialScene.setActive(true);
-			}	
-			
 			playerStats();
+			
 			
 			Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getLevelStartID());
 		}
+		
+		onLoad();
 		
 		//Sets Mobs and Items
 		Main.util.setLevelMobs(mobs);
@@ -287,6 +281,41 @@ public class GameLevel extends BasicGameState{
 		
 	}//end of init
 
+	private void onLoad() {
+		
+		if(Main.util.levelNum == 1) {
+			tutorialScene.setTimer(0);
+			tutorialScene.setTutorial(tutorialGUI[0]);
+			tutorialScene.setActive(true);
+		}	
+		
+		if(Main.util.levelNum == 2) {
+			tutorialScene.setTimer(0);
+			tutorialScene.setTutorial(tutorialGUI[2]);
+			tutorialScene.setActive(true);
+		}
+		
+		if(Main.util.levelNum == 3) {
+			tutorialScene.setTimer(0);
+			tutorialScene.setTutorial(tutorialGUI[3]);
+			tutorialScene.setActive(true);
+		}
+		
+		if(Main.util.levelNum == 4) {
+			tutorialScene.setTimer(0);
+			tutorialScene.setTutorial(tutorialGUI[1]);
+			tutorialScene.setActive(true);
+		}
+		
+		if(Main.util.levelNum == 5) {
+			Main.util.getPlayer().setHealth(90);
+			tutorialScene.setTimer(0);
+			tutorialScene.setTutorial(tutorialGUI[7]);
+			tutorialScene.setActive(true);
+		}
+		
+	}//end of onLoad
+	
 	//Player Stats Array
 	/**
 	 * @method playerStats
@@ -560,6 +589,9 @@ public class GameLevel extends BasicGameState{
 		if(!menuOpen && !saveOpen && !Main.util.getPlayer().isInventoryOpen())
 			tutorialScene.update(g, Main.util.delta);
 		
+		if(!menuOpen && !saveOpen && Main.util.levelNum == 5)
+			tutorialScene.update(g, Main.util.delta);
+		
 		//Draw menu, if open
 		if(!menuOpen && !saveOpen && Main.util.getPlayer().isInventoryOpen())
 			renderInventoryMenu(gc, g);
@@ -568,6 +600,8 @@ public class GameLevel extends BasicGameState{
 		else if(saveOpen && !menuOpen && !Main.util.getPlayer().isInventoryOpen()) 
 			renderSaveMenu(gc, g);
 		
+		
+				
 		
 	}//end of render
 
@@ -757,6 +791,11 @@ public class GameLevel extends BasicGameState{
 				slotX = 35;
 				slotY = slotY + 305;
 		}
+		
+		if(Main.util.levelNum == 5) {
+			g.drawImage(tutorialGUI[8], 0, 0);
+		}		
+
 	}//end of renderInventoryMenu
 	//start of renderCutscene
 	/**
@@ -1148,7 +1187,7 @@ public class GameLevel extends BasicGameState{
 						mobs.get(i).setIsAlive(false);
 				}
 				if(script.getID() == 0) {
-					Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(21, 8)), null, Message.autoOpenDoor, true));
+					Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(14, 8)), null, Message.autoOpenDoor, true));
 				}
 				Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getID() + 1);
 				startPlayerAnimation();

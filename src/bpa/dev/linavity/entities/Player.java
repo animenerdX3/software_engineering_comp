@@ -70,12 +70,12 @@ public class Player extends Mob {
 	    this.currentImage = this.standStillRightAni;
 	    this.currentStillImage = this.standStillRightAni;
 
-	    if(Main.util.levelNum != 1)
+	    if(Main.util.levelNum > 7)
 	    	this.canUseGravpack = true;
 	    else
 	    	this.canUseGravpack = false;
 	    
-	    if(Main.util.levelNum > 2)
+	    if(Main.util.levelNum > 8)
 	    	this.canUseWeapon = true;
 	    else
 	    	this.canUseWeapon = false;
@@ -345,13 +345,19 @@ public class Player extends Mob {
 	 * Determine if the player can end the level
 	 */
 	public void determineEndLevel() {
-		if(Main.util.levelNum == 1) {
+		if(Main.util.levelNum == 5) {
+			if(this.health == 100)
+				this.readyForNextLevel = true;
+			else
+				this.readyForNextLevel = false;
+		}
+		else if(Main.util.levelNum == 7) {
 			if(this.canUseGravpack)
 				this.readyForNextLevel = true;
 			else
 				this.readyForNextLevel = false;
 		}
-		else if(Main.util.levelNum == 2) {
+		else if(Main.util.levelNum == 8) {
 			if(this.canUseWeapon)
 				this.readyForNextLevel = true;
 			else
