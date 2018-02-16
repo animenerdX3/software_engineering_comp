@@ -31,6 +31,7 @@ import bpa.dev.linavity.entities.Abric;
 import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
+import bpa.dev.linavity.entities.enemies.Boss;
 import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.enemies.Tank;
 import bpa.dev.linavity.entities.tiles.Tile;
@@ -52,6 +53,8 @@ public class GameLevel extends BasicGameState{
 	private Image health_bar = null;
 	private Image grav_gui = null;
 	private Image grav_bar = null;
+	private Image boss_gui = null;
+	private Image boss_bar = null;
 	
 	//Pause Menu
 	private Image pause_menu_ui = null;
@@ -110,6 +113,7 @@ public class GameLevel extends BasicGameState{
 	//Tutorial Images
 	public static Image[] tutorialGUI;
 	
+	//Start time for debugging
 	private double startTime;
 	
 	/**
@@ -135,7 +139,7 @@ public class GameLevel extends BasicGameState{
 		Main.util.levelEvents.setEvents(new ArrayList<EventData>());
 		
 		//Set tutorial functions
-		tutorialGUI = new Image[9];
+		tutorialGUI = new Image[10];
 		tutorialGUI[0] = new Image("res/gui/tutorial/left_right.png");
 		tutorialGUI[1] = new Image("res/gui/tutorial/interact.png");
 		tutorialGUI[2] = new Image("res/gui/tutorial/jump.png");
@@ -145,6 +149,7 @@ public class GameLevel extends BasicGameState{
 		tutorialGUI[6] = new Image("res/gui/tutorial/shoot.png");
 		tutorialGUI[7] = new Image("res/gui/tutorial/inventory.png");
 		tutorialGUI[8] = new Image("res/gui/tutorial/useitems.png");
+		tutorialGUI[9] = new Image("res/gui/tutorial/run.png");
 		
 		//Gets load game functions
 		if(Main.util.getLoadGame()) {
@@ -179,11 +184,14 @@ public class GameLevel extends BasicGameState{
 			items = getItems(Main.util.getCurrentLoadData());
 			LogSystem.addToLog("Items Created.");
 			LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
+			for(int i = 0; i < Main.util.getInventory().getItems().size(); i++)
+				Main.util.getPs().addToPlayerStats(Main.util.getInventory().getItems().get(i).getItemImage(), false);
 			setEvents(Main.util.getCurrentLoadData());
 			Main.util.cutsceneVars.setID(Main.util.getCurrentLoadData().getEventID());
 			Main.util.setLoadGame(false);
 			LogSystem.addToLog("Level Loaded Successfully.");
 		}
+		//Checks for session level starts
 		else {
 			LogSystem.addToLog("Starting a New Game...");
 			try {
@@ -205,12 +213,14 @@ public class GameLevel extends BasicGameState{
 			LogSystem.addToLog("Items Created.");
 			LogSystem.addToLog("Running code took "+(Math.round(((System.nanoTime() - startTime) / 1000000000.0) * 1000.0) / 1000.0)+" s");
 			
+			//
 			playerStats();
 			
-			
+			//Initialize our cutscene variables
 			Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getLevelStartID());
 		}
 		
+		//Functions performed when the level is loaded
 		onLoad();
 		
 		//Sets Mobs and Items
@@ -271,6 +281,8 @@ public class GameLevel extends BasicGameState{
 		health_bar = new Image("res/gui/stats/health_bar_full.png");
 		grav_gui = new Image("res/gui/stats/grav_pack.png");
 		grav_bar = new Image("res/gui/stats/grav_pack_full.png");
+		boss_gui = new Image("res/gui/stats/boss_health.png");
+		boss_bar = new Image("res/gui/stats/boss_health_full.png");
 		
 		//Fonts for text
 		font = new Font("Verdana", Font.BOLD, 22);
@@ -283,7 +295,16 @@ public class GameLevel extends BasicGameState{
 		
 	}//end of init
 
+	/**
+	 * lets the level call functions once a specific level is loaded
+	 */
 	private void onLoad() {
+		
+		if(Main.util.levelNum < 7) 
+			Main.util.getPlayer().setCanUseGravpack(false);
+		
+		if(Main.util.levelNum < 8) 
+			Main.util.getPlayer().setCanUseWeapon(false);
 		
 		if(Main.util.levelNum == 1) {
 			tutorialScene.setTimer(0);
@@ -316,12 +337,25 @@ public class GameLevel extends BasicGameState{
 			tutorialScene.setActive(true);
 		}
 		
+		if(Main.util.levelNum == 6) {
+			tutorialScene.setTimer(0);
+			tutorialScene.setTutorial(tutorialGUI[4]);
+			tutorialScene.setActive(true);
+		}
+		
+		if(Main.util.levelNum == 16) {
+			Main.util.getMusic().stop();
+			Main.util.setMusic(Main.util.getMusicQueue(2));
+			Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
+			Main.util.getPlayer().setHealth(Main.util.getPlayer().getHealth() + 50);
+		}
+		
 	}//end of onLoad
 	
 	//Player Stats Array
 	/**
 	 * @method playerStats
-	 * @description Loads stats of the Player
+	 * @description Loads statistics of the Player
 	 * 
 	 * @param
 	 * null
@@ -343,12 +377,14 @@ public class GameLevel extends BasicGameState{
 		for(int i = 0; i < stats.size(); i++) {
 			if(i == 0) {
 				String [] playerStats = stats.get(i).split(",");
+				//Set the health
 				Main.util.getPlayer().setHealth(Double.parseDouble(playerStats[0]));
+				//Set the gravity power
 				Main.util.getPlayer().getGravPack().setGravpower(Float.parseFloat(playerStats[1]));
 			}
+			//Add to the inventory of the player
 			else if(stats.size() > 1) {
 					try {
-						
 						if(stats.get(i).equalsIgnoreCase("gravcapsule"))
 						Main.util.getInventory().addToInventory(new GravCapsule(0, 0, "gravcapsule"));
 						
@@ -364,8 +400,13 @@ public class GameLevel extends BasicGameState{
 			}
 				
 		}
-	}
+	}//end of playerStats
 	
+	/**
+	 * create the mobs specified in the level
+	 * @return
+	 * @throws SlickException
+	 */
 	private ArrayList<Mob> getMobs() throws SlickException {
 		
 		Main.util.setPlayer((Player)Main.util.getLevel().getMobs().get(0));
@@ -373,6 +414,12 @@ public class GameLevel extends BasicGameState{
 		return Main.util.getLevel().getMobs();
 	}//end of getMobs
 	
+	/**
+	 * create the mobs listed in the load game file
+	 * @param loadFile the current load data
+	 * @return the mobs for the level
+	 * @throws SlickException
+	 */
 	private ArrayList<Mob> getMobs(LoadGame loadFile) throws SlickException {
 		//Add mobs
 		ArrayList <Mob> mobs = new ArrayList<Mob>();
@@ -398,6 +445,10 @@ public class GameLevel extends BasicGameState{
 				mobs.add(new Tank(xPos[i], yPos[i]));
 			else if(classNames[i].equalsIgnoreCase("Bomber"))
 				mobs.add(new Bomber(xPos[i], yPos[i]));
+			else if(classNames[i].equalsIgnoreCase("Abric"))
+				mobs.add(new Abric(xPos[i], yPos[i]));
+			else if(classNames[i].equalsIgnoreCase("Boss"))
+				mobs.add(new Boss(xPos[i], yPos[i]));
 			
 			mobs.get(i).setHealth(healthStats[i]);
 		}
@@ -405,15 +456,27 @@ public class GameLevel extends BasicGameState{
 		return mobs;
 	}//end of getMobs
 	
+	/**
+	 * create items specified by the level
+	 * @return
+	 * @throws SlickException
+	 */
 	private ArrayList<Item> getItems() throws SlickException {
 		return Main.util.getLevel().getItems();
 	}//end of getItems
 	
+	/**
+	 * create items listed in load file
+	 * @param loadFile
+	 * @return the items for the map
+	 * @throws SlickException
+	 */
 	private ArrayList<Item> getItems(LoadGame loadFile) throws SlickException {
 		//Add mobs
 		ArrayList <Item> items = new ArrayList<Item>();
 		
 		int itemsSize = loadFile.getItemSize();
+		int inventorySize = loadFile.getInventorySize();
 		int mobSize = loadFile.getMobSize();
 		float[] xPos = loadFile.getXPos();
 		float[] yPos = loadFile.getYPos();
@@ -424,7 +487,8 @@ public class GameLevel extends BasicGameState{
 		boolean setGrav= true;
 		boolean setWeapon = true;
 		
-		for(int i = 0; i < itemImage.length; i++) {
+		for(int i = 0; i < itemsSize + inventorySize; i++) {
+			//Add to level
 			if(i < itemsSize) {
 				if(itemImage[i].equalsIgnoreCase("gravitypack")) {
 					setGrav = false;
@@ -441,7 +505,8 @@ public class GameLevel extends BasicGameState{
 				else if(itemImage[i].equalsIgnoreCase("keycard"))
 					items.add(new KeyCard(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 			}
-			else if(itemImage[i] != null){
+			//Add to inventory
+			else {
 				if(itemImage[i].equalsIgnoreCase("healthpack"))
 					Main.util.getInventory().addToInventory(new HealthPack(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 				else if(itemImage[i].equalsIgnoreCase("gravcapsule"))
@@ -460,7 +525,7 @@ public class GameLevel extends BasicGameState{
 	//start of setEvents
 	/**
 	 * @method setEvents
-	 * @description Sets Events
+	 * @description sets the condition of events in a level
 	 * 
 	 * @param
 	 * LoadGame loadFile
@@ -490,6 +555,8 @@ public class GameLevel extends BasicGameState{
 		}
 	}//end of setEvents
 	
+	//////////// START OF RENDERING ////////////
+	
 	/**
 	 * Renders content to the game / screen
 	 * Note: Positioning of objects matter: Draw backgrounds first, foregrounds last
@@ -509,8 +576,10 @@ public class GameLevel extends BasicGameState{
 		
 		bg.getBackgroundLayer().draw(bg.getX(),bg.getY());
 		
+		//Render the map and events
 		renderScreen(gc, sbg, g);
 		
+		//Display variables when in debug mode
 		if(Main.util.debugMode) {
 			g.drawString("X: " + Main.util.getPlayer().getX() + " Y: " + Main.util.getPlayer().getY(), 10,50);
 			g.drawString("Cam X: " + Main.util.getCam().getX() + " Cam Y: " + Main.util.getCam().getY(), 10,70);
@@ -545,6 +614,12 @@ public class GameLevel extends BasicGameState{
 				items.remove(i);
 		}
 		
+		//If we are at the boss level and the boss is alive, display the boss's health meter
+		if(Main.util.levelNum == 16 && Main.util.getLevelMobs().size() > 1) {
+			boss_gui.draw(0,0);
+			boss_bar.draw(139, 73, (float) (139+(Main.util.getLevelMobs().get(1).getHealth() * 1.244)), 73 + 51, 0, 0, (float)(Main.util.getLevelMobs().get(1).getHealth() * 1.244), 51);
+		}
+		
 		//Draws Timer and Death counters on screen for player to see
 		ttf.drawString(750,50, "Timer: "+Main.util.getLevelTime() / 1000, Color.red);
 		ttf.drawString(20,20, "Deaths: "+Main.util.deathCount, Color.red);
@@ -566,13 +641,14 @@ public class GameLevel extends BasicGameState{
 		g.setColor(Color.orange);
 		
 		for(int i = 0; i < mobs.size(); i++) {
-
-		mobs.get(i).setBoundingBox(new Rectangle((int) (mobs.get(i).getX() - Main.util.getCam().getX()), (int) (mobs.get(i).getY() - Main.util.getCam().getY()), mobs.get(i).getWidth(), mobs.get(i).getHeight()));
-		if(Main.util.debugMode)
-			g.drawRect((int) mobs.get(i).getBoundingBox().getX(), (int) mobs.get(i).getBoundingBox().getY(), (int) mobs.get(i).getBoundingBox().getWidth(), (int) mobs.get(i).getBoundingBox().getHeight());
+			//Set the boundary boxes for the mobs
+			mobs.get(i).setBoundingBox(new Rectangle((int) (mobs.get(i).getX() - Main.util.getCam().getX()), (int) (mobs.get(i).getY() - Main.util.getCam().getY()), mobs.get(i).getWidth(), mobs.get(i).getHeight()));
+			if(Main.util.debugMode)
+				g.drawRect((int) mobs.get(i).getBoundingBox().getX(), (int) mobs.get(i).getBoundingBox().getY(), (int) mobs.get(i).getBoundingBox().getWidth(), (int) mobs.get(i).getBoundingBox().getHeight());
 			}
 		
 		for(int i = 0; i < items.size(); i++) {
+			//Set the item collision boxes for the items
 			items.get(i).setCollisionBox(new Rectangle((int) (items.get(i).getX() - Main.util.getCam().getX()), (int) (items.get(i).getY() - Main.util.getCam().getY()), (int)items.get(i).getWidth(), (int)items.get(i).getHeight()));
 			if(Main.util.debugMode)
 				g.drawRect((int) items.get(i).getCollisionBox().getX(), (int) items.get(i).getCollisionBox().getY(), (int) items.get(i).getCollisionBox().getWidth(), (int) items.get(i).getCollisionBox().getHeight());
@@ -586,11 +662,14 @@ public class GameLevel extends BasicGameState{
 			grav_bar.draw(318,850,(float) (318+(Main.util.getPlayer().getGravPack().getGravpower() * 2.7)),850+27,0,0,(float) (Main.util.getPlayer().getGravPack().getGravpower() * 2.7),27);
 		}
 		
+		//Render cutscene data
 		renderCutscene(gc, g);
 		
+		//If nothing is open, update the tutorial
 		if(!menuOpen && !saveOpen && !Main.util.getPlayer().isInventoryOpen())
 			tutorialScene.update(g, Main.util.delta);
 		
+		//If only the menu and save menu are not open specifically on level 5, update the tutorial
 		if(!menuOpen && !saveOpen && Main.util.levelNum == 5)
 			tutorialScene.update(g, Main.util.delta);
 		
@@ -601,9 +680,6 @@ public class GameLevel extends BasicGameState{
 			renderMenu(gc, g);
 		else if(saveOpen && !menuOpen && !Main.util.getPlayer().isInventoryOpen()) 
 			renderSaveMenu(gc, g);
-		
-		
-				
 		
 	}//end of render
 
@@ -726,6 +802,7 @@ public class GameLevel extends BasicGameState{
 		g.drawImage(slotOne, 100, 150);
 		g.setColor(Color.white);
 		
+		//Draw data for slot one
 		if(Main.util.getSlotOneData().getLoadFile() != null) {
 			try {
 				String levelDisplay = "";
@@ -744,6 +821,7 @@ public class GameLevel extends BasicGameState{
 		
 		g.drawImage(slotTwo, 100, 350);
 		
+		//Draw data for slot two
 		if(Main.util.getSlotTwoData().getLoadFile() != null) {
 			try {
 				String levelDisplay = "";
@@ -762,6 +840,7 @@ public class GameLevel extends BasicGameState{
 		
 		g.drawImage(slotThree, 100, 550);
 		
+		//Draw data for slot 3
 		if(Main.util.getSlotThreeData().getLoadFile() != null) {
 			try {
 				String levelDisplay = "";
@@ -853,6 +932,8 @@ public class GameLevel extends BasicGameState{
 		
 	}//end of renderCutscene
 	
+	//////////// END OF RENDERING ////////////
+	
 	/**
 	 * Constant Loop, very fast, loops based on a delta (the amount of time that passes between each instance)
 	 */
@@ -891,8 +972,10 @@ public class GameLevel extends BasicGameState{
 			// Message Handler
 			Main.util.getMessageHandler().dispatchMessages();
 			
+			//Move the parallax layer
 			bg.moveBackground();
 			
+			//Update the GUI whenever the coins are grabbed
 			if(Main.util.coinBGrabbed)
 				coins[0] = new Image("res/items/coin_b/coin_b_thumb.png");
 			if(Main.util.coinPGrabbed)
@@ -901,6 +984,7 @@ public class GameLevel extends BasicGameState{
 				coins[2] = new Image("res/items/coin_a/coin_a_thumb.png");
 			
 		}
+		//Update the pause menu
 		else if(menuOpen && !saveOpen) {
 			Main.appgc.setMouseGrabbed(false);
 			stopAnimation();//Stop updating animation
@@ -910,6 +994,7 @@ public class GameLevel extends BasicGameState{
 			// Open pop-up menu
 			checkMenu(gc, sbg);
 		}
+		//Update the save menu
 		else if(!menuOpen && saveOpen) {
 			Main.appgc.setMouseGrabbed(false);
 			checkSaveMenu(gc,sbg);
@@ -921,6 +1006,10 @@ public class GameLevel extends BasicGameState{
 		
 	}//end of update
 	
+	/**
+	 * update the in-game timer
+	 * @param delta
+	 */
 	private void updateTimer(int delta) {
 		if(!Main.util.isCutsceneActive())
 			Main.util.setLevelTime((Main.util.getLevelTime() + delta));
@@ -993,26 +1082,40 @@ public class GameLevel extends BasicGameState{
 		}
 	}//end of endLevel
 
+	/**
+	 * create the new level statistics
+	 * @param gc
+	 * @param sbg
+	 */
 	private void newLevel(GameContainer gc, StateBasedGame sbg){
 		
 		PlayerStats ps = new PlayerStats();
 		ps.addToPlayerStats("" + Main.util.getPlayer().getHealth() + ", " + Main.util.getPlayer().getGravPack().getGravpower(), true);
+		//Copy everything from the player's inventory except for any keycards
 		for(int i = 0; i < Main.util.getInventory().getItems().size(); i++)
-			ps.addToPlayerStats(Main.util.getInventory().getItems().get(i).getItemImage(), false);
+				if(!(Main.util.getInventory().getItems().get(i) instanceof KeyCard))
+					ps.addToPlayerStats(Main.util.getInventory().getItems().get(i).getItemImage(), false);
 		
+		//Calculate a score after the tutorial levels
 		if(Main.util.levelNum > 7)
 			Main.util.sessionScore += calculateScoring();
 		
 		System.out.println("YOUR SCORE FOR THIS LEVEL WAS: " + Main.util.sessionScore);
 		
 		try {
-			init(gc, sbg);
+			if(Main.util.levelNum != 17)
+				init(gc, sbg);
+			else
+				sbg.enterState(Main.gameEnd);
 		} catch (SlickException e) {
 			ErrorLog.displayError(e);
 		}
 		
 	}//end of newLevel
 	
+	/**
+	 * Add to the score for grabbing coins
+	 */
 	public static void displayScore() {
 		int coinsCollected = 0;		
 		
@@ -1157,6 +1260,8 @@ public class GameLevel extends BasicGameState{
 			if(mobs.get(i).getHealth() <= 0){
 				mobs.get(i).setIsAlive(false);
 				Main.util.sessionScore += enemyScoreCalculator(mobs.get(i));//Update the player's score based on the mobs they killed
+				if(mobs.get(i) instanceof Boss)
+					Main.util.getSFX(18).play(1f, Main.util.getSoundManager().getVolume());
 				if(i == 0)
 					try {
 						resetLevel(gc, sbg);
@@ -1174,6 +1279,8 @@ public class GameLevel extends BasicGameState{
 			return 50;
 		else if(mob instanceof Tank || mob instanceof Bomber)
 			return 100;
+		else if(mob instanceof Boss)
+			return 500;
 		else
 			return 0;
 	}
@@ -1190,6 +1297,7 @@ public class GameLevel extends BasicGameState{
 		Main.util.getPlayer().getGravPack().setGravpower(100);
 		Main.util.getMusic().stop();
 		Main.util.deathCount++;
+		Main.util.getSFX(17).play(1f, Main.util.getSoundManager().getVolume());
 		sbg.getState(GameLevel.id).init(gc, sbg);
 		sbg.enterState(Main.gameover);
 	}//end of resetLevel
@@ -1229,6 +1337,8 @@ public class GameLevel extends BasicGameState{
 			}
 		}
 	}//end of checkCutscenes
+	
+	////////////START OF MENU CHECKS ////////////
 	
 	/**
 	 * @method checkMenu
@@ -1511,15 +1621,24 @@ public class GameLevel extends BasicGameState{
 	private void useInventory(int pos) {
 		if(pos < Main.util.getInventory().getItems().size()) {
 			if(Main.util.getInventory().getItems().get(pos) instanceof HealthPack){
-				new UseItem("health");
-				Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(pos));
+				if(Main.util.getPlayer().getHealth() < 100) {
+					new UseItem("health");
+					Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(pos));
+				}
 			} else if(Main.util.getInventory().getItems().get(pos) instanceof GravCapsule){
-				new UseItem("gravcapsule");
-				Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(pos));
+				if(Main.util.getPlayer().getGravPack().getGravpower() < 100) {
+					new UseItem("gravcapsule");
+					Main.util.getInventory().removeFromInventory(Main.util.getInventory().getItems().get(pos));
+				}
 			}
 		}
 	}//end of useInventory
 	
+	//////////// END OF MENU CHECKS ////////////
+	
+	/**
+	 * gets the game state's ID
+	 */
 	public int getID() {
 		return GameLevel.id;
 	}//end of getID

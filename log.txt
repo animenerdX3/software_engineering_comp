@@ -1,10 +1,10 @@
 Starting Program...
-02/15/2018 22:22:23
+02/16/2018 05:15:41
 Current Operating System: Windows 10
 System Display Resolution: 1920 x 1080
 Window Size: 900 x 900
 FPS: 60
-Version: 1.055
+Version: 1.06
 Debug Mode: false
 
 Utility Class Created.
@@ -17,34 +17,72 @@ Starting a New Game...
 Reading In Level...
 Making the Map...
 Map Created Successfully.
-Running code took 0.125 s
+Running code took 0.139 s
 Making the Events...
 Events Created Successfully.
-Running code took 0.079 s
+Running code took 0.084 s
 Making the Channels...
 Channels Created Successfully.
-Running code took 0.004 s
+Running code took 0.002 s
 Making Event Connections...
 Event Connections Created Successfully.
 Running code took 0.006 s
 Making the Mobs...
 Mobs Created Successfully.
-Running code took 0.019 s
+Running code took 0.013 s
 Making the Items...
 Items Created Successfully.
-Running code took 0.003 s
+Running code took 0.002 s
 Level Created Successfully.
-Running code took 0.277 s
+Running code took 0.276 s
+
+Creating Mobs...
+Mobs Created.
+Running code took 0.002 s
+Creating Items...
+Items Created.
+Running code took 0.003 s
+GameLevel initialized successfully.
+Running code took 0.885 s
+
+Initializing GameLevel...
+Starting a New Game...
+Reading In Level...
+Making the Map...
+Map Created Successfully.
+Running code took 0.078 s
+Making the Events...
+Events Created Successfully.
+Running code took 0.067 s
+Making the Channels...
+Channels Created Successfully.
+Running code took 0.003 s
+Making Event Connections...
+Event Connections Created Successfully.
+Running code took 0.006 s
+Making the Mobs...
+Mobs Created Successfully.
+Running code took 0.004 s
+Making the Items...
+Items Created Successfully.
+Running code took 0.004 s
+Level Created Successfully.
+Running code took 0.195 s
 
 Creating Mobs...
 Mobs Created.
 Running code took 0.004 s
 Creating Items...
 Items Created.
-Running code took 0.004 s
+Running code took 0.003 s
 GameLevel initialized successfully.
-Running code took 0.867 s
+Running code took 0.274 s
 
-Load Button Pressed By User.
-Back Button Pressed By User. Returning To Main Menu...
+Resetting Level Number...
+Entering Game...
+Entering Level 1...
+Music Track 2 Playing
+Menu Open: true
+Returning to Main Menu...
+
 Exiting Game...

@@ -15,3 +15,5 @@ sfx/lever_open.wav
 sfx/lever_close.wav
 sfx/door_open.wav
 sfx/warphole.wav
+sfx/game_over.wav
+sfx/boss_death.wav

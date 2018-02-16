@@ -14,19 +14,19 @@ import bpa.dev.linavity.gamestates.*;
 /**
  *  Linavity
  * @author Peter Gomes, Yannick Almeida, Ethan Guillotte, Chris Furtado
- * @version 1.055
+ * @version 1.06
  */
-
 
 public class Main extends StateBasedGame{
 	
 	//Game Version
-	public static final double version = 1.055;
+	public static final double version = 1.06;
 	
 	// Game State Identifiers
 	public static final int mainmenu = 0;
 	public static final int startlevel = 1;
 	public static final int gameover = 2;
+	public static final int gameEnd = 3;
 	
 	// Application Properties
 	public static AppGameContainer appgc;
@@ -36,7 +36,7 @@ public class Main extends StateBasedGame{
 	public static final int FPS = 60;
 	public static final String [] icons = new String[] {"res/gui/icon_32_32.png", "res/gui/icon_24_24.png", "res/gui/icon_16_16.png"};
 	
-	// Utility Object - Gives access to other objects that are needed throughout the entire program.
+	// Utility Object - Gives access to other objects that are needed throughout the entire program
 	public static Utils util;
 	
 	// Class Constructor
@@ -47,6 +47,7 @@ public class Main extends StateBasedGame{
 		this.addState(new MainMenu());
 		this.addState(new GameLevel());
 		this.addState(new GameOver());
+		this.addState(new GameEnd());
 	}
 
 	/**

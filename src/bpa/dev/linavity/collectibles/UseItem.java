@@ -13,11 +13,17 @@ public class UseItem {
 	
 	private void itemEffect(String item){
 		if(this.item.equalsIgnoreCase("health")) {
-			Main.util.getPlayer().setHealth(Main.util.getPlayer().getHealth() + 10);
-			Main.util.getSFX(9).play(1f, Main.util.getSoundManager().getVolume());
+			if(Main.util.getPlayer().getHealth() + 10 > 100)
+				Main.util.getPlayer().setHealth(100);
+			else
+				Main.util.getPlayer().setHealth(Main.util.getPlayer().getHealth() + 10);
+				Main.util.getSFX(9).play(1f, Main.util.getSoundManager().getVolume());
 		}
 		if(this.item.equalsIgnoreCase("gravcapsule")) {
-			Main.util.getPlayer().getGravPack().setGravpower(Main.util.getPlayer().getGravPack().getGravpower() + 40);
+			if(Main.util.getPlayer().getGravPack().getGravpower() + 40 > 100)
+				Main.util.getPlayer().getGravPack().setGravpower(100);
+			else
+				Main.util.getPlayer().getGravPack().setGravpower(Main.util.getPlayer().getGravPack().getGravpower() + 40);
 			Main.util.getSFX(10).play(1f, Main.util.getSoundManager().getVolume());
 		}
 	}//end of itemEffect

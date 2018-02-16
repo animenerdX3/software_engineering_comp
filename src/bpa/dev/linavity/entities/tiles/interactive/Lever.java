@@ -7,7 +7,6 @@ import bpa.dev.linavity.GameObject;
 import bpa.dev.linavity.Main;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.tiles.Dynamic;
-import bpa.dev.linavity.events.EventData;
 import bpa.dev.linavity.events.Message;
 
 public class Lever extends Dynamic {

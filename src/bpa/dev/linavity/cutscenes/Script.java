@@ -1,14 +1,12 @@
 package bpa.dev.linavity.cutscenes;
 
 import java.awt.Font;
-import java.awt.Point;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
 
 import bpa.dev.linavity.Main;
-import bpa.dev.linavity.events.Message;
 
 public class Script {
 
@@ -65,7 +63,7 @@ public class Script {
 			g.drawImage(Main.util.cutsceneVars.getPlayerSprites()[0], 0, 50);
 		}
 		
-		if(Main.util.countDialog == 4){
+		if(Main.util.countDialog == 4 || Main.util.countDialog == 12){
 			g.drawImage(Main.util.cutsceneVars.getPlayerSprites()[1], 0, 50);
 		}
 	}

@@ -38,7 +38,7 @@ public class PlayerStats {
 			bw.newLine();
 			
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			System.out.println("GAME DEFEATED");
 		}
 		
 		finally {

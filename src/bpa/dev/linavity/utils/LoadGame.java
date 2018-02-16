@@ -254,6 +254,10 @@ public class LoadGame {
 		return itemsSize;
 	}
 	
+	public int getInventorySize() {
+		return inventorySize;
+	}
+	
 	public float getCamX() {
 		return camX;
 	}

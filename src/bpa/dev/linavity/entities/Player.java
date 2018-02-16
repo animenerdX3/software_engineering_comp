@@ -363,6 +363,12 @@ public class Player extends Mob {
 			else
 				this.readyForNextLevel = false;
 		}
+		else if(Main.util.levelNum == 16) {
+			if(Main.util.getLevelMobs().size() == 1)
+				this.readyForNextLevel = true;
+			else
+				this.readyForNextLevel = false;
+		}
 		else
 			this.readyForNextLevel = true;
 	}//end of determineEndLevel

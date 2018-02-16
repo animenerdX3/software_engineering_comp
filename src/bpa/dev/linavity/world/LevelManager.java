@@ -20,6 +20,7 @@ import bpa.dev.linavity.entities.Mob;
 import bpa.dev.linavity.entities.Abric;
 import bpa.dev.linavity.entities.Player;
 import bpa.dev.linavity.entities.enemies.Bomber;
+import bpa.dev.linavity.entities.enemies.Boss;
 import bpa.dev.linavity.entities.enemies.Starter;
 import bpa.dev.linavity.entities.enemies.Tank;
 import bpa.dev.linavity.entities.tiles.Dynamic;
@@ -151,6 +152,8 @@ public class LevelManager {
 							mobs.add(new Bomber(j * 50, i *50));
 						else if(mobIDs[i][j] == 104)
 							mobs.add(new Abric(j * 50, i *50));
+						else if(mobIDs[i][j] == 105)
+							mobs.add(new Boss(j * 50, i *50));
 					}
 				}
 				

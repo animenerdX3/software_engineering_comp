@@ -123,7 +123,7 @@ public class Abric extends Mob{
 	 */
 	public String toString() {
 		//Save the class name, the x position, the y position, and the health
-		return "Starter,"+this.x+","+this.y+","+this.health;
+		return "Abric,"+this.x+","+this.y+","+this.health;
 	}
 	
 }//end of class

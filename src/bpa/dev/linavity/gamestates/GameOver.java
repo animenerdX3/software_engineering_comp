@@ -110,7 +110,7 @@ public class GameOver extends BasicGameState{
 	public void backButtonAction(GameContainer gc, StateBasedGame sbg, Input input) 
 			throws SlickException{
 		
-		back = new Image("res/gui/buttons/button_back.png");
+		back = new Image("res/gui/buttons/button_retry.png");
 		
 		// Back Button
 		// The parameters for checkbounds are the x and y coordinates of the top left of the button and the bottom right of the button
@@ -119,11 +119,20 @@ public class GameOver extends BasicGameState{
 				input.clearKeyPressedRecord();
 				Main.appgc.setMouseGrabbed(true);
 				Main.util.getPlayer().setIsAlive(true);
-				Main.util.setMusic(Main.util.getMusicQueue(1));
-				Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
+				if(Main.util.levelNum != 16) {
+					Main.util.getSFX(17).stop();
+					Main.util.setMusic(Main.util.getMusicQueue(1));
+					Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
+				}
+				else {
+					Main.util.getSFX(17).stop();
+					Main.util.setMusic(Main.util.getMusicQueue(2));
+					Main.util.getMusic().loop(1f, Main.util.getMusicManager().getVolume());
+				}
+						
 				sbg.enterState(Main.startlevel);
 			}
-			back = new Image("res/gui/buttons/button_back_hover.png");
+			back = new Image("res/gui/buttons/button_retry_hover.png");
 		}
 		
 	}
