@@ -4,10 +4,8 @@
 1. Grab the .zip file from the "Installer" folder.
 2. Unzip the file.
 3. Launch Linavity_Installer.exe to install the game.
-4. Important Note: If your game is not allowing you to make a save file, run "Linavity.exe" as an administrator.
-5. Launch "Linavity.exe" and have fun. :)
-
-To run our video game, you must run the .EXE file and press play. Have fun! :)
+4. Launch "Linavity.exe"
+5. Important Note: If your game is not allowing you to make a save file, run "Linavity.exe" as an administrator.
 
 Instructions
 A - Left
