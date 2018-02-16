@@ -1,7 +1,7 @@
 # software_engineering_comp
 
 ### How To Install
-1. Grab the .zip file from the "Installer" folder.
+1. Download the .zip file from the "Installer" folder.
 2. Unzip the file.
 3. Launch Linavity_Installer.exe to install the game.
 4. Launch "Linavity.exe"
