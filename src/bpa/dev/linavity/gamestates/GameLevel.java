@@ -383,7 +383,7 @@ public class GameLevel extends BasicGameState{
 				Main.util.getPlayer().getGravPack().setGravpower(Float.parseFloat(playerStats[1]));
 			}
 			//Add to the inventory of the player
-			else if(stats.size() > 1) {
+			else if(stats.size() > 1 && i < stats.size() - 1) {
 					try {
 						if(stats.get(i).equalsIgnoreCase("gravcapsule"))
 						Main.util.getInventory().addToInventory(new GravCapsule(0, 0, "gravcapsule"));
@@ -398,6 +398,8 @@ public class GameLevel extends BasicGameState{
 						ErrorLog.displayError(e);
 					}
 			}
+			else
+				Main.util.sessionScore = Integer.parseInt(stats.get(i));
 				
 		}
 	}//end of playerStats
@@ -621,9 +623,9 @@ public class GameLevel extends BasicGameState{
 		}
 		
 		//Draws Timer and Death counters on screen for player to see
-		ttf.drawString(750,50, "Timer: "+Main.util.getLevelTime() / 1000, Color.red);
 		ttf.drawString(20,20, "Deaths: "+Main.util.deathCount, Color.red);
 		ttf.drawString(20,60, "Score: "+Main.util.sessionScore, Color.red);
+		ttf.drawString(20,100, "Timer: "+Main.util.getLevelTime() / 1000, Color.red);
 		
 		//Draws coins to screen
 		g.drawImage(coins[0], 750, 10);
@@ -1089,16 +1091,19 @@ public class GameLevel extends BasicGameState{
 	 */
 	private void newLevel(GameContainer gc, StateBasedGame sbg){
 		
+		//Calculate a score after the tutorial levels
+		if(Main.util.levelNum > 7)
+			Main.util.sessionScore += calculateScoring();
+		
 		PlayerStats ps = new PlayerStats();
 		ps.addToPlayerStats("" + Main.util.getPlayer().getHealth() + ", " + Main.util.getPlayer().getGravPack().getGravpower(), true);
 		//Copy everything from the player's inventory except for any keycards
 		for(int i = 0; i < Main.util.getInventory().getItems().size(); i++)
 				if(!(Main.util.getInventory().getItems().get(i) instanceof KeyCard))
 					ps.addToPlayerStats(Main.util.getInventory().getItems().get(i).getItemImage(), false);
+		//Copy the session score
+		ps.addToPlayerStats(""+Main.util.sessionScore, false);
 		
-		//Calculate a score after the tutorial levels
-		if(Main.util.levelNum > 7)
-			Main.util.sessionScore += calculateScoring();
 		
 		System.out.println("YOUR SCORE FOR THIS LEVEL WAS: " + Main.util.sessionScore);
 		

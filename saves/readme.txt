@@ -1,0 +1,1 @@
+This is where your saves are located. In order to delete a save, just simply delete the .data files generated in this folder.
