@@ -39,6 +39,7 @@ public class LoadGame {
 	private String [] name;
 	private Object [] data;
 	private int eventID;
+	private int score;
 	
 	//Death Count
 	private int deathCount;
@@ -117,6 +118,7 @@ public class LoadGame {
 				camY = Float.parseFloat(properties[3]);
 				levelTime = Integer.parseInt(properties[4]);
 				deathCount = Integer.parseInt(properties[5]);
+				score = Integer.parseInt(properties[6]);
 			}
 			
 			else if(i == 1)
@@ -330,6 +332,10 @@ public class LoadGame {
 	
 	public int getDeathCount() {
 		return deathCount;
+	}
+	
+	public int getScore() {
+		return score;
 	}
 	
 }//end of class

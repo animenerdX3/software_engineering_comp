@@ -25,8 +25,9 @@ public class SaveGame {
 	private File saveFile;
 	private boolean canOverWrite;
 	private ArrayList<EventData> events;
+	private int score;
 	
-	public SaveGame(ArrayList<Mob> mobPositions, ArrayList<Item> itemPositions, ArrayList<Item>inventory, ArrayList<EventData>events, int gameStateID, float camX, float camY, int saveSlot, int levelTimer) {
+	public SaveGame(ArrayList<Mob> mobPositions, ArrayList<Item> itemPositions, ArrayList<Item>inventory, ArrayList<EventData>events, int gameStateID, float camX, float camY, int saveSlot, int levelTimer, int score) {
 		this.gameStateID = ""+gameStateID;
 		this.camX = ""+camX;
 		this.camY = ""+camY;
@@ -38,6 +39,7 @@ public class SaveGame {
 		this.saveSlot = saveSlot;
 		this.saveFile = new File("saves/linavitySave_"+this.saveSlot+".data");
 		this.canOverWrite = true;
+		this.score = score;
 	}
 	
 	/**
@@ -114,7 +116,7 @@ public class SaveGame {
 		
 		for(int i = 0; i < mobNum + itemNum + inventoryNum + eventNum + 6; i++) {
 			if(i == 0)
-				bw.write(Main.util.getPlayerName()+","+this.gameStateID+","+this.camX+","+this.camY+","+this.levelTimer+","+Main.util.deathCount);
+				bw.write(Main.util.getPlayerName()+","+this.gameStateID+","+this.camX+","+this.camY+","+this.levelTimer+","+Main.util.deathCount+","+this.score);
 			else if(i == 1)
 				bw.write(""+mobNum);
 			else if(i <= mobNum + 1)

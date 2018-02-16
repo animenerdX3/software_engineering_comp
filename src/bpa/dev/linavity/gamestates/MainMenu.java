@@ -271,9 +271,16 @@ public class MainMenu extends BasicGameState implements ComponentListener{
 		
 		if(Main.util.getSlotOneData().getLoadFile() != null) {
 			try {
+				String levelDisplay = "";
+				int level = Main.util.getSlotOneData().getLevelFound();
+				if(level < 7)
+					levelDisplay = "Tutorial";
+				else
+					levelDisplay = ""+(level - 6);
+					
 				g.drawImage(new Image("res/gui/slot1.png"), 100, 150);
 				g.drawString(Main.util.getSlotOneData().getPlayerName(), 135, 225);
-				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 245);
+				g.drawString("Level "+levelDisplay, 135, 245);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -283,9 +290,16 @@ public class MainMenu extends BasicGameState implements ComponentListener{
 		
 		if(Main.util.getSlotTwoData().getLoadFile() != null) {
 			try {
+				String levelDisplay = "";
+				int level = Main.util.getSlotTwoData().getLevelFound();
+				if(level < 7)
+					levelDisplay = "Tutorial";
+				else
+					levelDisplay = ""+(level - 6);
+				
 				g.drawImage(new Image("res/gui/slot2.png"), 100, 350);
 				g.drawString(Main.util.getSlotTwoData().getPlayerName(), 135, 425);
-				g.drawString("Level "+Main.util.getSlotTwoData().getLevelFound(), 135, 445);
+				g.drawString("Level "+levelDisplay, 135, 445);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -295,9 +309,15 @@ public class MainMenu extends BasicGameState implements ComponentListener{
 		
 		if(Main.util.getSlotThreeData().getLoadFile() != null) {
 			try {
+				String levelDisplay = "";
+				int level = Main.util.getSlotThreeData().getLevelFound();
+				if(level < 7)
+					levelDisplay = "Tutorial";
+				else
+					levelDisplay = ""+(level - 6);
 				g.drawImage(new Image("res/gui/slot3.png"), 100, 550);
 				g.drawString(Main.util.getSlotThreeData().getPlayerName(), 135, 625);
-				g.drawString("Level "+Main.util.getSlotThreeData().getLevelFound(), 135, 645);
+				g.drawString("Level "+levelDisplay, 135, 645);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -385,6 +405,7 @@ public class MainMenu extends BasicGameState implements ComponentListener{
 	
 	private void NewGame() {
 		newGame = true;
+		Main.util.sessionScore = 0;
 		Main.util.countDialog = 0;
 		Main.util.deathCount = 0;
 	}

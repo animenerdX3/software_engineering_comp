@@ -166,6 +166,8 @@ public class GameLevel extends BasicGameState{
 			Main.util.setLevelTime(Main.util.getCurrentLoadData().getLevelTime());
 			//Death Counter
 			Main.util.deathCount = Main.util.getCurrentLoadData().getDeathCount();
+			//Score
+			Main.util.sessionScore = Main.util.getCurrentLoadData().getScore();
 			LogSystem.addToLog("Creating Mobs...");
 			startTime = System.nanoTime();
 			mobs = getMobs(Main.util.getCurrentLoadData());
@@ -440,7 +442,6 @@ public class GameLevel extends BasicGameState{
 					items.add(new KeyCard(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 			}
 			else if(itemImage[i] != null){
-				System.out.println(itemImage[i]);
 				if(itemImage[i].equalsIgnoreCase("healthpack"))
 					Main.util.getInventory().addToInventory(new HealthPack(xPos[i + mobSize], yPos[i + mobSize], width[i], height[i], itemImage[i]));
 				else if(itemImage[i].equalsIgnoreCase("gravcapsule"))
@@ -545,8 +546,9 @@ public class GameLevel extends BasicGameState{
 		}
 		
 		//Draws Timer and Death counters on screen for player to see
-		ttf.drawString(770,50, "Timer: "+Main.util.getLevelTime() / 1000, Color.red);
+		ttf.drawString(750,50, "Timer: "+Main.util.getLevelTime() / 1000, Color.red);
 		ttf.drawString(20,20, "Deaths: "+Main.util.deathCount, Color.red);
+		ttf.drawString(20,60, "Score: "+Main.util.sessionScore, Color.red);
 		
 		//Draws coins to screen
 		g.drawImage(coins[0], 750, 10);
@@ -726,9 +728,15 @@ public class GameLevel extends BasicGameState{
 		
 		if(Main.util.getSlotOneData().getLoadFile() != null) {
 			try {
+				String levelDisplay = "";
+				int level = Main.util.getSlotOneData().getLevelFound();
+				if(level < 7)
+					levelDisplay = "Tutorial";
+				else
+					levelDisplay = ""+(level - 6);
 				g.drawImage(new Image("res/gui/slot1.png"), 100, 150);
 				g.drawString(Main.util.getSlotOneData().getPlayerName(), 135, 225);
-				g.drawString("Level "+Main.util.getSlotOneData().getLevelFound(), 135, 245);
+				g.drawString("Level "+levelDisplay, 135, 245);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -738,9 +746,15 @@ public class GameLevel extends BasicGameState{
 		
 		if(Main.util.getSlotTwoData().getLoadFile() != null) {
 			try {
+				String levelDisplay = "";
+				int level = Main.util.getSlotTwoData().getLevelFound();
+				if(level < 7)
+					levelDisplay = "Tutorial";
+				else
+					levelDisplay = ""+(level - 6);
 				g.drawImage(new Image("res/gui/slot2.png"), 100, 350);
 				g.drawString(Main.util.getSlotTwoData().getPlayerName(), 135, 425);
-				g.drawString("Level "+Main.util.getSlotTwoData().getLevelFound(), 135, 445);
+				g.drawString("Level "+levelDisplay, 135, 445);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -750,9 +764,15 @@ public class GameLevel extends BasicGameState{
 		
 		if(Main.util.getSlotThreeData().getLoadFile() != null) {
 			try {
+				String levelDisplay = "";
+				int level = Main.util.getSlotThreeData().getLevelFound();
+				if(level < 7)
+					levelDisplay = "Tutorial";
+				else
+					levelDisplay = ""+(level - 6);
 				g.drawImage(new Image("res/gui/slot3.png"), 100, 550);
 				g.drawString(Main.util.getSlotThreeData().getPlayerName(), 135, 625);
-				g.drawString("Level "+Main.util.getSlotThreeData().getLevelFound(), 135, 645);
+				g.drawString("Level "+levelDisplay, 135, 645);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
@@ -979,10 +999,11 @@ public class GameLevel extends BasicGameState{
 		ps.addToPlayerStats("" + Main.util.getPlayer().getHealth() + ", " + Main.util.getPlayer().getGravPack().getGravpower(), true);
 		for(int i = 0; i < Main.util.getInventory().getItems().size(); i++)
 			ps.addToPlayerStats(Main.util.getInventory().getItems().get(i).getItemImage(), false);
-
-		Main.util.getLevel().setScore(Main.util.getLevel().getScore() + calculateScoring());
 		
-		System.out.println("YOUR SCORE FOR THIS LEVEL WAS: " + Main.util.getLevel().getScore());
+		if(Main.util.levelNum > 7)
+			Main.util.sessionScore += calculateScoring();
+		
+		System.out.println("YOUR SCORE FOR THIS LEVEL WAS: " + Main.util.sessionScore);
 		
 		try {
 			init(gc, sbg);
@@ -991,11 +1012,8 @@ public class GameLevel extends BasicGameState{
 		}
 		
 	}//end of newLevel
-	//start of calculateScoring
-	private int calculateScoring(){
-		
-		int score = 500;
-		
+	
+	public static void displayScore() {
 		int coinsCollected = 0;		
 		
 		if(Main.util.coinAGrabbed)
@@ -1006,11 +1024,17 @@ public class GameLevel extends BasicGameState{
 			coinsCollected++;
 		
 		if(coinsCollected == 1)
-			score += 250;
+			Main.util.sessionScore += 250;
 		else if(coinsCollected == 2)
-			score += 500;
+			Main.util.sessionScore += 250;
 		else if(coinsCollected == 3)
-			score += 1000;
+			Main.util.sessionScore += 500;
+	}
+	
+	//start of calculateScoring
+	private int calculateScoring(){
+		
+		int score = 500;
 		
 		score -= (Main.util.getLevelTime()/1000);
 		
@@ -1131,8 +1155,8 @@ public class GameLevel extends BasicGameState{
 
 		for(int i = 0; i < mobs.size(); i++){
 			if(mobs.get(i).getHealth() <= 0){
-				Main.util.getLevel().setScore(enemyScoreCalculator(mobs.get(i))); // Update the player's score for the level based on the mobs that he kills
 				mobs.get(i).setIsAlive(false);
+				Main.util.sessionScore += enemyScoreCalculator(mobs.get(i));//Update the player's score based on the mobs they killed
 				if(i == 0)
 					try {
 						resetLevel(gc, sbg);
@@ -1147,9 +1171,9 @@ public class GameLevel extends BasicGameState{
 	// Takes in a mob that the player has killed and returns a score based on the type of enemy
 	private int enemyScoreCalculator(Mob mob){
 		if(mob instanceof Starter)
-			return Main.util.getLevel().getScore() + 50;
+			return 50;
 		else if(mob instanceof Tank || mob instanceof Bomber)
-			return Main.util.getLevel().getScore() + 100;
+			return 100;
 		else
 			return 0;
 	}
@@ -1176,8 +1200,16 @@ public class GameLevel extends BasicGameState{
 			if(Main.util.countDialog < script.getSceneLength()){
 				script.displayName(script.getNames());
 				script.displayText(script.getDialog());
-				if(Main.util.getKeyLogSpecificKey(7))
+				if(Main.util.getKeyLogSpecificKey(7)) {
 					Main.util.countDialog = Main.util.countDialog + 1;
+					if(Main.util.countDialog == 15) {
+						Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(6, 21)), null, Message.autoOpenDoor, true));
+						for(int i = 0; i < mobs.size(); i++) {
+							if(mobs.get(i) instanceof Abric)
+								mobs.get(i).setX(mobs.get(i).getX() + 60);
+						}
+					}
+				}
 				script.getEvents();
 			}
 			else {
@@ -1186,8 +1218,11 @@ public class GameLevel extends BasicGameState{
 					if(mobs.get(i) instanceof Abric)
 						mobs.get(i).setIsAlive(false);
 				}
-				if(script.getID() == 0) {
+				if(script.getID() == 0 && Main.util.levelNum == 1) {
 					Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(14, 8)), null, Message.autoOpenDoor, true));
+				}
+				if(script.getID() == 0 && Main.util.levelNum == 6) {
+					Main.util.getMessageHandler().addMessage(new Message(Main.util.getLevel().getSingleEventTile(new Point(6, 21)), null, Message.autoOpenDoor, false));
 				}
 				Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getID() + 1);
 				startPlayerAnimation();
@@ -1324,7 +1359,7 @@ public class GameLevel extends BasicGameState{
 		if(MainMenu.checkBounds( 100 , 100 + slotOne.getWidth() , 150, 150 + slotOne.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot One...");
-				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelEvents.getEvents(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 1, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelEvents.getEvents(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 1, Main.util.getLevelTime(), Main.util.sessionScore);
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}
@@ -1339,7 +1374,7 @@ public class GameLevel extends BasicGameState{
 		if(MainMenu.checkBounds( 100 , 100 + slotTwo.getWidth() , 350, 350 + slotTwo.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot Two...");
-				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelEvents.getEvents(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 2, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelEvents.getEvents(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 2, Main.util.getLevelTime(), Main.util.sessionScore);
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}
@@ -1354,7 +1389,7 @@ public class GameLevel extends BasicGameState{
 		if(MainMenu.checkBounds( 100 , 100 + slotThree.getWidth() , 550, 550 + slotThree.getHeight(), xpos, ypos)){
 			if(input.isMousePressed(0)){
 				LogSystem.addToLog("Saving Data To Slot Three...");
-				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelEvents.getEvents(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 3, Main.util.getLevelTime());
+				SaveGame saveProgress = new SaveGame(mobs, items, Main.util.getInventory().getItems(), Main.util.levelEvents.getEvents(), Main.util.levelNum, Main.util.getCam().getX(), Main.util.getCam().getY(), 3, Main.util.getLevelTime(), Main.util.sessionScore);
 				saveProgress.createSave();
 				LogSystem.addToLog("Data Saved Successfully.");
 			}

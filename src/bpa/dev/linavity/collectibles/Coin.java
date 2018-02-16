@@ -3,6 +3,7 @@ package bpa.dev.linavity.collectibles;
 import org.newdawn.slick.SlickException;
 
 import bpa.dev.linavity.Main;
+import bpa.dev.linavity.gamestates.GameLevel;
 
 public class Coin extends Item{
 	
@@ -33,6 +34,7 @@ public class Coin extends Item{
 			Main.util.coinAGrabbed = true;
 		this.isActive = false;//Destroy the item
 		Main.util.getSFX(11).play(1f, Main.util.getSoundManager().getVolume());
+		GameLevel.displayScore();
 	}//end of onCollision
 
 }//end of class

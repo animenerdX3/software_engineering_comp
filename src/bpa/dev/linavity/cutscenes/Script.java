@@ -1,12 +1,14 @@
 package bpa.dev.linavity.cutscenes;
 
 import java.awt.Font;
+import java.awt.Point;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.TrueTypeFont;
 
 import bpa.dev.linavity.Main;
+import bpa.dev.linavity.events.Message;
 
 public class Script {
 
@@ -69,10 +71,11 @@ public class Script {
 	}
 	
 	public void getEvents() {
-		if(Main.util.countDialog == 6 || Main.util.countDialog == 7) {
+		if(Main.util.countDialog == 6 || Main.util.countDialog == 7 || Main.util.countDialog == 15) {
 			Main.util.cutsceneVars.setAbricDirection(false);
 			Main.util.cutsceneVars.setMoveAbric(true);
-		}else {
+		}
+		else {
 			Main.util.cutsceneVars.setAbricDirection(true);
 			Main.util.cutsceneVars.setMoveAbric(false);
 		}

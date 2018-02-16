@@ -20,9 +20,6 @@ public class Level {
 	private int id;
 	private int levelWidth, levelHeight;
 	
-	// Score for the level
-	private int score;
-	
 	// Level Data
 	private Tile[][] map;
 	private Tile[][] events;
@@ -48,8 +45,6 @@ public class Level {
 	public Level(int id) throws SlickException, FileNotFoundException{
 		
 		double levelTime = System.nanoTime();
-		
-		this.setScore(0);
 		
 		this.lm = new LevelManager(id);
 		
@@ -193,13 +188,6 @@ public class Level {
 	}
 	
 	// Getters
-	
-	/**
-	 * @return the score
-	 */
-	public int getScore() {
-		return score;
-	}
 
 	/**
 	 * @return the map
@@ -268,13 +256,6 @@ public class Level {
 	}
 	
 	// Setters
-
-	/**
-	 * @param score the score to set
-	 */
-	public void setScore(int score) {
-		this.score = score;
-	}
 	
 	/**
 	 * @param map the map to set

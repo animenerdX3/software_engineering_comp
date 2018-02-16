@@ -98,6 +98,7 @@ public class Utils {
 	public boolean coinAGrabbed;
 
 	public int deathCount;
+	public int sessionScore;
 	
 	// Default Constructor
 	public Utils(int levelID) throws SlickException{

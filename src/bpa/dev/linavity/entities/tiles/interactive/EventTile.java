@@ -26,26 +26,24 @@ public class EventTile extends Dynamic{
 	}
 	
 	public void checkInstances(int id) {
+		if(Main.util.levelNum == 1)
+			levelOneChecks(id);
+		if(Main.util.levelNum == 6)
+			levelSixChecks(id);
+	}
+	
+	public void levelOneChecks(int id) {
 		if(id == 0) {
+			Main.util.cutsceneVars.setLength(9);
 			Main.util.setCutsceneActive(true);
 		}
-		if(id == 1) {
-			GameLevel.tutorialScene.setTutorial(GameLevel.tutorialGUI[3]);
-			GameLevel.tutorialScene.setActive(true);
-			GameLevel.tutorialScene.setTimer(0);
-			Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getID() + 1);
-		}
-		if(id == 2) {
-			GameLevel.tutorialScene.setTutorial(GameLevel.tutorialGUI[2]);
-			GameLevel.tutorialScene.setActive(true);
-			GameLevel.tutorialScene.setTimer(0);
-			Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getID() + 1);
-		}
-		if(id == 3) {
-			GameLevel.tutorialScene.setTutorial(GameLevel.tutorialGUI[1]);
-			GameLevel.tutorialScene.setActive(true);
-			GameLevel.tutorialScene.setTimer(0);
-			Main.util.cutsceneVars.setID(Main.util.cutsceneVars.getID() + 1);			
+	}
+	
+	public void levelSixChecks(int id) {
+		if(id == 0) {
+			Main.util.countDialog = 9;
+			Main.util.cutsceneVars.setLength(16);
+			Main.util.setCutsceneActive(true);
 		}
 	}
 	
