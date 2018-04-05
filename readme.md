@@ -20,3 +20,8 @@ Res folder holds the resources of the game
 Data holds level data
 Saves holds game saves
 Lib holds Slick2D Libraries
+
+### Requirements for Launcher
+- Java JRE 1.8
+- Java JDK 1.8
+- At Least 50MB of Space
